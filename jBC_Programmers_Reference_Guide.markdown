@@ -1,6 +1,6 @@
 # jBC Programmers Reference Guide
 
-Version: project builds.
+Version: Pre-R13 (project builds), PB201207
 
 # Preface
 
