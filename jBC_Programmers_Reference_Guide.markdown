@@ -253,7 +253,7 @@ this by accessing the terminfo database through the SYSTEM () function.
 ### EXAMPLES
 
     FOR I = 1 TO 5
-    CRT @(5, I):"*":
+       CRT @(5, I):"*":
     NEXT I 
     Home = @(0,0) ;* Remember the cursor home position 
     CRT Home:"Hi honey, I’m HOME!": 
