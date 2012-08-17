@@ -1,6 +1,6 @@
 # jBC Programmers Reference Guide
 
-Version: Pre-R13 (project builds), PB201207
+Version: Project builds
 
 # Preface
 
@@ -1984,7 +1984,7 @@ Note: Create the .NET project as a ‘Class Library’.
 If using the visual studio IDE, this option is on selected when
 creating a new project:
 
-![.Net Project Creation](images/dotnet-project-creation.png)
+![.Net Project Creation](https://raw.github.com/begoon/temenos-documentation/master/images/dotnet-project-creation.png)
 
 If using .NET SDK (instead of the IDE) to compile class libraries 
 into a ‘DLL’ file, the  ‘csc’ (C# Compiler) or ‘vbc’ (Visual Basic 
@@ -2000,7 +2000,7 @@ the application. (i.e. the same directory as the jBC executable that
 will call the class) This is a requirement of the .NET paradigm and 
 not TAFC. The directory should also be in the PATH environment variable.
 
-![DLL Creation](images/dotnet-dll-creation.png)
+![DLL Creation](https://raw.github.com/begoon/temenos-documentation/master/images/dotnet-dll-creation.png)
 
 *To call these methods from Basic*:
 
