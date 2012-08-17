@@ -279,7 +279,7 @@ The design of TAFC allows you to import code from many older systems.
 As these systems have traditionally not co-ordinated the development of 
 this function they expect different functionality in many instances. In 
 the following table, you should note that different settings of the 
-JBASICEMULATE environment variable would elicit different functionality 
+JBCEMULATE environment variable would elicit different functionality 
 from this function. Where the emulate code is printed with strikethrough 
 it indicates that the functionality is denied to this emulation.
  
@@ -319,7 +319,7 @@ it indicates that the functionality is denied to this emulation.
 | ros       | -313  | turn on the status line                        |
 | ros       | -314  | turn off the status line                       |
 
-If a color terminal is in use, -33 to -64 will control colors. 
+If a colour terminal is in use, -33 to -64 will control colours. 
 
 The codes from -128 to -191 control screen attributes. Where Bit 0 is 
 least significant, you may calculate the desired code by setting Bit 
@@ -1984,7 +1984,7 @@ Note: Create the .NET project as a ‘Class Library’.
 If using the visual studio IDE, this option is on selected when
 creating a new project:
 
-![.Net Project Creation](/images/project-creation.jpg)
+![.Net Project Creation](images/dotnet-project-creation.png)
 
 If using .NET SDK (instead of the IDE) to compile class libraries 
 into a ‘DLL’ file, the  ‘csc’ (C# Compiler) or ‘vbc’ (Visual Basic 
@@ -2000,9 +2000,9 @@ the application. (i.e. the same directory as the jBC executable that
 will call the class) This is a requirement of the .NET paradigm and 
 not TAFC. The directory should also be in the PATH environment variable.
 
-![DLL Creation](/images/DLL-creation.jpg)
+![DLL Creation](images/dotnet-dll-creation.png)
 
-To call these methods from Basic:
+*To call these methods from Basic*:
 
     CALLdotNET "myNameSpace.Class1","mymethod", p SETTING ret
 
@@ -2085,14 +2085,16 @@ libjvm.so for other platforms
 Although it is not usually necessary, it is possible to specify a Java 
 library by setting the JBCJVMLIB environment variable:
 
-set JBCJVMLIB= C:\jdk1.3.1\jre\bin\classic\jvm.dll 
+Windows:
+set JBCJVMLIB=jvm.dll 
+AIX:
+export JBCJVMLIB=libjvm.so
 
 ### PERFORMANCE CONSIDERATIONS
 
 The first call to CALLJ carries the overhead of loading the Java 
-Virtual Machine into memory. Susequent calls do not have this overhead 
-and it is recommended that programs are structured in such a way that 
-the Java Virtual Machine is only loaded once.
+Virtual Machine into memory. Subsequent calls do not have this overhead.
+Many additional threads will be created and used by the JVM.
 
 In addition, calls to non static methods carry the overhead of calling 
 the constructor for the class. Wherever possible, static methods should 
@@ -2196,7 +2198,7 @@ needs to know where certain libraries are located.
 
 Windows: looking for 'jvm.dll'
 
-Add "c:\jdk1.3.1_07\jre\bin\server" to the PATH environment variable.
+Add "c:\jdk1.6.0_33\jre\bin\server" to the PATH environment variable.
  
 A generic format might be  %JDKDIR%\jre\bin\server.
 
@@ -2205,183 +2207,78 @@ UNIX
 For UNIX it is possible to configure generic symbolic links to make 
 profiles portable.
 
-Location of JDK	export JDKDIR=/opt/java1.3
+Location of JDK	export JDKDIR=/opt/java6
 
-Symbolic link for JRE libs				/opt/java1.3/jrelib
+Symbolic link for JRE libs			/opt/java6/jrelib
 
-Symbolic link for JVM library		/opt/java1.3/jvmlib
+Symbolic link for JVM library		/opt/java6/jvmlib
 
 Linux
 
-	 /opt/java1.3/jrelib   -> /opt/java1.3/jre/lib/i386
+	 /opt/java6/jrelib   -> /opt/java6/jre/lib/amd64
 
-	 /opt/java1.3/jvmlib   -> /opt/java1.3/jre/lib/i386/server
+	 /opt/java6/jvmlib   -> /opt/java6/jre/lib/amd64/server
 
 .profile:
 
-Add “/opt/java1.3/jrelib:/opt/java1.3/jvmlib” to the LD_LIBRARY_PATH
+Add “/opt/java6/jrelib:/opt/java6/jvmlib” to the LD_LIBRARY_PATH
 
 HP-UX
 
-	 /opt/java1.3/jrelib   -> /opt/java1.3/jre/lib/PA_RISC2.0
+	 /opt/java6/jrelib   -> /opt/java6/jre/lib/IA64W
 
-	 /opt/java1.3/jvmlib   -> /opt/java1.3/jre/lib/PA_RISC2.0/server
+	 /opt/java6/jvmlib   -> /opt/java6/jre/lib/IA64W/server
 
 	 .profile:
 
-Add “/opt/java1.3/jrelib:/opt/java1.3/jvmlib” to the SHLIB_PATH
+Add “/opt/java6/jrelib:/opt/java6/jvmlib” to the SHLIB_PATH
 
 AIX (IBM JDK)
 
-	 /opt/java1.3/jrelib   -> /opt/java1.3/jre/bin
+	 /opt/java6/jrelib   -> /opt/java6/jre/bin
 
-	 /opt/java1.3/jvmlib   -> /opt/java1.3/jre/bin/classic
-
-	 .profile:
-
-Add “/opt/java1.3/jrelib:/opt/java1.3/jvmlib” to the LIBPATH
-
-Solaris 
-
-	 /opt/java1.3/jrelib   -> /opt/java1.3/jre/lib/sparc
-
-	 /opt/java1.3/jvmlib   -> /opt/java1.3/jre/lib/sparc/server
+	 /opt/java6/jvmlib   -> /opt/java6/jre/bin/classic
 
 	 .profile:
 
-Add “opt/java1.3/jrelib:/opt/java1.3/jvmlib” to the LD_LIBRARY_PATH
+Add “/opt/java6/jrelib:/opt/java6/jvmlib” to the LIBPATH
+
+Solaris SPARC
+
+	 /opt/java6/jrelib   -> /opt/java6/jre/lib/sparc
+
+	 /opt/java6/jvmlib   -> /opt/java6/jre/lib/sparc/server
+
+	 .profile:
+
+Add “opt/java6/jrelib:/opt/java6/jvmlib” to the LD_LIBRARY_PATH
+
+Solaris AMD64
+
+	 /opt/java6/jrelib   -> /opt/java6/jre/lib/amd64
+
+	 /opt/java6/jvmlib   -> /opt/java6/jre/lib/amd64/server
+
+	 .profile:
+
+Add “opt/java6/jrelib:/opt/java6/jvmlib” to the LD_LIBRARY_PATH
 
 ### EXAMPLES using JVM WITHOUT symbolic links as above:
 
 Linux: looking for 'libjvm.so'
 
     Add 2 directories to LD_LIBRARY_PATH.
-    /opt/java1.3/jre/lib/i386/server:/opt/java1.3/jre/lib/i386
+    /opt/java6/jre/lib/amd64/server:/opt/java6/jre/lib/amd64
 
 Solaris: looking for 'libjvm.so'
 
     Add 2 directories to LD_LIBRARY_PATH.
-    /opt/java1.3/jre/lib/sparc/server:/opt/java1.3/jre/lib/sparc
+    /opt/java6/jre/lib/sparc/server:/opt/java6/jre/lib/sparc
 
 HP-UX 11: looking for 'libjvm.sl'
 
   Add 2 directories to SHLIB_PATH.
-  /opt/java1.3/jre/lib/PA_RISC2.0/server:/opt/java1.3/jre/lib/PA_RISC2.0
-
-**OPTIONS:**
-
-JBCJVMLIB
-
-If the searched for library appears incorrect for your platform, then 
-you can override it by setting the JBCJVMLIB environment variable.
-
-e.g.  "export JBCJVMLIB=jvm.shared_lib"
-
-and then CALLJ will try to locate the library 'jvm.shared_lib' at 
-runtime.
-  
-JBCJVMPOLICYFILE
-
-You can specify a policy file for the JMV. The policy for a Java 
-application environment (specifying which permissions are available 
-for code from various sources) is represented by a Policy object. 
-More specifically, it is represented by a `Policy` subclass providing 
-an implementation of the abstract methods in the `Policy` class 
-(which is in the java.security package). You can override it by 
-setting the JBCJVMPOLICYFILE environment variable.
-
-The source location for the default policy information is
- 
-**WINDOWS**
-
-  	%JBASERELEASEDIR%\config\policy.all
- 
-**UNIX**
-
-  	$JBASERELEASEDIR/config/policy.all 
-
-e.g.  "export JBCJVMPOLICYFILE =/usr/jbase/mypolicy.all"
-
-JBCJVMENCODING
-
-Internally, the Java virtual machine always operates with data in 
-Unicode. However, as data transfers to or from the Java virtual 
-machine, the Java virtual machine converts the data to other encodings. 
-If the you want to change the default encoding of the JVM on your 
-platform, then you can override it by setting the JBCJVMENCODING  
-environment variable.
-
-e.g.  "export JBCJVMENCODING = Cp1257"
-
-JBCJVMNOOPTS
-
-Internally, the CALLJ is optimum to start the JVM with options (see 
-below the table). If the you don’t want to pass these options for the 
-JVM, then you can override it by setting the JBCJVMNOOPTS environment 
-variable. In this case no more options will be pass to the JVM.
-
-**DEFAULT OPTIONS:**
-
-|Win32:         |   -Xrs 			      |
-|---------------|-------------------------------------|
-|TRUE64:        |   -Xcheck:jni                       |
-|Solaris:       |   -XX:+AllowUserSignalHandlers      |
-|Linux:         |   -Xrs -XX:+AllowUserSignalHandlers |
-|AIX 32 bits:   |   -Xrs -Xnocatch                    |
-|AIX 64 bits:   |   -Xrs -d64                         |
-|HPUX 32 bits:  |           	    	              |
-|HPUX 64 bits:  |   -Xrs -XX:+AllowUserSignalHandlers |
-
-**JBCJVMOPT[1..5]**
-
-If the you want to pass some options for the JVM, then you can set by 
-setting the JBCJVMOPT[1..5] environment variable
-
-e.g.  "export JBCJVMOPT1=-Xrs "
-
-**KNOWN LIMITATIONS**
-
-HP-UX
-
-There is a problem with HP-UX due to it's dynamic loader. See man 
-dlopen(3C) for detail of the TLS limitation.
-
-This means that the JVM library must be linked against the calling 
-program, there are no known problems caused by this.
-
-   'ldd progname' lists current external library references and we 
-   need to add libjvm.
-
-The result looks like this:
-
-     JVM: dl_error [Can't dlopen() a library containing Thread Local Storage: libjvm.sl]
-
-If the program is built with the required link as below then it works.
-
-	   jbc –Jo callj.b -ljvm -L/opt/java1.3/jre/lib/PA_RISC2.0/server
-
-If the CALLJ statement is inside a subroutine, then the program that 
-calls the subroutine must be built as above.
-
-Examples using JVM WITHOUT symbolic links as above:
-
-Linux: searching for 'libjvm.so'
-
-Add 2 directories to LD_LIBRARY_PATH.
-
-    /opt/java1.3/jre/lib/i386/server:/opt/java1.3/jre/lib/i386
-
-Solaris: searching for 'libjvm.so'
-
-Add 2 directories to LD_LIBRARY_PATH.
-
-    /opt/java1.3/jre/lib/sparc/server:/opt/java1.3/jre/lib/sparc
-
-HP-UX 11: searching for 'libjvm.sl'
-
-Add 2 directories to SHLIB_PATH.
-
-    /opt/java1.3/jre/lib/PA_RISC2.0/server:/opt/java1.3/jre/lib/PA_RISC2.0
+  /opt/java6/jre/lib/IA64W/server:/opt/java6/jre/lib/IA64W
 
 ### OPTIONS
  
@@ -2408,13 +2305,13 @@ The source location for the default policy information is:
 
 **WINDOWS**
   	
-    %JBASERELEASEDIR%\config\policy.all
+    %TAFC_HOME%\config\policy.all
  
 **UNIX**
   	
-    $JBASERELEASEDIR/config/policy.all 
+    $TAFC_HOME/config/policy.all 
 
-e.g.  "export JBCJVMPOLICYFILE =/usr/jbase/mypolicy.all"
+e.g.  "export JBCJVMPOLICYFILE=/usr/jbase/mypolicy.all"
 
 **JBCJVMENCODING**
 
@@ -2425,25 +2322,29 @@ If the you want to change the default encoding of the JVM on your
 platform, then you can override it by setting the JBCJVMENCODING 
 environment variable.
 
-e.g.  "export JBCJVMENCODING = Cp1257"
+e.g.  "export JBCJVMENCODING=Cp1257"
 
 **JBCJVMNOOPTS**
 
 Internally, CALLJ is optimized to start the JVM with options (see the 
-table below). If you don’t want to pass these options for the JVM, 
+table below). If you do not want to pass these options for the JVM, 
 then you can override it by setting the **JBCJVMNOOPTS** environment 
 variable. In this case no more options will be passed to the JVM.
+
+**JBCIBMJDK**
+
+On Linux we assumed that the Sun Java JDK would be used and the JVM
+options reflect this. But as they are not compatible with the IBM JDK
+you can set the JBCIBMJDK option to allow the running of the IBM JDK
+for Linux.
 
 ### DEFAULT OPTIONS###
 
 |Win32:         |   -Xrs 			      |
 |---------------|-------------------------------------|
-|TRUE64:        |   -Xcheck:jni                       |
 |Solaris:       |   -XX:+AllowUserSignalHandlers      |
 |Linux:         |   -Xrs -XX:+AllowUserSignalHandlers |
-|AIX 32 bits:   |   -Xrs -Xnocatch                    |
 |AIX 64 bits:   |   -Xrs -d64                         |
-|HPUX 32 bits:  |           	    	              |
 |HPUX 64 bits:  |   -Xrs -XX:+AllowUserSignalHandlers |
 
 **JBCJVMOPT[1..5]**
@@ -2451,7 +2352,12 @@ variable. In this case no more options will be passed to the JVM.
 If the you want to pass some options for the JVM, then set the 
 JBCJVMOPT[1..5] environment variable
 
-e.g.  "export JBCJVMOPT1=-Xrs "
+e.g.  "export JBCJVMOPT1=-Xrs"
+
+**JBCJVMOPTS**
+
+Allows many options to be set within one variable.
+e.g. export JBCJVMOPTS="-Xrs -Xms256M -Xmx512M"
 
 ### KNOWN LIMITATIONS
 
@@ -2472,7 +2378,7 @@ The symptom looks like this:
 
 If the program is built with the required link as below then it works.
 
-    jbc –Jo callj.b -ljvm -L/opt/java1.3/jre/lib/PA_RISC2.0/server
+    jbc –Jo callj.b -ljvm -L/opt/java6/jre/lib/IA64W/server
 
 If the CALLJ statement is inside a subroutine, then the program that 
 calls the subroutine must be built as above.
@@ -2924,7 +2830,7 @@ succeeded and a Boolean FALSE result if it failed.
         CRT "jBASE development system INSTALLED"
     END
 
-    IF GETENV("JBASICGLOBALDIR", jgdir) THEN
+    IF GETENV("JBCGLOBALDIR", jgdir) THEN
         IF CHDIR (jgdir:"\config") ELSE
             CRT "jBASE configuration cannot be found."
             ABORT
@@ -3718,7 +3624,7 @@ DECATALOG ProgramName
 
 ## DECRYPT##
 
-The DECRYPT function encrypts strings.
+The DECRYPT function decrypts strings.
 
 ### COMMAND SYNTAX
 
@@ -3726,13 +3632,13 @@ DECRYPT(string, key, method)
 
 ### SYNTAX ELEMENTS
 
-**string** specifies the string to be encrypted.
+**string** specifies the string to be decrypted.
 
-**Key** is the value used to encrypt the string. Its use depends on 
+**Key** is the value used to decrypt the string. Its use depends on 
 method.
 
 **method** is a value, which indicates the encryption mechanism to 
-use (See below):
+use (see below).
 
 The [ENCRYPT](#ENCRYPT) and DECRYPT functions that are part of jBC 
 now support the following cipher methods (Defined in JBC.h)
@@ -3741,11 +3647,12 @@ now support the following cipher methods (Defined in JBC.h)
 |---------------------|--------------------------------------------|
 | JBASE_CRYPT_ROT13   |    Simple ROT13 algorithm. (Key not used)  |
 | JBASE_CRYPT_XOR11   |    XOR MOD11 algorithm. Uses the first     |
-|                     |    character ofa key as a seed value.      |
+|                     |    character of a key as a seed value      |
 | JBASE_CRYPT_RC2     |    RC2 algorithm                           |
 | JBASE_CRYPT_DES     |    DES algorithm                           |
 | JBASE_CRYPT_3DES    |    Three Key, Triple DES algorithm         |
 | JBASE_CRYPT_BLOWFISH|    Blowfish algorithm                      |
+| JBASE_CRYPT_AES     |    AES algorithm                           |
 | JBASE_CRYPT_BASE64  |    (See below)                             |
 
 BASE64 is not really an encryption method, but more of an encoding. The 
@@ -3764,7 +3671,7 @@ JBASE_CRYPT_BASE64 followed by DECRYPT with method JBASE_CRYPT_RC2.
 |-----------------------------|----------------------|
 |JBASE_CRYPT_DES_BASE64       | DES algorithm        |
 |JBASE_CRYPT_3DES_BASE64      | Triple DES algorithm |
-|JBASE_CRYPT_BLOWFISH _BASE64 | Blowfish algorithm   |
+|JBASE_CRYPT_BLOWFISH_BASE64  | Blowfish algorithm   |
 
 ### NOTES
 
@@ -4494,16 +4401,17 @@ method.
 The ENCRYPT and [DECRYPT](#DECRYPT) functions that are part of jBC now 
 support the following cipher methods (Defined in JBC.h)
  
-| JBASE_CRYPT_GENERAL |    General-purpose encryption scheme               |
-|---------------------|----------------------------------------------------|
-| JBASE_CRYPT_ROT13   |    Simple ROT13 algorithm. (Key not used)          |
-| JBASE_CRYPT_XOR11   |    XOR MOD11 algorithm. Uses the first character of|
-|                     |    a key as a seed value.                          |
-| JBASE_CRYPT_RC2     |    RC2 algorithm                                   |
-| JBASE_CRYPT_DES     |    DES algorithm                                   |
-| JBASE_CRYPT_3DES    |    Three Key, Triple DES algorithm                 |
-| JBASE_CRYPT_BLOWFISH|    Blowfish algorithm                              |
-| JBASE_CRYPT_BASE64  |    (See below)                                     |
+| JBASE_CRYPT_GENERAL |    General-purpose encryption scheme                |
+|---------------------|-----------------------------------------------------|
+| JBASE_CRYPT_ROT13   |    Simple ROT13 algorithm. (Key not used)           |
+| JBASE_CRYPT_XOR11   |    XOR MOD11 algorithm. Uses the first character of |
+|                     |     a key as a seed value.                          |
+| JBASE_CRYPT_RC2     |    RC2 algorithm                                    |
+| JBASE_CRYPT_DES     |    DES algorithm                                    |
+| JBASE_CRYPT_3DES    |    Three Key, Triple DES algorithm                  |
+| JBASE_CRYPT_BLOWFISH|    Blowfish algorithm                               |
+| JBASE_CRYPT_AES     |    AES algorithm                                    |
+| JBASE_CRYPT_BASE64  |    (See below)                                      |
 
 BASE64 is more of an encoding method rather than an encryption method. 
 The reason for this is that the output of an encryption often results in 
@@ -4521,7 +4429,8 @@ JBASE_CRYPT_BASE64 followed by DECRYPT with method JBASE_CRYPT_RC2.
 |-----------------------------|----------------------|
 |JBASE_CRYPT_DES_BASE64       | DES algorithm        |
 |JBASE_CRYPT_3DES_BASE64      | Triple DES algorithm |
-|JBASE_CRYPT_BLOWFISH _BASE64 | Blowfish algorithm   |
+|JBASE_CRYPT_BLOWFISH_BASE64  | Blowfish algorithm   |
+|JBASE_CRYPT_AES_BASE64       | AES algorithm        |
 
 ### NOTES
 
@@ -4552,9 +4461,30 @@ Displays as output:
     Encrypted: xuy6DXxUkD32spyfsKEvUtXrsjP7mC+R
     Decrypted: String to encrypt
 
+
+### Hashing
+
+The ENCRYPT function now supports SHA-2 hashing algorithms.
+
+
+|JBC.h define                     | Hashing algorithm                   |
+|---------------------------------|-------------------------------------|
+|JBASE_SECUREHASH_SHA256          | SHA-2 family hashing algorithm      |
+|JBASE_SECUREHASH_SHA256_BASE64   | SHA256 with BASE64                  |
+
+### Hashing Example
+
+	INCLUDE JBC.h
+	Key = "" ;# unused for hashing
+	EncryptType = JBASE_SECUREHASH_SHA256_BASE64
+    StrOut = ENCRYPT(StrIn,Key,EncryptType)
+
+
 ### NOTES
 
 See also: [DECRYPT](#DECRYPT).
+
+See also: http://en.wikipedia.org/wiki/SHA-2
 
 ## ENTER
 
@@ -6718,7 +6648,7 @@ the type of file:
 If the ELSE clause is taken, it does not necessarily mean there is 
 an error, it only means that the database driver for file "MD" 
 does not support the command that was requested from it. The file 
-JBC.h is supplied with jBASE in the directory JBCRELEASEDIR sub 
+JBC.h is supplied with jBASE in the directory TAFC_HOME sub 
 directory include. If the source is compiled with the jbc or BASIC 
 command, this directory is automatically included in the search path 
 and no special action is needed by the programmer for the "INCLUDE 
@@ -7313,75 +7243,192 @@ JBASECOREDUMP is used as a diagnostic tool for applications. It allows
 a snapshot of the application to be dumped to an external file for later 
 analysis.
 
+- The JBASECOREDUMP function will stop the execution of a jbc program or subroutine.
+- The applications snapshot is also saved in the logs.
+- The filename for the external file will always be unique.
+- If called via jAgent an exception will be thrown.
+
 ### COMMAND SYNTAX
 
 JBASECOREDUMP(expression1, expression2)
 
 ### SYNTAX ELEMENTS
 
-The program variables and CALL/GOSUB stack will be dumped onto a file.
+expression1 should evaluate to a string:
 
-The output is in free style text format.
+If assigned a value, expression1 will be used as the extension for the external
+text file created to hold execution snapshot.
 
-The function is called such:
+    rc = JBASECORDUMP(“SERVICE”,0)
+    JBASECOREDUMP.<<UUID>>.<<expression1>>
+    JBASECOREDUMP.a57d07cc-6539-470f-9959-24ed7c715f4f.SERVICE
 
-    PRINT " fatal application error, outputting a core dump"
-    filename = "GLOBUSDUMP_":TIME():"_":DATE():"_":SYSTEM(18)
-    PRINT "Please send the file ":filename:" to your Temenos support"
-    dummy = JBASECOREDUMP(filename , 0 )
-    EXIT(99)
+If a null string is used:
 
-The first parameter shows the name of the operating system file to output 
-the core dump to. You can supply "" instead of a file name and jBASE 
-allocates a filename of:
+    rc = JBASECORDUMP(“”,0)
+    JBASECOREDUMP.<<UUID>>
+    JBASECOREDUMP.a57d07cc-6539-470f-9959-24ed7c715f4f
 
-/JBASECOREDUMP_nnnn_mmmmm 
+expression2 should evaluate to a numeric integer:
 
-where 
+    0, Add all varables to the external text file.
+    1, Suppess any UNASSIGNED varables saved to the external file.
+	
+### NOTES	
+jBC functionality will be affected in the following areas:
 
-**nnn** is the port number and **mmmmmm** is the process id.
+- Calling from a jbc subroutine.
+- Running a program in a jsh.
+- External text filenames are now unique for coredump files.
+- Calling process started via EXECUTE/PERFORM from within a jbc program.
+- When called via jAgent, using a jbc subroutine.
 
-The second parameter is not used at present. Future versions will allow 
-extra information to be selectively dumped.
+Calling from a jbc subroutine.	
 
-A null string is always returned from the function.
+When the JBASECOREDUMP function is called from a jbc program it will stop execution.
+The call stack is saved to a file, and also saved to the logs.
+Each core dump now is assigned a unique ID.
+
+Running a program in a jsh.
+
+If called from a program while in a jSH, a message is now displayed along
+with the UUID for the core dump, you can use this to locate the stack trace
+in the logs.
+
+    ** Error [ JBASECOREDUMP ] ** Program Aborted, Coredump UUID: <<UUIID>>
+
+External text filenames are now unique for coredump files.	
+
+If expression1 was supplied when calling JBASECOREDUMP.
+
+    rc = JBASECORDUMP(“ERRORFILE”,0)
+    JBASECOREDUMP.<<UUID>>.<<expression1>>
+    JBASECOREDUMP.a57d07cc-6539-470f-9959-24ed7c715f4f.ERRORFILE
+
+If expression1 is null.	
+	
+    rc = JBASECORDUMP(“”,0)
+    JBASECOREDUMP.<<UUID>>
+    JBASECOREDUMP.a57d07cc-6539-470f-9959-24ed7c715f4f	
+	
+Calling process started via EXECUTE/PERFORM from within a jbc program.	
+
+If JBASECOREDUMP is called from a process started via EXECUTE/PERFORM from a
+jbc program, use RETURNING/SETTING to capture the output associated with any
+error messages the executing program issues.
+
+    EXECUTE “MYPROGRAM” CAPTURING junk SETTING rc
+    rc<1,1> holds the error code “JBASECORDUMP”.
+    rc<1,2> holds the UUID for the core dump.
+	
+Because all JBASECOREDUMP's are logged you can use this UUID to check the log files.	
+
+When called via jAgent, using a jbc subroutine.
+	
+A new exception type has been created to return the UUID to the client
+application. (JSubroutineCoreDumpException)	
+	
+The following is a simple example of how to check for core dumps.	
+
+    try {
+      _connection.call("CALLCOREDUMP_WITH_FILENAME", null);
+    }
+    catch (const JSubroutineCoreDumpException &e) {
+      const std::string uuid = e.getMessage()->c_str();
+      // handle exception
+    }
+
+Use this UUID to check on the server for what went wrong.
+The Java and C# clients have also been updated to handle this new exception
+type.
 
 ### EXAMPLE
 
-    jBASE Core dump created at Thu Apr 10 17:12:01 2003
-    Program test31 , port 0 , process id 21959
+example.b:
 
-*CALL/GOSUB stack*
+    001 rc = JBASECOREDUMP("ERRORFILE","")
 
+Display:
 
-    Line 0 , Source jmainfunction.b , Level 0
-    Source changed to ./test31.b
-    0007     GOSUB 100
-    0012     GOSUB 200
-    0016     CALL SUB1
-    Source changed to ./SUB1.b
-    0004     GOSUB 100
-    0009     GOSUB 200
+    CT . example.b
+	
+Compile:
 
-All the defined VAR's in the program
+    jcompile example.b
 
-*COMMON variables*
+example:
 
-      0x8057dd0 : greg1[1,-1]               : (V) String               : 13         bytes at address 0x8057f60 : This is greg1
-      0x8057e30 : greg2[1,-1]               : (V) String               : 13       bytes at address 0x8057fc0 : This is greg2
-    STANDARD Variables in SUBROUTINE main()
-      0xbfffed54 : Var1[1,-1]               : (V) String               : 12       bytes at address 0x8057f00 : This is CAR1
-    STANDARD Variables in SUBROUTINE SUB1
-      0xbfffe39c : I                        : (V) Integer              : 5
-      0xbfffe3b8 : VM                       : (V) Uninitialised        :   (UNASSIGNED)
-      0xbfffe3d4 : x1[1,-1]                 : (V) String               : 56       bytes at address 0x8059a60 :  2\3742\3749\374SUB1.b\3752\3741\3744\374SUB1.b\3751\3742\37412\374test31.b\3751\3741\3747\374test31.b	
-      0xbfffe3f0 : rc[1,-1]                 : (V) String               : 0        bytes at address 0x40422b04 :
-      0xbfffe40c : GGC2                     : (V) Integer              : 4
-      0xbfffe428 : GGC3[1,-1]               : (V) String               : 56       bytes at address 0x8059e68 : 2\3742\3749\374SUB1.b\3752\3741\3744\374SUB1.b\3751\3742\37412\374test31.b\3751\3741\3747\374test31.b
-      0xbfffe444 : DSCB                     : (V) File descriptor      : File './fb3'
-      0xbfffe460 : rec                      : (V) Uninitialised        : (UNASSIGNED)
-      0xbfffe47c : USERSTATS                : (V) Uninitialised        : (UNASSIGNED)
-  
+    ** Error [ JBASECOREDUMP ] ** Program Aborted, Coredump UUID: 4d5a252a-c009-4aec-9e1f-73d3251c6b81
+
+dir JBASECOREDUMP*
+
+    JBASECOREDUMP.4d5a252a-c009-4aec-9e1f-73d3251c6b81.ERRORFILE
+
+ct . JBASECOREDUMP.4d5a252a-c009-4aec-9e1f-73d3251c6b81.ERRORFILE
+
+    JBASECOREDUMP.4d5a252a-c009-4aec-9e1f-73d3251c6b81.ERRORFILE
+
+    001 jBASE Core dump created at Fri Feb 24 11:21:10 2012
+    002 UUID: 4d5a252a-c009-4aec-9e1f-73d3251c6b81
+    003 Program example , port 87 , process id 3488
+    004
+    005 CALL/GOSUB stack
+    006
+    007 Backtrace:
+    008 #0: jmainfunction.b:1
+    009 #1: example.b:1 -> Line 1 , Source jmainfunction.b
+    010
+    011 Backtrace log:
+    012 Program jmainfunction.b, Line 1, Stack level 0
+    013 Line 0 , Source jmainfunction.b , Level 0
+    014 >>> Program example.b, Line 1, Stack level 1
+    015 Line 1 , Source jmainfunction.b
+    016
+    017 All the defined VAR's in the program
+    018
+    019 SUBROUTINE main()
+    020 00000000006BEE90 : rc : (V) String : 0 bytes at address 0000000055740A58 :
+
+Locating entry in the logs using the UUID.
+
+    find "4d5a252a-c009-4aec-9e1f-73d3251c6b81" %TAFC_HOME%\log\default
+
+The following lines may appear in the log file:	
+	
+    ---------- C:\R12\LOG\DEFAULT\EXAMPLE.HML0001.JBCUSER.LOG.ERROR.20120224-112110.3488
+    E0224 11:21:10.737900 5832 tafc_logger_c_api.cpp:33] Coredump file: JBASECOREDUMP.4d5a252a-c009-4aec-9e1f-73d3251c6b81.ERRORFILE
+    E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] UUID: 4d5a252a-c009-4aec-9e1f-73d3251c6b81
+
+Type the following command to display the log file:	
+	
+    CT %TAFC_HOME%\log\default\LOG\DEFAULT\EXAMPLE.HML0001.JBCUSER.LOG.ERROR.20120224-112110.3488
+
+The below log file will appear "example.HML0001.JBCUSER.LOG.ERROR.20120224-112110.3488"
+
+    001 Log file created at: 2012/02/24 11:21:10
+    002 Running on machine: HML0001
+    003 Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+    004 E0224 11:21:10.737900 5832 tafc_logger_c_api.cpp:33] Coredump file: JBASECOREDUMP.4d5a252a-c009-4aec-9e1f-73d3251c6b81.ERRORFILE
+    005 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] jBASE Core dump created at Fri Feb 24 11:21:10 2012
+    006 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] UUID: 4d5a252a-c009-4aec-9e1f-73d3251c6b81
+    007 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] Program example , port 87 , process id 3488
+    008 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33]
+    009 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] CALL/GOSUB stack
+    010 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33]
+    011 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] Backtrace:
+    012 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] #0: jmainfunction.b:1219
+    013 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] #1: example.b:1 -> Line 1 , Source jmainfunction.b
+    014 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33]
+    015 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] Backtrace log:
+    016 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] Program jmainfunction.b, Line 1, Stack level 0
+    017 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] Line 0 , Source jmainfunction.b , Level 0
+    018 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] >>> Program example.b, Line 1, Stack level 1
+    019 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] Line 1 , Source jmainfunction.b
+    020 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33]
+    021 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] All the defined VAR's in the program
+    022 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33]
+    023 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] SUBROUTINE main()
+    024 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] 00000000006BEE90 : rc : (V) String : 0 bytes at address 0000000055740A58 :
 
 ## JBASETHREADCreate
 
@@ -7939,7 +7986,7 @@ lock taken is the specified number modulo 64.
 
 ## LOGGER##
 
-The logger function allows to log your message in a file or display to 
+The logger function allows you to log your message in a file or display to
 screen.
 
 ### COMMAND SYNTAX
@@ -7966,7 +8013,7 @@ TAFC_LOG_FATAL
 
 ### NOTES
 
-You can control logging information from tafc.ini, please refer user 
+You can control logging information from tafc.ini, please refer to the user 
 guide for more details.
 
 ### EXAMPLE
@@ -13077,9 +13124,9 @@ The following system functions are supported by TAFC:
 |SYSTEM(1009)  |Returns MD file path
 |SYSTEM(1010)  |Returns Print Report information
 |SYSTEM(1011)  |Returns jBASE release directory 
-|              |path. JBASICRELEASEDIR
+|              |path. TAFC_HOME
 |SYSTEM(1012)  |Returns jBASE global directory 
-|              |path. JBASICGLOBALDIR
+|              |path. JBCGLOBALDIR
 |SYSTEM(1013)  |Returns memory usage (UNIX only):
 |              |
 |              |<1> Free memory small blocks
@@ -13158,13 +13205,10 @@ The following system functions are supported by TAFC:
 |              | <15>  Type of thread as a number         
 |              | <16>  Type of thread as a string WHERE      
 |              |             
-|              |       
-|              |
-|              |
 |              |           thread_type_string = "Normal" =1
 |              |           thread_type_string = "javaOBjEX" = 2
 |              |           thread_type_string = "vbOBjEX" = 3 
-|              |	   thread_type_string = "jrfs" = 4
+|              |	       thread_type_string = "jrfs" = 4
 |              |           thread_type_string = "Compiler" = 5
 |              |           thread_type_string = "jdp" = 6
 |              |           thread_type_string = "Listen" = 7
@@ -13192,7 +13236,7 @@ The following system functions are supported by TAFC:
 |              |<42> Current Line Number  < threadnext >               
 |              |<43> Name of source  <threadnext >
 |              |<44> Status as a text string < threadnext >     
-|	       |	                 status = "Program running normally" 
+|	           |                   status = "Program running normally" 
 |              |
 |              |                   status = "Program is SLEEPING" 
 |              |
@@ -13688,7 +13732,7 @@ See also: [ASSIGNED](#ASSIGNED)
  
 ## UNIQUEKEY
 
-UNIQUEKEY returns a unique 16-byte character key.
+UNIQUEKEY returns a unique 36-byte character key.
 
 ### COMMAND SYNTAX
 
@@ -13696,27 +13740,17 @@ UNIQUEKEY ()
 
 ### SYNTAX ELEMENTS
 
-The UNIQUEKEY() function generates a unique 16-byte character key on 
-each call to the function. The key contains characters from the set 
-A-Z a-z 0-9 + and /(base64).
+The UNIQUEKEY() function will generate a UUID (Universally Unique IDentifier),
+also known as GUIDs (Globally Unique IDentifier). The key contains hexadecimal
+characters and – (Hyphen) and generate unique 36-byte character key on each
+call to the function. This is based on the UUID standard version 4 (random)
+and can guarantee uniqueness across space and time.
 
-Based on the current UTC time and the process number, the key is 
-unique on a single computer system providing that the system clock 
-is not turned back. 
+### EXAMPLE
 
-If the system administrator adjusts the system clock backwards, then 
-there is a slight possibility of generating duplicate keys during the 
-period until the clock has caught back up to time that the adjustment 
-was made.
-
-Any process that continues to execute throughout this period will 
-continue to produce unique keys.
-
-A process that starts up during this period and is given the process 
-ID of a process that terminated during the period, may possibly 
-generate a duplicate key until the period ends.
-
-<a name="UNLOCK"/>
+    CRT UNIQUEKEY()
+    Output:
+    6005b4f4-0df4-492c-9e07-d25b2a58978f
 
 ## UNLOCK
 
@@ -13761,7 +13795,7 @@ See also: [DOWNCASE](#DOWNCASE)
 
 ## UTF8
 
-UTF8 function converts a latin1or binary string into the UTF-8 
+UTF8 function converts a latin1 or binary string into the UTF-8 
 equivalent byte sequence. 
 
 ### COMMAND SYNTAX
@@ -13770,7 +13804,7 @@ UTF8 (expression)
 
 ### SYNTAX ELEMENTS
 
-The expression is expected to be a binary/latin1code page string, 
+The expression is expected to be a binary/latin1 code page string, 
 which converts the binary string into a UTF-8 encoded byte sequence, 
 used to represent the Unicode values for each byte in the expression.  
 
