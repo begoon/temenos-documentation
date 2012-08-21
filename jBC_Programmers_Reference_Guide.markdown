@@ -200,6 +200,79 @@ TAFC is incorporating new XML capabilities built into jBC based on the
 
 [WRITEXML](#WRITEXML)
 
+## Introduction to some jBC syntax features
+
+To wrap a long line use a backslash:
+
+       V.LINE = 'The report for the year ' :@FM: V.YEAR : ', prepared at ' \
+            : TIMEDATE()
+
+Or - if line ends with a comma - that's not necessary:
+
+       V.STAT = IOCTL(F.TEST.FILE,
+             JIOCTL_COMMAND_FINDRECORD_EXTENDED, V.NAME)
+
+Several statements can be put on the same line:
+
+       V.VAR = 1  ;  V.VAR++  ;  CRT V.VAR
+
+Comments can be defined in different ways:
+
+    * This is a comment
+    ! And this is a comment
+    REM This is also a comment
+    // Even this is a comment
+       CRT ''    ;* this is a comment sharing the same line with some code
+
+Strings can be delimited with single quotes, double quotes or backslashes:
+
+       CRT 'QWERTZ'    ;* this is a string
+       CRT "QWERTZ"    ;* this is also a string
+       CRT 'QWE"RTZ'   ;* and even this is a string
+       CRT \QWERTZ\    ;* still this is a string
+    * and here a backslash means line continuation
+       CRT 'QWE'  \
+          : 'RTZ'
+
+To concatenate strings (you could see it in one of examples above), use a
+colon:
+
+       V.LINE = 'QWE' : 'RTY'
+       CRT V.LINE                   ;*  QWERTY
+
+To extract a substring from a string use brackets:
+
+       V.LINE = 'QWERTY'
+       CRT V.LINE[1,2]              ;*  QW
+       CRT V.LINE[2]                ;*  TY
+       CRT V.LINE[-4,2]             ;*  ER
+       CRT SQUOTE(V.LINE[4,999])    ;*  'RTY'
+
+It's possible to reassign parts of a string using that notation:
+
+       V.STRING = 'ABC'
+       V.STRING[2,1] = 'Q'
+       CRT V.STRING                 ;* AQC
+       V.STRING[2,1] = 'WER'
+       CRT V.STRING                 ;* AWERC
+
+To assign or extract a field/value/subvalue from a dynamic array,
+use angle brackets:
+
+       V.ARRAY = 1 :@FM: 2 :@FM: 3 :@FM: 4 :@VM: 5 :@VM: 6 :@SM: 7
+       CRT V.ARRAY<2>               ;* 2
+       CRT V.ARRAY<4,3,1>           ;* 6
+       V.ARRAY<2> += 1
+       CRT V.ARRAY<2>               ;* 3
+       V.ARRAY<-1> = 10             ;* adds an element to the end
+
+"=" character can be used both for assignment and for a comparison,
+though it's possible to use "EQ" in the latter case:
+
+       V.STRING = 'ABC'
+       IF V.STRING = 'ABC' THEN CRT 'YES'
+       IF V.STRING EQ 'ABC' THEN CRT 'YES AGAIN'
+
 
 # TAFC Functions and Statements
 
