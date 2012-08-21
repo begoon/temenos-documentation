@@ -12,9 +12,9 @@ used jBC, read this manual before using any statements or functions.
 
 ## Organization of this manual
 
-This manual contains statements and functions in alphabetical order,
-each beginning on a new page. At the top of each page is the syntax
-for the statement or function, followed by a detailed description of
+This manual contains statements and functions in alphabetical order.
+Syntax
+for the statement or function is followed by a detailed description of
 its use, often including references to other statements or functions
 that can be used with it or are helpful to know about. Examples
 illustrate the application of the statement or function in a program.
@@ -34,7 +34,7 @@ illustrate the application of the statement or function in a program.
 - Contains the functionality needed to write efficient UNIX
   applications. It can spawn child processes, access environment
   variables and interface to other UNIX programs 
-- programs can call external functions written in C or jBC. C
+- programs can call external functions written in C, Java or jBC. C
   programs can be made to call functions written in jBC 
 - programs can mix with Embedded SQL statements written allowing 
   queries and updates on any SQL Database 
@@ -59,7 +59,8 @@ illustrate the application of the statement or function in a program.
 - Local subroutine calls 
 - Branching on result of complex value testing 
 - String handling with variable lengths 
-- External calls to 'C' libraries 
+- External calls to 'C' libraries
+- External calls to Java classes 
 - External subroutine calls 
 - Direct and indirect calls 
 - Magnetic tape input and output 
@@ -70,7 +71,7 @@ illustrate the application of the statement or function in a program.
 - Pattern matching capability 
 - Capability of processing file records in any format 
 - Sophisticated jBC debugger 
-- Ability to [EXECUTE](#EXECUTE) any jBASE system or database enquiry
+- Ability to [EXECUTE](#EXECUTE) any jBASE, system or database enquiry
   command 
 - The standard UNIX command set is available to manage code libraries 
 - Support for networking and inter-process communication. 
@@ -180,17 +181,6 @@ The executables produced by the jBC compiler and cc is identical.
 - jBC has the tools to provide sophisticated string handling 
 - jBC handles system signals and events automatically 
 
-### File and Directory Organization
-
-To run jBC on a UNIX system, there are several directories and files 
-already set up, which ensure the smooth and efficient use of the jBC 
-programming environment; all the jBC files are held under the 
-UNIX /opt/jBASIC directory.
-
-The main body of the jBC program and library files are held in the 
-/opt/jBASIC directory, which contains all the run-time code, error and 
-library files, as well as default system and terminal set-up limit.
-
 # XML Functions and Statements
 
 TAFC is incorporating new XML capabilities built into jBC based on the
@@ -211,7 +201,7 @@ TAFC is incorporating new XML capabilities built into jBC based on the
 [WRITEXML](#WRITEXML)
 
 
-# TAFC Functions and Statement @ Variables
+# TAFC Functions and Statements
 
 <a name="@"/>
 
@@ -343,6 +333,8 @@ To turn off all effects use -128
 
     CRT @ (-1):@(30):@( 132):"jBASE Heading":@(-128):
     CRT @ (5,5):@(-4):"Prompt: ": ; INPUT Answer 
+
+## @ variables##
 
 ## @APPLICATION.ID
 
