@@ -4,201 +4,65 @@ Version: Project builds
 
 # Preface
 
-This manual is a comprehensive reference for jBC and is intended for
-experienced programmers. The guide includes explanations of all jBC
-statements and functions supported by TAFC and descriptive information
-regarding the use of jBC in the UNIX environment. If you have never
-used jBC, read this manual before using any statements or functions.
+jBC is a programming language that is used in jBASE post-relational
+(multi-value) DBMS. Syntax is Basic-like; compilation process firstly
+converts the source code to C which in turn is compiled for the target platform
+with the usage of standard C compiler.
 
-## Organization of this manual
+## What is TAFC
 
-This manual contains statements and functions in alphabetical order.
-Syntax
-for the statement or function is followed by a detailed description of
-its use, often including references to other statements or functions
-that can be used with it or are helpful to know about. Examples
-illustrate the application of the statement or function in a program.
+TAFC stands for "Temenos application framework for C". This name was adopted to
+differentiate the database (jBASE) from development tools that are used for it.
+Full installation package is called "jBASE" for the non-T24 customers and "TAFC" for
+T24-based ones.
 
-### jBC Language Overview
+## What is T24
 
-- is a UNIX resident programming language supported by the jBASE
-  Database Independent Management Engine
-- can access database files of any UNIX resident, Open Systems
-  database
-- is aimed primarily at writing business applications, and contains
-  all the constructs needed to access and modify files and their data
-  efficiently
-- is a sophisticated superset of Dartmouth BASIC supporting structured
-  programming techniques
-- is a flexible and user extendible language
-- Contains the functionality needed to write efficient UNIX
-  applications. It can spawn child processes, access environment
-  variables and interface to other UNIX programs
-- programs can call external functions written in C, Java or jBC. C
-  programs can be made to call functions written in jBC
-- programs can mix with Embedded SQL statements written allowing
-  queries and updates on any SQL Database
-- object code is link compatible with C and so a programmer has the
-  tools of both available to him to produce the most efficient code
-  for his application
-- Allows the application programmer working in a UNIX environment
-  to write code without needing to consider memory management,
-  variable typing or floating-point arithmetic corrections: all of
-  which need to be dealt with when using 'C'
-- Has other advantages over C such as the in-built debugger and easy
-  file I/O
-- Programs may declare external functions, which are linked into the
-  application by the UNIX linker-loader. This means that jBC offers
-  access to specialized functions written in C or any language that
-  is link compatible with C
+T24 is the core banking system developed by Temenos company. The system
+extensions can be developed in (but not limited to) jBC.
 
-## Features of jBC
+### Supported platforms
 
-- Optional statement labels
-- Multiple statements on one line
-- Local subroutine calls
-- Branching on result of complex value testing
-- String handling with variable lengths
-- External calls to 'C' libraries
-- External calls to Java classes
-- External subroutine calls
-- Direct and indirect calls
-- Magnetic tape input and output
-- String, number, and date data conversion capability;
-- File access and update capability for any UNIX resident file,
-  such as j-files or C-ISAM)
-- File and record level locking capability
-- Pattern matching capability
-- Capability of processing file records in any format
-- Sophisticated jBC debugger
-- Ability to [EXECUTE](#EXECUTE) any jBASE, system or database enquiry
-  command
-- The standard UNIX command set is available to manage code libraries
-- Support for networking and inter-process communication.
+    ToDo
 
-### Benefits of using jBC
+### Supported C Compilers
 
-- Applications are running on an Open Systems platform:
-- Applications are very efficient as the execution speed of jBC code
-  is close to that of hand crafted 'C'
-- Applications are portable between binary compatible environments,
-  however moving applications to an alternative operating system
-  requires that the application be recompiled on the target system.
-  No modifications to the application source are required as any
-  operating specific modifications will have been implemented by
-  TAFC in the runtime libraries.
-- Applications integrate easily with other UNIX systems
-- Applications benefit from the steady improvements made in compiler
-  optimization.
-- Use of jBC offers tremendous productivity improvements over 'C'
-- The close compatibility with UNIX allows the jBC developer to
-  produce libraries of standard subroutines or function calls, which
-  any program can use
-- The standard UNIX command set is available to manage code libraries
-- The provision of Database access is to applications through generic
-  read/write/lock statements that divorce the application from the
-  database itself. Locks are maintained across remote systems and
-  communication links thus allowing the application programmer to
-  concentrate on the application not the database or its location
-- JBC will import and compile BASIC code from Open Systems RDBMS systems
-  with little or no modification
-- Applications ported from PICK or Reality run as 'C' applications with
-  all the related performance and seamless inter-operability advantages
-  over running on an emulation type implementation written in C
-- Investments in existing jBC applications and development and
-  programming skills in BASIC are fully retained
-- No need for costly retraining of programmers to 'C', which can also
-  be freely used within the application system, thus allowing more
-  flexibility
-- JBC provides connection to external devices and external databases
-  in a manner that is transparent to existing applications
+    ToDo
 
-### jBC Environment
+## jBC/jBASE features
 
-jBC will run on any standard UNIX system and with any standard shell
-or editor. Also provided is an easy to use jSHELL.
-- jBC allows the programmer to choose his working environment to suit.
-  It works equally with the Bourne, C or Korn shell. Kernel
-  configuration is not required to use the jBC-programming environment.
-- You can write jBC programs using any UNIX editor using the provided
-  context sensitive screen editor (jED), designed specifically for jBC
-  programmers and jBASE users.
-- Utilities are supplied to access database files created under jBASE.
-- The final size of executable code is minimized, and duplication
-  avoided, by sharing external object libraries between all application
-  programs.
-- Specify a file or directory to hold the entire jBC source; you can
-  hold the finished executables in a different file or directory if
-  required.
-- Use a global user library to hold globally accessible user routines.
-
-### jBC Programming
-
-- You can write the jBC source code using any system editor. Users
-  unfamiliar with UNIX editors may wish to use the jED editor
-- Use the jBC compiler to produce intermediate object code or a UNIX
-  executable file; use Makefiles to simplify the compilation process,
-  especially if many files are involved. Their use will also make
-  upgrading and software maintenance an easier task
-- If the system allows, use should be made of linked libraries when
-  calling subroutines and functions. This will reduce the size of the
-  compiled code that would otherwise be produced
-- Applications accessing jBASE files should make use of the existing
-  routines held in the /usr/jBC/lib directory.
-
-## jBC Comparisons
-
-### With BASIC
-
-Derived from Dartmouth Basic jBC is an enhanced variant of BASIC,
-which contains all the commands and constructs necessary for
-compatibility with other versions of BASIC. It also provides full
-interaction with UNIX system and database files. You can modify jBC
-quickly to retain compatibility with any future enhancements to the
-BASIC language or its derivatives.
-
-On UNIX systems, the jBC compiler produces code that runs many times
-faster than the same BASIC code compiled and run on any other UNIX
-based RDBMS environment. jBC can access jBASE, C-ISAM, and UNIX files
-as well as records and files of other databases The jBC debug
-facilities are greatly superior to those provided with other
-versions of BASIC.
-
-### With 'C'
-
-The jBC compiler uses all the features of the cc compiler and can
-compile 'C' source and object files, as well as jBC source code.
-You can halt the source compilation at any stage, to examine the
-resultant code:
-
-External 'C', and TAFC library access is available.
-
-The executables produced by the jBC compiler and cc is identical.
-
-- jBC has a sophisticated debugger available as standard
-- jBC is able to provide full and easy access to UNIX or any third party
-  database files
-- jBC has the tools to provide sophisticated string handling
-- jBC handles system signals and events automatically
-
-# XML Functions and Statements
-
-TAFC is incorporating new XML capabilities built into jBC based on the
- Xalan and Xerces libraries.
-
-**XML Functions**
-
-[DYNTOXML](#DYNTOXML)
-
-[XMLTODYN](#XMLTODYN)
-
-[XMLTOXML](#XMLTOXML)
-
-**XML Statements**
-
-[READXML](#READXML)
-
-[WRITEXML](#WRITEXML)
+- Case sensitive keywords and variable names.
+- Optional statement labels.
+- Code sections accessed by GOSUB.
+- IF...THEN..ELSE conditional statement.
+- BEGIN CASE...CASE...END CASE conditional statement.
+- FOR...NEXT loop.
+- DO..WHILE/UNTIL...REPEAT loop.
+- External subroutines and functions.
+- Weak variables typing.
+- Dimensioned and dynamic arrays.
+- String, number, and date data conversion.
+- Patterns matching.
+- Unary operators suport.
+- Single- and multi-byte character sets support.
+- Bitwise operations.
+- Standard industry encryption algorithms support.
+- Named and unnamed COMMON areas.
+- Operations with SELECT lists.
+- File and record level locking capability; distributed lock system.
+- Text files processing.
+- Functions for XML processing.
+- Manipulations with environment variables.
+- Emulation modes for compatibility with numerous MV platforms.
+- Practically unlimited data file size (OS limits apply).
+- Data files distribution.
+- Transactions support.
+- Transparent access to jBASE data and dictionary files converted to Oracle, DB2 or MS SQL.
+- Possibility to call C or Java code.
+- Possibility to [EXECUTE](#EXECUTE) any jBASE, system or database enquiry
+  command.
+- Source code editor - JED (also capable of editing data files).
+- Debugger.
 
 ## Introduction to some jBC syntax features
 
@@ -240,7 +104,7 @@ colon:
        V.LINE = 'QWE' : 'RTY'
        CRT V.LINE                   ;*  QWERTY
 
-To extract a substring from a string use brackets:
+To extract a substring from a string use square brackets:
 
        V.LINE = 'QWERTY'
        CRT V.LINE[1,2]              ;*  QW
@@ -266,6 +130,15 @@ use angle brackets:
        CRT V.ARRAY<2>               ;* 3
        V.ARRAY<-1> = 10             ;* adds an element to the end
 
+Note that array elements are numbered starting from 1 rather that 0.
+
+Dimensioned arrays use parentheses:
+
+     DIM V.VALUES(30000)            ;* size it
+     MAT V.VALUES = 0               ;* assign 0 to all elements
+     V.X = SYSTEM(2) - 15  ; V.Y = SYSTEM(3) - 5
+     DIM V.SCREEN(V.X, V.Y)         ;* can be 2-dimensional
+
 "=" character can be used both for assignment and for a comparison,
 though it's possible to use "EQ" in the latter case:
 
@@ -274,7 +147,214 @@ though it's possible to use "EQ" in the latter case:
        IF V.STRING EQ 'ABC' THEN CRT 'YES AGAIN'
 
 
-# TAFC Functions and Statements
+## Environment variables relevant to jBC programming
+
+### Minimum set of variables necessary to start development
+
+Windows:
+
+    set TAFC_HOME=[path to installed TAFC]
+    set JBCGLOBALDIR=%TAFC_HOME%
+    set PATH=%TAFC_HOME%\bin;[path to C Compiler]\bin;%PATH%
+    set JBCEMULATE=[your emulation; for T24 should be prime]
+    set INCLUDE=[path to C Compiler]\include;%INCLUDE%
+    set LIB=[path to C Compiler]\lib;%LIB%
+    set JBCBASETMP=tmp_workfile
+
+Unix/Linux:
+
+    export TAFC_HOME=[path to installed TAFC]
+    export JBCGLOBALDIR=$TAFC_HOME
+    export PATH=$TAFC_HOME/bin:$PATH
+    export JBCEMULATE=[your emulation; for T24 should be prime]
+    TTYNO=`tty | cut  -f4 -d\/`
+    export JBCBASETMP=$HOME/jBASEWORK/tmp_$TTYNO
+
+    export LD_LIBRARY_PATH=$TAFC_HOME/lib:/usr/ccs/lib:/usr/lib:/lib
+    (Linux)
+
+    export LIBPATH=$TAFC_HOME/lib:/usr/ccs/lib:/usr/lib
+    (AIX)
+
+    export SHLIB_PATH=$TAFC_HOME/lib:${SHLIB_PATH:-/usr/lib:/lib}
+    (HP-UX)
+
+### Customize work folders and files location
+
+    JEDIFILENAME_MD
+
+Main dictionary location. Usually points to VOC file.
+
+    JEDIFILENAME_SYSTEM
+
+Points to SYSTEM file (normally located in [path to installed TAFC]/src).
+
+    JEDIFILEPATH
+
+Default path to jBASE data files.
+
+    JBCDEV_BIN
+
+Sets the location where programs will be put after compilation.
+
+    JBCDEV_LIB
+
+Sets the location where shared libraries for compiled subroutines are located.
+
+    JBCSPOOLERDIR
+
+Points to jBASE spooler folder.
+
+    JBCLISTFILE
+
+Points to folder where saved lists are placed.
+
+    JBCOBJECTLIST
+
+Where to look for libraries containing compiled subroutines. Could be several entries, e.g.:
+
+Windows:
+
+    set JBCOBJECTLIST=%HOME%\lib;%HOME%\t24lib
+
+Unix/Linux:
+
+    export JBCOBJECTLIST=$HOME/lib:$HOME/t24lib
+
+If a subroutine presents in more than one location (which can be caused by
+changing JBCDEV_LIB environment variable or accidental duplication of a
+subroutine name) then the earlier location has the preference. See jshow output:
+
+    jshow -c ACCOUNT
+    Subroutine:          C:\r11\bnk\bnk.run\lib\lib2.dll
+                         jBC ACCOUNT version 11.0 Thu Sep 06 22:09:46 2012
+                         jBC ACCOUNT source file ETC.BP
+    Subroutine (DUP!!):  C:\r11\bnk\bnk.run\t24lib\acm_accountopening\lib0.dll
+                         jBC ACCOUNT version 11.0 Fri Apr 29 14:43:35 2011
+                         jBC ACCOUNT source file source/R11.000/win32_TAFCR11GA
+
+In situation like that DECATALOG is to be used:
+
+    DECATALOG ETC.BP ACCOUNT
+    Object ACCOUNT decataloged successfully
+    Library C:\r11\bnk\bnk.run\lib\lib2.dll rebuild okay
+
+    jshow -c ACCOUNT
+    Subroutine:          C:\r11\bnk\bnk.run\t24lib\acm_accountopening\lib0.dll
+                         jBC ACCOUNT version 11.0 Fri Apr 29 14:43:35 2011
+                         jBC ACCOUNT source file source/R11.000/win32_TAFCR11GA
+
+### Runtime errors handling
+
+    JBASE_ERRMSG_DIVIDE_BY_ZERO
+
+Allows to suppress error messages and/or a program entering the debugger when divide by
+zero is encountered.
+
+    JBASE_ERRMSG_NON_NUMERIC
+
+Allows to suppress error messages and/or a program entering the debugger when non-numeric
+variable is used in an equation.
+
+    JBASE_ERRMSG_ZERO_USED
+
+Allows to suppress error messages and/or a program entering the debugger when uninitialized
+variable is used in an equation.
+
+### Regional settings
+
+    JBASE_LOCALE
+
+Locale setting.
+
+    JBASE_CODEPAGE
+
+Directs how data is displayed (e.g. utf8, windows-1251 etc).
+
+    JBASE_TIMEZONE
+
+E.g. Europe/London.
+
+    JBASE_I18N
+
+Being set to 1 means utf-8 environment (requires data files conversion when changed).
+
+### Diagnostics and tracing
+
+    JBC_STDERR
+
+Being set to 1 redirects stderr to stdout. Useful to catch errors to COMO output.
+
+    JBC_CORE_DUMP
+
+Being set to 1 stipulates creation of a core dump when the session crashes.
+
+    JDIAG
+
+Sets jBASE tracing options, e.g.:
+
+    set JDIAG=trace=JVM,CALLJ
+    set JDIAG=TRACE=INDEX
+
+### Other
+
+    JBASE_DISTRIB_FASTSCAN
+
+Being set to 1 improves performance when distributed files are used.
+
+    JEDI_DISTRIB_DEFOPEN
+
+Being set to 1 prevents all parts of a distributed file to be opened as soon as the stub had
+been.
+
+    TERM
+
+Terminal type, e.g. ntcon, vt220 etc.
+
+## Compilation
+
+Done using BASIC...CATALOG commands or jcompile utility:
+
+    BASIC MY.BP TEST.SUB
+    TEST.SUB
+    BASIC_1.c
+    Source file TEST.SUB compiled successfully
+
+    CATALOG MY.BP TEST.SUB
+    TEST.SUB
+    Object TEST.SUB cataloged successfully
+    Library $HOME\lib\lib0.dll rebuild okay
+
+    jcompile test.b
+    Warning: Variable DIV.AMT2 is never assigned!
+    test.c
+
+Compilation results in appearance of an object and executable files
+(sample for Windows):
+
+    test.obj
+    test.dll
+    test.exe
+
+If the code is recompiled very often then it might happen that the older version
+of executable code
+still resides in shared memory and the result of changes wouldn't be seen immediately.
+In this case "-E" option of jcompile can be used to build executable only
+and not the shared library, e.g.:
+
+    jcompile -E test.b
+
+And then test.dll isn't created. The final compilation is of course to be done
+without "-E" option. Also - without shared library CHAIN statement might work
+not as expected and persistence of COMMON areas won't be supported.
+
+To look at C code rather than to create executables "-S" option can be used
+(files test.c and test.j will be created for test.b source).
+
+Full information about jcompile options - "jcompile -H".
+
+
+# jBC Functions and Statements
 
 <a name="@"/>
 
