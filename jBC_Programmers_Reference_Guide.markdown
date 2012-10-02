@@ -16,6 +16,11 @@ differentiate the database (jBASE) from development tools that are used for it.
 Full installation package is called "jBASE" for the non-T24 customers and "TAFC" for
 T24-based ones.
 
+## TAFC releases
+
+TAFC release number normally reflects T24 release for which it is intended to
+be used, e.g. R10 or R11.
+
 ## What is T24
 
 T24 is the core banking system developed by Temenos company. The system
@@ -23,11 +28,20 @@ extensions can be developed in (but not limited to) jBC.
 
 ### Supported platforms
 
-    ToDo
-
-### Supported C Compilers
-
-    ToDo
+| Platform                  | Compiler version                     | Releases |
+|---------------------------|--------------------------------------|----------|
+| AIX v5.3                  | IBM XL C/C++ v8.0.0.20               | R11, R12 |
+| AIX v6.1                  | IBM XL C/C++ v9.0.0.15               | R11, R12 |
+| AIX v7.1                  | IBM XL C/C++ v11.1.0.2               | R12      |
+| Windows Server 2008       | Microsoft Visual Studio 2010         | R11, R12 |
+| Redhat Enterprise Linux 5 | gcc 4.1.2 20080704 (Red Hat 4.1.2-50)| R11, R12 |
+| Redhat Enterprise Linux 6 | gcc 4.4.5 20110214 (Red Hat 4.4.5-6) | R12      |
+| HP Itanium2 11.31 V3      | HP C/aCC++ B3910B A.06.22            | R11, R12 |
+| Solaris 10 SPARC          | Sun Studio 11                        | R11      |
+| Solaris 10 SPARC          | Solaris Studio 12.3                  | R12      |
+| Solaris 10 x86-64         | Sun Studio 12.1                      | R11, R12 |
+| Solaris 11 SPARC          | Solaris Studio 12.3                  | R12      |
+| Solaris 11 x86-64         | Solaris Studio 12.3                  | R12      |
 
 ## jBC/jBASE features
 
@@ -423,8 +437,7 @@ As these systems have traditionally not co-ordinated the development of
 this function they expect different functionality in many instances. In
 the following table, you should note that different settings of the
 JBCEMULATE environment variable would elicit different functionality
-from this function. Where the emulate code is printed with strikethrough
-it indicates that the functionality is denied to this emulation.
+from this function.
 
 | Emulation | Code  | Function                                       |
 |-----------|-------|------------------------------------------------|
@@ -466,7 +479,7 @@ If a colour terminal is in use, -33 to -64 will control colours.
 
 The codes from -128 to -191 control screen attributes. Where Bit 0 is
 least significant, you may calculate the desired code by setting Bit
-7 and Bits 0-4:
+7 and Bits 0-5:
 
 | Bit Values | Description                   |
 |------------|-------------------------------|
@@ -478,29 +491,58 @@ least significant, you may calculate the desired code by setting Bit
 | Bit 5      | bold mode when set to 1       |
 | Bit 7      | always set to 1               |
 
-Thus, Reverse and Flashing mode is -134.
+Thus, reverse and flashing mode is -134.
 
-To turn off all effects use -128
+To turn off all effects use -128.
 
 ### EXAMPLE
 
-       CRT @(-1):@(30):@( 132):"jBASE Heading":@(-128):
+       CRT @(-1):@(30):@(52):"jBASE Heading":@(-128):
        CRT @(5,5):@(-4):"Prompt: ": ; INPUT Answer
 
 ## @ variables##
 
-## @APPLICATION.ID
-
-@ID Dataname used to reference the record-id in a query language
-statement:
-
-       SORT STOCK BY-DSND @ID
-       LIST STOCK WITH @ID = "1000"
-       LIST STOCK WITH @ID LIKE AB...
-
 ## @CALLSTACK
 
-Returns current space information for DEBUG purposes
+Intended to return current call stack information; isn't yet
+implemented. SYSTEM(1029) could be used to obtain call stack information, e.g:
+
+Main program (test.b):
+
+       GOSUB SECTION1
+       STOP
+
+    SECTION1:
+       GOSUB SECTION2
+       RETURN
+
+    SECTION2:
+       CRT OCONV(SYSTEM(1029), 'MCP')
+       CALL TEST.SUB
+       RETURN
+
+    END
+
+Subroutine:
+
+       SUBROUTINE TEST.SUB
+
+       GOSUB SECTION3
+       RETURN
+
+    SECTION3:
+       CRT OCONV(SYSTEM(1029), 'MCP')
+       RETURN
+
+    END
+
+Output:
+
+    1\2\6\test.b]1\1\1\test.b
+    2\1\3\TEST.SUB]1\3\12\test.b]1\2\6\test.b]1\1\1\test.b
+
+#### Below this line the text wasn't yet reviewed:
+<hr></hr>
 
 ## @CODEPAGE
 
@@ -538,6 +580,15 @@ For B options in heading
 ## @HEADER.BREAK
 
 For B options in heading
+
+## @ID
+
+Used to reference the record-id in a query language
+statement:
+
+       SORT STOCK BY-DSND @ID
+       LIST STOCK WITH @ID = "1000"
+       LIST STOCK WITH @ID LIKE AB...
 
 ## @LEVEL
 
