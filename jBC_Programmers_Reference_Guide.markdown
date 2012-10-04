@@ -541,37 +541,58 @@ Output:
     1\2\6\test.b]1\1\1\test.b
     2\1\3\TEST.SUB]1\3\12\test.b]1\2\6\test.b]1\1\1\test.b
 
-#### Below this line the text wasn't yet reviewed:
-<hr></hr>
-
 ## @CODEPAGE
 
-Returns current codepage config jbase_codepage
+Returns current codepage setting:
+
+       CRT @CODEPAGE      ;* e.g. utf8
 
 ## @DATA
 
 Data statements used in conjunction with INPUT statements are
-stored in    a data stack or input queue. This stack is accessible
-in the @DATA variable
+stored in data stack or input queue. This stack is accessible
+in the @DATA variable:
+
+       DATA 'QWE'
+       DATA 'RTY'
+       CRT SYSTEM(14)   ;* number of bytes in data stack (EOL characters included)
+       CRT DQUOTE(@DATA)
+       CRT SYSTEM(14)   ;* after output of @DATA there's nothing in a queue
+
+Output of this program:
+
+    8
+    "QWE
+    RTY
+    "
+    0
 
 ## @DATE
 
-Internal date returns the internal date – on some systems, this
-differs from the DATE function in that the variable is set when
+Returns the internal date; on some systems, this
+differs from the DATE() function in that the variable is set when
 program execution starts, whereas the function reflects the current
-date
+date:
+
+      CRT @DATE               ;* e.g. 16349
+      CRT OCONV(@DATE, 'D')   ;* date represented by 16349 is 04 OCT 2012
 
 ## @DAY
 
-Day of month from @DATE
+Day of month from @DATE (no leading zero included):
+
+       CRT @DAY         ;* 4 for the date used in the sample right above
 
 ## @EOF
 
-End of File character from TTY characteristics
+End of File character from TTY characteristics:
+
+       CRT OCONV(@EOF, 'MX')         ;*  04
 
 ## @FILENAME
 
-Current filename
+Current file name (is to be assigned for such operations as
+[ITYPE] (#ITYPE) function call).
 
 ## @FOOTER.BREAK
 
@@ -7269,6 +7290,7 @@ contains any characters, which are not upper case characters.
 When the ISUPPER function is used in International Mode the properties
 of each character is determined according to the Unicode Standard.
 
+<a name="ITYPE"/>
 ## ITYPE
 
 ITYPE function is used to return the value resulting from the
@@ -7737,6 +7759,57 @@ Properties are valid after the compile; this is the main reason for
 separating the compile and execute into two functions. After compiling,
 it is possible to examine the properties and set properties before
 executing.
+
+## Sample program illustrating the usage of compiled jQL statement:
+
+    INCLUDE jQLProperties.h
+
+       IF NOT(GETENV('TAFC_HOME', V.HOME)) THEN
+          CRT 'TAFC_HOME not defined'
+          STOP
+       END
+
+       V.QUERY = 'LIST ONLY ' : V.HOME : '/jbcmessages'
+       V.STMT = ''
+
+       V.DUMMY = JQLCOMPILE(V.STMT, V.QUERY, 0, V.MSG)
+
+       V.SEL.VAR = ''
+       V.RET = JQLEXECUTE(V.STMT, V.SEL.VAR)
+       IF V.RET NE 0 THEN CRT 'JQLEXECUTE RETURNED', V.RET  ; STOP
+
+       LOOP
+          GOSUB GET.NEXT
+       UNTIL V.FETCH NE 1
+       REPEAT
+
+       STOP
+
+    GET.NEXT:
+
+       V.FETCH = JQLFETCH(V.STMT, V.CTRL, V.DATA)
+       IF V.FETCH NE 1 THEN RETURN
+       V.RET = JQLGETPROPERTY(PropertyValue, V.STMT, 0, \
+    	 STMT_PROPERTY_EXECUTE_COUNT)
+       CRT '@ID #' : PropertyValue : ':' , V.DATA<1>
+
+       RETURN
+    END
+
+Output:
+
+    @ID #1:	INV_FILE_TYPE
+    @ID #2:	DEVICE_QUIT
+    @ID #3:	RTN_NOGOSUB
+    @ID #4:	ARRAY_ILLEGAL_SIZE
+    @ID #5:	DIFF_COMMON
+    @ID #6:	QLNOVERB
+    @ID #7:	QLPARAMERR
+    ...
+    @ID #487:	417
+    @ID #488:	80044228
+    @ID #489:	80044233
+    @ID #490:	80045024
 
 ## KEYIN
 
