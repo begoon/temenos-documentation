@@ -53,7 +53,7 @@ extensions can be developed in (but not limited to) jBC.
 - FOR...NEXT loop.
 - DO..WHILE/UNTIL...REPEAT loop.
 - External subroutines and functions.
-- Weak variables typing.
+- Weak variables typing; implicit types conversion.
 - Dimensioned and dynamic arrays.
 - String, number, and date data conversion.
 - Patterns matching.
@@ -898,42 +898,45 @@ command.
 
 ### EXAMPLE
 
-    CRT "CONTINUE (Y/N) ?":; INPUT ANSIF ANS NE "Y" THEN ABORT 66, "Aborted"
+    * Open a file with random name (just to make sure that it doesn't exist)
+       V.FNAME = ''
+       FOR V.J = 1 TO 8
+          V.RND = RND(26) + 65
+          V.FNAME := CHAR(V.RND)        ;* A...Z
+       NEXT V.J
+       OPEN V.FNAME TO F.RAND ELSE ABORT 201, V.FNAME
 
-This will terminate the program and print error message 66 passing to
-it the string "Aborted", which will be printed as part of error message
-66.
+Sample program output:
+
+     ** Error [ 201 ] **
+    Unable to open file XCICLJPH
 
 <a name="ABS"/>
 
 ## ABS
 
-ABS returns the mathematical absolute of the ()expression
+ABS function returns the absolute value of a number or an expression that
+evaluates to a number.
 
 ### COMMAND SYNTAX
 
-ABS (expression)
+    ABS(expression)
 
 ### SYNTAX ELEMENTS
 
 **expression** can be of any form that should evaluate to a numeric.
-The ABS function will then return the mathematical absolute of the
-expression. This will convert any negative number into a positive
-result.
-
-### NOTES
-
-express this as: value < 0 ? 0 - value: value
+The ABS function will then return the absolute value of this
+expression.
 
 ### EXAMPLES
 
-    CRT ABS (10-15)
+       CRT ABS(10-15)
 
-Displays the value 5
+Displays the value 5.
 
-    PositiveVar = ABS (100-200)
+       PositiveVar = ABS(100-200)
 
-Assigns the value 100 to the variable PositiveVar
+Assigns the value 100 to the variable PositiveVar.
 
 ## ABSS
 
@@ -965,7 +968,7 @@ The output of this program is:
 
 ## ADDS
 
-Use ADDS to create a dynamic array of the element-by-element addition
+Use ADDS function to create a dynamic array of the element-by-element addition
 of two dynamic arrays. Added to each element of array1 is the
 corresponding element of array2, which returns the result in the
 corresponding element of a new dynamic array. If an element of one
@@ -975,15 +978,13 @@ returns null for the sum of the corresponding elements.
 
 ### COMMAND SYNTAX
 
-ADDS (array1, array2)
+    ADDS(array1, array2)
 
 ### EXAMPLE
 
-    A=2:@VM:4:@VM:6:@SM:10
-
-    B=1:@VM:2:@VM:3:@VM:4
-
-    PRINTADDS (A,B)
+       Array1 = 2 :@VM: 4 :@VM: 6 :@SM: 10
+       Array2 = 1 :@VM: 2: @VM: 3 :@VM: 4
+       PRINT OCONV(ADDS(Array1, Array2), 'MCP')
 
 The output of this program is:
 
@@ -991,19 +992,17 @@ The output of this program is:
 
 ## ALPHA
 
-The ALPHA function will check that the expression consists entirely of
+The ALPHA function is used to check if the expression consists entirely of
 alphabetic characters.
 
 ### COMMAND SYNTAX
 
-ALPHA (expression)
+    ALPHA(expression)
 
 ### SYNTAX ELEMENTS
 
-The expression can return a result of any type. The ALPHA function will
-then return TRUE (1) if the expression consists entirely of alphabetic
-characters else returns false (0) if any character in expression is
-non alphabetic.
+Returns 1 if the expression consists entirely of alphabetic
+characters, else returns 0.
 
 ### INTERNATIONAL MODE
 
@@ -1012,25 +1011,15 @@ properties of each character in the expression according to the Unicode
 Standard, which in turn describes whether the character is alphabetic
 or not.
 
-### NOTES
-
-Alphabetic characters are in the set a-z and A-Z
-
 ### EXAMPLE
 
-    Abc = "ABC"
-
-    IF ALPHA (Abc) THEN CRT "alphabetic"
-
-    Abc = "123"
-
-    IF NOT (ALPHA(Abc)) THEN CRT "non alphabetic"
-
-Displays:
-
-    alphabetic
-
-    non alphabetic
+       V.STRING = 'AWERC'
+    * check if there are only alphabetic characters
+       CRT ISALPHA(V.STRING)        ;* 1
+    * add number to the end
+       V.STRING := 1   ; CRT V.STRING    ;* AWERC1
+    * check again if there are only alphabetic characters
+       CRT ISALPHA(V.STRING)        ;* 0
 
 ## ANDS
 
@@ -1086,18 +1075,18 @@ equivalent.
 
 ## ASSIGNED
 
-The ASSIGNED function returns a Boolean TRUE or FALSE result depending
-on whether or not a variable has an assigned value.
+The ASSIGNED function is used to determine whether a variable has an
+assigned value or not.
 
 ### COMMAND SYNTAX
 
-ASSIGNED (variable)
+    ASSIGNED(variable)
 
 ### SYNTAX ELEMENTS
 
-ASSIGNED returns TRUE if the variable named has an assigned value
+ASSIGNED returns 1 if the variable has an assigned value
 before the execution of this statement. If the variable has no
-assigned value then the function returns FALSE.
+assigned value then the function returns 0.
 
 ### NOTES
 
@@ -1107,11 +1096,15 @@ to avoid using this statement.
 
 See also: [UNASSIGNED](#UNASSIGNED)
 
-### EXAMPLES
+### EXAMPLE
 
-    IF ASSIGNED (Var1) THEN
-        CRT "Var1 has been assigned a value"
-    END
+       COMMON /MY.COMM/ V.VAR1
+       CRT ASSIGNED(V.VAR1)   ;* always 1 if "named_common = zero"
+                              ;* (e.g. for prime emulation)
+       CRT V.VAR1             ;* 0 at the first run, YES at the second
+       CRT ASSIGNED(V.VAR2)   ;* 0
+       V.VAR1 = 'YES'
+       V.VAR2 = 'NO'
 
 ## BITAND
 
