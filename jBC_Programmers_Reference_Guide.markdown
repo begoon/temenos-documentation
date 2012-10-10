@@ -1113,7 +1113,7 @@ integers specified by numeric expressions.
 
 ### SYNTAX
 
-BITAND (expression1, expression2)
+    BITAND(expression1, expression2)
 
 ### DESCRIPTION
 
@@ -1134,13 +1134,13 @@ bit non portable.
 
 ### EXAMPLE
 
-    PRINT BITAND(6,12)
-    * The binary value of 6 = 0110
-    * The binary value of 12 = 1100
+        PRINT BITAND(6,12)
+        * The binary value of 6 = 0110
+        * The binary value of 12 = 1100
 
 This results in 0100, and the following output is displayed:
 
-    4
+        4
 
 ## BITCHANGE
 
@@ -1149,7 +1149,7 @@ and returns the original value of the bit.
 
 ### COMMAND SYNTAX
 
-BITCHANGE (table_no)
+    BITCHANGE(table_no)
 
 ### SYNTAX ELEMENTS
 
@@ -1176,9 +1176,8 @@ following table_no values:
 
 ### EXAMPLE
 
-    OLD.VAL = BITCHANGE (100)
-
-    CRT OLD.VAL
+        OLD.VAL = BITCHANGE(100)
+        CRT OLD.VAL
 
 If bit 100 in the table is zero, it sets to one and displays zero;
 the reverse will apply if set to one.
@@ -1190,7 +1189,7 @@ bit table.
 
 ### COMMAND SYNTAX
 
-BITCHECK (table_no)
+    BITCHECK (table_no)
 
 ### SYNTAX ELEMENTS
 
@@ -1201,25 +1200,6 @@ table_no specifies the position in the table of the bit for checking.
 For each process, it maintains a unique table of 128 bits (numbered 1
 to 128) and treats each bit in the table as a two-state flag - the
 value returned will always be zero or one.
-
-BITCHECK also provides some special functions if you use one of the
-following table_no values:
-
-|-1  | returns the setting of the BREAK key Inhibit bit.|
-|----|--------------------------------------------------|
-|-2  | returns the setting of the Command Level Restart |
-|    | feature                                          |
-|-3  | returns the setting of the Break/End Restart     |
-|    | feature                                          |
-
-### EXAMPLE
-
-    BIT.VAL = BITCHANGE (100)
-
-    CRT BIT.VAL
-
-If bit 100 in the table is zero, it displays zero; if set to one, it
-displays one.
 
 ## BITLOAD
 
@@ -1506,39 +1486,73 @@ This results in 1010, and the following output is displayed:
     10
 
 <a name="BREAK"/>
-
 ## BREAK
 
-Allows configuration of the BREAK statement
+Terminate the currently
+executing loop. The EXIT statement is functionally equivalent to
+the BREAK statement.
+
+### EXAMPLE
+
+       V.ARRAY = ''
+       FOR V.I = 1 TO 10
+          IF V.I EQ 4 THEN BREAK
+          V.ARRAY<-1> = V.I
+       NEXT V.I
+       CRT FMT(V.ARRAY, 'MCP') ;* 1^2^3
+
+### NOTE
+
+BREAK terminates the innermost loop; if it's used outside a loop construct
+it's ignored. The compiler will issue warning
+message 44, and ignore the statement.
+
+### EXAMPLE
+
+       V.ARRAY = ''  ; V.J = 0
+       LOOP
+          V.J ++
+       WHILE V.J LT 3 DO
+          FOR V.I = 1 TO 10
+    	     IF V.I EQ 4 THEN BREAK
+             V.ARRAY<-1> = V.I
+          NEXT V.I
+       REPEAT
+       BREAK
+       CRT FMT(V.ARRAY, 'MCP') ;* 1^2^3^1^2^3
+
+Compiler output:
+
+    [warning	(44)] "test2.b", 9 (offset 7) :
+    BREAK/EXIT is invalid outside a FOR or LOOP - Ignored
+    test2.c
+
+## BREAK ON/OFF
+
+Enables or disables the BREAK key. In UNIX terms, the BREAK key is known more commonly as the interrupt
+sequence intr defined by the stty command.
 
 ### COMMAND SYNTAX
 
-BREAK / BREAK ON / BREAK OFF / BREAK expression
+BREAK ON / BREAK OFF
 
-### SYNTAX ELEMENTS
+### EXAMPLE
 
-When used with an expression or the keywords ON or OFF the BREAK
-statement enables or disables the BREAK key for the current process.
-In UNIX terms, the BREAK key is known more commonly as the interrupt
-sequence intr defined by the stty command.
+       BREAK OFF
+       CRT "Next 5 seconds Ctrl-C makes no action"
+       MSLEEP(5000)
+       BREAK ON
+       CRT "And next 5 seconds Ctrl-C invokes debugger"
+       MSLEEP(5000)
 
-Used as a standalone statement, BREAK will terminate the currently
-executing loop. The EXIT statement is functionally equivalent to
-the BREAK statement used without arguments.
+Output (user is to try to press Ctrl-C at both prompts):
 
-### NOTES
-
-The use of BREAK is to terminate the innermost loop, which it ignores
-if used outside a loop construct. The compiler will issue warning
-message 44, and ignore the statement.
-
-### EXAMPLES
-
-    LOOP
-        READNEXT KEY FROM LIST1 ELSE BREAK
-    ......
-    REPEAT
-    * Program resumes here after BREAK
+    Next 5 seconds Ctrl-C makes no action
+    And next 5 seconds Ctrl-C invokes debugger
+    Interrupt signal
+    Source changed to .\test2.b
+    0009    MSLEEP(5000)
+    jBASE debugger->
 
 <a name="BYTELEN"/>
 
@@ -1549,12 +1563,26 @@ number of bytes rather than the number of characters.
 
 ### COMMAND SYNTAX
 
-BYTELEN (expression)
+    BYTELEN (expression)
 
 ### SYNTAX ELEMENTS
 
-The expression can return a result of any type. The BYTELEN function
+The expression is to be a string. The BYTELEN function
 will then return the byte count of the expression.
+
+### EXAMPLE
+
+       V.UTF = 'ABCDEF' \
+             : CHAR(353) : CHAR(352) : CHAR(269) : CHAR(268) : CHAR(263) \
+             : CHAR(262) : CHAR(382) : CHAR(381) : CHAR(273) : CHAR(272)
+       V.LEN = LEN(V.UTF)  ;  CRT V.LEN  ;* 16
+       CRT BYTELEN(V.UTF)                ;* 26
+
+    * [] takes characters, not bytes, so output is:
+    * 41 42 43 44 45 46 C5A1 C5A0 C48D C48C C487 C486 C5BE C5BD C491 C490
+       FOR V.I = 1 TO V.LEN
+          CRT FMT(V.UTF[V.I,1], 'MX') : ' ' :
+       NEXT V.I
 
 ### NOTES
 
@@ -4880,6 +4908,15 @@ See also: [BREAK](#BREAK)
         CRT "All required records are present"
         EXIT(0)
     END
+
+### EXAMPLE 2
+
+       V.ARRAY = ''
+       FOR V.I = 1 TO 10
+          IF V.I EQ 4 THEN EXIT
+          V.ARRAY<-1> = V.I
+       NEXT V.I
+       CRT FMT(V.ARRAY, 'MCP') ;* 1^2^3
 
 ## EXP
 
