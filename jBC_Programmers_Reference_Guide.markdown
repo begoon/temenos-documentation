@@ -134,6 +134,56 @@ It's possible to reassign parts of a string using that notation:
        V.STRING[2,1] = 'WER'
        CRT V.STRING                 ;* AWERC
 
+Numeric variables:
+
+       V.VAR = 5            ;   CRT V.VAR           ;* 5
+       CRT ISDIGIT(V.VAR)                           ;* 1
+       V.VAR = V.VAR + 1    ;   CRT V.VAR           ;* 6
+       V.VAR ++             ;   CRT V.VAR           ;* 7
+       V.VAR += 1           ;   CRT V.VAR           ;* 8
+       V.VAR -= 1           ;   CRT V.VAR           ;* 7
+       V.VAR =- 1           ;   CRT V.VAR           ;* -1... easy to make a mistake
+       CRT ISDIGIT(V.VAR)                           ;* 0 (we have minus now)
+       CLEAR
+       CRT V.VAR                                    ;* 0
+       V.VAR.2 = V.VAR++   ; CRT V.VAR.2            ;* 0 - old value of V.VAR
+       V.VAR.3 = ++V.VAR   ; CRT V.VAR.3            ;* 2 - value of V.VAR (1) + 1
+
+Boolean variables.
+
+Boolean variables as such don’t exist in jBC; the result of a statement like IF (VAR) THEN...
+depends on that variable contents:
+
+       IF NOT(V.UNASSIGNED) THEN CRT 'Unassigned var is false'
+       V.TRUE.VAR = 1  ;  V.FALSE.VAR = 0
+       IF V.TRUE.VAR THEN CRT '1 is true'
+       IF NOT(V.FALSE.VAR) THEN CRT '0 is false'
+       V.STRING = 'YES'
+       IF V.STRING THEN CRT 'Non-empty string is true'
+       IF NOT('0.00') THEN CRT '0.00 is false'
+       IF NOT("-0.00") THEN CRT '"-0.00" is still false - treated as numeric'
+    * and this test depends on PRECISION
+       PRECISION 9
+       IF NOT('0.00000000000001') THEN CRT '0.00000000000001 is false'  \
+             ELSE CRT '0.00000000000001 is true'
+       PRECISION 17
+       IF NOT('0.00000000000001') THEN CRT '0.00000000000001 is false' \
+             ELSE CRT '0.00000000000001 is true with PRECISION 17'
+
+Output:
+
+    Non-numeric value -- ZERO USED ,
+    Variable 'V.UNASSIGNED' , Line
+    1 , Source test2.b
+    Unassigned var is false
+    1 is true
+    0 is false
+    Non-empty string is true
+    0.00 is false
+    "-0.00" is still false - treated as numeric
+    0.00000000000001 is false
+    0.00000000000001 is true with PRECISION 17
+
 To assign or extract a field/value/subvalue from a dynamic array,
 use angle brackets:
 
@@ -148,10 +198,11 @@ Note that array elements are numbered starting from 1 rather that 0.
 
 Dimensioned arrays use parentheses:
 
-     DIM V.VALUES(30000)            ;* size it
-     MAT V.VALUES = 0               ;* assign 0 to all elements
-     V.X = SYSTEM(2) - 15  ; V.Y = SYSTEM(3) - 5
-     DIM V.SCREEN(V.X, V.Y)         ;* can be 2-dimensional
+       DIM V.VALUES(30000)            ;* size it
+       MAT V.VALUES = 0               ;* assign 0 to all elements
+       V.X = SYSTEM(2) - 15  ; V.Y = SYSTEM(3) - 5
+       DIM V.SCREEN(V.X, V.Y)         ;* can be 2-dimensional
+       V.SCREEN(1, 1) = 123           ;* here goes assignment
 
 "=" character can be used both for assignment and for a comparison,
 though it's possible to use "EQ" in the latter case:
@@ -159,6 +210,11 @@ though it's possible to use "EQ" in the latter case:
        V.STRING = 'ABC'
        IF V.STRING = 'ABC' THEN CRT 'YES'
        IF V.STRING EQ 'ABC' THEN CRT 'YES AGAIN'
+
+IF...ELSE construct can be used without THEN:
+
+       V.STRING = 'ABC'
+       IF V.STRING NE 'ABC' ELSE CRT 'YES'
 
 
 ## Environment variables relevant to jBC programming
@@ -1959,7 +2015,7 @@ subroutine.
 
 ### COMMAND SYNTAX
 
-CALL {@}subroutine.name {(argument {, argument ... })}
+    CALL {@}subroutine.name {(argument {, argument ... })}
 
 ### SYNTAX ELEMENTS
 
@@ -1985,28 +2041,64 @@ expression.
 An unlimited number of parameters can be passed to an external
 subroutine. The number of parameters in the CALL statement must match
 exactly the number expected in the SUBROUTINE statement declaring the
-external subroutine.
+external subroutine, otherwise runtime error is raised.
 
 It is not required that the calling program and the external
 subroutine be compiled with the same PRECISION. However, any changes
 to precision in a subroutine will not persist when control returns
 to the calling program.
 
-Variables passed, as parameters to the subroutine may not reside in
+Variables passed as parameters to the subroutine may not reside in
 any COMMON areas declared in the program.
 
-### EXAMPLES
+### EXAMPLE
 
-    CALL MySub
+A subroutine:
 
-    SUBROUTINEMySub
-    CALL Hello("World")
+       SUBROUTINE INCR.NUM(P.NUMBER)
+    * increase the parameter
+       P.NUMBER ++
+       RETURN
+    END
 
-    SUBROUTINE Hello (Message)
+A calling program:
 
-    CALL Complex(i, j, k)
+       V.ARRAY = 1 :@FM: 2 :@FM: 3 :@FM: 4
+       CRT FMT(V.ARRAY, 'MCP')   ;* 1^2^3^4
+       V.ARRAY<2> += 1
+       CRT FMT(V.ARRAY, 'MCP')  ;* 1^3^3^4 - array element can be processed directly
+       CALL INCR.NUM(V.ARRAY<2>)
+       CRT FMT(V.ARRAY, 'MCP')   ;* still 1^3^3^4 - passing to a subr doesn't work
+       V.VAR = V.ARRAY<2>
+       CALL INCR.NUM(V.VAR)
+       V.ARRAY<2> = V.VAR
+       CRT FMT(V.ARRAY, 'MCP')   ;* now 1^4^3^4 - should use a variable
+       V.SUBR = 'INCR.NUM'
+       CALL @V.SUBR(V.VAR)       ;* can call a subroutine this way
+       CRT V.VAR                 ;* 5
+    * Dimensioned array is ok as well
+       DIM V.DIM.ARR(3)
+       V.DIM.ARR(2) = 'INCR.NUM'
+       V.I = 2
+       CALL @V.DIM.ARR(V.I) (V.VAR)
+       CRT V.VAR        ;* 6
+    * Wrong CALL:
+       CALL INCR.NUM(V.VAR, 1)
 
-    SUBROUTINE Complex(ComplexA, ComplexB, ComplexC)
+Output:
+
+    1^2^3^4
+    1^3^3^4
+    1^3^3^4
+    1^4^3^4
+    5
+    6
+     ** Error [ SUBROUTINE_PARM_ERROR ] **
+    'SUBROUTINE INCR.NUM' called with incorrect arguments , Line     1 , Source test2.b
+    Trap from an error message, error message name = SUBROUTINE_PARM_ERROR
+    Source changed to .\test2.b
+    jBASE debugger->
+
 
 ## CALLC
 
@@ -2819,7 +2911,7 @@ occurrences of one string with another.
 
 ### COMMAND SYNTAX
 
-CHANGE expression1 TO expression2 IN variable
+    CHANGE expression1 TO expression2 IN variable
 
 ### SYNTAX ELEMENTS
 
@@ -2838,13 +2930,29 @@ There is no requirement that strings be of the same length. The jBC
 language also supports the CHANGE function for compatibility with
 older systems.
 
-### EXAMPLES
+### EXAMPLE
 
-    String1 = "Jim"
-    String2 = "James"
-    Variable = "Pick up the tab Jim"
-    CHANGE String1 TO String2 IN Variable
-    CHANGE "tab" TO "check" IN Variable
+       V.STRING = 'ABCDEFCDYZ'
+       CHANGE 'C' TO 'Q' IN V.STRING
+       CRT V.STRING                 ;* ABQDEFQDYZ
+       CHANGE 'QD' TO 'nnn' IN V.STRING
+       CRT V.STRING                 ;* ABnnnEFnnnYZ
+    * Both types of arrays are OK as well (dynamic ones can be processed in one go)
+       V.ARRAY = V.STRING
+       V.ARRAY<2> = V.STRING
+       CHANGE 'nnn' TO 'mmm' IN V.ARRAY
+       CRT OCONV(V.ARRAY, 'MCP')    ;* ABmmmEFmmmYZ^ABmmmEFmmmYZ
+       DIM V.DIM.ARR(3)
+       MAT V.DIM.ARR = V.STRING
+       CHANGE 'nnn' TO 'mmm' IN V.DIM.ARR(2)
+       CRT V.DIM.ARR(2)             ;* ABmmmEFmmmYZ
+    * Funny but numbers can also be processed
+       V.NUM = 12345.67
+       CHANGE 3 TO 9 IN V.NUM
+       CRT V.NUM                    ;* 12945.67
+    * Compatibility mode
+       V.STRING = CHANGE(V.STRING, 'YZ', '+-')
+       CRT V.STRING                 ;* ABnnnEFnnn+-
 
 ## CHANGETIMESTAMP
 
@@ -2874,7 +2982,7 @@ expression.
 
 ### COMMAND SYNTAX
 
-CHAR (expression)
+    CHAR (expression)
 
 ### SYNTAX ELEMENTS
 
@@ -2907,19 +3015,17 @@ for the system delimiter equating to Unicode value 0x000000fe.
 jBC variables can contain any of the ASCII characters 0-255, thus there
 are no restrictions on this function.
 
-Use this function to insert field delimiters within a variable or
-string; these are commonly equated to AM, VM, SV in a program.
-
 See also: [CHARS](#CHARS)
 
-### EXAMPLES
+### EXAMPLE
 
-    EQUATE AM TO CHAR (254) ;* field Mark
-
-    EQUATE VM TO CHAR(253) ;* value Mark
-
-    EQUATE SV TO CHAR(252) ;* sub Value mark
-    CRT CHAR (7): ;* ring the bell
+       EQUATE VM TO CHAR(253)         ;* value Mark
+       FOR V.I = 1 TO 6
+          CRT CHAR(64 + V.I):         ;* ABCDEF
+       NEXT V.I
+       CRT ''                         ;* starts a new line
+       CRT OCONV(CHAR(353), 'MX')     ;* C5A1
+       CRT CHAR(7)                    ;* rings a bell
 
 <a name="CHARS"/>
 
@@ -2930,12 +3036,12 @@ returns a dynamic array of the corresponding ASCII characters.
 
 ### COMMAND SYNTAX
 
-CHARS (DynArr)
+    CHARS(DynArr)
 
 ### SYNTAX ELEMENTS
 
 Each element of DynArr must evaluate to a numeric argument in the range
-0-255.
+0-255 (can exceed 255 if UTF-8 is used).
 
 ### NOTES
 
@@ -2946,13 +3052,11 @@ See also: [CHAR](#CHAR)
 
 ### EXAMPLE
 
-    y = 58 : @AM : 45 : @AM : 41
-    z = CHARS (y)
-    FOR i = 1 TO 3
-   	  CRT z<i>:
-    NEXT i
+       V.ARRAY = 59 :@FM: 45 :@FM: 41
+       V.CHARS = CHARS(V.ARRAY)
+       CRT CHANGE(V.CHARS, @FM, '')
 
-This code displays: :-)
+This code displays: ;-)
 
 <a name="CHDIR"/>
 
@@ -3021,17 +3125,18 @@ The CLEAR statement will initialize all the variables to numeric 0.
 
 ### COMMAND SYNTAX
 
-CLEAR
+    CLEAR
 
 ### NOTES
 
 Use CLEAR at any time during the execution of the program.
 
-### EXAMPLES
+### EXAMPLE
 
-    Var1 = 99
-    Var2 = 50
-    CLEAR
+       V.VAR = 5            ;   CRT V.VAR           ;* 5
+       V.VAR ++             ;   CRT V.VAR           ;* 6
+       CLEAR
+       CRT V.VAR                                    ;* 0
 
 ## CLEARCOMMON
 
@@ -3040,11 +3145,24 @@ a value of zero.
 
 ### COMMAND SYNTAX
 
-CLEARCOMMON
+    CLEARCOMMON
 
-### SYNTAX ELEMENTS
+### EXAMPLE
 
-None
+Subroutine:
+
+       SUBROUTINE TEST.SUB
+       COMMON V.VAR1, V.VAR2
+       CLEARCOMMON
+       RETURN
+    END
+
+Calling program:
+
+       COMMON V.VAR.ONE, V.VAR.TWO
+       V.VAR.ONE = 1  ;  V.VAR.TWO = 2
+       CALL TEST.SUB
+       CRT V.VAR.ONE, V.VAR.TWO          ;* 0  0
 
 <a name="CLEARDATA"/>
 
