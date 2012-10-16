@@ -3172,11 +3172,21 @@ The CLEARDATA statement clears data stacked by the DATA statement.
 
 ### COMMAND SYNTAX
 
-CLEARDATA
+    CLEARDATA
 
 ### SYNTAX ELEMENTS
 
 None
+
+### EXAMPLE
+
+       CRT SYSTEM(14)        ;*  0
+       DATA '123'
+       DATA '456'
+       CRT SYSTEM(14)        ;*  8
+       CLEARDATA
+       CRT SYSTEM(14)        ;*  0
+
 
 ## CLEARFILE
 
@@ -3185,7 +3195,7 @@ opened with the OPEN statement.
 
 ### COMMAND SYNTAX
 
-CLEARFILE {variable} {SETTING setvar} {ON ERROR statements}
+    CLEARFILE {variable} {SETTING setvar} {ON ERROR statements}
 
 ### SYNTAX ELEMENTS
 
@@ -3213,14 +3223,20 @@ setvar to one of the following values:
 |24576  |    Permission denied                  |
 |32768  |    Physical I/O error or unknown error|
 
-### EXAMPLES
+### EXAMPLE
 
-    OPEN "DATAFILE" ELSE ABORT 201, "DATAFILE"
-
-    OPEN "PROGFILE" TO FILEVAR ELSE ABORT 201, "PROGFILE"
-
-    CLEARFILE
-    CLEARFILE FILEVAR
+       OPEN 'F.TEMP' TO F.TEMP THEN
+          V.ERR = ''
+          CLEARFILE F.TEMP SETTING V.ERR
+          IF V.ERR NE '' THEN
+             CRT 'ERROR ' : V.ERR
+             STOP
+          END
+          CRT 'FILE CLEARED'
+       END ELSE
+          EXECUTE 'CREATE-FILE DATA F.TEMP 1 101 TYPE=J4'
+          OPEN 'F.TEMP' TO F.TEMP ELSE ABORT 201, 'F.TEMP'
+       END
 
 <a name="CLEARINPUT"/>
 
@@ -3231,7 +3247,7 @@ the next INPUT statement to force a response from the user.
 
 ### COMMAND SYNTAX
 
-CLEARINPUT
+    CLEARINPUT
 
 ### EXAMPLE
 
@@ -3285,7 +3301,7 @@ required.
 
 ### COMMAND SYNTAX
 
-CLOSE variable{, variable ...}
+    CLOSE variable{, variable ...}
 
 ### SYNTAX ELEMENTS
 
@@ -3301,11 +3317,16 @@ however leaving them open consumes valuable system resources.
 Use good practice to hold open only those file descriptors to
 which you have constant access.
 
-### EXAMPLES
+### EXAMPLE
 
-    OPEN "DATAFILE" TO FILEVAR ELSE ABORT 201, "DATAFILE"
-    .....
-    CLOSE FILEVAR
+       EXECUTE 'DELETE-FILE DATA F.TEMP'
+       EXECUTE 'CREATE-FILE DATA F.TEMP 1 101 TYPE=J4'
+       OPEN 'F.TEMP' TO F.TEMP ELSE ABORT 201, 'F.TEMP'
+       CRT ASSIGNED(F.TEMP)        ;* 1
+       V.REC.INIT = 'LINE 1' :@FM: 'LINE 2' :@FM: 'LINE 3'
+       WRITE V.REC.INIT TO F.TEMP, 'REC1'
+       CLOSE F.TEMP
+       CRT ASSIGNED(F.TEMP)        ;* 0
 
 ## CLOSESEQ
 
@@ -3328,7 +3349,7 @@ location of the last field.
 
 ### COMMAND SYNTAX
 
-COL1() / COL2()
+    COL1() / COL2()
 
 ### NOTES
 
@@ -3339,14 +3360,19 @@ character immediately before the last field located. COL2() will return
 the position of the character immediately after the end of the last
 field located. Use them to manipulate the string.
 
-### EXAMPLES
+### EXAMPLE
 
-    A = "A,B,C,D,E"
-    Fld = FIELD(A, ",", 2)
-    CRT COL1()
-    CRT COL2()
-
-Displays the values 2 and 4
+      V.STRING = 'ABC/DEF/QWE/XYZ'
+    * One field
+       CRT FIELD(V.STRING, '/', 2)         ;* DEF
+       CRT COL1()                          ;* 4 - position right before "DEF"
+       CRT COL2()                          ;* 8 - position right after it
+    * Alternate way
+       CRT V.STRING['/', 2, 1]   ;* DEF
+    * More than one field
+       CRT FIELD(V.STRING, '/', 2, 2)      ;* DEF/QWE
+       CRT COL1()                          ;* 4
+       CRT COL2()                          ;* 12
 
 <a name="COLLECTDATA"/>
 
@@ -3397,7 +3423,7 @@ including a default, unnamed common area.
 
 ### COMMAND SYNTAX
 
-COMMON {/CommonName/} variable{, variable ... }
+    COMMON {/CommonName/} variable{, variable ... }
 
 ### SYNTAX ELEMENTS
 
@@ -3425,10 +3451,15 @@ have declared the same number of variables within it.
 Dimensioned arrays are declared and dimensioned within the COMMON
 statement.
 
-### EXAMPLES
+### EXAMPLE
 
-    COMMON A, B(2, 6, 10), c
-    COMMON/Common1/ A, D, Array(10, 10)
+       COMMON /MY.COMM/ V.VAR1
+       CRT ASSIGNED(V.VAR1)   ;* depends on emulation (e.g. 1 for prime)
+       CRT V.VAR1             ;* first run: again depends on emulation
+                              ;* (e.g. 0 for prime), second run: YES
+       CRT ASSIGNED(V.VAR2)   ;* 0
+       V.VAR1 = 'YES'
+       V.VAR2 = 'NO'
 
 ## COMPARE
 
