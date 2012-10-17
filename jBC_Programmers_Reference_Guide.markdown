@@ -3751,7 +3751,7 @@ PRINTER ON statement is currently active.
 
 ### COMMAND SYNTAX
 
-CRT expression {, expression..} {:}
+    CRT expression {, expression..} {:}
 
 ### SYNTAX ELEMENTS
 
@@ -3779,12 +3779,30 @@ For compatibility, use DISPLAY in place of CRT.
 
 ### EXAMPLES
 
-    CRT A "L#5"
-    CRT @ (8,20):"Shazza was here":
-    FOR I = 1 TO 200
-        CRT @ (10,10):I:CHAR (0):
-    ...
-    NEXT I
+       V.VAR = 5
+       CRT V.VAR           ;* 5
+       V.VAR ++
+       CRT V.VAR           ;* 6 (on the next line)
+       V.VAR ++
+       CRT ''              ;* start a new line
+       CRT V.VAR           ;* 7 (2 lines below "6")
+       V.RESULT = 50
+       CRT 'The result: ':
+       CRT V.RESULT        ;* will output: "The result: 50" on the same line
+       MSLEEP(3000)
+       CRT @(-1)                    ;* clears the screen and homes the cursor
+       CRT @(40, 12):'Hello'        ;* will start output at row 11, column 39
+       CRT ''
+       V.NUM = 39
+       V.STRING = 'In the year of'
+       CRT V.STRING : ' ' : V.NUM    ;* In the year of 39
+       CRT V.STRING, V.NUM           ;* In the year of  39
+       V.LINE = '39R'
+       V.STRING = 'In the year of'
+       CRT V.STRING V.LINE             ;* same as FMT(V.STRING, '39R')
+       V.VAR = 5
+       CRT V.VAR > 1           ;* Rssult of an expression (1 in this case)
+       CRT @SYS.BELL           ;* rings the bell
 
 ## DATA
 
@@ -3794,7 +3812,7 @@ if entered at the keyboard.
 
 ### COMMAND SYNTAX
 
-DATA expression {, expression ...}
+    DATA expression {, expression ...}
 
 ### SYNTAX ELEMENTS
 
@@ -3818,10 +3836,24 @@ of separate terminal inputs.
 
 See also: [CLEARDATA](#CLEARDATA)
 
-### EXAMPLES
+### EXAMPLE
 
-    DATA "Y", "N", "CONTINUE" ;* stack input for prog
-    EXECUTE "PROGRAM1" ;* execute the program
+Program test.b:
+
+       DATA '12345'
+       DATA '67890'
+       EXECUTE 'test2'
+
+Program test2.b:
+
+       INPUT V.DATA1
+       INPUT V.DATA2
+       CRT 'I got ' : V.DATA1 : ' and ' : V.DATA2
+
+If test2 is run by itself, it asks for user input. If test is run, the
+output is:
+
+    I got 12345 and 67890
 
 ## DATE
 
@@ -3830,7 +3862,7 @@ date is expressed as the number of days since December 31, 1967.
 
 ### COMMAND SYNTAX
 
-DATE()
+    DATE()
 
 ### NOTES
 
@@ -3839,13 +3871,13 @@ internal form. They can then be converted to a readable format of your
 choice using the [OCONV](#OCONV) function and the date conversion
 codes.
 
-The year 2000 is a leap year
-
 See also: [TIMEDATE](#TIMEDATE)
 
 ### EXAMPLES
 
-    CRT OCONV (DATE(), "D2")
+       CRT OCONV(DATE(), 'D')    ;* e.g. 17 OCT 2012
+       CRT DATE()                ;* number of days (e.g. 16362) since day 1...
+       CRT OCONV(1, 'D')         ;*  ...which is:  01 JAN 1968
 
 Displays today's date in the form: 14 JUL 64
 
