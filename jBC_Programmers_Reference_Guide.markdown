@@ -4190,23 +4190,13 @@ returns an empty string.
     result = operand1 + operand2
     RETURN(result)
 
-Call standard UNIX functions directly by declaring them with the DEFC
-statement according to their parameter requirements. However, they may
-only be called directly providing they return one of the type int or
-float/double or that the return type may be ignored.
-
-### EXAMPLE 2###
-
-    DEFC INT getpid()
-    CRT "Process id =":getpid()
-
 ## DEL
 
 Use the DEL statement to remove a specified element of a dynamic array.
 
 ### COMMAND SYNTAX
 
-DEL variable<expression1{, expression2{, expression3}}>
+    DEL variable<expression1{, expression2{, expression3}}>
 
 ### SYNTAX ELEMENTS
 
@@ -4236,15 +4226,16 @@ multivalues and subvalues). If specifying a subvalue, then it
 deletes only the subvalue leaving its parent multivalue and field
 intact.
 
-### EXAMPLES
+### EXAMPLE
 
-    FOR I = 1 TO 20
-        Numbers<I> = I   ;*generate numbers
-    NEXT I
-
-    FOR I = 19 TO 1 STEP –2
-        DEL Numbers<I>   ;*remove odd numbers
-    NEXT I
+       Numbers = ''
+       FOR I = 1 TO 20
+          Numbers<I> = I   ;*generate numbers
+       NEXT I
+       FOR I = 19 TO 1 STEP -2
+          DEL Numbers<I>   ;* remove odd numbers
+       NEXT I
+       CRT CHANGE(Numbers, @FM, '>')  ;* 2>4>6>8>10>12>14>16>18>20
 
 <a name="DELETE"/>
 
@@ -4254,7 +4245,7 @@ Use the DELETE statement to delete a record from a jBASE file.
 
 ### COMMAND SYNTAX
 
-DELETE {variable,} expression {SETTING setvar} {ON ERROR statements}
+    DELETE {variable,} expression {SETTING setvar} {ON ERROR statements}
 
 ### SYNTAX ELEMENTS
 
@@ -4284,12 +4275,32 @@ exist within the file.
 If the program against the file record was holding a lock, it
 will release the lock.
 
-### EXAMPLES
+### EXAMPLE
 
-    OPEN "DAT1" TO DatFile1 ELSE ABORT 201, "DAT1"
-    DELETE DatFile1, "record1"
+       EXECUTE 'DELETE-FILE DATA F.TEMP'
+       EXECUTE 'CREATE-FILE DATA F.TEMP 1 101 TYPE=J4'
+       OPEN 'F.TEMP' TO F.TEMP ELSE ABORT 201, 'F.TEMP'
+       V.REC.INIT = 'LINE 1' :@FM: 'LINE 2' :@FM: 'LINE 3'
+       WRITE V.REC.INIT TO F.TEMP, 'REC1'
+       WRITE V.REC.INIT TO F.TEMP, 'REC2'
+       WRITE V.REC.INIT TO F.TEMP, 'REC3'
+       DELETE F.TEMP, 'REC2' ON ERROR
+          CRT 'DELETE ERROR'
+          STOP
+       END
+    * "ON ERROR" part isn't triggered if a record doesn't exist
+       DELETE F.TEMP, 'REC5' SETTING V.RET.CODE ON ERROR
+          CRT 'REC5 - DELETE ERROR'
+       END
+       CLOSE F.TEMP
+       EXECUTE 'LIST ONLY F.TEMP'
 
-will delete the record "record1" from the file DAT1
+Output:
+
+    REC1
+    REC3
+     2 Records Listed
+
 
 <a name="DELETELIST"/>
 
@@ -4300,7 +4311,7 @@ named by expression.
 
 ### COMMAND SYNTAX
 
-DELETELIST expression
+    DELETELIST expression
 
 ### SYNTAX ELEMENTS
 
@@ -4313,13 +4324,12 @@ command from the shell.
 If POINTER-FILE is accessible then it saves lists within else are
 saved in the jBASE work file.
 
-### EXAMPLES
+### EXAMPLE
 
-    List = "JobList"
-    DELETELIST List
-
-Will delete the pre-saved list called JobList
-
+       EXECUTE 'SELECT .' :@FM: 'SAVE-LIST FILES-LIST'
+       EXECUTE 'LIST &SAVEDLISTS& LIKE FILES-...'    ;*  FILES-LIST is here
+       DELETELIST 'FILES-LIST'
+       EXECUTE 'LIST &SAVEDLISTS& LIKE FILES-...'    ;* and now it's not
 
 ## DELETESEQ
 
@@ -4369,7 +4379,7 @@ referencing.
 
 ### COMMAND SYNTAX
 
-DIM{ENSION} variable(number{, number... }){, variable(number {,number...}) ...}
+    DIM{ENSION} variable(number{, number... }){, variable(number {,number...}) ...}
 
 ### SYNTAX ELEMENTS
 
@@ -4400,9 +4410,20 @@ See also: [COMMON](#COMMON)
 
 ### EXAMPLES
 
-    EQUATE DimSize1 TO 29
-    DIM Array1(10,10), Array2(5, 20, 5, 8)
-    DIM Age(DimSize1)
+       DIM V.ARRAY(10)
+       MAT V.ARRAY = '!'
+       V.ARRAY(5) = '?'
+       FOR V.I = 1 TO 10
+          CRT V.ARRAY(V.I):          ;* !!!!?!!!!!
+       NEXT V.I
+
+       DIM V.DIM3(2, 3, 4)
+       MAT V.DIM3 = 1
+       V.DIM3(1,2,1) *= 2
+       CRT ''
+       CRT V.DIM3(1,2,1)             ;* 2
+       CRT V.DIM3(1,2)               ;* still 2
+       CRT V.DIM3(1,20,1)            ;* runtime error ARRAY_SUBS
 
 ## DIR
 
@@ -4410,7 +4431,7 @@ Use the DIR function to return information about a file.
 
 ### COMMAND SYNTAX
 
-DIR (filename)
+    DIR (filename)
 
 The filename is a string argument representing the path and filename
 of a file. This function returns a dynamic array with four attributes.
@@ -4425,9 +4446,12 @@ of a file. This function returns a dynamic array with four attributes.
 
 ### EXAMPLE
 
-    F = DIR(“.”)
-    PRINT F
-    “0{am}0{am}0{am}D”: is the output of this program.
+       IF NOT(GETENV('TAFC_HOME', V.HOME)) THEN
+          CRT 'TAFC_HOME not defined'
+          STOP
+       END
+       CRT OCONV(DIR(V.HOME), 'MCP')                  ;* e.g. 0^16214^32712^D
+       CRT OCONV(DIR(V.HOME : '/jbcmessages'), 'MCP') ;* e.g. 204800^15815^57980
 
 ## DIV
 
