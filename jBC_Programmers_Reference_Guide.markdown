@@ -4913,11 +4913,11 @@ simple expression.
 
 ### COMMAND SYNTAX
 
-EQU{ATE} symbol TO expression
+    EQU{ATE} symbol TO expression
 
 ### SYNTAX ELEMENTS
 
-**symbol** is the name of the symbol to use;.can be any name that
+**symbol** is the name of the symbol to use; can be any name that
 would be valid for a variable.
 
 **expression** can be a literal, a variable or a simple expression.
@@ -4944,13 +4944,20 @@ to change one line in your program.
 
 ### EXAMPLE
 
-    COMMON FLAG
-    EQUATE NO_CHARGE TO FLAG
-    EQUATE CR TO CHAR (13), TRUE TO 1, FALSE TO 0
-    EQUATE PRICE TO INV_LINE(7), TAX TO 0.175
-    EQUATE DASHES TO "-------"
-    IF NO_CHARGE = TRUE THEN PRICE = 0
-    CRT "Tax =":PRICE * TAX:CR:DASHES
+       DIM INV_LINE(10)
+       MAT INV_LINE = 100
+       COMMON FLAG
+       EQUATE NO_CHARGE TO FLAG
+       EQUATE CR TO CHAR (13), TRUE TO 1, FALSE TO 0
+       EQUATE PRICE TO INV_LINE(7), TAX TO 0.175
+       EQUATE DASHES TO "-------"
+       IF NO_CHARGE = TRUE THEN PRICE = 0
+       CRT "Tax =":PRICE * TAX:CR:DASHES
+
+Output:
+
+    Tax =17.5
+    -------
 
 ## EREPLACE
 
@@ -5001,10 +5008,11 @@ including another jBC program or a TAFC command.
 
 ### COMMAND SYNTAX
 
-EXECUTE|PERFORM expression {CAPTURING variable} {RETURNING|SETTINGvariable}
-{PASSLIST {expression}} {RTNLIST {variable}}{PASSDATA variable} {RTNDATA variable}
-Passes Data, Dynamic Arrays and lists to programs written in jBC,
+    EXECUTE|PERFORM expression {CAPTURING variable} {RETURNING|SETTING variable} {PASSLIST {expression}} {RTNLIST {variable}}{PASSDATA variable} {RTNDATA variable}
+
+Executes external programs or OS commands;
 you can intercept screen output and error messages from any program.
+Passes data, dynamic arrays and lists to executed jBC programs.
 
 ### SYNTAX ELEMENTS
 
@@ -5065,12 +5073,40 @@ use the RTNDATA statement to pass data back to the calling program.
 The clauses may be specified in any order within the statement but
 only one of each clause may exist.
 
-### EXAMPLES
+### EXAMPLE
 
-    OPEN "DataFile" ELSE ABORT 201, "DataFile"
-    SELECT
-    PERFORM "MyProg" SETTING ErrorList PASSLIST
-    EXECUTE "ls" CAPTURING DirListing
+       V.CMD = 'COUNT .'
+       HUSH ON
+       EXECUTE V.CMD RETURNING V.CNT
+       HUSH OFF
+       CRT V.CNT<1,2>     ;* e.g. 15
+
+### EXAMPLE 2
+
+       EXECUTE 'SELECT F.TEMP' :@FM: 'SAVE.LIST TEMP-LIST'
+
+### EXAMPLE 3
+
+       EXECUTE CHAR(255) : 'kecho $SHELL'   ;* /usr/bin/ksh
+
+### EXAMPLE 4
+
+       EXECUTE 'df -m' CAPTURING V.OUTPUT
+       LOOP
+          REMOVE V.LINE FROM V.OUTPUT SETTING V.STATUS
+          CRT '[' : V.LINE : ']'
+          IF V.STATUS EQ 0 THEN BREAK
+       REPEAT
+
+Sample output of the last example:
+
+    [Filesystem    MB blocks      Free %Used    Iused %Iused Mounted on]
+    [/dev/hd4         512.00    276.03   47%    12020    16% /]
+    [/dev/hd2        5120.00   1398.12   73%    67516    18% /usr]
+    [/dev/hd9var      640.00     95.71   86%    13280    36% /var]
+    [/dev/hd3         768.00    505.89   35%     8812     7% /tmp]
+    [/dev/hd1         128.00    121.68    5%      185     1% /home]
+    [/proc                 -         -    -         -     -  /proc]
 
 <a name="EXIT"/>
 
@@ -5228,9 +5264,9 @@ zero" error will occur.
 
 The calculation is not subject to the PRECISION setting.
 
-### EXAMPLES
+### EXAMPLE
 
-    CRT FMUL(1,7)
+        CRT FDIV(1,7)
 
 displays 0.1428571429
 
@@ -5242,7 +5278,7 @@ within a string.
 
 ### COMMAND SYNTAX
 
-FIELDS(string, delimiter, occurrence{, extractCount})
+    FIELD(string, delimiter, occurrence{, extractCount})
 
 ### SYNTAX ELEMENTS
 
@@ -5269,17 +5305,15 @@ See also: [GROUP](#GROUP)
 
 ### EXAMPLES
 
-    Fields = "AAAA:BBJIMBB:CCCCC"
-
-    CRT FIELD(Fields, ":", 3)
-
-    CRT FIELD(Fields, "JIM", 1)
-
-displays:
-
-    CCCCC
-
-    AAAA:BB
+       V.STRING = 'ABC/DEF/QWE/XYZ'
+    * One field
+       CRT FIELD(V.STRING, '/', 2)         ;* DEF
+    * Alternate way
+       CRT V.STRING['/', 2, 1]             ;* DEF
+    * More than one field
+       CRT FIELD(V.STRING, '/', 2, 2)      ;* DEF/QWE
+       CRT V.STRING['/', 2, 3]             ;* DEF/QWE/XYZ
+       CRT DQUOTE(FIELD(V.STRING, '/', 2, 99))    ;* take "all the rest after 1st"
 
 ## FIELDS
 
@@ -5355,14 +5389,21 @@ variable.
 
 ### COMMAND SYNTAX
 
-FILEINFO (file.variable, key)
+    FILEINFO(file.variable, key)
 
 This function is currently limited to return values to determine if the
-file variable is a valid file descriptor variable.
+file variable is a valid file descriptor variable (so key could only be 0).
 
-Key Return Status
+Returns 1 if file.variable is a valid file variable, zero otherwise.
 
-01 if file.variable is a valid files variable zero otherwise.
+### EXAMPLE
+
+       IF NOT(GETENV('JEDIFILENAME_SYSTEM', FN.SYSTEM)) THEN ABORT
+       OPEN FN.SYSTEM TO F.SYSTEM ELSE NULL
+       OPEN 'SOMENONEXISTENTFILE' TO F.SOMEFILE ELSE NULL
+       CRT FILEINFO(F.SYSTEM, 0)        ;* 1
+       CRT FILEINFO(F.SOMEFILE, 0)      ;* 0
+
 
 ## FILELOCK
 
