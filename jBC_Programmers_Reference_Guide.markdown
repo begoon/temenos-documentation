@@ -4560,8 +4560,7 @@ valid range is 0 to 14. Default precision is four places.
 
 ### EXAMPLE
 
-In the following example, the DROUND statement results in 18.84955596.
-The equation is resolved, and rounds the result to eight decimal places.
+In the following example, the DROUND statement results in 18.8496.
 
     A = DROUND((3.14159265999*2*3),8)
     PRINT A
@@ -5521,21 +5520,21 @@ variable FILE.
 
 ## FIND
 
-The FIND statement allows the location of a specified string within
-a dynamic array.
+The FIND statement determines if a specified string fully matches to an
+element in a dynamic array.
 
 ### COMMAND SYNTAX
 
-FIND expression1 IN Var1 {, expression2} SETTING Var2 {, Var3 {, Var4}} THEN | ELSE statement(s)
+    FIND expression1 IN Var1 {, expression2} SETTING Var2 {, Var3 {, Var4}} THEN | ELSE statement(s)
 
 ### SYNTAX ELEMENTS
 
 **expression1** evaluates to the string with which to compare every
 element of the dynamic array. Var1 is the dynamic array that will be
 searched. The FIND command will normally find the first occurrence of
-**expression1** unless expression2 is specified. If specified then
+expression1 unless **expression2** is specified. If specified then
 expression2 will cause a specific occurrence of expression1 to be
-located. The three variables Var2, Var3, Var4 are used to record the
+located. The three variables **Var2, Var3, Var4** are used to record the
 Field, Value and Sub-Value positions in which expression1 was found.
 
 If expression1 is found in any element of Var1 then Vars 2, 3 and 4 are
@@ -5552,36 +5551,51 @@ clauses if required.
 
 See also: [LOCATE](#LOCATE), [FINDSTR](#FINDSTR)
 
-### EXAMPLES
+### EXAMPLE
 
-    Var = "ABC":VM:"JAC":AM:"CDE":VM:"WHO"
-    FIND "JAC" IN Var SETTING Ap, Vp THEN
-        CRT "JAC is in Field ":Ap:", value ":Vp
-    END ELSE
-        CRT "JAC could not be found"
-    END
-
-Will display: JAC is in Field 1, value 2
+       V.ARRAY = 'ABC'   \
+           :@FM: 'DEF' :@VM: '123' :@VM: 'XYZ' :@VM: '456' \
+           :@FM: '789' \
+           :@FM: '---' : @SM: 'XYZ'
+       GOSUB INIT
+       FIND 'XYZ' IN V.ARRAY SETTING V.FLD, V.VAL ELSE NULL
+       CRT V.FLD, V.VAL            ;*   2       3
+       GOSUB INIT
+       FIND 'XYYYZ' IN V.ARRAY SETTING V.FLD, V.VAL ELSE NULL
+       CRT V.FLD, V.VAL            ;*   0       0
+       GOSUB INIT
+       FIND 'XYZ' IN V.ARRAY, 2 SETTING V.FLD, V.VAL, V.SVAL ELSE NULL
+       CRT V.FLD, V.VAL, V.SVAL    ;*   4       1       2
+       GOSUB INIT
+    * Full match is required
+       FIND 'XY' IN V.ARRAY SETTING V.FLD, V.VAL ELSE NULL
+       CRT V.FLD, V.VAL            ;*   0       0
+       GOSUB INIT
+       STOP
+    INIT:
+       V.FLD = 0  ; V.VAL = 0  ;  V.SVAL = 0
+       RETURN
 
 <a name="FINDSTR"/>
 
 ## FINDSTR
 
 The FINDSTR statement locates a string as a substring of a dynamic
-array element. It is similar in operation to the FIND statement.
+array element. It is similar in operation to the FIND statement, except that
+the full match isn't required.
 
 ### COMMAND SYNTAX
 
-FINDSTR expression1 IN Var1 {, expression2} SETTING Var2 {,Var3 {, Var4}} THEN | ELSE statement(s)
+    FINDSTR expression1 IN Var1 {, expression2} SETTING Var2 {,Var3 {, Var4}} THEN | ELSE statement(s)
 
 ### SYNTAX ELEMENTS
 
 **expression1** evaluates to the string with which to search every
 element of the dynamic array. **Var1** is the actual dynamic array
 that will be searched. FINDSTR will normally locate the first
-occurrence of expression1 unless expression2 is specified. If
+occurrence of **expression1** unless **expression2** is specified. If
 specified then expression2 will cause a specific occurrence of
-expression1 to be located. The three variables Var2, Var3, Var4 are
+expression1 to be located. The three variables **Var2, Var3, Var4** are
 used to record the Field, Value and Sub-Value positions in which
 expression1 was found.
 
@@ -5598,16 +5612,15 @@ The statement may omit either the THEN clause or the ELSE clause but
 may not omit both. It is valid for the statement to contain both
 clauses if required.
 
-### EXAMPLES
+### EXAMPLE
 
-    Var = "ABC":VM:"OJACKO":AM:"CDE":VM:"WHO"
-    FINDSTR "JAC" IN Var SETTING Ap, Vp THEN
-    CRT "JAC is within Field ":Ap:", value ":Vp
-    END ELSE
-    CRT "JAC could not be found"
-    END
-
-Displays: JAC is within Field 1, value 2
+       V.ARRAY = 'ABC'   \
+             :@FM: 'DEF' :@VM: '123' :@VM: 'XYZ' :@VM: '456' \
+             :@FM: '789' \
+             :@FM: '---' : @SM: 'XYZ'
+       V.FLD = 0  ; V.VAL = 0  ;  V.SVAL = 0
+       FINDSTR 'XY' IN V.ARRAY SETTING V.FLD, V.VAL ELSE NULL
+       CRT V.FLD, V.VAL            ;*   2       3
 
 <a name="FORMLIST"/>
 
@@ -5686,10 +5699,7 @@ statements.
 
 ## FMT
 
-Join lines on U in mask code definition.
-
-Expand on syntax to formatting superset. i.e. we now allow
-[Width] \[Background] [Justification]
+Format data according to mask definition.
 
 ### INTERNATIONAL MODE
 
@@ -5702,19 +5712,7 @@ possibly two display positions.
 Additional date formatting codes have been provided for use in
 Internationalized programs.
 
-See also: [OCONV](#OCONV) / [FMTS](#FMTS) as per [FMT](#FMT)
-
-| GE | OPERATOR SIMILAR TO eq. compares two expressions for greater |
-|----|--------------------------------------------------------------|
-|    | than or Equal                                                |
-| GT | As Above, except Greater than                                |
-| GTS| Add as per GES, except just greater than for dynamic array   |
-|    | expression                                                   |
-
-When using the “GE/GT/GES/GTS” function in International Mode, the
-“operator/function” will use the currently configured locale to
-determine the rules by which each string is considered greater or
-equal to the other.
+See also: [OCONV](#OCONV) for date/time/numeric masks and [FMTS](#FMTS).
 
 |Mask Code|	                             Description                       |
 |---------|----------------------------------------------------------------|
@@ -5727,6 +5725,7 @@ equal to the other.
 |         |        variable and it is up to the programmer to actually     |
 |         |        separate the blocks.	                                   |
 |         |   D:  Date (OCONV)                                             |
+|         |   M:  Time (OCONV)                                             |
 |         |                                                                |
 |n        | Decimal Precision: A number from 0 to 9 that defines the       |
 |         | decimal precision. It specifies the number of digits for       |
@@ -5780,42 +5779,52 @@ equal to the other.
 
 ### EXAMPLES
 
-|Format Expression                |  Source Value(X) |   Returned Value (columns)(V) |
-|---------------------------------|------------------|-------------------------------|
-|.                                |                  |   12345678901234567890        |
-|                                 |                  |   12345678901234567890        |
-|                                 |                  |   12345678901234567890        |
-|V = FORMAT(X, "R2#10")           |  1234.56         |    1234.56                    |
-|V = FORMAT(X, "L2%10")           |  1234.56         |   1234.56000                  |
-|V = FORMAT(X, "R2%10")           |  1234.56         |   0001234.56                  |
-|V = FORMAT(X, "L2*10")           |  1234.56         |   12.34*****                  |
-|V = FORMAT(X, "R2*10")           |  1234.56         |   ***** 12.34                 |
-|V = FORMAT(X, "R2,$#15")         |  123456.78       |    $123,456.78                |
-|V = FORMAT(X, "R2,&$#15")        |  123456.78       |   $$$$$123,456.78             |
-|V = FORMAT(X, "R2,& $#15")       |  123456.78       |   $   123,456.78              |
-|V = FORMAT(X, "R2,C&*$#15")      |  -123456.78      |   $***123,456.78CR            |
-|V = FORMAT(X, "R((###) ###-###)")|  1234567890      |   (123) 456-7890              |
-|V = FORMAT(X, "R((#3) #2-#4)")   |  1234567890      |   (123) 456-7890              |
-|V = FORMAT(X, "L& Text #2-#3")   |  12345           |   Text 12-345                 |
-|V = FORMAT(X, "L& ((Text#2) #3)")|  12345           |   (Text12) 345                |
-|V = FORMAT(X, "T#20")            |  | This is a     |   | This is a test of         |
-|                                 |  test of the     |   the American                |
-|                                 |  American        |   Broadcasting System         |
-|                                 |  Broadcasting    |                               |
-|                                 |  System	     |                               |
-|V = FORMAT(X, "D4/")             |   12260          |    07-25-2001                 |
+       X = 1234.56
+       CRT DQUOTE(FMT(X, 'R2#10'))             ;*  "   1234.56"
+       CRT FMT(X, 'L2%10')                     ;*  1234.56000
+       CRT FMT(X, 'R2%10')                     ;*  0001234.56
+       CRT FMT(X, 'L2*10')                     ;*  1234.56***
+       CRT FMT(X, 'R2*10')                     ;*  ***1234.56
+       X = 123456.78
+       CRT DQUOTE(FMT(X, 'R2,$#15'))           ;*  "    $123,456.78"
+       CRT DQUOTE(FMT(X, 'R2,&$#15'))          ;*  "     123,456.78"
+       CRT DQUOTE(FMT(X, 'R2,& $#15'))         ;*  "    $123,456.78"
+       X = -123456.78
+       CRT DQUOTE(FMT(X, 'R2,C&*$#15'))        ;*  "  $123,456.78CR"
+       X = 1234567890
+       CRT FMT(X, 'R((###) ###-###)')          ;*  (234) 567-890
+       CRT FMT(X, 'R((#3) #2-#4)')             ;*  (234) 56-7890
+       X = 16376
+       CRT FMT(X, 'D4/')                       ;*  10/31/2012
+       CRT FMT(X, 'DY')                        ;*  2012
+       CRT FMT(X, 'DY2')                       ;*  12
+       CRT FMT(X, 'D2')                        ;*  31 OCT 12
+       CRT FMT(X, 'DQ')                        ;*  4 (quarter)
+       CRT FMT(X, 'DD')                        ;*  31
+       CRT FMT(X, 'DM')                        ;*  10
+       CRT FMT(X, 'DMA')                       ;*  OCTOBER
+       CRT FMT(X, 'DJ')                        ;* 305 - number of a day in the year
+       CRT FMT(X, 'DW')                        ;* 3 - number of a day in the week
+       CRT FMT(X, 'DWA')                       ;* WEDNESDAY
+       CRT FMT(TIME(), 'MT')                   ;* e.g. 21:25
+       CRT FMT(TIME(), 'MTS')                  ;* e.g. 21:25:30
+       X = 'A LONG STRING TO BE SPLIT'
+       CRT FMT(X, '10L')                       ;* A LONG STR.ING TO BE .SPLIT
+       X = 'ABCDEF'
+       CRT FMT(X, 'MX')                        ;* 414243444546
+       CRT FMT(@FM, 'MX')                      ;* FE
 
 <a name="FMTS"/>
 
 ## FMTS
 
-Use the FMTS function to format elements of dynamic.array for output.
+Use the FMTS function to format elements of dynamic array for output.
 Each element of the array is independently acted upon and returned as
 an element in a new dynamic array.
 
 ### COMMAND SYNTAX
 
-FMTS (dynamic.array, format)
+    FMTS(dynamic.array, format)
 
 ### SYNTAX ELEMENTS
 
@@ -5834,14 +5843,14 @@ If dynamic.array evaluates to null, it returns null. If format
 evaluates to null, the FMTS function fails and the program enters
 the debugger.
 
-| GE | OPERATOR SIMILAR TO eq. compares two expressions for greater |
-|----|--------------------------------------------------------------|
-|    | than or Equal                                                |
-| GT | As Above, except Greater than                                |
-| GTS| Add as per GES, except just greater than for dynamic array   |
-|    | expression                                                   |
+### EXAMPLE
 
-FMUL/[FDIV](#FDIV)/[FADD](#FADD)/[FSUB](#FSUB)
+       X = 1234.56 :@FM: 123456.78 :@FM: -123456.78 :@FM: 1234567890
+       CRT FMTS(X, 'R2*12')
+
+Output:
+
+    *****1234.56^***123456.78^**-123456.78^234567890.00
 
 ## FOLD##
 
@@ -5948,7 +5957,7 @@ terminated early by expressions tested after every iteration.
 
 ### COMMAND SYNTAX
 
-FOR var=expression1 TO expression2 {STEP expression3} {WHILE | UNTIL expression4}...NEXT {var}
+    FOR var=expression1 TO expression2 {STEP expression3} {WHILE | UNTIL expression4}...NEXT {var}
 
 ### SYNTAX ELEMENTS
 
@@ -5990,14 +5999,17 @@ See also: [BREAK](#BREAK), [CONTINUE](#CONTINUE).
 
 ### EXAMPLES
 
-    Max =DCOUNT(BigVar, CHAR (254))
-    FOR I = 1 TO Max STEP 2 WHILE BigVar LT 25
-       BigVar += 1
-    NEXT I
+       V.ARRAY = ''
+       FOR V.I = 1 TO 10
+          V.ARRAY<-1> = 'Element #' : V.I
+       NEXT V.I
+       CRT V.ARRAY<6>                          ;* Element #6
 
-This example will increment every second field of the variable BigVar
-but the loop will terminate early if the current field to be
-incremented is not numerically less than 25.
+       FOR V.I = 10 TO 1 STEP -2 WHILE V.I GT 3
+          DEL V.ARRAY<V.I>
+       NEXT V.I
+       CRT V.ARRAY<6>                          ;* Element #9
+       CRT V.ARRAY<3>                          ;* Element #3
 
 <a name="FSUB"/>
 
