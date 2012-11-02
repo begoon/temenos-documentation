@@ -6046,7 +6046,7 @@ programs, arguments to the function can optionally be declared.
 
 ### COMMAND SYNTAX
 
-FUNCTION name {({MAT} variable, {MAT} variable...) }
+    FUNCTION name({MAT} variable, {MAT} variable...)
 
 ### SYNTAX ELEMENTS
 
@@ -6081,9 +6081,19 @@ locatable similar to subroutines.
 
 ### EXAMPLE
 
-    FUNCTION MyFunction(A, B)
-        Result = A * B
-    RETURN (Result)
+The function:
+
+        FUNCTION ADD.FUNC(operand1, operand2)
+        result = operand1 + operand2
+        RETURN(result)
+    END
+
+
+The calling program:
+
+       DEFFUN ADD.FUNC()
+       CRT ADD.FUNC(1, 2)           ;* 3
+       CRT ADD.FUNC(100, 200)       ;* 300
 
 ## GES
 
@@ -6224,7 +6234,7 @@ variable.
 
 ### COMMAND SYNTAX
 
-GETLIST expression TO variable1 {SETTING variable2} THEN|ELSE statements
+    GETLIST expression TO variable1 {SETTING variable2} THEN|ELSE statements
 
 ### SYNTAX ELEMENTS
 
@@ -6247,16 +6257,28 @@ The GETLIST statement is identical in function to the
 [READLIST](#READLIST) statement.
 See also: [DELETELIST](#DELETELIST), [WRITELIST](#WRITELIST)
 
-### EXAMPLES
+### EXAMPLE
 
-Find the list first
+       EXECUTE 'SELECT . SAMPLE 5' :@FM: 'SAVE-LIST FILES-LIST'
+       GETLIST 'FILES-LIST' TO V.FILES.L ELSE
+          CRT 'GETLIST error'
+          STOP
+       END
+       LOOP
+          REMOVE V.FILE FROM V.FILES.L SETTING V.STATUS
+          CRT '[' : V.FILE : ']'
+          IF V.STATUS EQ 0 THEN BREAK
+       REPEAT
 
-    GETLIST "MyList" TO MyList ELSE STOP
-    LOOP
-    * Loop until there are no more elements
-    WHILE READNEXT Key FROM MyList DO
-    ......
-    REPEAT
+Output of this program looks like:
+
+    5 record(s) saved to list 'FILES-LIST'
+    [&COMO&]
+    [&COMO&]D]
+    [&ED&]
+    [&ED&]D]
+    [&PH&]
+
 
 ## GETUSERGROUP
 
@@ -6342,31 +6364,25 @@ execution will continue with the next line of code.
 
 ### COMMAND SYNTAX
 
-GOSUB label
+    GOSUB label
 
 ### SYNTAX ELEMENTS
 
 The label should refer to an existent label within the current source
 code, which identifies the start of a local subroutine.
 
-### EXAMPLES
+### EXAMPLE
 
-    GOSUB Initialize ;* open files etc..
-    GOSUB Main ;* perform main program
-    GOSUB Finish ;* close files etc..
-    STOP
-    ...
-    Initialize: * open files
-    OPEN......
-    .
-    RETURN
-    ....
-    Main: * main execution loop
-    ......
-    RETURN
-    Finish: * clean up after execution
-    ......
-    RETURN
+       V.IN = NEGS(1:@FM:2:@FM:3)
+       GOSUB OUTP                               ;* -1^-2^-3
+       V.IN = NEGS(-1:@FM:-2:@FM:-3)
+       GOSUB OUTP                               ;*  1^2^3
+       V.IN = NEGS(1:@FM:-2:@FM:3)
+       GOSUB OUTP                               ;*  -1^2^-3
+       STOP
+    OUTP:
+       CRT FMT(V.IN, 'MCP')
+       RETURN
 
 ## GOTO
 
