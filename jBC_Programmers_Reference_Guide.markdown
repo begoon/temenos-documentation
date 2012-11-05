@@ -80,6 +80,22 @@ extensions can be developed in (but not limited to) jBC.
 
 ## Introduction to some jBC syntax features
 
+### Note
+
+In examples presented here and below deleting and creation of temporary file
+called F.TEMP is often used, so if you have such file with something valuable
+in it in your current directory, backup it first.
+
+### Note 2
+
+OCONV() or FMT() with second parameter 'MCP' is often used; its only purpose is
+to convert FM, VM and SM delimiters to a printable form, e.g.:
+
+       V.ARRAY = 1 :@FM: 2 :@VM: 3 :@FM: 4 :@SM: 5
+       CRT FMT(V.ARRAY, 'MCP')                ;*   1^2]3^4\5
+
+### EXAMPLES
+
 To wrap a long line use a backslash:
 
        V.LINE = 'The report for the year ' :@FM: V.YEAR : ', prepared at ' \
@@ -6535,7 +6551,7 @@ their internal form.
 
 ### COMMAND SYNTAX
 
-ICONV(expression1, expression2)
+    ICONV(expression1, expression2)
 
 ### SYNTAX ELEMENTS
 
@@ -6544,7 +6560,6 @@ to be performed.
 
 **expression2** should evaluate to the conversion code that is to be
 performed against the data.
-Add additional ICONV extensions for timestamp as per WDx/WTx
 
 ### NOTES
 
@@ -6554,10 +6569,13 @@ unless the emulation option iconv_nonnumeric_return_null is set.
 
 ### EXAMPLES
 
-InternalDate = ICONV("27 MAY 1997", "D")
-
-In this example, ICONV returns the internal form of the date May
-27, 1997.
+    * see internal date representation
+       CRT ICONV('20121231', 'D')                            ;* 16437
+    * calculate difference between dates
+       CRT ICONV('20121231', 'D') - ICONV('20111231', 'D')   ;* 366
+    * check if a year is a leap one
+       CRT OCONV(ICONV('20111231', 'D4'), 'DJ')    ;*  365
+       CRT OCONV(ICONV('20121231', 'D4'), 'DJ')    ;*  366
 
 <a name="ICONVS"/>
 
@@ -6810,7 +6828,7 @@ stacked input from the same or separate program.
 
 ### COMMAND SYNTAX
 
-INPUT {@ (expression1 {, expression2 )}{:} Var{{, expression3}, expression4} {:}{_} {WITH expression5} {FOR expression6 THEN|ELSE statements}
+    INPUT {@ (expression1 {, expression2 )}{:} Var{{, expression3}, expression4} {:}{_} {WITH expression5} {FOR expression6 THEN|ELSE statements}
 
 ### SYNTAX ELEMENTS
 
@@ -6878,15 +6896,28 @@ accepted by INPUT.
 
 See also: [IN](#IN), [INPUTNULL](#INPUTNULL).
 
-### EXAMPLES
+### EXAMPLE
 
-    Answer = "
-    LOOP
-    WHILE Answer = " DO
-        INPUT Answer,1 FOR 10 ELSE
-        GOSUB UpdateClock
-    END
-    REPEAT
+Ask user for an input; time limit is 60 seconds; every 3 seconds the
+remaining time is updated on user screen.
+
+       V.TIMEOUT = 60
+       GOSUB UPD.CNT
+       V.ANS = ''
+       LOOP
+       WHILE V.ANS EQ '' DO
+          INPUT V.ANS, 1 : FOR 30 ELSE
+             V.TIMEOUT -= 3
+             IF V.TIMEOUT LE 0 THEN BREAK
+             GOSUB UPD.CNT
+          END
+       REPEAT
+       IF V.ANS NE '' THEN CRT 'The choice was', DQUOTE(V.ANS)
+       ELSE CRT "The choice wasn't done"
+       STOP
+    UPD.CNT:
+       CRT @(0):'Seconds left: ': FMT(V.TIMEOUT, '2R') : '. Your choice':
+       RETURN
 
 The above example attempts to read a single character from the input
 device for 10 deci-seconds (1 second). The LOOP will exit when a
@@ -6963,7 +6994,7 @@ array.
 
 ### COMMAND SYNTAX
 
-INS expression BEFORE Var<expression1{, expression2{, expression3}}>
+    INS expression BEFORE Var<expression1{, expression2{, expression3}}>
 
 ### SYNTAX ELEMENTS
 
@@ -6988,13 +7019,18 @@ number currently existing.
 
 ### EXAMPLE
 
-    Values = "
-    FOR I = 1 TO 50
-        INS I BEFORE Values<-1>
-    NEXT I
-    FOR I = 2 TO 12
-        INS I*7 BEFORE Values<7,i>
-    NEXT I
+       Values = ''
+       FOR I = 1 TO 50
+          INS I BEFORE Values<-1>
+       NEXT I
+       FOR I = 2 TO 12
+          INS I*7 BEFORE Values<7,I>
+       NEXT I
+       CRT FMT(Values, 'MCP')
+
+The output is:
+
+    1^2^3^4^5^6^7]14]21]28]35]42]49]56]63]70]77]84^8^9^10^11^12^13^14^15^16^17^18^19^20^21^22^23^24^25^26^27^28^29^30^31^32^33^34^35^36^37^38^39^40^41^42^43^44^45^46^47^48^49^50
 
 ## INSERT
 
@@ -7433,7 +7469,7 @@ alphabetic characters.
 
 ### COMMAND SYNTAX
 
-ISALPHA(expression)
+    ISALPHA(expression)
 
 ### SYNTAX ELEMENTS
 
@@ -7447,6 +7483,16 @@ character in the expression is not alphabetic.
 When the ISALPHA function is used in International Mode the properties
 of each character is determined according to the Unicode Standard.
 
+### EXAMPLE
+
+       V.STRING = 'AWERC'
+    * check if there are only alphabetic characters
+       CRT ISALPHA(V.STRING)             ;* 1
+    * add number to the end
+       V.STRING := 1   ; CRT V.STRING    ;* AWERC1
+    * check again if there are only alphabetic characters
+       CRT ISALPHA(V.STRING)             ;* 0
+
 ## ISALNUM##
 
 The ISALNUM function will check that the expression consists of
@@ -7454,7 +7500,7 @@ entirely alphanumeric characters.
 
 ### COMMAND SYNTAX
 
-ISALNUM(expression)
+    ISALNUM(expression)
 
 ### SYNTAX ELEMENTS
 
@@ -7468,6 +7514,20 @@ expression contains any characters, which are not alphanumeric.
 When the ISALNUM function is used in International Mode the properties
 of each character is determined according to the Unicode Standard.
 
+### EXAMPLE
+
+Extending the example right above:
+
+       V.STRING = 'AWERC'
+    * check if there are only alphabetic characters
+       CRT ISALPHA(V.STRING)             ;* 1
+    * add number to the end
+       V.STRING := 1   ; CRT V.STRING    ;* AWERC1
+    * check again if there are only alphabetic characters
+       CRT ISALPHA(V.STRING)             ;* 0
+    * check if there are only alphanumeric characters
+       CRT ISALNUM(V.STRING)             ;* 1
+
 ## ISCNTRL
 
 The ISCNTRL function will check that the expression consists entirely of
@@ -7475,7 +7535,7 @@ control characters.
 
 ### COMMAND SYNTAX
 
-ISCNTRL(expression)
+    ISCNTRL(expression)
 
 ### SYNTAX ELEMENTS
 
@@ -7489,6 +7549,13 @@ any characters, which are not control characters.
 When the ISCNTRL function is used in International Mode the properties
 of each character is determined according to the Unicode Standard.
 
+### EXAMPLE
+
+       V.STRING = CHAR(13) : CHAR(10)
+       CRT ISCNTRL(V.STRING)        ;* 1
+       V.STRING = @FM : V.STRING
+       CRT ISCNTRL(V.STRING)        ;* 1
+
 ## ISDIGIT##
 
 The ISDIGIT function will check that the expression consists of entirely
@@ -7496,7 +7563,7 @@ numeric characters.
 
 ### COMMAND SYNTAX
 
-ISDIGIT(expression)
+    ISDIGIT(expression)
 
 ### SYNTAX ELEMENTS
 
@@ -7509,6 +7576,13 @@ expression contains any characters, which are not numeric.
 
 When the ISDIGIT function is used in International Mode the properties
 of each character is determined according to the Unicode Standard.
+
+### EXAMPLE
+
+       V.VAR = 5
+       CRT ISDIGIT(V.VAR)                 ;* 1
+       V.VAR =- 1
+       CRT ISDIGIT(V.VAR)                 ;* 0 (we have minus now)
 
 ## ISLOWER
 
@@ -8122,11 +8196,28 @@ and return it.
 
 ### COMMAND SYNTAX
 
-KEYIN ( )
+    KEYIN()
 
 KEYIN uses raw keyboard input, therefore all special character handling
 (for example, backspace) is disabled. System special character handling
 (for example, processing of interrupts) is unchanged.
+
+### EXAMPLE
+
+Output current time and date in the current line on the terminal until user
+presses q or Q key.
+
+       V.HOME = @(0)   ;* remember cursor position at the start of the current line
+       LOOP
+          LOOP
+             V.BUFF = SYSTEM(14)    ;* check if there's anything in keyboard buffer
+             IF V.BUFF NE 0 THEN BREAK
+             CRT V.HOME:TIMEDATE():     ;* e.g. 22:27:08 24 OCT 2012
+             MSLEEP 3000
+          REPEAT
+          V.KEY = UPCASE(KEYIN())
+          IF V.KEY EQ 'Q' THEN BREAK    ;* exit if q or Q was pressed
+       REPEAT
 
 ## LATIN1
 
@@ -8192,7 +8283,7 @@ LEN function returns the character length of the supplied expression.
 
 ### COMMAND SYNTAX
 
-LEN(expression)
+    LEN(expression)
 
 ### SYNTAX ELEMENTS
 
@@ -8214,12 +8305,18 @@ will differ. If the byte is specifically required then use the
 
 Do not use programs manipulating byte counts in International Mode.
 
-### EXAMPLES
+### EXAMPLE
 
-    Lengths = "
-    FOR I = 1 TO 50
-  	    Lengths = LEN(Values)
-    NEXT I
+    * Centered string output
+       V.STRING = 'I AM IN THE VERY CENTER'   ; V.WIDTH = 50
+       V.LEN = LEN(V.STRING)
+       V.OFF.L = INT((V.WIDTH - V.LEN) / 2)    ;* left offset
+       V.OFF.R = V.WIDTH - V.LEN - V.OFF.L     ;* right offset
+       CRT SQUOTE(STR(' ', V.OFF.L) : V.STRING : STR(' ', V.OFF.R))
+
+Output is:
+
+    '             I AM IN THE VERY CENTER              '
 
 ## LENS
 
@@ -8247,8 +8344,8 @@ the expression consists of entirely of UTF-8 characters in the ASCII
 range 0 – 127 then the character length of the expression will equate
 to the byte length. However, when the expression contains characters
 outside the ASCII range 0 – 127 then byte length and character length
-will differ. If the byte is specifically required then use the
-[BYTELEN](#BYTELEN) function in place of the LEN function.
+will differ. See
+[BYTELEN](#BYTELEN) function for more information.
 
 ### NOTES
 
@@ -8280,9 +8377,6 @@ Some characters, usually Japanese, Chinese, etc will return a display
 length of greater than one for some characters. Some characters, for
 instance control characters or null (char 0), will return a display
 length of 0.
-
-LE - Less than or equal operator Ditto re GE and LES re
-INTERNATIONAL MODE
 
 ## LES
 
@@ -8368,7 +8462,7 @@ dimension of a dynamic array.
 
 ### COMMAND SYNTAX
 
-LOCATE expression1 IN expression2{<expression3{,expression4}>}, {, expression5} {BY expression6} SETTING Var THEN|ELSE statement(s)
+    LOCATE expression1 IN expression2{<expression3{,expression4}>}, {, expression5} {BY expression6} SETTING Var THEN|ELSE statement(s)
 
 ### SYNTAX ELEMENTS
 
@@ -8420,12 +8514,22 @@ will.
 
 See also: [FIND](#FIND), [FINDSTR](#FIND)
 
-### EXAMPLES
+### EXAMPLE
 
-    Name = "Nelson"
-    LOCATE Name IN ForeNames BY "AL" SETTING Pos ELSE
-    INS Name BEFORE ForeNames<Pos>
-    END
+Using LOCATE to sort an array.
+
+       V.ARR = ''
+       FOR V.I = 1 TO 1000
+          V.ARR<V.I> = RND(1000)
+       NEXT V.I
+       V.SORTED = ''
+        FOR V.I = 1 TO 1000
+          V.IN = V.ARR<V.I>
+          LOCATE V.IN IN V.SORTED<1> BY 'AN' SETTING V.INS.POSN ELSE NULL
+          INS V.IN BEFORE V.SORTED<V.INS.POSN>
+       NEXT V.I
+       CRT MINIMUM(V.ARR), MAXIMUM(V.ARR)  ;* e.g. "0       998"
+       CRT V.SORTED<1>, V.SORTED<1000>     ;* numbers should be the same as above
 
 <a name="LOCK"/>
 
