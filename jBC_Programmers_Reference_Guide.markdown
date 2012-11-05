@@ -94,6 +94,8 @@ to convert FM, VM and SM delimiters to a printable form, e.g.:
        V.ARRAY = 1 :@FM: 2 :@VM: 3 :@FM: 4 :@SM: 5
        CRT FMT(V.ARRAY, 'MCP')                ;*   1^2]3^4\5
 
+Where possible, the output is shown in a comment (as it is in the example above).
+
 ### EXAMPLES
 
 To wrap a long line use a backslash:
@@ -8616,7 +8618,7 @@ conditions.
 
 ### COMMAND SYNTAX
 
-LOOP statements1 WHILE|UNTIL expression DO statements2 REPEAT
+    LOOP statements1 WHILE|UNTIL expression DO statements2 REPEAT
 
 ### SYNTAX ELEMENTS
 
@@ -8639,18 +8641,41 @@ following the LOOP statement.
 
 See also: [BREAK](#BREAK), [CONTINUE](#CONTINUE)
 
-### EXAMPLES
+### EXAMPLE
 
-    LOOP WHILE B < Max DO
-    	    Var<B> = B++ *6
-    REPEAT
-    LOOP
-    	    CRT "+":
-    WHILE READNEXT KEY FROM List DO
-    	    READ Record FROM FILE, KEY ELSE CONTINUE
-    	    Record<1> *= 6
-    REPEAT
-    CRT
+      IF NOT(GETENV('TAFC_HOME', V.HOME)) THEN
+          CRT 'TAFC_HOME not defined'
+          STOP
+       END
+      EXECUTE 'SELECT ' : V.HOME : '/jbcmessages' : ' SAMPLE 10' RTNLIST V.MSG.L
+    * Retrieve @IDs one by one
+       LOOP
+          REMOVE V.ID FROM V.MSG.L SETTING V.STATUS
+          CRT V.ID
+          IF V.STATUS EQ 0 THEN BREAK   ;* end of list reached
+       REPEAT
+
+Output looks like:
+
+    INV_FILE_TYPE
+    DEVICE_QUIT
+    RTN_NOGOSUB
+    ARRAY_ILLEGAL_SIZE
+    DIFF_COMMON
+    QLNOVERB
+    QLPARAMERR
+    SP-HoldCount
+    603
+    1134
+
+The loop used in this example can also be defined this way:
+
+       LOOP
+          REMOVE V.ID FROM V.MSG.L SETTING V.STATUS
+          CRT V.ID
+       UNTIL V.STATUS EQ 0
+       REPEAT
+
 
 ## LOWER##
 
@@ -8659,7 +8684,7 @@ delimiter.
 
 ### COMMAND SYNTAX
 
-LOWER(expression)
+    LOWER(expression)
 
 ### SYNTAX ELEMENTS
 
@@ -8678,7 +8703,9 @@ follows:
 
 ### EXAMPLE
 
-ValuemarkDelimitedVariable = LOWER(AttributeDelimitedVariable)
+       V.ARRAY = 1 :@FM: 2 :@FM: 3 :@FM: 4
+       CRT OCONV(V.ARRAY, 'MCP')                      ;*  1^2^3^4
+       CRT OCONV(LOWER(V.ARRAY), 'MCP')               ;*  1]2]3]4
 
 ## MAKETIMESTAMP
 
@@ -8687,12 +8714,17 @@ time and timezone.
 
 ### COMMAND SYNTAX
 
-MAKETIMESTAMP(InternalDate, InternalTime, TimeZone)
+    MAKETIMESTAMP(InternalDate, InternalTime, TimeZone)
 
 ### SYNTAX ELEMENTS
 
 The internal date and internal time values are combined together with the
 time zone specification to return a UTC timestamp in decimal seconds.
+
+### EXAMPLE
+
+       CRT MAKETIMESTAMP(DATE(), TIME(), 'Europe/London')    ;* e.g. 1352113823.755
+       CRT MAKETIMESTAMP(DATE(), TIME(), 'Europe/Belgrade')  ;* e.g. 1352110223.755
 
 ## MAT##
 
@@ -8701,8 +8733,8 @@ specified array or to assign the entire contents of one array to another.
 
 ### COMMAND SYNTAX
 
-MAT Array = expression
-MAT Array1 = MAT Array2
+    MAT Array = expression
+    MAT Array1 = MAT Array2
 
 ### SYNTAX ELEMENTS
 
@@ -8716,11 +8748,12 @@ If any element of the array Array2 has not been assigned a value then a
 runtime error message will occur. This can be avoided by coding the
 statement MAT Array2 = " after the DIM statement.
 
-### EXAMPLES
+### EXAMPLE
 
-    001 DIM A(45), G(45)
-    002 MAT G = "Array value"
-    003 MAT A = MAT G
+       DIM A(45), G(45)
+       MAT G = "Array value"
+       MAT A = MAT G
+       CRT DQUOTE(A(45))                    ;* "Array value"
 
 ## MATBUILD
 
@@ -8729,7 +8762,7 @@ array.
 
 ### COMMAND SYNTAX
 
-MATBUILD variable FROM array{, expression1{, expression2}} {USING expression3}
+    MATBUILD variable FROM array{, expression1{, expression2}} {USING expression3}
 
 ### SYNTAX ELEMENTS
 
@@ -8755,13 +8788,18 @@ total number of variables for calculating the correct element number.
 See the information about dimensioned arrays earlier in this chapter for
 detailed instructions on calculating element numbers.
 
-### EXAMPLES
+### EXAMPLE
 
-    DIM A(40)
-    MATBUILD Dynamic FROM A,3,7 USING ":"
+       DIM A(40)
+       MAT A = 'VALUE '
+       FOR V.I = 1 TO 40
+           A(V.I) := V.I
+       NEXT V.I
+       MATBUILD Dynamic FROM A, 3, 7 USING ":"
+       CRT Dynamic               ;* VALUE 3:VALUE 4:VALUE 5:VALUE 6:VALUE 7
 
- Builds a 5 element string separated by a : character.
- MATBUILD Dynamic FROM A Builds a field mark separated dynamic array
+ Builds a 5 element string separated by ":" character.
+ "MATBUILD Dynamic FROM A" builds a field mark separated dynamic array
 from   every element contained in the matrix A.
 
 <a name="MATCH"/>
@@ -8774,7 +8812,7 @@ MATCH or MATCHES function applies pattern matching to an expression.
 
 ### COMMAND SYNTAX
 
-expression1 MATCHES expression2
+    expression1 MATCHES expression2
 
 ### SYNTAX ELEMENTS
 
@@ -8820,24 +8858,30 @@ match any number of characters of the specified type.
 
 ### EXAMPLES
 
-    IF Var MATCHES "0N" THEN CRT "A match!"
-
-Matches if all characters in Var are numeric or Var is a null string.
-
-    IF Var MATCHES "0N'.'2N"...
-
-Matches if Var contains any number of numerics followed by the “.”
-character followed by 2 numeric characters. e.g. 345.65 or 9.99
-
-    Pattern = "4X':'6N';'2A"
-
-    Matched = Serno MATCHES Pattern
-
-Matches if the variable Serno consists of a string of 4 arbitrary
-characters followed by the ":" character then 6 numerics then the
-";" character and then 2 alphabetic characters.
-
-e.g. 1.2.:123456;AB or 17st:456789;FB
+    * Matches if all characters in a variable are numeric or it's a null string:
+       Var = '42'
+       Var2 = ''
+       IF Var MATCHES "0N" THEN CRT "A match!"
+       IF Var2 MATCHES "0N" THEN CRT "Another match!"
+    * Matches if Var contains any number of numerics followed by the
+    * "." character followed by 2 numeric characters:
+       CRT 345.65 MATCHES "0N'.'2N..."      ;* 1
+       CRT 9.99 MATCHES "0N'.'2N..."        ;* 1
+    * Matches if the variable Serno consists of a string of 4 arbitrary
+    * characters followed by the ":" character then 6 numerics then
+    * the ";" character and then 2 alphabetic characters
+       Pattern = "4X':'6N';'2A"
+       Serno = '1.2.:123456;AB'
+       CRT Serno MATCHES Pattern            ;* 1
+       Serno = '17st:456789;FB'
+       CRT Serno MATCHES Pattern            ;* 1
+    * More examples:
+       V.DATE = '2012-10-25'
+       CRT V.DATE MATCHES "4N'-'2N'-'2N"    ;*  1
+       V.ADDR = '3RD FLOOR, 17A ELM STREET'
+       CRT V.ADDR MATCHES "...17A..."       ;*  0 - 17A means 17 alpha characters
+       CRT V.ADDR MATCHES "...'17A'..."     ;*  1 - here '17A' is a string to search
+       CRT '2HQJ4' MATCHES "5C"             ;*  0 under prime emulation
 
 ## MATCHFIELD
 
@@ -8918,7 +8962,7 @@ elements of a dynamic array.
 
 ### COMMAND SYNTAX
 
-MATPARSE array{, expression1{, expression2}} FROM variable1 {USING expression3} SETTING variable2
+    MATPARSE array{, expression1{, expression2}} FROM variable1 {USING expression3} SETTING variable2
 
 ### SYNTAX ELEMENTS
 
@@ -8953,12 +8997,44 @@ element number.
 See the information about dimensioned arrays earlier in this
 section for detailed instructions on calculating element numbers.
 
-### EXAMPLE
+### EXAMPLES
 
-    DIM A(40)
-    MATPARSE A,3,7 FROM Dynamic
-
-Assign 5 elements of the array starting at element 3.
+       DIM V.DIM.ARRAY(100)
+       V.DYN.ARRAY = ''
+       FOR V.I = 1 TO 100
+          V.DYN.ARRAY<-1> = V.I
+       NEXT V.I
+    * Full copy
+       MATPARSE V.DIM.ARRAY FROM V.DYN.ARRAY
+       CRT V.DIM.ARRAY(1)                 ;* 1
+       CRT V.DIM.ARRAY(100)               ;* 100
+    * Partial copy
+       MAT V.DIM.ARRAY = 'Default'
+       MATPARSE V.DIM.ARRAY, 3, 7 FROM V.DYN.ARRAY
+       CRT V.DIM.ARRAY(1)                 ;* Default
+       CRT V.DIM.ARRAY(3)                 ;* 1
+       CRT V.DIM.ARRAY(5)                 ;* 3
+       CRT V.DIM.ARRAY(100)               ;* Default
+    * "Over-copy"
+       FOR V.I = 101 TO 103               ;* add 3 elements to dynamic array
+          V.DYN.ARRAY<-1> = V.I
+       NEXT V.I
+       MAT V.DIM.ARRAY = 'Default'
+       MATPARSE V.DIM.ARRAY FROM V.DYN.ARRAY
+       CRT V.DIM.ARRAY(1)                 ;* 1
+       CRT V.DIM.ARRAY(100)               ;* 100
+       V.ADDON = V.DIM.ARRAY(0)           ;* all excess elements are here
+       CHANGE @FM TO '>>>' IN V.ADDON
+       CRT V.ADDON                        ;* 101>>>102>>>103
+    * 2-dimensioned array population: "left-to-right":
+       DIM V.TWODIM.ARRAY(100,2)
+       MATPARSE V.TWODIM.ARRAY FROM V.DYN.ARRAY
+       CRT V.TWODIM.ARRAY(1,1)                 ;* 1
+       CRT V.TWODIM.ARRAY(1,2)                 ;* 2
+       CRT V.TWODIM.ARRAY(2,1)                 ;* 3
+       CRT V.TWODIM.ARRAY(2,2)                 ;* 4
+       CRT V.TWODIM.ARRAY(50,2)                ;* 100
+       CRT DQUOTE(V.TWODIM.ARRAY(100,1))       ;* ""
 
 <a name="MATREAD"/>
 
@@ -9000,8 +9076,9 @@ setvar will be set to one of the following values:
 
 ### INCREMENTAL FILE ERRORS
 
-|128    |    No such file or directory          |
+|Code   |    Description                        |
 |-------|---------------------------------------|
+|128    |    No such file or directory          |
 |4096   |    Network error                      |
 |24576  |    Permission denied                  |
 |32768  |    Physical I/O error or unknown error|
@@ -9086,8 +9163,9 @@ will be set to one of the following values:
 
 ### INCREMENTAL FILE ERRORS
 
-|128    |    No such file or directory          |
+|Code   |    Description                        |
 |-------|---------------------------------------|
+|128    |    No such file or directory          |
 |4096   |    Network error                      |
 |24576  |    Permission denied                  |
 |32768  |    Physical I/O error or unknown error|
@@ -9168,8 +9246,9 @@ be set to one of the following values:
 
 ### INCREMENTAL FILE ERRORS
 
-|128    |    No such file or directory          |
+|Code   |    Description                        |
 |-------|---------------------------------------|
+|128    |    No such file or directory          |
 |4096   |    Network error                      |
 |24576  |    Permission denied                  |
 |32768  |    Physical I/O error or unknown error|
@@ -9224,8 +9303,9 @@ will be set to one of the following values:
 
 ### INCREMENTAL FILE ERRORS
 
-|128    |    No such file or directory          |
+|Code   |    Description                        |
 |-------|---------------------------------------|
+|128    |    No such file or directory          |
 |4096   |    Network error                      |
 |24576  |    Permission denied                  |
 |32768  |    Physical I/O error or unknown error|
@@ -9255,7 +9335,7 @@ the highest numerical value.
 
 ### COMMAND SYNTAX
 
-MAXIMUM(DynArr)
+    MAXIMUM(DynArr)
 
 ### SYNTAX ELEMENTS
 
@@ -9269,7 +9349,7 @@ Non-numeric dynamic array elements are ignored.
 
 See also: [MINIMUM](#MINIMUM)
 
-### EXAMPLES
+### EXAMPLE
 
 If EResults is a variable containing the dynamic array:
 
@@ -9278,7 +9358,7 @@ If EResults is a variable containing the dynamic array:
 the code:
 
     PRECISION 5
-    CRT = MAXIMUM(EResults)
+    CRT MAXIMUM(EResults)
 
 displays 4.29445
 
@@ -9291,7 +9371,7 @@ with the lowest numerical value.
 
 ### COMMAND SYNTAX
 
-MINIMUM(DynArr)
+    MINIMUM(DynArr)
 
 ### SYNTAX ELEMENTS
 
@@ -9314,7 +9394,7 @@ If EResults is a variable containing the dynamic array:
 the code:
 
     PRECISION 3
-    CRT = MINIMUM(EResults)
+    CRT MINIMUM(EResults)
 
 displays -3.903
 
@@ -9450,11 +9530,24 @@ dynamic array.
 
 ### COMMAND SYNTAX
 
-NEGS (dynamic.array)
+    NEGS(dynamic.array)
 
 If the value of an element is negative, the returned value is positive.
 If dynamic.array evaluates to null, null is returned. If any element
 is null, null is returned for that element.
+
+### EXAMPLE
+
+       V.IN = NEGS(1:@FM:2:@FM:3)
+       GOSUB OUTP                               ;* -1^-2^-3
+       V.IN = NEGS(-1:@FM:-2:@FM:-3)
+       GOSUB OUTP                               ;*  1^2^3
+       V.IN = NEGS(1:@FM:-2:@FM:3)
+       GOSUB OUTP                               ;*  -1^2^-3
+       STOP
+    OUTP:
+       CRT FMT(V.IN, 'MCP')
+       RETURN
 
 ## NES
 
@@ -9596,7 +9689,7 @@ NUM function is used to test arguments for numeric values.
 
 ### COMMAND SYNTAX
 
-NUM (expression)
+    NUM(expression)
 
 ### SYNTAX ELEMENTS
 
@@ -9604,9 +9697,8 @@ NUM (expression)
 
 ### NOTES
 
-If every character in expression is found to be numeric then NUM
-returns a value of Boolean TRUE. If any character in expression is
-found not to be numeric then a value of Boolean FALSE is returned.
+Not exactly it checks that every character in expression is a numeric –
+rather if an expression can be considered as a number.
 
 To execute user code migration from older systems correctly, the
 NUM function will accept both a null string and the single
@@ -9615,12 +9707,21 @@ characters ".", "+", and "-" as being numeric.
 If running jBC in ros emulation the "." , "+" and "-" characters
 would not be considered numeric.
 
-### EXAMPLE
+### EXAMPLES (prime emulation)
 
-    LOOP
-    	    INPUT Answer,1
-    	    IF NUM (Answer) THEN BREAK ;* Exit loop if numeric
-    REPEAT
+       CRT NUM('')                     ;* 1
+       CRT NUM('123334440.12')         ;* 1
+       CRT NUM('1233344.40.12')        ;* 0
+       CRT NUM('1,233,344.40')         ;* 0 - thousand delimiters don't do
+       CRT NUM('1 233 344.40')         ;* 0 - neither do spaces
+       CRT NUM('00012')                ;* 1 - leading zeroes are ok
+       CRT NUM('-123334440.12')        ;* 1 - minus is ok...
+       CRT NUM('123334440.12-')        ;* 0 - ...but not everywhere
+       CRT NUM('+123334440.12')        ;* 1
+       CRT NUM('6.02e23')              ;* 0 - E notation doesn't work
+       CRT NUM('1233Q34440.12')        ;* 0 - of course it's not
+       CRT NUM('2+2')                  ;* 0 - expression isn't evaluated
+       CRT NUM('.00')                  ;* 1
 
 ## NUMS
 
@@ -9700,7 +9801,7 @@ external form.
 
 ### COMMAND SYNTAX
 
-OCONV (expression1, expression2)
+    OCONV(expression1, expression2)
 
 ### SYNTAX ELEMENTS
 
@@ -9788,6 +9889,18 @@ expression2. Shown below are valid conversion codes:
 |T            |   Performs file translations given a cross-reference     |
 |             |   table in a record in a file.                           |
 
+### EXAMPLE
+
+    * See examples in FMT() section - most samples form there work both ways -
+    * e.g., the following 2 lines produce equal results:
+       CRT FMT(DATE(), 'D4/')
+       CRT OCONV(DATE(), 'D4/')                          ;*  e.g. 11/05/2012
+    * it's not the same for next 2 lines though...
+       CRT DQUOTE(FMT(123456.78, 'R2,$#15'))             ;*  "    $123,456.78"
+       CRT DQUOTE(OCONV(123456.78, 'R2,$#15'))           ;*  Error in Range Test
+    * Example of a "user exit":
+       CRT OCONV("", "U50BB")        ;* port number and user name
+
 <a name="OCONVS"/>
 
 ## OCONVS
@@ -9817,8 +9930,9 @@ with a run-time error message.
 
 The STATUS function reflects the result of the conversion:
 
-| 0  |   The conversion is successful.                           |
+|Code|   Status                                                  |
 |----|-----------------------------------------------------------|
+| 0  |   The conversion is successful.                           |
 | 1  |   Passes an invalid element to the OCONVS function; the   |
 |    |   original element                                        |
 |    |   is returned. If the invalid element is null, it returns |
@@ -9837,6 +9951,7 @@ internal format, see also: [ICONVS](#ICONVS) function.
 
 Description of date, time, number and currency conversions when used
 in ICONV and International Mode.
+
 
 ## ONGOTO
 
@@ -9890,7 +10005,7 @@ variable within jBC.
 
 ### COMMAND SYNTAX
 
-OPEN {expression1,}expression2 TO {variable} {SETTING setvar} THEN|ELSE statements
+    OPEN {expression1,}expression2 TO {variable} {SETTING setvar} THEN|ELSE statements
 
 ### SYNTAX ELEMENTS
 
@@ -9917,8 +10032,9 @@ to one of the following values:
 
 ### INCREMENTAL FILE ERRORS
 
-|128    |    No such file or directory          |
+|Code   |    Description                        |
 |-------|---------------------------------------|
+|128    |    No such file or directory          |
 |4096   |    Network error                      |
 |24576  |    Permission denied                  |
 |32768  |    Physical I/O error or unknown error|
@@ -9934,19 +10050,31 @@ known to the jBASE system. Its type will be determined and correctly
 opened transparently to the application, which need not be aware of
 the file type.
 
-A jBC program can open an unlimited amount of files.
+A jBC program can open an unlimited amount of files (up the limit set by
+OS settings).
 
-### EXAMPLES
+### EXAMPLE
 
-    OPEN "DICT", "CUSTOMERS" TO F.Dict.Customers ELSE
-     		  ABORT 201, "DICT CUSTOMERS"
-    END
+       EXECUTE 'DELETE-FILE DATA F.TEMP'
+       EXECUTE 'CREATE-FILE DATA F.TEMP 1 101 TYPE=J4'
+       OPEN 'F.TEMP' TO F.TEMP ELSE ABORT 201, 'F.TEMP'
+       V.REC.INIT = 'LINE 1' :@FM: 'LINE 2' :@FM: 'LINE 3'
+       WRITE V.REC.INIT TO F.TEMP, 'REC1'
+       CLOSE F.TEMP
 
-Opens the dictionary section of file CUSTOMERS to its own file descriptor F.Dict.Customers.
+### EXAMPLE 2
 
-    OPEN "CUSTOMERS" ELSE ABORT 201, "CUSTOMERS"
+Get list of current processes and output port number and PID for each:
 
-Opens the CUSTOMERS file to the default file variable.
+       OPEN SYSTEM(1027) TO PROC ELSE STOP 201, "PROC"
+       SELECT PROC TO SEL
+       LOOP
+       WHILE READNEXT key FROM SEL DO
+          READ PROCESSRECORD FROM PROC, key ELSE CRT "Read Error"; STOP
+          V.PORTNO = PROCESSRECORD<1>
+          V.PID = PROCESSRECORD<4>
+          PRINT FMT(V.PORTNO, '2R') : '|' : FMT(V.PID, '8R')
+       REPEAT
 
 ## OPENDEV
 
@@ -10014,8 +10142,9 @@ set to one of the following values:
 
 ### INCREMENTAL FILE ERRORS
 
-|128    |    No such file or directory          |
+|Code   |    Description                        |
 |-------|---------------------------------------|
+|128    |    No such file or directory          |
 |4096   |    Network error                      |
 |24576  |    Permission denied                  |
 |32768  |    Physical I/O error or unknown error|
@@ -10057,8 +10186,9 @@ will be set to one of the following values:
 
 ### INCREMENTAL FILE ERRORS
 
-|128    |    No such file or directory          |
+|Code   |    Description                        |
 |-------|---------------------------------------|
+|128    |    No such file or directory          |
 |4096   |    Network error                      |
 |24576  |    Permission denied                  |
 |32768  |    Physical I/O error or unknown error|
@@ -10098,7 +10228,7 @@ reading.
 
 ### COMMAND SYNTAX
 
-OPENSEQ Path{,File} {READONLY} TO FileVar { LOCKED statements } THEN | ELSE statements
+    OPENSEQ Path{,File} {READONLY} TO FileVar { LOCKED statements } THEN | ELSE statements
 
 ### SYNTAX ELEMENTS
 
@@ -10128,100 +10258,53 @@ file can be a regular, pipe or special device file. Locks are only
 taken on regular file types. Once open the file pointer is set to the
 first line of sequential data.
 
-*SEQUENTIAL FILE PROCESSING ###EXAMPLES*
-
 ### EXAMPLE 1
 
-This program uses sequential processing to create (write to)an ASCII text file
+Create a flat file and write to it. If file already exists – append data to it:
 
-    * from a jBASE hashed file. It illustrates the use of the commands:
-    *      OPENSEQ, WRITESEQ, WEOFSEQ, CLOSESEQ
-    *
-    * First, let's set the destination directory and file path
-      Path = "d:\temp\textfile"
-    *
-    * Open the destination file path. If it does not exist it will be created.
-    * Note that "openseq_creates=true" must be set for the emulation in
-     config_EMULATE
-       OPENSEQ Path TO MyPath THEN
-           CRT "The file already exists and we don't want to overwrite it."
-       END ELSE
-           CRT "File is being created..."
-      END
-    *
-    * Open the jBASE file
-      OPEN "FileName" TO jBaseFile ELSE STOP
-      SELECT
-     jBaseFile          ;* Process all records
-    *
-    * Now, let's loop thru each item and build the ASCII text file.
-  	  LOOP WHILE READNEXT
-      ID DO
-           READ
-     MyRec FROM jBaseFile, ID THEN
-              Line = ""
-     *
-     * Process MyRec and build the Line variable with the information to be
-     * written to the ASCII text file. jBASE automatically takes care of the
-     * end-of-line delimiters in this case a cr/lf is appended to the end
-     * of each line However, this can be changed with the IOCTL() function.
-     *
-             WRITESEQ Line TO MyPath ELSE
-                 CRT "What happened to the file?"
-                 STOP
-             END
+       V.DIR.OUT = '.'
+       V.FILE.OUT = 'report.txt'
+       OPENSEQ V.DIR.OUT, V.FILE.OUT TO F.FILE.OUT THEN
+          SEEK F.FILE.OUT, 0, 2 ELSE  ;* go to the end
+             CRT 'Seek error'
+             STOP
           END
-     REPEAT
-    *
-    * Wrapup
-      WEOFSEQ MyPath
-      CLOSESEQ MyPath
+          WRITESEQ 'One more line' TO F.FILE.OUT ELSE
+             CRT 'Write error'
+             STOP
+          END
+       END ELSE
+          WRITESEQ 'Line 1' TO F.FILE.OUT ELSE
+             CRT 'Write error'
+             STOP
+          END
+       END
 
-### EXAMPLES 2
 
-    This program uses sequential processing to read from an ASCII text file
-    * and write to a jBASE hashed file. It illustrates the use of the commands:
-    *      OPENSEQ, READSEQ, CLOSESEQ
-    *
-    * First, let's define the path where the sequential file resides.
-      Path = "d:\temp\textfile"
-    *
-    * Open the file. If it does not exist an error will be produced.
-    OPENSEQ Path TO MyPath ELSE
-       CRT "Can't find the specified directory or file."
-       ABORT
-    END
-    *
-    * Open the jBASE hashed file
-      OPEN "FileName" TO jBaseFile ELSE STOP
+### EXAMPLE 2
 
-    *
-    * Now, let's read and process each line of the ASCII (sequential) file.
+Run the previous example several times, then - this one
+(flat file will be read and proceeded line-by-line):
+
+       V.DIR.IN = '.'
+       V.FILE.IN = 'report.txt'
+       OPENSEQ V.DIR.IN, V.FILE.IN TO F.FILE.IN ELSE
+          CRT 'Failed to open', V.FILE.IN
+          STOP
+       END
+       V.LINE.NO = 0
        LOOP
-          READSEQ Line FROM MyPath THEN
-    Initialize the record that will be written to the jBASE hashed file.
-               MyRec = ""
-    *
-    * Process the Line variable. This involves extracting the information
-    which
-    define the key and data of the record to be written to the base
-    hashed
-    * file. This will be left up to the application developer since a
+          READSEQ V.LINE FROM F.FILE.IN ELSE BREAK
+          V.LINE.NO ++
+          CRT '[' : V.LINE.NO : ']' : V.LINE
+       REPEAT
 
-     "line"
+Output will look like:
 
-could either be fixed length or delimited by some character such as a
-tab or a comma. We will assume that Key & MyRec are assembled here.
-
-    *
-    * All that's left to do is to write to the jBASE-hashed file
-    .          WRITE MyRec on jBaseFile, Key
-           END
-     REPEAT
-    *
-    * Wrapup
-     CLOSESEQ MyPath
-
+    [1]Line 1
+    [2]One more line
+    [3]One more line
+    ...
 
 <a name="OPENSER"/>
 
@@ -10742,12 +10825,28 @@ jBASE uses the maximum degree of precision allowed on the host machine in all
 mathematical calculations to ensure maximum accuracy. It then uses the defined
 precision to format the number.
 
-### EXAMPLES
+### EXAMPLE
 
     PRECISION 6
     CRT 2/3
 
 will print the value 0.666666 (note: truncation not rounding!).
+
+### EXAMPLE 2
+
+       V.1 = '0.123456789012345678901234567890123456789012345678901234567890'
+       V.2 = '0.1234567890123456789012345678901234567890123456789012345678901'
+       PRECISION 13
+       GOSUB TEST                ;* 1
+       PRECISION 17
+       GOSUB TEST                ;* 0
+       STOP
+    TEST:
+       V.3 = (V.1 = V.2)
+       CRT V.3
+       RETURN
+    END
+
 
 ## PRINT
 
@@ -10965,7 +11064,7 @@ PUTENV is used to set environment variables for the current process.
 
 ### COMMAND SYNTAX
 
-PUTENV (expression)
+    PUTENV(expression)
 
 ### SYNTAX ELEMENTS
 
@@ -10991,9 +11090,21 @@ See also: [GETENV](#GETENV)
 
 ### EXAMPLE
 
-    IF PUTENV("JBASICLOGNAME=":UserName) THEN
-    	CRT "Environment configured"
-    END
+       V.ENV = 'JBASE_ERRMSG_ZERO_USED'
+       IF NOT(PUTENV(V.ENV : '=35')) THEN
+          CRT 'PUTENV failed'
+          STOP
+       END
+       CRT 'See the impact of JBASE_ERRMSG_ZERO_USED'
+       CRT '=35'
+       CRT V.VAR     ;* variable not assigned; nothing is being output
+       IF NOT(PUTENV(V.ENV : '=0')) THEN
+          CRT 'PUTENV failed'
+          STOP
+       END
+       CRT '=0'
+       CRT V.VAR     ;* Invalid or uninitialised variable --  NULL USED ,
+                     ;* Var (UNKNOWN) , Line    17 , Source test.b
 
 ## PWR
 
