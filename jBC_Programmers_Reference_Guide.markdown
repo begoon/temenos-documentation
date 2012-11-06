@@ -1241,8 +1241,9 @@ therefore check and set (or reset) a flag in one step.
 BITCHANGE also provides some special functions if you use one of the
 following table_no values:
 
-|-1  |  toggles (enables/disables) the BREAK key Inhibit bit.|
+|Code|  Description                                          |
 |----|-------------------------------------------------------|
+|-1  |  toggles (enables/disables) the BREAK key Inhibit bit.|
 |-2  |  toggles (enables/disables) the Command Level Restart |
 |    |  feature.                                             |
 |-3  |  toggles (enables/disables) the Break/End Restart     |
@@ -1432,8 +1433,9 @@ check a flag in one step.
 BITRESET also provides some special functions if you use one of the
 following table_no values:
 
-|-1  | resets the BREAK key Inhibit bit.        |
+|Code|  Description                             |
 |----|------------------------------------------|
+|-1  | resets the BREAK key Inhibit bit.        |
 |-2  | resets the Command Level Restart feature.|
 |-3  | resets the Break/End Restart feature.    |
 
@@ -1477,8 +1479,9 @@ flag in one step.
 BITSET also provides some special functions if you use one of the
 following table_no values:
 
-|-1  | sets the BREAK key Inhibit bit           |
+|Code|  Description                             |
 |----|------------------------------------------|
+|-1  | sets the BREAK key Inhibit bit           |
 |-2  | sets the Command Level Restart feature   |
 |-3  | sets the Break/End Restart feature       |
 
@@ -2405,8 +2408,9 @@ which occur during the call.
 
 This variable can have the following values:
 
-| 1    | Fatal error creating thread   |
+|Value |  Description                  |
 |------|-------------------------------|
+| 1    | Fatal error creating thread   |
 | 2    | Cannot create JVM             |
 | 3    | Cannot find class             |
 | 4    | Unicode conversion error      |
@@ -2597,8 +2601,9 @@ for Linux.
 
 ### DEFAULT OPTIONS###
 
-|Win32:         |   -Xrs 			      |
+|Platform       |   Parameter 			      |
 |---------------|-------------------------------------|
+|Win32:         |   -Xrs 			      |
 |Solaris:       |   -XX:+AllowUserSignalHandlers      |
 |Linux:         |   -Xrs -XX:+AllowUserSignalHandlers |
 |AIX 64 bits:   |   -Xrs -d64                         |
@@ -2767,8 +2772,9 @@ directory contains a jLibDefinition file, which describes how to build
 the subroutines into shared libraries. The entries in the
 jLibDefinition file are described below:
 
-|**libname**   |  naming convention for shared object files.     |
+|Entry         |  Description                                    |
 |--------------|-------------------------------------------------|
+|**libname**   |  naming convention for shared object files.     |
 |**exportname**|  export list of shared objects. Used as cross   |
 |              |  reference to find subroutine functions.        |
 |**maxsize**   |  maximum size of a shared object library before |
@@ -3235,8 +3241,9 @@ setvar to one of the following values:
 
 ### INCREMENTAL FILE ERRORS
 
-|128    |    No such file or directory          |
+|Code   |    Description                        |
 |-------|---------------------------------------|
+|128    |    No such file or directory          |
 |4096   |    Network error                      |
 |24576  |    Permission denied                  |
 |32768  |    Physical I/O error or unknown error|
@@ -3500,8 +3507,9 @@ comparison. The default is left justification.
 
 The function returns one of the following values:
 
-|-1  |  The first string is less than the second   |
+|Code|    Description                              |
 |----|---------------------------------------------|
+|-1  |  The first string is less than the second   |
 | 0  |  The strings are equal                      |
 | 1  |  The first string is greater than the second|
 
@@ -3989,11 +3997,11 @@ use (see below).
 The [ENCRYPT](#ENCRYPT) and DECRYPT functions that are part of jBC
 now support the following cipher methods (Defined in JBC.h)
 
-| JBASE_CRYPT_GENERAL |    General-purpose encryption scheme       |
+| Value               |    Description                             |
 |---------------------|--------------------------------------------|
+| JBASE_CRYPT_GENERAL |    General-purpose encryption scheme       |
 | JBASE_CRYPT_ROT13   |    Simple ROT13 algorithm. (Key not used)  |
-| JBASE_CRYPT_XOR11   |    XOR MOD11 algorithm. Uses the first     |
-|                     |    character of a key as a seed value      |
+| JBASE_CRYPT_XOR11   |    XOR MOD11 algorithm. Uses the first character of a key as a seed value |
 | JBASE_CRYPT_RC2     |    RC2 algorithm                           |
 | JBASE_CRYPT_DES     |    DES algorithm                           |
 | JBASE_CRYPT_3DES    |    Three Key, Triple DES algorithm         |
@@ -4013,8 +4021,9 @@ JBASE_CRYPT_RC2 followed by DECRYPT with method JBASE_CRYPT_BASE64.
 DECRYPT with this method is the same as a DECRYPT with method
 JBASE_CRYPT_BASE64 followed by DECRYPT with method JBASE_CRYPT_RC2.
 
-|JBASE_CRYPT_RC2_BASE64       | RC2 algorithm        |
+| Value                       |    Description       |
 |-----------------------------|----------------------|
+|JBASE_CRYPT_RC2_BASE64       | RC2 algorithm        |
 |JBASE_CRYPT_DES_BASE64       | DES algorithm        |
 |JBASE_CRYPT_3DES_BASE64      | Triple DES algorithm |
 |JBASE_CRYPT_BLOWFISH_BASE64  | Blowfish algorithm   |
@@ -4279,8 +4288,9 @@ If the SETTING clause is specified and the delete fails, it sets
 
 ### INCREMENTAL FILE ERRORS
 
-|128    |    No such file or directory          |
+| Code  |    Description                        |
 |-------|---------------------------------------|
+|128    |    No such file or directory          |
 |4096   |    Network error                      |
 |24576  |    Permission denied                  |
 |32768  |    Physical I/O error or unknown error|
@@ -4770,8 +4780,9 @@ method.
 The ENCRYPT and [DECRYPT](#DECRYPT) functions that are part of jBC now
 support the following cipher methods (Defined in JBC.h)
 
-| JBASE_CRYPT_GENERAL |    General-purpose encryption scheme                |
+| Value               |    Description                                      |
 |---------------------|-----------------------------------------------------|
+| JBASE_CRYPT_GENERAL |    General-purpose encryption scheme                |
 | JBASE_CRYPT_ROT13   |    Simple ROT13 algorithm. (Key not used)           |
 | JBASE_CRYPT_XOR11   |    XOR MOD11 algorithm. Uses the first character of |
 |                     |     a key as a seed value.                          |
@@ -4794,8 +4805,9 @@ JBASE_CRYPT_RC2 followed by ENCRYPT with method JBASE_CRYPT_BASE64.
 DECRYPT with this method is the same as a DECRYPT with method
 JBASE_CRYPT_BASE64 followed by DECRYPT with method JBASE_CRYPT_RC2.
 
-|JBASE_CRYPT_RC2_BASE64       | RC2 algorithm        |
+| Value                       |    Description       |
 |-----------------------------|----------------------|
+|JBASE_CRYPT_RC2_BASE64       | RC2 algorithm        |
 |JBASE_CRYPT_DES_BASE64       | DES algorithm        |
 |JBASE_CRYPT_3DES_BASE64      | Triple DES algorithm |
 |JBASE_CRYPT_BLOWFISH_BASE64  | Blowfish algorithm   |
@@ -5381,9 +5393,9 @@ V - represents a value mark.
 
 s - represents a sub-value mark.
 
-
-| r1  | <1>b                                             |
+|Array| Contents                                         |
 |-----|--------------------------------------------------|
+| r1  | <1>b                                             |
 |     | <2>bb v 2 s W                                    |
 |     | <3>bbb                                           |
 |     | <4>bbbb                                          |
@@ -5944,8 +5956,9 @@ interpreted special characters, replaced in the string before printing.
 
 The following characters have special meaning within the string:
 
-|"C{n}"     |  Center the line. If n is specified the output line is |
+| Value     |    Description                                         |
 |-----------|--------------------------------------------------------|
+|"C{n}"     |  Center the line. If n is specified the output line is |
 |           |  assumed to be n characters long.                      |
 |"D" or \\  |  Replace with the current date.                        |
 |"L" or ]   |  Replace with the newline sequence.                    |
@@ -6244,6 +6257,8 @@ See: [PUTENV](#PUTENV)
         CRT "Execution path is not set up"
     END
 
+<a name="GETLIST"/>
+
 ## GETLIST##
 
 GETLIST allows the program to retrieve a previously stored list
@@ -6495,8 +6510,9 @@ page of output. The string may contain a number of interpreted special
 characters, replaced in the string before printing. The following
 characters have special meaning within the string:
 
-|"C{n}"     |  Center the line. If n is specified the output line is |
+| Value     |    Description                                         |
 |-----------|--------------------------------------------------------|
+|"C{n}"     |  Center the line. If n is specified the output line is |
 |           |  assumed to be n characters long.                      |
 |"D" or \\  |  Replace with the current date.                        |
 |"L" or ]   |  Replace with the newline sequence.                    |
@@ -6608,17 +6624,15 @@ message.
 
 The STATUS function reflects the result of the conversion:
 
-For information about converting elements in a dynamic array to an external
-format
-
-See also: [OCONVS](#OCONVS) function.
-
-| 0  |The conversion is successful.                                      |
+|Code|     Description                                                   |
 |----|-------------------------------------------------------------------|
+| 0  |The conversion is successful.                                      |
 | 1  |An element of dynamic.array is invalid. It returns an empty string,|
 |    |unless dynamic.array is null, in which case it returns null.       |
 | 2  |Conversion is invalid.                                             |
 | 3  |Successful conversion of possibly invalid data.                    |
+
+See also: [OCONVS](#OCONVS) function.
 
 ## IF (statement)
 
@@ -7231,7 +7245,7 @@ The descriptions of the available controls that can be passed as
 input to this IOCTL function are:
 
 |Code  |                    Description                                 |
-|:-----|:---------------------------------------------------------------|
+|------|----------------------------------------------------------------|
 | RB   | All future reads to be in binary (no conversion)               |
 | RT   | All future reads to be in text format (always do a             |
 |      | conversion)                                                    |
@@ -7969,8 +7983,9 @@ with one attribute per thread.
 
 The layout of the multi-values in each attribute is as follows:
 
-|< n,1 >  |  port number                                  |
+| Value   |    Description                                |
 |---------|-----------------------------------------------|
+|< n,1 >  |  port number                                  |
 |< n,2 >  |  thread handle returned from JBASETHREADCreate|
 
 ## JQLCOMPILE
@@ -8484,8 +8499,9 @@ search will begin.
 different order, which can considerably improve the performance of
 some searches. The available string values for expression6 are:
 
-|  AL  |Values are in ascending alphanumeric order           |
+|String|    Description                                      |
 |------|-----------------------------------------------------|
+|  AL  |Values are in ascending alphanumeric order           |
 |  AR  |Values are in right justified, then ascending order  |
 |  AN  |Values are in ascending numeric order                |
 |  DL  |Values are in descending alphanumeric order          |
@@ -8691,7 +8707,7 @@ delimiter.
 **expression** is a string containing one or more delimiters, lowered as
 follows:
 
-| ASCII Character  | Lowered To      |
+| ASCII character  | Lowered to      |
 |------------------|-----------------|
 | 255              | 254             |
 | 254              | 253             |
@@ -9659,7 +9675,7 @@ element.
 ### EXAMPLE
 
     X=5; Y=5
-    PRINT NOTS X-Y:@VM:X+Y)
+    PRINT NOTS(X-Y:@VM:X+Y)
 
 The output of this program is:
 
@@ -10490,9 +10506,10 @@ occurs, the program will terminate.
 After you execute OSBWRITE, the STATUS function returns either 0 or
 a failure code.
 
-|0  | The write was successful. |
-|---|---------------------------|
-|1  | The write failed.         |
+| Code | Description               |
+|------|---------------------------|
+|0     | The write was successful. |
+|1     | The write failed.         |
 
 ### NOTES
 
@@ -10536,9 +10553,10 @@ program will enter the debugger.
 After you execute OSCLOSE, the STATUS function returns either 0 or a
 failure code.
 
-|0  | Closes the file successfully. |
-|---|-------------------------------|
-|1  | Fails to write the file.      |
+| Code | Description                   |
+|------|-------------------------------|
+|0     | Closes the file successfully. |
+|1     | Fails to write the file.      |
 
 ### EXAMPLE
 
@@ -10573,9 +10591,10 @@ the program will terminate.
 After you execute OSDELETE, the STATUS function returns either 0 or
 a failure code.
 
-|0  |  Deletes the file successfully. |
-|---|---------------------------------|
-|1  |  Fails to delete the file.      |
+| Code | Description                     |
+|------|---------------------------------|
+|0     |  Deletes the file successfully. |
+|1     |  Fails to delete the file.      |
 
 ### EXAMPLES
 
@@ -11175,14 +11194,14 @@ highest delimiter.
 
 ### COMMAND SYNTAX
 
-RAISE (expression)
+    RAISE (expression)
 
 ### SYNTAX ELEMENTS
 
 The **expression** is a string containing one or more delimiters,
 which are raised as follows:
 
-| ASCII Character  | Lowered To      |
+| ASCII character  | Raised to       |
 |------------------|-----------------|
 | 248              | 249             |
 | 249              | 250             |
@@ -11194,7 +11213,9 @@ which are raised as follows:
 
 ### EXAMPLE
 
-    AttributeDelimitedVariable = RAISE(ValuemarkDelimitedVariable)
+       V.ARRAY = 1 :@TM: 2 :@SM: 3 :@VM: 4
+       CRT OCONV(V.ARRAY, 'MCP')                      ;*  1.2\3]4
+       CRT OCONV(RAISE(V.ARRAY), 'MCP')               ;*  1\2]3^4
 
 <a name="READ"/>
 
@@ -11205,7 +11226,7 @@ opened file into a variable.
 
 ### COMMAND SYNTAX
 
-READ variable1 FROM {variable2,} expression {SETTING setvar} {ON ERROR statements} THEN|ELSE statements
+    READ variable1 FROM {variable2,} expression {SETTING setvar} {ON ERROR statements} THEN|ELSE statements
 
 ### SYNTAX ELEMENTS
 
@@ -11222,8 +11243,9 @@ setvar will be set to one of the following values:
 
 ### INCREMENTAL FILE ERRORS
 
-|128    |    No such file or directory          |
+| Code  | Description                           |
 |-------|---------------------------------------|
+|128    |    No such file or directory          |
 |4096   |    Network error                      |
 |24576  |    Permission denied                  |
 |32768  |    Physical I/O error or unknown error|
@@ -11237,30 +11259,22 @@ Errors except error 128.
 If you wish to set a lock on a record, you should do so explicitly
 with the [READU](#READU) statement.
 
-### EXAMPLE 1
+### EXAMPLE
 
+       IF NOT(GETENV('TAFC_HOME', V.HOME)) THEN
+          CRT 'TAFC_HOME not defined'
+          STOP
+       END
+       OPEN V.HOME : '/jbcmessages' TO F.MSG ELSE ABORT 201, 'jbcmessages'
+       READ R.MSG FROM F.MSG, 'ARRAY_ILLEGAL_SIZE' ELSE
+          CRT 'ERROR READING THE FILE, ID=ARRAY_ILLEGAL_SIZE'
+          STOP
+       END
+       CRT R.MSG
 
-    OPEN "Customers" ELSE ABORT 201, "Customers"
-    OPEN "DICT Customers" TO DCusts ELSE
-        ABORT 201, "DICT Customers"
-    END
-    READ Rec FROM DCusts, "Xref" THEN
-        READ DataRec FROM Rec<7> ELSE
-            ABORT 202, Rec<7>
-        END
-    END ELSE
-        ABORT 202, "Xref"
-    END
+Program output:
 
-### EXAMPLE 2
-
-    READ record FROM filevar, id SETTING errorNumber ON ERROR
-        PRINT errorNumber
-    END THEN
-        PRINT 'Record read successfully'
-    END ELSE
-        PRINT 'Record not on file'
-    END
+    ** Error [ ARRAY_ILLEGAL_SIZE ] ** ^NEWLINE^^DEBUGQUIT^Attempt to DIMension a variable with 0 or fewer elements , Line ^LINENO^ , Source ^SOURCENAME^
 
 <a name="READBLK"/>
 
@@ -11272,7 +11286,7 @@ it to a variable.
 
 ### COMMAND SYNTAX
 
-READBLK variable FROM file.variable, blocksize { THEN statements [ELSE statements] | ELSE statements }
+    READBLK variable FROM file.variable, blocksize { THEN statements [ELSE statements] | ELSE statements }
 
 The READBLK statement reads a block of data beginning at the
 current position in the file and continuing for blocksize bytes
@@ -11324,10 +11338,24 @@ single line of data.
 
 ### EXAMPLE
 
-    OPENSEQ 'MYSLIPPERS', 'PINK' TO FILE ELSE ABORT
-    READBLK VAR1 FROM FILE, 50 THEN PRINT VAR1
-    PRINT
-    READBLK VAR2 FROM FILE, 100 THEN PRINT VAR2
+       IF NOT(GETENV('TAFC_HOME', V.HOME)) THEN
+          CRT 'TAFC_HOME not defined'
+          STOP
+       END
+       V.FILE.IN = 'RELEASE'
+       V.FILE.INFO = DIR(V.HOME : '/' : V.FILE.IN)
+       V.SIZE = V.FILE.INFO<1>
+       OPENSEQ V.HOME, V.FILE.IN TO F.FILE.IN ELSE
+          CRT 'Failed to open', V.FILE.IN
+          STOP
+       END
+       V.BLK.SIZE = MINIMUM(V.SIZE :@FM: 512)
+       READBLK V.TEXT FROM F.FILE.IN, V.BLK.SIZE ELSE
+          CRT 'Failed to read', V.FILE.IN
+          STOP
+       END
+       CRT V.TEXT[1, INDEX(V.TEXT, CHAR(10), 1)]   ;* 1st line, e.g.:
+                                                   ;* jBase Release : R11.0.0.0
 
 <a name="READL"/>
 
@@ -11359,8 +11387,9 @@ will be set to one of the following values:
 
 ### INCREMENTAL FILE ERRORS
 
-|128    |    No such file or directory          |
+| Code  | Description                           |
 |-------|---------------------------------------|
+|128    |    No such file or directory          |
 |4096   |    Network error                      |
 |24576  |    Permission denied                  |
 |32768  |    Physical I/O error or unknown error|
@@ -11492,7 +11521,7 @@ READNEXT retrieves the next element in a list variable.
 
 ### COMMAND SYNTAX
 
-READNEXT variable1, variable2 {FROM variable3} {SETTING setvar} {THEN|ELSE statements}
+    READNEXT variable1, variable2 {FROM variable3} {SETTING setvar} {THEN|ELSE statements}
 
 ### SYNTAX ELEMENTS
 
@@ -11520,8 +11549,9 @@ values:
 
 ### INCREMENTAL FILE ERRORS
 
-|128    |    No such file or directory          |
+| Code  | Description                           |
 |-------|---------------------------------------|
+|128    |    No such file or directory          |
 |4096   |    Network error                      |
 |24576  |    Permission denied                  |
 |32768  |    Physical I/O error or unknown error|
@@ -11536,10 +11566,20 @@ See also: [SELECT](#SELECT), extensions for secondary indexes.
 
 ### EXAMPLE
 
-       LOOP
-       WHILE READNEXT Key FROM RecordList DO
-       ......
-       REPEAT
+       EXECUTE 'DELETE-FILE DATA F.TEMP'
+       EXECUTE 'CREATE-FILE DATA F.TEMP 1 101 TYPE=J4'
+       OPEN 'F.TEMP' TO F.TEMP ELSE ABORT 201, 'F.TEMP'
+       V.REC.INIT = 'LINE 1' :@FM: 'LINE 2' :@FM: 'LINE 3'
+       WRITE V.REC.INIT TO F.TEMP, 'REC1'
+       WRITE V.REC.INIT TO F.TEMP, 'REC2'
+       WRITE V.REC.INIT TO F.TEMP, 'REC3'
+       CLOSE F.TEMP
+       V.SEL = 'SSELECT F.TEMP TO 9'
+       EXECUTE V.SEL
+       READNEXT V.ID FROM 9 ELSE CRT 'READNEXT 1 FAILED'
+       CRT 'NEXT:' : V.ID                                   ;* NEXT:REC1
+       READNEXT V.ID FROM 9 ELSE CRT 'READNEXT 2 FAILED'
+       CRT 'NEXT:' : V.ID                                   ;* NEXT:REC2
 
 <a name="READPREV"/>
 
@@ -11568,11 +11608,14 @@ the end of the select list (if READNEXTs have been executed). Thus in
 the event of a change of direction the very first or very last index
 key or record key will be used.
 
+Behaviour of READNEXT/READPREV depends on emulation. The following example is
+for *jbase* emulation:
+
 ### EXAMPLE
 
 Consider the following jBC code
 
-        list = "DAVE" : : "GREG" : : "JIM"
+        list = "DAVE" :@FM: "GREG" :@FM: "JIM"
         SELECT list
 
 The following table shows what happens if you do [READNEXT](#READNEXT)s
@@ -11595,6 +11638,25 @@ and [READPREV](#READPREV)s on the above code and the reasons for it.
 |READPREV key ELSE   | key becomes "GREG"  | Second key in list         |
 |READPREV key ELSE   | key becomes "DAVE"  | First key in list          |
 
+### EXAMPLE 2
+
+This code shows the behaviour of READNEXT/READPREV under *prime* emulation.
+The difference to the example above starts with the first READPREV:
+
+       list = "DAVE" :@FM: "GREG" :@FM: "JIM"
+       SELECT list
+       READNEXT V.ID ELSE CRT 'READNEXT 1 FAILED'
+       CRT 'NEXT:' : V.ID                              ;*  NEXT:DAVE
+       READNEXT V.ID ELSE CRT 'READNEXT 2 FAILED'
+       CRT 'NEXT:' : V.ID                              ;*  NEXT:GREG
+       READPREV V.ID ELSE CRT 'READPREV 1 FAILED'
+       CRT 'PREVIOUS:' : V.ID                          ;*  PREVIOUS:JIM
+       READPREV V.ID ELSE CRT 'READPREV 2 FAILED'      ;*  READPREV 2 FAILED
+       CRT 'PREVIOUS:' : V.ID                          ;*  PREVIOUS:
+       READNEXT V.ID ELSE CRT 'READNEXT 3 FAILED'      ;*  READNEXT 3 FAILED
+       CRT 'NEXT:' : V.ID                              ;*  NEXT:
+
+
 ## READSELECT##
 
 See also: [READLIST](#READLIST)
@@ -11607,7 +11669,7 @@ READSEQ reads data from a file opened for sequential access.
 
 ### COMMAND SYNTAX
 
-READSEQ Variable FROM FileVar THEN | ELSE statements
+    READSEQ Variable FROM FileVar THEN | ELSE statements
 
 ### SYNTAX ELEMENTS
 
@@ -11630,9 +11692,108 @@ The default buffer size for a READSEQ is 1024 bytes. This can be changed
 using the IOCTL () function with the JIOCTL_COMMAND_SEQ_CHANGE_RECORDSIZE
 Sequential File Extensions.
 
-### EXAMPLES
+### EXAMPLE
 
-See also: Sequential File examples
+### Step 1. Create a text file with long lines (1100 bytes each):
+
+       OPENSEQ '.', 'test.txt' TO F.OUT.FILE THEN
+          WEOFSEQ F.OUT.FILE
+       END ELSE
+          CREATE F.OUT.FILE ELSE
+             CRT 'FILE CREATION ERROR'
+             STOP
+          END
+       END
+    * Create a ruler-like output
+       V.LINE = ''
+       FOR V.I = 1 TO 1100 STEP 10
+          V.J = V.I + 9
+          V.LINE := STR('-', 10 - LEN(V.J)) : V.J
+       NEXT V.I
+    * Now write it
+       FOR V.I = 1 TO 10
+          WRITESEQ V.LINE TO F.OUT.FILE ELSE
+             CRT 'FILE WRITE ERROR'
+             STOP
+          END
+       NEXT V.I
+
+Line ends in this file are shown here (JED, Ctrl-E to go to line end):
+
+    0001 ------1050------1060------1070------1080------1090------1100
+    0002 ------1050------1060------1070------1080------1090------1100
+    0003 ------1050------1060------1070------1080------1090------1100
+    0004 ------1050------1060------1070------1080------1090------1100
+    0005 ------1050------1060------1070------1080------1090------1100
+    0006 ------1050------1060------1070------1080------1090------1100
+    0007 ------1050------1060------1070------1080------1090------1100
+    0008 ------1050------1060------1070------1080------1090------1100
+    0009 ------1050------1060------1070------1080------1090------1100
+    0010 ------1050------1060------1070------1080------1090------1100
+    -------------------------------- End Of Record --------------------------------
+
+### Step 2. Read a line from this text file using plain READSEQ:
+
+       OPENSEQ '.', 'test.txt' TO F.IN.FILE THEN
+          NULL
+       END ELSE
+          CRT 'ERROR OPENING FILE'
+          STOP
+       END
+       READSEQ V.LINE FROM F.IN.FILE ELSE
+          CRT 'ERROR READING FILE'
+          STOP
+       END
+       CRT LEN(V.LINE)                      ;*  1024
+       CRT V.LINE[-20,20]                   ;*  --1010------1020----
+
+### Step 3. Read a line from this text file using IOCTL() first:
+
+    INCLUDE JBC.h
+       OPENSEQ '.', 'test.txt' TO F.IN.FILE THEN
+          NULL
+       END ELSE
+          CRT 'ERROR OPENING FILE'
+          STOP
+       END
+       IF IOCTL(F.IN.FILE, JIOCTL_COMMAND_SEQ_CHANGE_RECORDSIZE, 2048) THEN
+          NULL
+       END ELSE
+          CRT 'IOCTL FAILED !!!'
+          STOP
+       END
+       READSEQ V.LINE FROM F.IN.FILE ELSE
+          CRT 'ERROR READING FILE'
+          STOP
+       END
+       CRT LEN(V.LINE)                      ;*  1100
+       CRT V.LINE[-20,20]                   ;*  ------1090------1100
+
+### Step 3 (alternate). Use subsequent READSEQs to read that file:
+
+       OPENSEQ '.', 'test.txt' TO F.IN.FILE THEN
+          NULL
+       END ELSE
+          CRT 'ERROR OPENING FILE'
+          STOP
+       END
+       V.EOF = ''
+       LOOP
+          V.LINE = ''
+          LOOP
+             READSEQ V.CHUNK FROM F.IN.FILE ELSE
+                V.EOF = 1
+                BREAK
+             END
+             V.LEN = BYTELEN(V.CHUNK)
+             V.LINE := V.CHUNK
+             IF V.LEN LT 1024 THEN BREAK
+          REPEAT
+    * Line processing goes here
+          IF V.EOF THEN BREAK
+          CRT LEN(V.LINE)                      ;*  1100
+          CRT V.LINE[-20,20]                   ;*  ------1090------1100
+       REPEAT
 
 <a name="READT"/>
 
@@ -11657,9 +11818,10 @@ If the READT fails then the statements associated with any ELSE clause
 will be executed. SYSTEM (0) will return the reason for the failure as
 follows:
 
-|1  | There is no media attached to the channel. |
-|---|--------------------------------------------|
-|2  | An end of file mark was found.             |
+| Code | Description                                |
+|------|--------------------------------------------|
+|1     | There is no media attached to the channel. |
+|2     | An end of file mark was found.             |
 
 ### NOTES
 
@@ -11695,7 +11857,7 @@ specified record for update.
 
 ### COMMAND SYNTAX
 
-READU variable1 FROM {variable2,} expression {SETTING setvar} {WAIT timeout} {ON ERROR statements} {LOCKED statements} THEN|ELSE statements
+    READU variable1 FROM {variable2,} expression {SETTING setvar} {WAIT timeout} {ON ERROR statements} {LOCKED statements} THEN|ELSE statements
 
 ### SYNTAX ELEMENTS
 
@@ -11713,8 +11875,9 @@ will be set to one of the following values:
 
 ### INCREMENTAL FILE ERRORS
 
-|128    |    No such file or directory          |
+| Code  | Description                           |
 |-------|---------------------------------------|
+|128    |    No such file or directory          |
 |4096   |    Network error                      |
 |24576  |    Permission denied                  |
 |32768  |    Physical I/O error or unknown error|
@@ -11768,25 +11931,21 @@ remain intact.
 See also: [WRITE](#WRITE), [WRITEU](#WRITEU), [MATWRITE](#MATWRITE),
 [MATWRITEU](#MATWRITEU), [RELEASE](#RELEASE), and [DELETE](#DELETE)
 
-### EXAMPLES
+### EXAMPLE
 
-    OPEN "Customers" ELSE ABORT 201, "Customers"
-    OPEN "DICT Customers" TO DCusts ELSE
-        ABORT 201, "DICT Customers"
-    END
-    LOOP
-       READU Rec FROM DCusts, "Xref" LOCKED
-            CRT "Xref locked by port ":SYSTEM(43):" - retrying"
-            SLEEP 1; CONTINUE ;* Restart LOOP
-       END THEN
-            READ DataRec FROM Rec ELSE
-              ABORT 202, Rec
-            END
-            BREAK ;* Leave the LOOP
-       END ELSE
-            ABORT 202, "Xref"
-        END
-    REPEAT
+       OPEN 'F.TEMP' TO F.TEMP ELSE
+          EXECUTE 'CREATE-FILE DATA F.TEMP 1 101 TYPE=J4'
+          OPEN 'F.TEMP' TO F.TEMP ELSE
+             CRT 'OPEN FAILED'
+             STOP
+          END
+       END
+       READU V.REC FROM F.TEMP, 'REC1' LOCKED
+          CRT 'Lock failure'
+          STOP
+       END ELSE NULL
+       V.REC<-1> = 'A field'
+       WRITE V.REC TO F.TEMP, 'REC1'
 
 <a name="READV"/>
 
@@ -11822,8 +11981,9 @@ will be set to one of the following values:
 
 ### INCREMENTAL FILE ERRORS
 
-|128    |    No such file or directory          |
+| Code  | Description                           |
 |-------|---------------------------------------|
+|128    |    No such file or directory          |
 |4096   |    Network error                      |
 |24576  |    Permission denied                  |
 |32768  |    Physical I/O error or unknown error|
@@ -11898,8 +12058,9 @@ be set to one of the following values:
 
 ### INCREMENTAL FILE ERRORS
 
-|128    |    No such file or directory          |
+| Code  | Description                           |
 |-------|---------------------------------------|
+|128    |    No such file or directory          |
 |4096   |    Network error                      |
 |24576  |    Permission denied                  |
 |32768  |    Physical I/O error or unknown error|
@@ -11998,7 +12159,7 @@ lock.
 
 ### COMMAND SYNTAX
 
-RECORDLOCKED (filevar, recordkey)
+    RECORDLOCKED(filevar, recordkey)
 
 ### SYNTAX ELEMENTS
 
@@ -12013,14 +12174,15 @@ checked.
 RECORDLOCKED returns an integer value to indicate the record lock
 status of the specified record id.
 
-|3  |  Locked by this process by a FILELOCK     |
-|---|-------------------------------------------|
-|2  |  Locked by this process by a READU        |
-|1  |  Locked by this process by a READL        |
-|0  |  Not locked                               |
-|-1 |  Locked by another process by a READL     |
-|-2 |  Locked by another process by a READU     |
-|-3 |  Locked by another process by a FILELOCK  |
+| Code | Description                               |
+|------|-------------------------------------------|
+|3     |  Locked by this process by a FILELOCK     |
+|2     |  Locked by this process by a READU        |
+|1     |  Locked by this process by a READL        |
+|0     |  Not locked                               |
+|-1    |  Locked by another process by a READL     |
+|-2    |  Locked by another process by a READU     |
+|-3    |  Locked by another process by a FILELOCK  |
 
 If the return value is negative, then the SYSTEM(43) and STATUS function
 calls can be used to determine the port number of the program that holds
@@ -12029,12 +12191,24 @@ the port number returned will be the first port number found.
 
 ### EXAMPLE
 
-    OPEN "INVENTORY" TO invFvar ELSE ABORT 201,"Cannot open the INVENTORY file"
-    ...
-    ...
-    IF RECORDLOCKED (invFvar,invId) = -2 THEN
-        CRT "Inventory record ":invId:" is locked by port ":SYSTEM(43)
-    END
+Run this program from one session, wait for "RECORD LOCKED. PRESS ANY KEY TO WRITE"
+message, then run it in another session:
+
+       OPEN 'F.TEMP' TO F.TEMP ELSE
+          EXECUTE 'CREATE-FILE DATA F.TEMP 1 101 TYPE=J4'
+          OPEN 'F.TEMP' TO F.TEMP ELSE
+             CRT 'OPEN FAILED'
+             STOP
+          END
+       END
+       READU V.REC FROM F.TEMP, 'REC1' LOCKED
+          CRT 'Lock failure (' : RECORDLOCKED(F.TEMP, 'REC1') : ')'
+          STOP
+       END ELSE NULL
+       PROMPT 'RECORD LOCKED. PRESS ANY KEY TO WRITE'
+       INPUT DUMMY
+       V.REC<-1> = 'A field'
+       WRITE V.REC TO F.TEMP, 'REC1'
 
 ## REGEXP
 
@@ -12043,7 +12217,7 @@ using UNIX regular expressions. REGEXP is not supported on Windows.
 
 ### COMMAND SYNTAX
 
-REGEXP(variable, expression)
+    REGEXP(variable, expression)
 
 ### SYNTAX ELEMENTS
 
@@ -12056,14 +12230,32 @@ as defined in the UNIX documentation.
 ### NOTES
 
 The function returns a numeric integer value being the first character
-in variable that failed to match the specified regular expression. If
-a match is not found or the regular expression was invalid then the
-function returns 0.
+in variable that matches the specified regular expression. If
+a match is not found then the function returns 0. If the regular expression
+was invalid then the function returns -1.
 
-### EXAMPLE
+### EXAMPLES
 
-    String = "jBASE Software Inc."
-    CRT REGEXP(String, "S[^t]*")
+       String = "jBASE Software Inc."          ;* position of the character "t"
+       CRT REGEXP(String, "S[^t]*")            ;* in "Software" = 4
+    * find an exact value in a list
+       CRT REGEXP("051", "^(050|5001|051|053|265|4007|5007|037|060|098)$")   ;* 1
+       CRT REGEXP("05123", "^(050|5001|051|053|265|4007|5007|037|060|098)$") ;* 0
+    * everything in range "000" - "999" except "037"
+       CRT REGEXP("036", "(0[0-24-9][0-9]|0[0-9][0-68-9]|[1-9][0-9][0-9])")  ;* 1
+       CRT REGEXP("037", "(0[0-24-9][0-9]|0[0-9][0-68-9]|[1-9][0-9][0-9])")  ;* 0
+       CRT REGEXP("137", "(0[0-24-9][0-9]|0[0-9][0-68-9]|[1-9][0-9][0-9])")  ;* 1
+    * everything in range "000" - "999" except "037" and "057"
+       CRT REGEXP("036", "(0[0-246-9][0-9]|0[0-9][0-68-9]|[1-9][0-9][0-9])") ;* 1
+       CRT REGEXP("037", "(0[0-246-9][0-9]|0[0-9][0-68-9]|[1-9][0-9][0-9])") ;* 0
+       CRT REGEXP("057", "(0[0-246-9][0-9]|0[0-9][0-68-9]|[1-9][0-9][0-9])") ;* 0
+       CRT REGEXP("957", "(0[0-246-9][0-9]|0[0-9][0-68-9]|[1-9][0-9][0-9])") ;* 1
+    * all 2-character country codes except "RS"
+       CRT REGEXP('RS', "([A-QS-Z][A-Z]|[R][A-RT-Z])")                       ;* 0
+       CRT REGEXP('AE', "([A-QS-Z][A-Z]|[R][A-RT-Z])")                       ;* 1
+       CRT REGEXP('RU', "([A-QS-Z][A-Z]|[R][A-RT-Z])")                       ;* 1
+    * negative lookahead assertion isn't supported ("all not containing 'bar'")
+       CRT REGEXP("bar", '"^(?!.*?bar).*"')                                 ;* -1
 
 displays the value 4 being the position of the character "t" in the
 word Software
@@ -12077,7 +12269,7 @@ without updating the records using [WRITE](#WRITE).
 
 ### COMMAND SYNTAX
 
-RELEASE {{variable,} expression}
+    RELEASE {{variable,} expression}
 
 ### SYNTAX ELEMENTS
 
@@ -12101,11 +12293,25 @@ in subroutines.
 
 ### EXAMPLE
 
-    READU Rec FROM File, "Record" ELSE ABORT 203, "Record"
-    IF Rec<1> = "X" THEN
-    RELEASE File, "Record"
-    END
-    ......
+This program optionally creates file F.TEMP and writes to it a record REC1
+with up to 6 fields in it:
+
+       OPEN 'F.TEMP' TO F.TEMP ELSE
+          EXECUTE 'CREATE-FILE DATA F.TEMP 1 101 TYPE=J4'
+          OPEN 'F.TEMP' TO F.TEMP ELSE
+             CRT 'OPEN FAILED'
+             STOP
+          END
+       END
+       READU V.REC FROM F.TEMP, 'REC1' LOCKED
+          CRT 'Record locked (' : RECORDLOCKED(F.TEMP, 'REC1') : ')'
+          STOP
+       END ELSE NULL
+       IF DCOUNT(V.REC, @FM) GT 5 THEN RELEASE F.TEMP, 'REC1'
+       ELSE
+          V.REC<-1> = 'A field'
+          WRITE V.REC TO F.TEMP, 'REC1'
+       END
 
 ## REMOVE##
 
@@ -12114,7 +12320,7 @@ array.
 
 ### COMMAND SYNTAX
 
-REMOVE variable FROM array SETTING setvar
+    REMOVE variable FROM array SETTING setvar
 
 ### SYNTAX ELEMENTS
 
@@ -12125,14 +12331,15 @@ REMOVE variable FROM array SETTING setvar
 **setvar** is set by the system during the extraction to indicate the
 type of delimiter found:
 
-|0  |  end of the array  |                 |
-|---|--------------------|-----------------|
-|1  |  xFF ASCII 255     |                 |
-|2  |  xFE ASCII 254     | Field marker    |
-|3  |  xFD ASCII 253     | Value marker    |
-|4  |  xFC ASCII 252     | Subvalue marker |
-|5  |  xFB ASCII 251     |                 |
-|6  |  xFA ASCII 250     |                 |
+|Code|  Description       | Notes           |
+|----|--------------------|-----------------|
+|0   |  end of the array  |                 |
+|1   |  xFF ASCII 255     |                 |
+|2   |  xFE ASCII 254     | Field marker    |
+|3   |  xFD ASCII 253     | Value marker    |
+|4   |  xFC ASCII 252     | Subvalue marker |
+|5   |  xFB ASCII 251     |                 |
+|6   |  xFA ASCII 250     |                 |
 
 ### NOTES
 
@@ -12153,14 +12360,13 @@ pointer" by assigning the variable to itself - for example REC = REC.
 
 ### EXAMPLE
 
-    EQU FM TO CHAR (254), VM to CHAR(253), SVM to CHAR(252)
-    REC = "Field 1":FM:"Value 1":VM:" Value 2":FM:"Field 3"
-    REMOVE EXSTRING FROM REC SETTING DELIM
-    REMOVE EXSTRING FROM REC SETTING DELIM
-
-The first time REMOVE is used, EXSTRING will contain "Field 1" and DELIM
-will contain xFE. The second time REMOVE is used, EXSTRING will
-contain "Value 1" and DELIM will contain xFD.
+       REC = "Field 1" :@FM: "Value 1" :@SM: " Value 2" :@VM: "Field 3"
+       REMOVE EXSTRING FROM REC SETTING V.STATUS  ; CRT V.STATUS         ;*  2
+       REMOVE EXSTRING FROM REC SETTING V.STATUS  ; CRT V.STATUS         ;*  4
+       REMOVE EXSTRING FROM REC SETTING V.STATUS  ; CRT V.STATUS         ;*  3
+       REMOVE EXSTRING FROM REC SETTING V.STATUS  ; CRT V.STATUS         ;*  0
+       REC = REC                   ;* reset "remove pointer"
+       REMOVE EXSTRING FROM REC SETTING V.STATUS  ; CRT V.STATUS         ;*  2
 
 ## REPLACE
 
@@ -12168,21 +12374,20 @@ REPLACE is an obsolete way to assign to dynamic arrays via a function.
 
 ### COMMAND SYNTAX
 
-REPLACE (var, expression1{, expression2{, expression3}}; expression4)
+    REPLACE(var, expression1{, expression2{, expression3}}; expression4)
 
 ### SYNTAX ELEMENTS
 
-var is the dynamic array that the REPLACE function will use to assign
-pointer" by assigning the variable to itself - for example REC = REC.
-remains unchanged.
+**var** is the dynamic array that the REPLACE function will use to assign
+new values; remains unchanged.
 
 **expression1** specifies into which field assignment will be made and
 should evaluate to a numeric.
 
-**expression2** is only specified when multi-value assignment is to be
+**expression2** specifies into which value assignment is to be
 done and should evaluate to a numeric.
 
-**expression3** is only specified when sub-value assignment is to be
+**expression3** specifies into which sub-value assignment is to be
 done and should evaluate to a numeric.
 
 **expression4** can evaluate to any data type and is the actual data
@@ -12194,10 +12399,12 @@ The function returns a copy of var with the specified replacement
 carried out. This value may be assigned to the original var in which
 case the jBC compiler will optimize the assignment.
 
-### EXAMPLES
+### EXAMPLE
 
-    X = "JBASE":MV:"is Great"
-    X = REPLACE (X,1,1;"jBASE")
+       X = "jBASE" :@VM: "is" :@VM: "great" :@FM: '!'
+       Y = REPLACE(X, 1, 2; "is really")
+       CRT FMT(X, 'MCP')                    ;*  jBASE]is]great^!
+       CRT FMT(Y, 'MCP')                    ;*  jBASE]is really]great^!
 
 <a name="RETURN"/>
 
@@ -12265,9 +12472,10 @@ clauses must be specified with the statement.
 If the statement fails then the reason for failure can be determined
 via the value of SYSTEM(0) as follows:
 
-|1  | There is no media attached to the channel |
-|---|-------------------------------------------|
-|2  | There is an end for file mark             |
+| Code | Description                               |
+|------|-------------------------------------------|
+|1     | There is no media attached to the channel |
+|2     | There is an end for file mark             |
 
 <a name="RIGHT"/>
 
@@ -12461,10 +12669,11 @@ specified, 0 is assumed.
 
 The permissible values of relto and their meanings follow:
 
-|0  |  Relative to the beginning of the file    |
-|---|-------------------------------------------|
-|1  |  Relative to the current position         |
-|2  |  Relative to the end of the file          |
+| Value | Description                           |
+|-------|---------------------------------------|
+|0      | Relative to the beginning of the file |
+|1      | Relative to the current position      |
+|2      | Relative to the end of the file       |
 
 If relto is not specified, 0 is assumed.
 
@@ -12549,8 +12758,9 @@ is specified then it assumes the default list variable.
 If specifying the SETTING clause and the select fails, it sets setvar
 to one of the following values:
 
-|128    |    No such file or directory          |
+| Code  | Description                           |
 |-------|---------------------------------------|
+|128    |    No such file or directory          |
 |4096   |    Network error                      |
 |24576  |    Permission denied                  |
 |32768  |    Physical I/O error or unknown error|
@@ -13734,8 +13944,9 @@ See also: [CHANGE](#CHANGE) function.
 
 The following system functions are supported by TAFC:
 
-| SYSTEM(0)    |     Returns the last error code
-|--------------|----------------------------------------------------------------------------------------------------------------
+| Function     | Description                           |
+|--------------|------------------------------------------------------------------
+|SYSTEM(0)     |Returns the last error code
 |SYSTEM(1)     |Returns 1 if output directed to printer
 |SYSTEM(2)     |Returns page width
 |SYSTEM(3)     |Returns page depth
@@ -13969,8 +14180,6 @@ The following system functions are supported by TAFC:
 |SYSTEM(1032)  | Returns default frame size
 |SYSTEM(1034)  | Returns handle of the current thread
 |SYSTEM(1035)  | Returns the product ID of the license currently in use by this process;
-|              |
-|              |
 |              |  1    Enterprise
 |              |  13.  Server
 
@@ -14146,10 +14355,11 @@ of the record from which data is to be accessed.
 **action.code** indicates what should happen if the field is null, or
 the if record is not found.  This is a literal.  The valid codes are:
 
-|X  | Returns a null string. This is the default action    |
-|---|------------------------------------------------------|
-|V  | Prints an error message.                             |
-|C  | Returns the value of key.                            |
+| Code | Description                                          |
+|------|------------------------------------------------------|
+|X     | Returns a null string. This is the default action    |
+|V     | Prints an error message.                             |
+|C     | Returns the value of key.                            |
 
 ### NOTES
 
@@ -14548,9 +14758,10 @@ If the WEOF fails it then executes the statements associated with
 any ELSE clause. SYSTEM(0) will return the reason for the failure
 as follows:
 
-|1  | There is no media attached to the channel. |
-|---|--------------------------------------------|
-|2  | End of media found.                        |
+| Code | Description                                |
+|------|--------------------------------------------|
+|1     | There is no media attached to the channel. |
+|2     | End of media found.                        |
 
 
 A "tape" does not refer to magnetic tape devices only but to any
@@ -14616,8 +14827,9 @@ setvar to one of the following values:
 
 ### INCREMENTAL FILE ERRORS
 
-|128    |    No such file or directory          |
+| Code  | Description                           |
 |-------|---------------------------------------|
+|128    |    No such file or directory          |
 |4096   |    Network error                      |
 |24576  |    Permission denied                  |
 |32768  |    Physical I/O error or unknown error|
@@ -14709,8 +14921,9 @@ to one of the following values:
 
 ### INCREMENTAL FILE ERRORS
 
-|128    |    No such file or directory          |
+| Code  | Description                           |
 |-------|---------------------------------------|
+|128    |    No such file or directory          |
 |4096   |    Network error                      |
 |24576  |    Permission denied                  |
 |32768  |    Physical I/O error or unknown error|
@@ -14836,9 +15049,10 @@ If the WRITET fails then the statements associated with any ELSE
 clause will be executed. SYSTEM(0) will return the reason for
 the failure as follows:
 
-|1  | There is no media attached to the channel. |
-|---|--------------------------------------------|
-|2  | End of media found.                        |
+| Code | Description                                |
+|------|--------------------------------------------|
+|1     | There is no media attached to the channel. |
+|2     | End of media found.                        |
 
 ### NOTES
 
@@ -14893,8 +15107,9 @@ will be set to one of the following values:
 
 ### INCREMENTAL FILE ERRORS
 
-|128    |    No such file or directory          |
+| Code  | Description                           |
 |-------|---------------------------------------|
+|128    |    No such file or directory          |
 |4096   |    Network error                      |
 |24576  |    Permission denied                  |
 |32768  |    Physical I/O error or unknown error|
@@ -14960,8 +15175,9 @@ setvar to one of the following values:
 
 ### INCREMENTAL FILE ERRORS
 
-|128    |    No such file or directory          |
+| Code  | Description                           |
 |-------|---------------------------------------|
+|128    |    No such file or directory          |
 |4096   |    Network error                      |
 |24576  |    Permission denied                  |
 |32768  |    Physical I/O error or unknown error|
@@ -15035,8 +15251,9 @@ to one of the following values:
 
 ### INCREMENTAL FILE ERRORS
 
-|128    |    No such file or directory          |
+| Code  | Description                           |
 |-------|---------------------------------------|
+|128    |    No such file or directory          |
 |4096   |    Network error                      |
 |24576  |    Permission denied                  |
 |32768  |    Physical I/O error or unknown error|
@@ -15101,10 +15318,11 @@ field# is the field number to be retrieved from the record.
 action.code indicates the procedure if the field is null, or cannot
 find the if record.  This is a literal.  The valid codes are:
 
-|X  | Returns a null string. This is the default action.   |
-|---|------------------------------------------------------|
-|V  | Prints an error message.                             |
-|C  | Returns the value of key.                            |
+| Code | Description                                          |
+|------|------------------------------------------------------|
+|X     | Returns a null string. This is the default action.   |
+|V     | Prints an error message.                             |
+|C     | Returns the value of key.                            |
 
 ### NOTES
 
@@ -15434,10 +15652,11 @@ statement to predetermine the action for all subsequent Embedded SQL
 statements. The SYSTEM(0) function will return three different possible
 values.
 
-|<0  |  Embedded SQL statement failed.     |
-|----|-------------------------------------|
-|0   |  Embedded SQL statement successful. |
-|100 |  NOT FOUND. No rows where found.    |
+| Code | Description                         |
+|------|-------------------------------------|
+|<0    |  Embedded SQL statement failed.     |
+|0     |  Embedded SQL statement successful. |
+|100   |  NOT FOUND. No rows where found.    |
 
 The format of the Embedded SQL WHENEVER statement is as follows:
 
@@ -15445,8 +15664,9 @@ The format of the Embedded SQL WHENEVER statement is as follows:
 
 Where
 
-|**Condition** |NOT FOUND                                                 |
+| Value        | Description                                              |
 |--------------|----------------------------------------------------------|
+|**Condition** |NOT FOUND                                                 |
 |              |SQLERROR                                                  |
 |              |                                                          |
 |**Action**    |DO Function - Oracle implementation.                      |
