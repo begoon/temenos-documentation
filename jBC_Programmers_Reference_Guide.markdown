@@ -6556,11 +6556,14 @@ for information.
 
 ### COMMAND SYNTAX
 
-HUSH { ON | OFF | expression }
+    HUSH { ON | OFF | expression }
 
 ### EXAMPLE
 
-HUSH ON
+       CRT 'PASSWORD:':
+       HUSH ON
+       INPUT V.PASSWORD
+       HUSH OFF
 
 ## ICONV
 
@@ -10662,7 +10665,7 @@ OSREAD reads an OS file.
 
 ### COMMAND SYNTAX
 
-OSREAD Variable FROM expression {ON ERROR Statements}  {THEN | ELSE} Statements {END}
+    OSREAD Variable FROM expression {ON ERROR Statements}  {THEN | ELSE} Statements {END}
 
 ### SYNTAX ELEMENTS
 
@@ -10694,7 +10697,45 @@ jBASE uses the ASCII 0 character (CHAR (0)) as a string-end delimiter.
 ASCII 0 is not useable within string variable in jBC. This command
 converts CHAR(0) to CHAR(128) when reading a block of data.
 
-OSREAD MyFile FROM "C:\MyDirectory\MyFile" ELSE PRINT "FILE NOT FOUND"
+### NOTE
+
+OSREAD() doesn't include the last LF character in the file to the resulting
+variable:
+
+### EXAMPLE
+
+       V.DIR.OUT = '.'  ;   V.FILE.OUT = 'report.txt'
+       OPENSEQ V.DIR.OUT, V.FILE.OUT TO F.FILE.OUT THEN
+          WEOFSEQ F.FILE.OUT
+       END ELSE
+          CREATE F.FILE.OUT ELSE CRT 'File create error'  ;  STOP
+       END
+       V.BUFFER = STR('.', 999)
+       LOOP
+          WRITESEQ V.BUFFER TO F.FILE.OUT ELSE CRT 'Write error'  ;  STOP
+          V.FILE.SIZE = DIR(V.FILE.OUT)<1>
+          CRT V.FILE.SIZE
+       UNTIL V.FILE.SIZE GE 10000
+       REPEAT
+       CLOSESEQ F.FILE.OUT
+       OSREAD V.ALL FROM V.FILE.OUT ELSE CRT 'Read error'  ;  STOP
+       CRT LEN(V.ALL)
+       CRT DQUOTE(RIGHT(V.ALL, 20))
+
+Output:
+
+    1000
+    2000
+    3000
+    4000
+    5000
+    6000
+    7000
+    8000
+    9000
+    10000
+    9999
+    "...................."
 
 <a name="OSWRITE"/>
 
@@ -12257,9 +12298,6 @@ was invalid then the function returns -1.
     * negative lookahead assertion isn't supported ("all not containing 'bar'")
        CRT REGEXP("bar", '"^(?!.*?bar).*"')                                 ;* -1
 
-displays the value 4 being the position of the character "t" in the
-word Software
-
 <a name="RELEASE"/>
 
 ## RELEASE
@@ -12293,8 +12331,8 @@ in subroutines.
 
 ### EXAMPLE
 
-This program optionally creates file F.TEMP and writes to it a record REC1
-with up to 6 fields in it:
+This program optionally creates file F.TEMP and writes to it a record REC1, on the following
+runs it updates that record – puts a new field in it, but only if there’s less than 7 fields:
 
        OPEN 'F.TEMP' TO F.TEMP ELSE
           EXECUTE 'CREATE-FILE DATA F.TEMP 1 101 TYPE=J4'
@@ -12360,7 +12398,7 @@ pointer" by assigning the variable to itself - for example REC = REC.
 
 ### EXAMPLE
 
-       REC = "Field 1" :@FM: "Value 1" :@SM: " Value 2" :@VM: "Field 3"
+       REC = "Field 1" :@FM: "Field 2" :@SM: " Sub-value" :@VM: "Value"
        REMOVE EXSTRING FROM REC SETTING V.STATUS  ; CRT V.STATUS         ;*  2
        REMOVE EXSTRING FROM REC SETTING V.STATUS  ; CRT V.STATUS         ;*  4
        REMOVE EXSTRING FROM REC SETTING V.STATUS  ; CRT V.STATUS         ;*  3
@@ -12690,16 +12728,15 @@ message.
 
 ### NOTES
 
-In Windows NT systems, line endings in files are denoted by the
+In Windows-based systems, line endings in files are denoted by the
 character sequence RETURN + LINEFEED rather than the single
 LINEFEED used in UNIX files. The value of offset should take into
 account this extra byte on each line in Windows NT file systems.
 
-If you use the [OPENDEV](#OPENDEV) statement to open a 1/4-inch
-cartridge tape (60 MB or 150 MB) for sequential processing, you
+If you use the [OPENDEV](#OPENDEV) statement to open a
+tape device for sequential processing, you
 can move the file pointer only to the beginning or the end of the
-data. For diskette drives, you can move the file pointer only to
-the start of the data.
+data.
 
 Seeking beyond the end of the file and then writing creates a gap,
 or hole, in the file. This hole occupies no physical space, and
@@ -12712,21 +12749,28 @@ For more information about sequential file processing, See also:
 
 ### EXAMPLE
 
-The following example reads and prints the first line of RECORD4.
-Then the SEEK statement moves the pointer five bytes from the front
-of the file, then reads and prints the rest of the current line.
-
-    OPENSEQ '.', 'MYSEQFILE' TO FILE ELSE ABORT
-    READSEQ B FROM FILE THEN PRINT B
-    SEEK FILE,5, 0 THEN
-    READSEQ A FROM FILE THEN PRINT A ELSE ABORT
-    END
-
-The output of this program is:
-
-    FIRST LINE
-
-    LINE
+       V.DIR.OUT = '.'  ;   V.FILE.OUT = 'report.txt'
+       OPENSEQ V.DIR.OUT, V.FILE.OUT TO F.FILE.OUT THEN
+          WEOFSEQ F.FILE.OUT
+       END ELSE
+          CREATE F.FILE.OUT ELSE CRT 'File create error'  ;  STOP
+       END
+       WRITESEQ '1234567890ABCDEF' TO F.FILE.OUT ELSE
+          CRT 'Write error'
+          STOP
+       END
+    * go right after position 5 from the beginning
+       SEEK F.FILE.OUT, 5, 0 ELSE CRT 'Seek error'  ;  STOP
+       READSEQ V.STRING FROM F.FILE.OUT ELSE CRT 'Read error'  ;  STOP
+       CRT V.STRING                 ;* 67890ABCDEF
+    * go beyond end of file and write something there
+       SEEK F.FILE.OUT, 3, 2 ELSE CRT 'Seek error'  ;  STOP
+       WRITESEQ 'VWXYZ' TO F.FILE.OUT ELSE CRT 'Write error'  ;  STOP
+       CLOSESEQ F.FILE.OUT
+    * read full file contents
+       OSREAD V.ALL FROM V.FILE.OUT ELSE CRT 'Read error'  ;  STOP
+       CRT FMT(FMT(OCONV(V.ALL, 'MX'), '2L'), 'MCP ')
+    * 31 32 33 34 35 36 37 38 39 30 41 42 43 44 45 46 FE 00 00 00 56 57 58 59 5A
 
 <a name="SELECT"/>
 
@@ -12937,7 +12981,7 @@ SEQ function returns numeric ASCII value of a character.
 
 ### COMMAND SYNTAX
 
-SEQ (expression)
+    SEQ(expression)
 
 ### SYNTAX ELEMENTS
 
@@ -12950,18 +12994,26 @@ character of that string.
 The SEQ function will return numeric values beyond 255 for UTF-8 byte
 sequences representing any Unicode values above 0x000000ff.
 
-### NOTES
-
-SEQ operates on any character in the integer range 0 to 255
-
-### EXAMPLES
+### EXAMPLE
 
     EQU ENQ TO 5
     * Get next comms code
     * Time-out after 20 seconds
     INPUT A, 1 FOR 200 ELSE BREAK
-    IF SEQ (A) = ENQ THEN
+    IF SEQ(A) = ENQ THEN
     * Respond to ENQ char
+
+### EXAMPLE 2
+
+    * C5A1: Unicode Character 'LATIN SMALL LETTER S WITH CARON'
+       CRT SEQ(ICONV('C5A1', 'MX'))
+       CRT ICONV('C5A1', 'MX')
+
+Output:
+
+353
+
+&#353;
 
 ## SEQS
 
@@ -13139,7 +13191,7 @@ sorted elements.
 All system delimiters in expression will be converted to an attribute
 mark '0xFE' in the sorted result. For example, the following code
 
-    MyArray = 'GEORGE':@VM:'FRED':@AM:'JOHN':@SVM:'ANDY'
+    MyArray = 'GEORGE':@VM:'FRED':@AM:'JOHN':@SM:'ANDY'
     CRT SORT (MyArray)
 
 will return
@@ -13469,7 +13521,7 @@ purposes.
 
 ### EXAMPLE
 
-The following example opens the file SLIPPERS to the file variable DSCB,
+The following example opens the file SLIPPERS,
 then creates an active sorted select list of record IDs. The READNEXT
 statement assigns the first record ID in the select list to the variable
 @ID, then prints it.
@@ -13598,8 +13650,7 @@ it to an array.
 
 ### COMMAND SYNTAX
 
-    STATUS array FROM variable
-    THEN statements ELSE statements?ELSE statements
+    STATUS array FROM variable THEN statements ELSE statements|ELSE statements
 
 ### SYNTAX ELEMENTS
 
@@ -13655,12 +13706,15 @@ are present, program execution continues with the next statement. If
 the attempt to assign the array fails, the ELSE statements are
 executed; any THEN statements are ignored.
 
-### EXAMPLES
+### EXAMPLE
 
-    OPENSEQ '/Fred' TO test THEN PRINT "File Opened" ELSE STOP
-    STATUS info FROM filevar
-    filename= stat<20>
-    inode= info<10>
+       IF NOT(GETENV('JEDIFILENAME_SYSTEM', FN.SYSTEM)) THEN ABORT
+       OPEN FN.SYSTEM TO F.SYSTEM ELSE NULL
+       STATUS V.INFO.L FROM F.SYSTEM ELSE ABORT
+       CRT V.INFO.L<5>       ;*  permissions in octal, e.g. 655
+       CRT V.INFO.L<6>       ;*  file size in bytes
+       CRT V.INFO.L<20>      ;*  full path to file
+       CRT V.INFO.L<21>      ;*  file type, e.g. J4, JR, XMLDB2, SEQ
 
 <a name="STOP"/>
 
@@ -13875,7 +13929,7 @@ SUM function sums numeric elements in a dynamic array.
 
 ### COMMAND SYNTAX
 
-SUM (expr)
+    SUM(expr)
 
 ### SYNTAX ELEMENTS
 
@@ -13887,24 +13941,16 @@ Non-numeric sub-values, values and attributes are ignored.
 
 ### EXAMPLES
 
-    s = CHAR (252)
-    v = CHAR(253)
-    a = CHAR(254)
-    a0 = 1:s:2:v:3:a:4:s:5:v:6:a:7:s:8:v:'NINE'
-    a1 = SUM (A)
-    a2 = SUM(a1)
-    a3 = SUM(a2)
-    CRT a0
-    CRT a1
-    CRT a2
-    CRT a3
-
-The above code displays:
-
-  12²345²678²NINE
-  3²39²615²0
-  61515
-  36
+       V.ARRAY = 1 :@FM: 2 :@FM: 3.1
+       CRT FMT(SUM(V.ARRAY), 'MCP')         ;*  6.1
+       V.ARRAY<4> = 6
+       CRT FMT(SUM(V.ARRAY), 'MCP')         ;*  12.1
+       V.ARRAY<4,2> = 7
+       CRT FMT(SUM(V.ARRAY), 'MCP')         ;*  1^2^3.1^13
+       V.ARRAY<4,3> = 'QWERTY'
+       CRT FMT(SUM(V.ARRAY), 'MCP')         ;*  still 1^2^3.1^13
+       V.ARRAY<4,3,2> = 8
+       CRT FMT(SUM(V.ARRAY), 'MCP')         ;*  1^2^3.1^6]7]8
 
 ## SWAP
 
@@ -14183,6 +14229,29 @@ The following system functions are supported by TAFC:
 |              |  1    Enterprise
 |              |  13.  Server
 
+### EXAMPLES
+
+       CRT SYSTEM(40)        ;* e.g. test
+    * is there anything in keyboard buffer
+       CRT SYSTEM(14)        ;*  0
+    * Buffer is not necessarily filled manually
+       DATA 'QWE'
+       CRT SYSTEM(14)        ;*  4
+    * Prompt...
+       CRT SYSTEM(26)        ;*  ?
+       PROMPT 'Your choice:'
+       CRT SYSTEM(26)        ;*  Your choice:
+    * Active SELECT
+       IF NOT(GETENV('TAFC_HOME', V.HOME)) THEN
+          CRT 'TAFC_HOME not defined'
+          STOP
+       END
+       CLEARDATA             ;* otherwise "QWE" will be executed
+       CRT SYSTEM(11)        ;*  0
+       HUSH ON
+       EXECUTE 'SELECT ' : V.HOME : '/jbcmessages'
+       HUSH OFF
+       CRT SYSTEM(11)        ;*  490
 
 ## TAN
 
@@ -14312,7 +14381,7 @@ TIMESTAMP returns a UTC timestamp value as decimal seconds.
 
 ### COMMAND SYNTAX
 
-TIMESTAMP ()
+    TIMESTAMP()
 
 ### SYNTAX ELEMENTS
 
@@ -14326,6 +14395,13 @@ the same value many times before the operating system updates the
 underlying timer. For example, Windows updates the low level timer
 every 1/50 second even though it stores the time in billionths
 of a second."
+
+### EXAMPLE
+
+       V.TS = TIMESTAMP()
+       CRT V.TS                     ;* e.g. 1352316687.1156
+       CRT (MAKETIMESTAMP(DATE(), TIME(), 'Europe/Amsterdam') - V.TS) / 3600 ;* -1
+       CRT (MAKETIMESTAMP(DATE(), TIME(), 'Asia/Singapore') - V.TS) / 3600   ;* -8
 
 ## TRANS
 
