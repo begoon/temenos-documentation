@@ -10699,8 +10699,8 @@ converts CHAR(0) to CHAR(128) when reading a block of data.
 
 ### NOTE
 
-OSREAD() doesn't include the last LF character in the file to the resulting
-variable:
+OSREAD doesn't include the LF character after the last line in the file
+to the resulting variable:
 
 ### EXAMPLE
 
@@ -14508,7 +14508,7 @@ reverse any updates to the database.
 
 ### COMMAND SYNTAX
 
-TRANSABORT {abort-text} [THEN statement | ELSE statement]
+    TRANSABORT {abort-text} [THEN statement | ELSE statement]
 
 ### SYNTAX ELEMENTS
 
@@ -14531,7 +14531,7 @@ active on the current process.
 
 ### COMMAND SYNTAX
 
-TRANSQUERY()
+    TRANSQUERY()
 
 ### NOTES
 
@@ -14553,7 +14553,7 @@ beginning of a transaction.
 
 ### COMMAND SYNTAX
 
-TRANSTART {SYNC}{start-text} [THEN statement | ELSE statement]
+    TRANSTART {SYNC}{start-text} [THEN statement | ELSE statement]
 
 ### SYNTAX ELEMENTS
 
@@ -14585,7 +14585,7 @@ completed transaction.
 
 ### COMMAND SYNTAX
 
-TRANSEND {end-text} [THEN statement | ELSE statement]
+    TRANSEND {end-text} [THEN statement | ELSE statement]
 
 ### SYNTAX ELEMENTS
 
@@ -14601,6 +14601,99 @@ clause will be executed if the transaction end fails for any reason.
 Any record locks set during the transaction will be released upon
 successful completion.
 
+### Transactions-related examples
+
+### EXAMPLE 1
+
+Write to file without transactions:
+
+       EXECUTE 'DELETE-FILE DATA F.TEMP'
+       EXECUTE 'CREATE-FILE DATA F.TEMP 1 101 TYPE=J4'
+       OPEN 'F.TEMP' TO F.TEMP ELSE ABORT 201, 'F.TEMP'
+       V.REC.INIT = 'LINE 1' :@FM: 'LINE 2' :@FM: 'LINE 3'
+       WRITE V.REC.INIT TO F.TEMP, 'REC1'
+       EXECUTE 'LIST F.TEMP *A1 *A2 *A3'
+       PROMPT 'Press any key to continue'
+       INPUT DUMMY
+       EXECUTE 'LIST F.TEMP *A1 *A2 *A3'
+
+Output: LIST will show the same results both times:
+
+    LIST F.TEMP *A1 *A2 *A3
+
+    DICT F.TEMP...    *A1...........    *A2...........    *A3...........
+
+    REC1              LINE 1            LINE 2            LINE 3
+
+     1 Records Listed
+
+Write to file in a transaction:
+
+       EXECUTE 'DELETE-FILE DATA F.TEMP'
+       EXECUTE 'CREATE-FILE DATA F.TEMP 1 101 TYPE=J4'
+       OPEN 'F.TEMP' TO F.TEMP ELSE ABORT 201, 'F.TEMP'
+       TRANSTART ELSE
+          CRT 'ERROR STARTING TXN'
+          STOP
+       END
+       CRT TRANSQUERY()   ;* 1 - we're inside a transaction
+       CRT SYSTEM(47)     ;* another method to check it
+       V.REC.INIT = 'LINE 1' :@FM: 'LINE 2' :@FM: 'LINE 3'
+       WRITE V.REC.INIT TO F.TEMP, 'REC1'
+       EXECUTE 'LIST F.TEMP *A1 *A2 *A3'
+       PROMPT 'Press any key to continue'
+       INPUT DUMMY
+       TRANSEND THEN CRT 'TXN WRITTEN'
+       EXECUTE 'LIST F.TEMP *A1 *A2 *A3'
+
+Until transaction is over -- no records will be shown:
+
+    LIST F.TEMP *A1 *A2 *A3
+
+    DICT F.TEMP...    *A1...........    *A2...........    *A3...........
+
+
+     No Records Listed
+
+    Press any key to continue
+
+    LIST F.TEMP *A1 *A2 *A3
+
+    DICT F.TEMP...    *A1...........    *A2...........    *A3...........
+
+    REC1              LINE 1            LINE 2            LINE 3
+
+     1 Records Listed
+
+### EXAMPLE 2
+
+       EXECUTE 'DELETE-FILE DATA F.TEMP'
+       EXECUTE 'CREATE-FILE DATA F.TEMP 1 101 TYPE=J4'
+       OPEN 'F.TEMP' TO F.TEMP ELSE ABORT 201, 'F.TEMP'
+       V.REC.INIT = 'LINE 1' :@FM: 'LINE 2' :@FM: 'LINE 3'
+       WRITE V.REC.INIT TO F.TEMP, 'REC1'    ;* write before a transaction
+       TRANSTART ELSE
+          CRT 'ERROR STARTING TXN'
+          STOP
+       END
+       WRITE V.REC.INIT TO F.TEMP, 'REC2'
+       TRANSABORT THEN CRT 'TXN ABORTED'     ;* abandon the second write
+       WRITE V.REC.INIT TO F.TEMP, 'REC3'    ;* write after a transaction
+       EXECUTE 'LIST F.TEMP *A1 *A2 *A3'
+
+Output:
+
+    LIST F.TEMP *A1 *A2 *A3
+
+    DICT F.TEMP...    *A1...........    *A2...........    *A3...........
+
+    REC1              LINE 1            LINE 2            LINE 3
+    REC3              LINE 1            LINE 2            LINE 3
+
+     2 Records Listed
+
+<a name="TRIM"/>
+
 ## TRIM
 
 TRIM statement allows characters to be removed from a string in a
@@ -14608,7 +14701,7 @@ number of ways.
 
 ### COMMAND SYNTAX
 
-TRIM (expression1 {, expression2{, expression3}})
+    TRIM(expression1 {, expression2{, expression3}})
 
 ### SYNTAX ELEMENTS
 
@@ -14635,14 +14728,19 @@ The trim types available for expression3 are:
 |E    |	removes trailing spaces and tabs                        |
 |D    |	removes leading, trailing and redundant spaces and tabs.|
 
-### EXAMPLE
+### EXAMPLES
 
-    INPUT Answer
-    * Remove spaces and tabs (second parameter ignored)
-    Answer = TRIM (Answer, ", "D")
-    INPUT Joker
-    * Remove all dots
-    Thief = TRIM(Joker, ".", "A")
+       V.STRING = '   A   string  '
+    * Get rid of leading spaces
+       CRT '"' : TRIM(V.STRING, ' ', 'L') : '"'   ;*    "A   string  "
+    * Get rid of trailing spaces
+       CRT '"' : TRIM(V.STRING, ' ', 'T') : '"'   ;*    "   A   string"
+    * Get rid of leading and trailing spaces
+       CRT '"' : TRIM(V.STRING, ' ', 'B') : '"'   ;*    "A   string"
+    * Get rid of leading, trailing and redundant spaces
+       CRT '"' : TRIM(V.STRING, ' ', 'R') : '"'   ;*    "A string"
+    * Get rid of leading zeroes
+       CRT '"' : TRIM('000033', '0', 'L') : '"'   ;*    "33"
 
 ## TRIMB
 
@@ -14693,7 +14791,7 @@ has been assigned a value.
 
 ### COMMAND SYNTAX
 
-UNASSIGNED (variable)
+    UNASSIGNED(variable)
 
 ### SYNTAX ELEMENTS
 
@@ -14709,9 +14807,18 @@ See also: [ASSIGNED](#ASSIGNED)
 
 ### EXAMPLES
 
-    IF UNASSIGNED(Var1) THEN
-        Var1 = "Assigned now!"
-    END
+       OPEN 'F.TEMP' TO F.TEMP ELSE
+          EXECUTE 'CREATE-FILE DATA F.TEMP 1 101 TYPE=J4'
+          OPEN 'F.TEMP' TO F.TEMP ELSE ABORT 201, 'F.TEMP'
+       END
+       CRT UNASSIGNED(F.TEMP)        ;* 0
+       CLOSE F.TEMP
+       CRT UNASSIGNED(F.TEMP)        ;* 1
+       CRT UNASSIGNED(V.VAR)         ;* 1
+       V.VAR = 5
+       CRT UNASSIGNED(V.VAR)         ;* 0
+       CLEAR
+       CRT UNASSIGNED(V.VAR)         ;* 0 - it was assigned the value 0
 
 ## UNIQUEKEY
 
@@ -14719,21 +14826,27 @@ UNIQUEKEY returns a unique 36-byte character key.
 
 ### COMMAND SYNTAX
 
-UNIQUEKEY ()
+    UNIQUEKEY()
 
 ### SYNTAX ELEMENTS
 
 The UNIQUEKEY() function will generate a UUID (Universally Unique IDentifier),
-also known as GUIDs (Globally Unique IDentifier). The key contains hexadecimal
-characters and – (Hyphen) and generate unique 36-byte character key on each
-call to the function. This is based on the UUID standard version 4 (random)
-and can guarantee uniqueness across space and time.
+also known as GUID (Globally Unique IDentifier).
 
 ### EXAMPLE
 
-    CRT UNIQUEKEY()
-    Output:
-    6005b4f4-0df4-492c-9e07-d25b2a58978f
+       FOR V.I = 1 TO 5
+          CRT FMT(DOWNCASE(FMT(UNIQUEKEY(), 'MX')),   \
+                'L(########-####-####-############)')
+       NEXT V.I
+
+Sample output:
+
+    41505741-4141-4445-7935727a6a35
+    41505741-4141-4445-7935727a6a36
+    41505741-4141-4445-7935727a6a37
+    41505741-4141-4445-7935727a6a38
+    41505741-4141-4445-7935727a6a39
 
 ## UNLOCK
 
