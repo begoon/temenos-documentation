@@ -211,6 +211,10 @@ use angle brackets:
        V.ARRAY<2> += 1
        CRT V.ARRAY<2>               ;* 3
        V.ARRAY<-1> = 10             ;* adds an element to the end
+    * Nesting is allowed:
+       V.CNT = 1 :@FM: 3 :@FM: 5
+       V.ARRAY<V.CNT<2>> = 77
+       CRT FMT(V.ARRAY, 'MCP')      ;* 1^3^77^4]5]6\7^10
 
 Note that array elements are numbered starting from 1 rather that 0.
 
@@ -14967,11 +14971,11 @@ TAFC debugger with an appropriate message.
 
 ## WEOFSEQ
 
-WEOFSEQ writes end of a file opened for sequential access.
+WEOFSEQ truncates a file opened for sequential access.
 
 ### COMMAND SYNTAX
 
-WEOFSEQ FileVar {THEN | ELSE Statements}
+    WEOFSEQ FileVar {THEN | ELSE Statements}
 
 ### SYNTAX ELEMENTS
 
@@ -14985,9 +14989,21 @@ sequential access.
 WEOFSEQ forces truncation of the file at the current file pointer
 nothing is actually 'written' to the sequential file.
 
-### EXAMPLES
+### EXAMPLE
 
-See also: Sequential File ###EXAMPLES
+       V.DIR.OUT = '.'
+       V.FILE.OUT = 'report.txt'
+       OPENSEQ V.DIR.OUT, V.FILE.OUT TO F.FILE.OUT THEN
+          CRT 'TARGET FILE EXISTS. OVERWRITE[Y/N]':
+          CLEARINPUT          ;* don't take anything in advance
+          INPUT V.REPLY
+          IF UPCASE(V.REPLY) NE 'Y' THEN         ;* y or Y
+             STOP
+          END
+          WEOFSEQ F.FILE.OUT  ;* truncate the file
+       END
+       WRITESEQ 'TEST' TO F.FILE.OUT ELSE NULL
+       CLOSESEQ F.FILE.OUT
 
 <a name="WRITE"/>
 
@@ -14998,7 +15014,7 @@ opened file.
 
 ### COMMAND SYNTAX
 
-WRITE variable1 ON|TO {variable2,} expression {SETTING setvar} {ON ERROR statements}
+    WRITE variable1 ON|TO {variable2,} expression {SETTING setvar} {ON ERROR statements}
 
 ### SYNTAX ELEMENTS
 
@@ -15032,12 +15048,15 @@ explicitly with the [WRITEU](#WRITEU) statement.
 
 ### EXAMPLE
 
-    OPEN "DICT Customers" TO DCusts ELSE
-        ABORT 201, "DICT Customers"
-    END
-    WRITE Rec ON DCusts, "Xref" ON ERROR
-    CRT "Xref not written to DICT Customers"
-    END
+       OPEN 'F.TEMP' TO F.TEMP THEN
+          NULL
+       END ELSE
+          EXECUTE 'CREATE-FILE DATA F.TEMP 1 101 TYPE=J4'
+          OPEN 'F.TEMP' TO F.TEMP ELSE ABORT 201, 'F.TEMP'
+       END
+       V.REC.INIT = 'LINE 1' :@FM: 'LINE 2' :@FM: 'LINE 3'
+       WRITE V.REC.INIT TO F.TEMP, 'REC1'
+       CLOSE F.TEMP
 
 <a name="WRITEBLK"/>
 
@@ -15048,8 +15067,7 @@ sequential processing.
 
 ### COMMAND SYNTAX
 
-WRITEBLK expression ON file.variable
-{THEN statements [ELSE statements] | ELSE statements}
+    WRITEBLK expression ON|TO file.variable {THEN statements [ELSE statements] | ELSE statements}
 
 ### SYNTAX ELEMENTS
 
@@ -15086,6 +15104,38 @@ It is not recommended that you use the [READBLK](#READBLK)/
 You can obtain similar functionality via the [READSEQ](#READSEQ)/
 [WRITESEQ](#WRITESEQ) statement, which can be used to read/write,
 characters a line at a time from a file.
+
+### NOTE
+
+We have to explicitly create the output file if it doesn’t exist (we didn’t have to with
+WRITESEQ, for example, under *prime* emulation).
+
+### EXAMPLE
+
+    * Create a file with random name and write to it
+       V.ID = ''
+       FOR V.J = 1 TO 8
+          V.RND = RND(26) + 65
+          V.ID := CHAR(V.RND)        ;* A...Z
+       NEXT V.J
+       V.ID := '.txt'
+       OPENSEQ '.', V.ID TO  F.FILE.OUT THEN
+          WEOFSEQ F.FILE.OUT  ;* truncate the file
+       END ELSE  ;* will have to create - WRITEBLK wouldn't do that
+          CREATE F.FILE.OUT ELSE
+             CRT 'FILE CREATION FAILURE'
+             STOP
+          END
+       END
+       V.BUFFER = 'LINE 1' : CHAR(10) : 'LINE 2' : CHAR(10) : 'LINE 3'
+       WRITEBLK V.BUFFER TO F.FILE.OUT ELSE
+          CRT 'WRITE ERROR'
+          STOP
+       END
+       CRT 'File ' : V.ID :  ' created'
+       CLOSESEQ F.FILE.OUT
+       STOP
+    END
 
 <a name="WRITELIST"/>
 
