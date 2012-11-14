@@ -14186,7 +14186,7 @@ The following system functions are supported by TAFC:
 |              |<23> Number of EXECUTE's
 |              |<24> Number of INPUT's
 |              |<25> UNUSED
-|              |<6>  Number of files the application thinks is open
+|              |<26>  Number of files the application thinks is open
 |              |<27> Number of files that in reality are opened by the OS
 |              |<28> Application data set by @USER.ROOT
 |              |<29> Text String to identify process
@@ -15146,7 +15146,7 @@ the global list file.
 
 ### COMMAND SYNTAX
 
-WRITELIST variable ON|TO expression {SETTING setvar} {ON ERROR statements}
+    WRITELIST variable ON|TO expression {SETTING setvar} {ON ERROR statements}
 
 ### SYNTAX ELEMENTS
 
@@ -15174,8 +15174,10 @@ See also: [DELETELIST](#DELETELIST), [READLIST](#READLIST),
 
 ### EXAMPLE
 
-    * Create the list first
-    WRITELIST MyList ON "MyList"
+       EXECUTE 'SELECT . SAMPLE 5' RTNLIST V.LIST
+       WRITELIST V.LIST TO 'SOME-FILES'
+       GETLIST 'SOME-FILES' TO V.FILES.L ELSE NULL
+       CRT OCONV(V.FILES.L, 'MCP')  ;* e.g. &COMO&^&COMO&]D^&ED&^&ED&]D^&PH&
 
 <a name="WRITESEQ"/>
 
@@ -15185,11 +15187,7 @@ WRITESEQ writes data to a file opened for sequential access.
 
 ### COMMAND SYNTAX
 
-WRITESEQ Expression {APPEND} ON|TO FileVar THEN | ELSE statements
-
-or
-
-WRITESEQF Expression {APPEND} TO FileVar THEN | ELSE statements
+    WRITESEQ Expression {APPEND} ON|TO FileVar THEN | ELSE statements
 
 ### SYNTAX ELEMENTS
 
@@ -15212,7 +15210,28 @@ before writing the next data line.
 
 ### EXAMPLES
 
-See also: Sequential File examples
+Create a file and write to it (overwriting contents each time):
+
+       V.ID = 'report.txt'
+       OPENSEQ '.', V.ID TO F.FILE.OUT THEN
+          WEOFSEQ F.FILE.OUT  ;* truncate the file
+       END
+       WRITESEQ 'LINE 1' TO F.FILE.OUT ELSE
+          CRT 'WRITE ERROR'
+          STOP
+       END
+       CRT 'File ' : V.ID :  ' written'
+       CLOSESEQ F.FILE.OUT
+
+Append data to file:
+
+       V.DIR.OUT = '.'
+       V.FILE.OUT = 'time.log'
+       OPENSEQ V.DIR.OUT, V.FILE.OUT TO F.FILE.OUT THEN NULL
+       WRITESEQ TIMEDATE() APPEND TO F.FILE.OUT ELSE
+          CRT 'Write error'
+          STOP
+       END
 
 ## WRITESEQF
 
@@ -15328,7 +15347,7 @@ preserved.
 
 ### COMMAND SYNTAX
 
-WRITEU variable1 ON|TO {variable2,} expression {SETTING setvar} {ON ERROR statements}
+    WRITEU variable1 ON|TO {variable2,} expression {SETTING setvar} {ON ERROR statements}
 
 ### SYNTAX ELEMENTS
 
@@ -15372,16 +15391,25 @@ The program stops normally or abnormally.
 See also: [READU](#READU), [MATREADU](#MATREADU),
 [RELEASE](#RELEASE)
 
-### EXAMPLES
+### EXAMPLE
 
-    OPEN "Customers" ELSE ABORT 201, "Customers"
-    OPEN "DICT Customers" TO DCusts ELSE
-        ABORT 201, "DICT Customers"
-    END
-    WRITEU Rec FROM DCusts, "Xref" Setting Err ON ERROR
-        CRT "I/O Error[":Err:"]"
-        ABORT
-    END
+       OPEN 'F.TEMP' TO F.TEMP ELSE
+          EXECUTE 'CREATE-FILE DATA F.TEMP 1 101 TYPE=J4'
+          OPEN 'F.TEMP' TO F.TEMP ELSE
+             CRT 'OPEN FAILED'
+             STOP
+          END
+       END
+       READU V.REC FROM F.TEMP, 'REC1' LOCKED
+          CRT 'Lock failure'
+          STOP
+       END ELSE NULL
+       V.REC<-1> = 'A field'
+       CRT RECORDLOCKED(F.TEMP, 'REC1')  ;* 2 - "Locked by this process by a READU"
+       WRITEU V.REC TO F.TEMP, 'REC1'
+       CRT RECORDLOCKED(F.TEMP, 'REC1')  ;* still 2
+       RELEASE F.TEMP, 'REC1'
+       CRT RECORDLOCKED(F.TEMP, 'REC1')  ;* 0 - not locked
 
 <a name="WRITEV"/>
 
@@ -15437,26 +15465,6 @@ record, do so explicitly with the WRITEVU statement.
         CRT "I/O Error[":Err:"]"
         ABORT
     END
-
-<a name="WRITEXML"/>
-
-## WRITEXML##
-
-WRITEXML rec ON file,id ELSE STOP 210,id
-
-Write a dynamic array in xml format using a style sheet from the
-DICT
-
-Use WRITEXML to write an XML record to a hash file
-
-Transforms the XML into a dynamic array before being written to
-the file
-
-The transform takes place using the style sheet in DICT->@WRITEXML
-
-### EXAMPLE
-
-    WRITEXML rec ON file,id ON ERROR CRT "Broken! " : rec
 
 <a name="WRITEVU"/>
 
@@ -15526,6 +15534,26 @@ See also: [MATWRITEU](#MATWRITEU), [RELEASE](#RELEASE),
         CRT "I/O Error[":Err:"]
     ABORT
     END
+
+<a name="WRITEXML"/>
+
+## WRITEXML##
+
+WRITEXML rec ON file,id ELSE STOP 210,id
+
+Write a dynamic array in xml format using a style sheet from the
+DICT
+
+Use WRITEXML to write an XML record to a hash file
+
+Transforms the XML into a dynamic array before being written to
+the file
+
+The transform takes place using the style sheet in DICT->@WRITEXML
+
+### EXAMPLE
+
+    WRITEXML rec ON file,id ON ERROR CRT "Broken! " : rec
 
 <a name="XLATE"/>
 
