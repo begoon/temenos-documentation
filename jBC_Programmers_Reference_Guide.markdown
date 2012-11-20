@@ -166,6 +166,15 @@ Numeric variables:
        CRT V.VAR                                    ;* 0
        V.VAR.2 = V.VAR++   ; CRT V.VAR.2            ;* 0 - old value of V.VAR
        V.VAR.3 = ++V.VAR   ; CRT V.VAR.3            ;* 2 - value of V.VAR (1) + 1
+    * other operators
+       CRT 2 * 3                                    ;* 6
+       CRT 2 ** 10                                  ;* power of 2 (1024)
+       CRT 2 ^ 10                                   ;* same as above
+       CRT 7 / 2                                    ;* 3.5
+       CRT SQRT(144)                                ;* 12
+    * precedence is quite expected
+       CRT 7 / 2 + 3                                ;* 6.5
+       CRT 7 / (2 + 3)                              ;* 1.4
 
 Boolean variables.
 
@@ -2107,6 +2116,9 @@ A calling program:
        V.I = 2
        CALL @V.DIM.ARR(V.I) (V.VAR)
        CRT V.VAR        ;* 6
+    * Pass by value rather than by reference - variable keeps its value:
+       CALL INCR.NUM((V.VAR))
+       CRT V.VAR        ;* 6
     * Wrong CALL:
        CALL INCR.NUM(V.VAR, 1)
 
@@ -2117,6 +2129,7 @@ Output:
     1^3^3^4
     1^4^3^4
     5
+    6
     6
      ** Error [ SUBROUTINE_PARM_ERROR ] **
     'SUBROUTINE INCR.NUM' called with incorrect arguments , Line     1 , Source test2.b
@@ -6494,6 +6507,25 @@ This example displays:
 
   on the terminal being the second and third fields and their delimiter
   within variable A
+
+## GROUPSTORE
+
+Insert the variable contents into dynamic array (or replace an element in it).
+
+### COMMAND SYNTAX
+
+    GROUPSTORE from.var IN to.var USING start, replace, delimiter
+
+### EXAMPLE
+
+        to.var = 'QQQ' :@FM: 'WWW' :@FM: 'EEE'
+        from.var = 'rtz'
+        GROUPSTORE from.var IN to.var USING 2, 0, @FM   ;* start,replace,delim
+        CRT FMT(to.var, 'MCP')                          ;* QQQ^rtz^WWWEEE
+        GROUPSTORE from.var IN to.var USING 4, 1
+        CRT FMT(to.var, 'MCP')                          ;* QQQ^rtz^WWW^rtz
+        GROUPSTORE from.var IN to.var USING 2, 0, @VM
+        CRT FMT(to.var, 'MCP')                          ;* QQQ^rtz^WWW^rtz]rtz
 
 ## HEADING
 
@@ -13470,24 +13502,23 @@ See also: Floating point Operations
 
 SSELECT statement is used to create:
 
-A numbered select list of record IDs in sorted order from a jBASE
+A select list of record IDs in sorted order from a jBASE
 hashed file
 
-A numbered select list of record IDs from a dynamic array
+A numbered select list of record IDs from a dynamic array (SSELECTN).
 
-A select list of record IDs from a dynamic array is not in sorted
-order.
+A select list of record IDs from a dynamic array (SSELECTV).
 
 You can then access this select list by a subsequent READNEXT
 statement, which removes one record ID at a time from the list.
 
 ### COMMAND SYNTAX
 
-SSELECT [variable] \[TO list.number] [ON ERROR statements]
+    SSELECT [variable] \[TO list.number|select list] [ON ERROR statements]
 
-SSELECTN [variable] \[TO list.number] [ON ERROR statements]
+    SSELECTN [variable] \[TO list.number] [ON ERROR statements]
 
-SSELECTV [variable] TO list.variable [ON ERROR statements]
+    SSELECTV [variable] TO list.variable [ON ERROR statements]
 
 **variable** can specify a dynamic array or a file variable. If
 it specifies a dynamic array, the record IDs must be separated by
@@ -13525,26 +13556,55 @@ purposes.
 
 ### EXAMPLE
 
-The following example opens the file SLIPPERS,
-then creates an active sorted select list of record IDs. The READNEXT
-statement assigns the first record ID in the select list to the variable
-@ID, then prints it.
+       OPEN 'F.TEMP' TO F.TEMP THEN
+          V.ERR = ''
+          CLEARFILE F.TEMP SETTING V.ERR
+          IF V.ERR NE '' THEN
+             CRT 'ERROR ' : V.ERR
+             STOP
+          END
+       END ELSE
+          EXECUTE 'CREATE-FILE DATA F.TEMP 1 101 TYPE=J4'
+          OPEN 'F.TEMP' TO F.TEMP ELSE ABORT 201, 'F.TEMP'
+       END
+       V.REC = 'LINE 1' :@FM: 'LINE 2' :@FM: 'LINE 3'
+       WRITE V.REC TO F.TEMP, 'REC3'
+       WRITE V.REC TO F.TEMP, 'REC1'
+       WRITE V.REC TO F.TEMP, 'REC2'
+       SSELECT F.TEMP TO V.LIST
+       READNEXT V.ID FROM V.LIST THEN CRT V.ID        ;*  REC1
 
-    OPEN '','SLIPPERS' ELSE PRINT "NOT OPEN"
-    SSELECT
-    READNEXT @ID THEN PRINT @ID
+### EXAMPLE 2
 
-The output of this program is:
+Using SSELECTV to sort a dynamic array:
 
-    0001
+       V.RANDOM = ''
+       FOR V.I = 1 TO 1000
+          V.STRING = ''
+          FOR V.J = 1 TO 8
+             V.RND = RND(26) + 65
+             V.STRING := CHAR(V.RND)        ;* A...Z
+          NEXT V.J
+          V.RANDOM<-1> = V.STRING
+       NEXT V.I
+       SSELECTV V.RANDOM TO V.SORTED
+       CRT 'Got strings from ' : V.SORTED<1> : ' to ' : V.SORTED<1000>
+
+Sample output:
+
+    Got strings from AALUKTJZ to ZZQTIWFQ
+
+Or:
+
+    Got strings from AAGPKJJP to ZZTMYNNX
 
 ## SSELECTN
 
-See also: [SSELECT](#SSELECT).
+See: [SSELECT](#SSELECT).
 
 ## SSELECTV
 
-See also: [SSELECT](#SSELECT).
+See: [SSELECT](#SSELECT).
 
 ## SSUB
 
@@ -13574,7 +13634,7 @@ See also: Floating Point Operations
     B = 5.0000000000000001
     CRT SSUB (A,B)
 
-Displays -2.6999999876543212 to the screen
+Displays -2.69999998765432 to the screen.
 
 <a name="STATUS"/>
 
