@@ -2,7 +2,7 @@
 
 Version: Project builds
 
-# Preface
+## Preface
 
 jBC is a programming language that is used in jBASE post-relational
 (multi-value) DBMS. Syntax is Basic-like; compilation process firstly
@@ -26,7 +26,7 @@ be used, e.g. R10 or R11.
 T24 is the core banking system developed by Temenos company. The system
 extensions can be developed in (but not limited to) jBC.
 
-### Supported platforms
+## Supported platforms
 
 | Platform                  | Compiler version                     | Releases |
 |---------------------------|--------------------------------------|----------|
@@ -78,7 +78,7 @@ extensions can be developed in (but not limited to) jBC.
 - Source code editor - JED (also capable of editing data files).
 - Debugger.
 
-## Introduction to some jBC syntax features
+# Introduction to some jBC syntax features
 
 ### Note
 
@@ -96,9 +96,9 @@ to convert FM, VM and SM delimiters to a printable form, e.g.:
 
 Where possible, the output is shown in a comment (as it is in the example above).
 
-### EXAMPLES
+## To wrap a long line
 
-To wrap a long line use a backslash:
+Use a backslash:
 
        V.LINE = 'The report for the year ' :@FM: V.YEAR : ', prepared at ' \
             : TIMEDATE()
@@ -108,9 +108,13 @@ Or - if line ends with a comma - that's not necessary:
        V.STAT = IOCTL(F.TEST.FILE,
              JIOCTL_COMMAND_FINDRECORD_EXTENDED, V.NAME)
 
-Several statements can be put on the same line:
+## Several statements on the same line
+
+Use semicolon:
 
        V.VAR = 1  ;  V.VAR++  ;  CRT V.VAR
+
+## Comments
 
 Comments can be defined in different ways:
 
@@ -118,7 +122,11 @@ Comments can be defined in different ways:
     ! And this is a comment
     REM This is also a comment
     // Even this is a comment
-       CRT ''    ;* this is a comment sharing the same line with some code
+       CRT '1'    ;* this is a comment sharing the same line with some code
+       CRT '2'    // yet another way to define a comment
+       CRT '3'
+
+## String variables
 
 Strings can be delimited with single quotes, double quotes or backslashes:
 
@@ -152,7 +160,7 @@ It's possible to reassign parts of a string using that notation:
        V.STRING[2,1] = 'WER'
        CRT V.STRING                 ;* AWERC
 
-Numeric variables:
+## Numeric variables
 
        V.VAR = 5            ;   CRT V.VAR           ;* 5
        CRT ISDIGIT(V.VAR)                           ;* 1
@@ -176,7 +184,7 @@ Numeric variables:
        CRT 7 / 2 + 3                                ;* 6.5
        CRT 7 / (2 + 3)                              ;* 1.4
 
-Boolean variables.
+## Boolean variables
 
 Boolean variables as such don’t exist in jBC; the result of a statement like IF (VAR) THEN...
 depends on that variable contents:
@@ -211,6 +219,8 @@ Output:
     0.00000000000001 is false
     0.00000000000001 is true with PRECISION 17
 
+## Dynamic arrays
+
 To assign or extract a field/value/subvalue from a dynamic array,
 use angle brackets:
 
@@ -227,6 +237,8 @@ use angle brackets:
 
 Note that array elements are numbered starting from 1 rather that 0.
 
+## Dimensioned arrays
+
 Dimensioned arrays use parentheses:
 
        DIM V.VALUES(30000)            ;* size it
@@ -234,6 +246,8 @@ Dimensioned arrays use parentheses:
        V.X = SYSTEM(2) - 15  ; V.Y = SYSTEM(3) - 5
        DIM V.SCREEN(V.X, V.Y)         ;* can be 2-dimensional
        V.SCREEN(1, 1) = 123           ;* here goes assignment
+
+## Other notes
 
 "=" character can be used both for assignment and for a comparison,
 though it's possible to use "EQ" in the latter case:
@@ -248,9 +262,9 @@ IF...ELSE construct can be used without THEN:
        IF V.STRING NE 'ABC' ELSE CRT 'YES'
 
 
-## Environment variables relevant to jBC programming
+# Environment variables relevant to jBC programming
 
-### Minimum set of variables necessary to start development
+## Minimum set of variables necessary to start development
 
 Windows:
 
@@ -280,7 +294,7 @@ Unix/Linux:
     export SHLIB_PATH=$TAFC_HOME/lib:${SHLIB_PATH:-/usr/lib:/lib}
     (HP-UX)
 
-### Customize work folders and files location
+## Customize work folders and files location
 
     JEDIFILENAME_MD
 
@@ -345,7 +359,7 @@ In situation like that DECATALOG is to be used:
                          jBC ACCOUNT version 11.0 Fri Apr 29 14:43:35 2011
                          jBC ACCOUNT source file source/R11.000/win32_TAFCR11GA
 
-### Runtime errors handling
+## Runtime errors handling
 
     JBASE_ERRMSG_DIVIDE_BY_ZERO
 
@@ -362,7 +376,7 @@ variable is used in an equation.
 Allows to suppress error messages and/or a program entering the debugger when uninitialized
 variable is used in an equation.
 
-### Regional settings
+## Regional settings
 
     JBASE_LOCALE
 
@@ -380,7 +394,7 @@ E.g. Europe/London.
 
 Being set to 1 means utf-8 environment (requires data files conversion when changed).
 
-### Diagnostics and tracing
+## Diagnostics and tracing
 
     JBC_STDERR
 
@@ -397,7 +411,7 @@ Sets jBASE tracing options, e.g.:
     set JDIAG=trace=JVM,CALLJ
     set JDIAG=TRACE=INDEX
 
-### Other
+## Other
 
     JBASE_DISTRIB_FASTSCAN
 
@@ -412,7 +426,7 @@ been.
 
 Terminal type, e.g. ntcon, vt220 etc.
 
-## Compilation
+# Compilation
 
 Done using BASIC...CATALOG commands or jcompile utility:
 
@@ -454,140 +468,260 @@ To look at C code rather than to create executables "-S" option can be used
 
 Full information about jcompile options - "jcompile -H".
 
+# Data files
 
-# jBC Functions and Statements
+The most widely used formats for data files nowadays are “J4” and “JR”. The former has size
+limitation (up to 2Gb if OS-level limits allow that) and needs resizing on regular basis though
+when it’s properly sized it’s faster. “JR” – “resilient” – doesn’t have size limitation and
+doesn’t need resizing.
 
-<a name="@"/>
+The following examples serve as a brief introduction to jBASE data storage.
+They can be executed in jshell prompt or (except JED - it makes no sense)
+in a jBC program or subroutine (using EXECUTE/PERFORM).
 
-## @##
+## Create/delete hashed file
 
-Use the @ function to position the cursor to a specific point on the
-terminal screen
+Create both data and dictionary:
 
-### COMMAND SYNTAX
+    CREATE-FILE F.SAMPLE 101 1
 
-@ (col{,row})
+    [ 417 ] File F.SAMPLE]D created , type = J4
+    [ 417 ] File F.SAMPLE created , type = J4
 
-### SYNTAX ELEMENTS
+If the file already exists, the error message appears:
 
-**col** and **row** can be any expression that evaluates to a numeric
-value.
+    [ 413 ] File name DICT F.SAMPLE already exists
 
-**col** specifies, to which column on the screen the cursor should be
-moved.
+Delete hashed file (both data and dictionary):
 
-**row** specifies which row (line) on the screen to position the
-cursor.
+    DELETE-FILE F.SAMPLE
 
-Specifying col on its own will locate the cursor to the required
-column on whichever row it currently occupies.
+Create hashed file (data only):
 
-### NOTES
+    CREATE-FILE DATA F.SAMPLE 101 1
 
-When specified values exceed either of the physical limits of the
-current terminal, then unpredictable results will occur.
+    [ 417 ] File F.SAMPLE created , type = J4
 
-The terminal address starts at (0,0), that being the top left hand
-corner of the screen.
+Create hashed file (dictionary only):
 
-Cursor addressing will not normally work when directed at a printer.
-If you wish to build printer independence into your programs, achieve
-this by accessing the terminfo database through the SYSTEM () function.
+    CREATE-FILE DICT F.SAMPLE 101 1
 
-### EXAMPLE
+    [ 417 ] File F.SAMPLE]D created , type = J4
 
-       FOR I = 1 TO 5
-          CRT @(5, I):"*":
-       NEXT I
-       Home = @(0,0) ;* Remember the cursor home position
-       CRT Home:"Hi honey, I'm HOME!":
+## Create and list the data
 
-## @ (SCREENCODE)
+Put some data to file:
 
-Use @(SCREENCODE) to output control sequences according to the
-capabilities of the terminal
+    JED F.SAMPLE REC1
 
-### COMMAND SYNTAX
+    0001 Field 1
+    0002 Field 2
+    0003 Field 3
 
-@ (ScreenCode)
+Press Esc; then type FI to save the record.
 
-### SYNTAX ELEMENTS
+List file contents:
 
-Control sequences for special capabilities of the terminal are achieved
-by passing a negative number as its argument. ScreenCode is therefore
-any expression that evaluates to a negative argument.
+    LIST F.SAMPLE
 
-### NOTES
+    F.SAMPLE......
 
-The design of TAFC allows you to import code from many older systems.
-As these systems have traditionally not co-ordinated the development of
-this function they expect different functionality in many instances. In
-the following table, you should note that different settings of the
-JBCEMULATE environment variable would elicit different functionality
-from this function.
+    REC1
 
-| Emulation | Code  | Function                                       |
-|-----------|-------|------------------------------------------------|
-| all       |  -1   | clear the screen and home the cursor           |
-| all       |  -2   | Home the cursor                                |
-| all       |  -3   | clear screen from the cursor to the end of the |
-|           |       | screen                                         |
-| all       |  -4   | clear screen from cursor to the end of the     |
-|           |       | current screen line                            |
-| ros       |  -5   | turn on character blinking                     |
-| ros       |  -6   | turn off character blinking                    |
-| ros       |  -7   | turn on protected field mode                   |
-| ros       |  -8   | turn off protected field mode                  |
-| all       |  -9   | move the cursor one character to the left      |
-| all       | -10   | move the cursor one row up the screen          |
-| ros       | -11   | turn on the cursor (visible)                   |
-| ros       | -11   | enable protect mode                            |
-| ros       | -12   | turn off the cursor (invisible)                |
-| ros       | -12   | disable protect mode                           |
-| ros       | -13   | status line on                                 |
-| ros       | -13   | turn on reverse video mode                     |
-| ros       | -14   | status line off                                |
-| ros       | -14   | turn off reverse video mode                    |
-| ros       | -15   | move cursor forward one character              |
-| ros       | -15   | turn on underline mode                         |
-| ros       | -16   | move cursor one row down the screen            |
-| ros       | -16   | turn off underline mode                        |
-| all       | -17   | turn on the slave (printer) port               |
-| all       | -18   | turn off the slave (printer) port              |
-| ros       | -19   | dump the screen to the slave port              |
-| ros       | -19   | move the cursor right one character            |
-| ros       | -20   | move the cursor down one character             |
-| ros       | -311  | turn on the cursor (visible)                   |
-| ros       | -312  | turn off the cursor (invisible)                |
-| ros       | -313  | turn on the status line                        |
-| ros       | -314  | turn off the status line                       |
+    1 Records Listed
 
-If a colour terminal is in use, -33 to -64 will control colours.
+No dictionary; we see only @ID. Raw output:
 
-The codes from -128 to -191 control screen attributes. Where Bit 0 is
-least significant, you may calculate the desired code by setting Bit
-7 and Bits 0-5:
+    CT F.SAMPLE
 
-| Bit Values | Description                   |
-|------------|-------------------------------|
-| Bit 0      | dimmed mode when set to 1     |
-| Bit 1      | flashing mode when set to 1   |
-| Bit 2      | reverse mode when set to 1    |
-| Bit 3      | blanked mode when set to 1    |
-| Bit 4      | underline mode when set to 1  |
-| Bit 5      | bold mode when set to 1       |
-| Bit 7      | always set to 1               |
+    REC1
 
-Thus, reverse and flashing mode is -134.
+    001 Field 1
+    002 Field 2
+    003 Field 3
 
-To turn off all effects use -128.
+As an alternative, we can use standard correlatives:
 
-### EXAMPLE
+    LIST F.SAMPLE *A1 *A2 *A3
 
-       CRT @(-1):@(30):@(52):"jBASE Heading":@(-128):
-       CRT @(5,5):@(-4):"Prompt: ": ; INPUT Answer
+    F.SAMPLE......   *A1...........   *A2...........   *A3...........
 
-## @ variables##
+    REC1             Field 1          Field 2          Field 3
+
+## Adding dictionary items
+
+Add a dictionary item to assign the name to a field:
+
+    JED DICT F.SAMPLE FLD1
+
+    0001 D
+    0002 1
+    0003
+    0004 FIELD 1 HEADER
+    0005 10L
+    0006 S
+    0007
+
+Use field name in a query:
+
+    LIST F.SAMPLE FLD1
+
+    F.SAMPLE......   FIELD 1 HEADER
+
+    REC1             Field 1
+
+    1 Records Listed
+
+    LIST F.SAMPLE WITH FLD1 EQ ''
+
+     No Records Listed
+
+In default view we still don’t have it:
+
+    LIST F.SAMPLE
+
+    F.SAMPLE......
+
+    REC1
+
+Set the field to be seen by default:
+
+    JED DICT F.SAMPLE @
+
+    0001 PH
+    0002 @ID FLD1
+
+See the result:
+
+    LIST F.SAMPLE
+
+    F.SAMPLE......   ID..................   FIELD 1 HEADER
+
+    REC1             REC1                   Field 1
+
+### Change of size and format, statistics, properties
+
+See file statistics:
+
+    jstat -v F.SAMPLE
+    File C:\r11\bnk\bnk.run\F.SAMPLE
+    Type=J4 , Hash method = 5
+    Created at Tue Nov 20 19:38:25 2012
+    Groups = 101 , Frame size = 4096 bytes , Secondary Record Size = 8192 bytes
+    Restore re-size parameters : (none)
+    File size = 417792 bytes , Inode = 29838 , Device = Id 24915
+    Last Accessed Tue Nov 20 19:50:30 2012 , Last Modified Tue Nov 20 19:50:30 2012
+    Backup = YES , Log = YES , Rollback = YES , Network = NO
+
+    Record Count = 1 , Record Bytes = 45
+    Bytes/Record = 45 , Bytes/Group = 0
+    Primary file space:   Total Frames = 101 , Total Bytes = 45
+    Secondary file space: Total Frames = 0 , Total Bytes = 0
+
+### NOTE
+
+101 – number of groups – was defined when file was created.
+
+Add more records:
+
+    COPY FROM F.SAMPLE REC1,REC2
+
+    1 records copied
+
+Try to resize the file:
+
+    jrf -V F.SAMPLE
+
+    ...
+    Downsizing skipped from modulo 101 to 3.
+
+Resize it anyway:
+
+    jrf -VD F.SAMPLE
+
+    ...
+    Downsizing from modulo 101 to 3
+
+Change file type to JR:
+
+    jrf -H6 F.SAMPLE
+
+See statistics now:
+
+    jstat -v F.SAMPLE
+
+    File Type       = JR,        Hash method = 5, Created = Tue Nov 20 19:56:00 2012
+    Frame size      = 4096,        OOG Threshold   = 2048
+    File size       = 8192, Freespace       = 0 frames
+    Internal Modulo = 3/7/11,      External Modulo = 13
+    Inode no.       = 29838,       Device no.      = 24915
+    Accessed        = Tue Nov 20 19:56:13 2012, Modified  = Tue Nov 20 19:56:13 2012
+    Backup  = YES, Log      = YES, Rollback        = YES,  Secure updates  = NO
+    Deallocate pointers : NO       Deallocate frames NO
+    Revision level  = 2
+    Record Bytes    = 82,   Record Count    = 2
+    Bytes/Record    = 41,   Bytes/Group     = 82
+    Data Frames     = 1,    Ptr Frames      = 0
+    OOG Bytes       = 0,    OOG Frames      = 0
+    Sum Squares     = 3362, Std Dev Mean    = 41
+
+Turn on secure updates:
+
+    jchmod +S F.SAMPLE
+
+Check the result:
+
+    jstat -v F.SAMPLE
+
+    ...
+    Backup  = YES, Log      = YES,  Rollback        = YES,  Secure updates  = YES
+    ...
+
+Delete a record:
+
+    DELETE F.SAMPLE REC2
+
+    1 record(s) deleted.
+
+Add data sections:
+
+    CREATE-FILE F.SAMPLE,TWO TYPE=JR
+
+    [ 417 ] File F.SAMPLE]MTWO created , type = JR
+
+    CREATE-FILE F.SAMPLE,THREE TYPE=JR
+
+    [ 417 ] File F.SAMPLE]MTHREE created , type = JR
+
+Create a record in a section:
+
+    JED F.SAMPLE,TWO REC5
+
+    0001 Section 2/1
+    0002 Section 2/2
+    0003 Section 2/3
+
+See that all sections use the same dictionary:
+
+    LIST F.SAMPLE,TWO
+
+    F.SAMPLE,TWO..    ID..................    FIELD 1 HEADER
+
+    REC5              REC5                    Section 2/1
+
+    LIST F.SAMPLE,THREE
+
+    F.SAMPLE,THREE    ID..................    FIELD 1 HEADER
+
+     No Records Listed
+
+### NOTE
+
+File F.SAMPLE still reports 1 record in it; here's the difference
+between having several data sections and a distributed file.
+
+
+# System ("@") variables
 
 ## @CALLSTACK
 
@@ -939,10 +1073,140 @@ have spawned.
 
 &lt;52,n> Any data set by the application using @USER.THREAD
 
-# jBC Functions and Statements A – X
+# jBC Functions and Statements (@ - E)
 
 The following pages show the syntax of every statement and function in
 the language together with examples of their use.
+
+<a name="@"/>
+
+## @##
+
+Use the @ function to position the cursor to a specific point on the
+terminal screen
+
+### COMMAND SYNTAX
+
+@ (col{,row})
+
+### SYNTAX ELEMENTS
+
+**col** and **row** can be any expression that evaluates to a numeric
+value.
+
+**col** specifies, to which column on the screen the cursor should be
+moved.
+
+**row** specifies which row (line) on the screen to position the
+cursor.
+
+Specifying col on its own will locate the cursor to the required
+column on whichever row it currently occupies.
+
+### NOTES
+
+When specified values exceed either of the physical limits of the
+current terminal, then unpredictable results will occur.
+
+The terminal address starts at (0,0), that being the top left hand
+corner of the screen.
+
+Cursor addressing will not normally work when directed at a printer.
+If you wish to build printer independence into your programs, achieve
+this by accessing the terminfo database through the SYSTEM () function.
+
+### EXAMPLE
+
+       FOR I = 1 TO 5
+          CRT @(5, I):"*":
+       NEXT I
+       Home = @(0,0) ;* Remember the cursor home position
+       CRT Home:"Hi honey, I'm HOME!":
+
+## @ (SCREENCODE)
+
+Use @(SCREENCODE) to output control sequences according to the
+capabilities of the terminal
+
+### COMMAND SYNTAX
+
+@ (ScreenCode)
+
+### SYNTAX ELEMENTS
+
+Control sequences for special capabilities of the terminal are achieved
+by passing a negative number as its argument. ScreenCode is therefore
+any expression that evaluates to a negative argument.
+
+### NOTES
+
+The design of TAFC allows you to import code from many older systems.
+As these systems have traditionally not co-ordinated the development of
+this function they expect different functionality in many instances. In
+the following table, you should note that different settings of the
+JBCEMULATE environment variable would elicit different functionality
+from this function.
+
+| Emulation | Code  | Function                                       |
+|-----------|-------|------------------------------------------------|
+| all       |  -1   | clear the screen and home the cursor           |
+| all       |  -2   | Home the cursor                                |
+| all       |  -3   | clear screen from the cursor to the end of the |
+|           |       | screen                                         |
+| all       |  -4   | clear screen from cursor to the end of the     |
+|           |       | current screen line                            |
+| ros       |  -5   | turn on character blinking                     |
+| ros       |  -6   | turn off character blinking                    |
+| ros       |  -7   | turn on protected field mode                   |
+| ros       |  -8   | turn off protected field mode                  |
+| all       |  -9   | move the cursor one character to the left      |
+| all       | -10   | move the cursor one row up the screen          |
+| ros       | -11   | turn on the cursor (visible)                   |
+| ros       | -11   | enable protect mode                            |
+| ros       | -12   | turn off the cursor (invisible)                |
+| ros       | -12   | disable protect mode                           |
+| ros       | -13   | status line on                                 |
+| ros       | -13   | turn on reverse video mode                     |
+| ros       | -14   | status line off                                |
+| ros       | -14   | turn off reverse video mode                    |
+| ros       | -15   | move cursor forward one character              |
+| ros       | -15   | turn on underline mode                         |
+| ros       | -16   | move cursor one row down the screen            |
+| ros       | -16   | turn off underline mode                        |
+| all       | -17   | turn on the slave (printer) port               |
+| all       | -18   | turn off the slave (printer) port              |
+| ros       | -19   | dump the screen to the slave port              |
+| ros       | -19   | move the cursor right one character            |
+| ros       | -20   | move the cursor down one character             |
+| ros       | -311  | turn on the cursor (visible)                   |
+| ros       | -312  | turn off the cursor (invisible)                |
+| ros       | -313  | turn on the status line                        |
+| ros       | -314  | turn off the status line                       |
+
+If a colour terminal is in use, -33 to -64 will control colours.
+
+The codes from -128 to -191 control screen attributes. Where Bit 0 is
+least significant, you may calculate the desired code by setting Bit
+7 and Bits 0-5:
+
+| Bit Values | Description                   |
+|------------|-------------------------------|
+| Bit 0      | dimmed mode when set to 1     |
+| Bit 1      | flashing mode when set to 1   |
+| Bit 2      | reverse mode when set to 1    |
+| Bit 3      | blanked mode when set to 1    |
+| Bit 4      | underline mode when set to 1  |
+| Bit 5      | bold mode when set to 1       |
+| Bit 7      | always set to 1               |
+
+Thus, reverse and flashing mode is -134.
+
+To turn off all effects use -128.
+
+### EXAMPLE
+
+       CRT @(-1):@(30):@(52):"jBASE Heading":@(-128):
+       CRT @(5,5):@(-4):"Prompt: ": ; INPUT Answer
 
 <a name="ABORT"/>
 
@@ -5256,6 +5520,8 @@ value to extract and expression4 the sub-value to extract.
 
 Will display the value "1".
 
+# jBC Functions and Statements (F - J)
+
 <a name="FADD"/>
 
 ## FADD
@@ -8245,6 +8511,8 @@ Output:
     @ID #489:	80044233
     @ID #490:	80045024
 
+# jBC Functions and Statements (K - O)
+
 ## KEYIN
 
 KEYIN function is used to read a single character from the input buffer
@@ -10838,6 +11106,8 @@ specified and then sent directly to the output advice.
     BELL ;* Sound terminal bell
     FOR I = 32 TO 127; OUT I; NEXT I ;* Printable chars
     BELL
+
+# jBC Functions and Statements (P - T)
 
 ## PAGE
 
@@ -14845,6 +15115,8 @@ tab.
 
 If dynamic.array evaluates to null, it returns null. If any
 element of dynamic.array is null, it returns null for that value.
+
+# jBC Functions and Statements (U - X)
 
 <a name="UNASSIGNED"/>
 
