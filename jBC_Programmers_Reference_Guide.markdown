@@ -599,7 +599,7 @@ See the result:
 
     REC1             REC1                   Field 1
 
-### Change of size and format, statistics, properties
+## Change of size and format, statistics, properties
 
 See file statistics:
 
@@ -720,8 +720,68 @@ See that all sections use the same dictionary:
 File F.SAMPLE still reports 1 record in it; here's the difference
 between having several data sections and a distributed file.
 
+## UD type
+
+Folders are also treated like data files (type UD); flat files in them –
+like records. This allows, for example, use JED to edit source code.
+Data can be copied transparently between hashed
+files and folders. Some examples:
+
+Create the folder:
+
+    CREATE-FILE DATA TEST.BP TYPE=UD
+    [ 417 ] File TEST.BP created , type = UD
+
+Create a program:
+
+    JED TEST.BP PROG1
+    0001 CRT 2*2
+
+Save file. Compile and run it:
+
+    BASIC TEST.BP PROG1
+    PROG1
+    BASIC_3.c
+    Source file PROG1 compiled successfully
+
+    CATALOG TEST.BP PROG1
+    PROG1
+    Object PROG1 cataloged successfully
+
+    PROG1
+    4
+
+Copy data:
+
+    COPY FROM F.SAMPLE TO TEST.BP REC1
+    1 records copied
+
+Edit file REC1 in TEST.BP folder with any text editor so it now looks like:
+
+    Field 1 - updated
+    Field 2
+    Field 3
+
+Copy it back to hashed file:
+
+    COPY FROM TEST.BP TO F.SAMPLE REC1 OVERWRITING
+    1 records copied
+
+See the result:
+
+    LIST F.SAMPLE
+
+    F.SAMPLE......     ID..................   FIELD 1 HEADER
+
+    REC1               REC1                   Field 1 - upda
+                                              ted
 
 # System ("@") variables
+
+## @AM (@FM), @VM, @SM, @TM
+
+Attribute (field) mark (ASCII 254), value mark (ASCII 253), subvalue mark
+(ASCII 252) and text mark (ASCII 251) respectively.
 
 ## @CALLSTACK
 
@@ -1073,7 +1133,9 @@ have spawned.
 
 &lt;52,n> Any data set by the application using @USER.THREAD
 
-# jBC Functions and Statements (@ - E)
+<a name="JBCFUNCATE"/>
+
+# jBC Functions and Statements (@ - E) [Next](#JBCFUNCFJ)
 
 The following pages show the syntax of every statement and function in
 the language together with examples of their use.
@@ -4854,7 +4916,7 @@ which stores each number in a single word.
 
 ### COMMAND SYNTAX
 
-DROUND(val.expr [,precision.expr])
+    DROUND(val.expr [,precision.expr])
 
 NOTE: DROUND affects the internal representation of the numeric
 value. It performs the rounding without conversion to and from
@@ -4864,15 +4926,41 @@ string variables. This increases the speed of calculation.
 
 **val.expr** specifies the value to round.
 
-**precision.expr** specifies the precision for the rounding. The
-valid range is 0 to 14. Default precision is four places.
+**precision.expr** specifies the precision for the rounding.
+Default precision is four places.
 
 ### EXAMPLE
 
-In the following example, the DROUND statement results in 18.8496.
+       V.PI = 3.14159265358979323846
+       CRT 'Default:', DROUND(V.PI)
+       FOR V.I = 0 TO 20
+          CRT DROUND(V.PI, V.I)
+       NEXT V.I
 
-    A = DROUND((3.14159265999*2*3),8)
-    PRINT A
+Output:
+
+    Default:	3.1416
+    3
+    3.1
+    3.14
+    3.142
+    3.1416
+    3.14159
+    3.141593
+    3.1415927
+    3.14159265
+    3.141592654
+    3.1415926536
+    3.14159265359
+    3.14159265359
+    3.1415926535898
+    3.14159265358979
+    3.141592653589793
+    3.1415926535897932
+    3.14159265358979324
+    3.141592653589793238
+    3.1415926535897932385
+    3.14159265358979323846
 
 <a name="DTX"/>
 
@@ -5520,7 +5608,9 @@ value to extract and expression4 the sub-value to extract.
 
 Will display the value "1".
 
-# jBC Functions and Statements (F - J)
+<a name="JBCFUNCFJ"/>
+
+# jBC Functions and Statements (F - J) [Next](#JBCFUNCKO) [Previous](#JBCFUNCATE)
 
 <a name="FADD"/>
 
@@ -5733,7 +5823,7 @@ FILELOCK filevar {LOCKED statements} {ON ERROR statements}
 
 FILEUNLOCK filevar {ON ERROR statements}
 
-## DESCRIPTION
+### DESCRIPTION
 
 When the FILELOCK statement is executed, it will attempt to take an
 exclusive lock on the entire file. If there are any locks currently
@@ -6165,6 +6255,8 @@ Output:
 
     *****1234.56^***123456.78^**-123456.78^234567890.00
 
+<a name="FOLD"/>
+
 ## FOLD##
 
 The FOLD function re-delimits a string by replacing spaces with
@@ -6218,6 +6310,8 @@ attribute marks.
 
     t_h_e_e_n_d
 
+<a name="FOOTING"/>
+
 ## FOOTING
 
 The FOOTING statement halts all subsequent output to the terminal at
@@ -6262,6 +6356,8 @@ output is to the terminal then all output is paged.
 ### EXAMPLE
 
 FOOTING "Programming staff by weight Page "P"
+
+<a name="FOR"/>
 
 ## FOR
 
@@ -8256,6 +8352,26 @@ The below log file will appear "example.HML0001.JBCUSER.LOG.ERROR.20120224-11211
     023 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] SUBROUTINE main()
     024 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] 00000000006BEE90 : rc : (V) String : 0 bytes at address 0000000055740A58 :
 
+## JBASESubroutineExist
+
+Check if a subroutine exists in current environment:
+
+### COMMAND SYNTAX
+
+    CALLC JBASESubroutineExist(SubName, SubInfo)
+
+where **SubName** is subroutine name; returns 1 or 0.
+**SubInfo** is reserved for future use.
+
+### EXAMPLE
+
+       SubName = 'CDD'
+       Result = CALLC JBASESubroutineExist(SubName, SubInfo)
+       CRT Result            ;* 1 in T24 environment
+       SubName = 'QWERTY'
+       Result = CALLC JBASESubroutineExist(SubName, SubInfo)
+       CRT Result            ;* 0
+
 ## JBASETHREADCreate
 
 JBASETHREADCreate command is used to start a new thread.
@@ -8511,7 +8627,9 @@ Output:
     @ID #489:	80044233
     @ID #490:	80045024
 
-# jBC Functions and Statements (K - O)
+<a name="JBCFUNCKO"/>
+
+# jBC Functions and Statements (K - O) [Next](#JBCFUNCPT) [Previous](#JBCFUNCFJ)
 
 ## KEYIN
 
@@ -8642,6 +8760,33 @@ Output is:
 
     '             I AM IN THE VERY CENTER              '
 
+## LENDP
+
+LENDP function returns the display length of an expression
+
+### COMMAND SYNTAX
+
+LENDP(expression)
+
+### SYNTAX ELEMENTS
+
+The **expression** can evaluate to any type. The LENDP function
+evaluates each character in the expression and returns the calculated
+display length.
+
+INTERNATIONAL MODE
+
+The LENDP function will return the display length for the characters
+in the specified expression rather than the number of bytes, in
+International Mode.
+
+### NOTES
+
+Some characters, usually Japanese, Chinese, etc will return a display
+length of greater than one for some characters. Some characters, for
+instance control characters or null (char 0), will return a display
+length of 0.
+
 ## LENS
 
 LENS function is used to return a dynamic array of the number of bytes
@@ -8674,33 +8819,6 @@ will differ. See
 ### NOTES
 
 Do not use programs to manipulate byte counts in International Mode.
-
-## LENDP
-
-LENDP function returns the display length of an expression
-
-### COMMAND SYNTAX
-
-LENDP(expression)
-
-### SYNTAX ELEMENTS
-
-The **expression** can evaluate to any type. The LENDP function
-evaluates each character in the expression and returns the calculated
-display length.
-
-INTERNATIONAL MODE
-
-The LENDP function will return the display length for the characters
-in the specified expression rather than the number of bytes, in
-International Mode.
-
-### NOTES
-
-Some characters, usually Japanese, Chinese, etc will return a display
-length of greater than one for some characters. Some characters, for
-instance control characters or null (char 0), will return a display
-length of 0.
 
 ## LES
 
@@ -9889,6 +10007,11 @@ corresponding element in the other dynamic array, a 1 is returned. If
 either of a corresponding pair of elements is null, null is returned
 for that element.
 
+## NEXT
+
+Terminator statement for [FOR](#FOR) loop.
+
+
 ## NOBUF
 
 NOBUF statement turns off buffering for a file previously opened for
@@ -10633,8 +10756,7 @@ Output will look like:
 
 ## OPENSER
 
-OPENSER statement is used to handle the Serial IO. However, the
-OPENSER statement has also been provided.
+OPENSER statement is used to handle the Serial IO.
 
 Serial IO to the COM ports on NT and to device files, achieves this
 on UNIX by using the sequential file statements. In addition, you
@@ -10674,19 +10796,20 @@ the result back via the [GET](#GET)/[READSEQ](#READSEQ) statements.
 
 ### EXAMPLES
 
-    FileName = "/dev/tty01s"
-    OPENSER FileName TO File ELSE STOP 201,FileName
-    WRITESEQ "ls -ail" ON File,"" ;* ONLY for PIPEs
-    LOOP
-      Terminator = CHAR (10)
-      WaitTime = 4
-      GET Input SETTING Count FROM File UNTIL Terminator RETURNING TermChar WAITING WaitTime THEN
-         CRT "Get Ok, Input ":Input:" Count ":Count:"TermChar":TermChar
-    	  END ELSE
-        	  CRT "Get Timed out Input ":Input:" Count ":Count:" TermChar":TermChar
-    	  END
-   WHILE Input NE "" DO
-   REPEAT
+       FileName = "/dev/pts/1"
+       OPENSER FileName TO File ELSE STOP 201, FileName
+       WRITESEQ "ls -l" TO File ELSE NULL
+       LOOP
+          Terminator = CHAR(10)
+          WaitTime = 4
+          GET Input SETTING Count FROM File UNTIL Terminator RETURNING TermChar \
+                WAITING WaitTime THEN
+             CRT "Get Ok, Input ":Input:" Count ":Count:"TermChar":TermChar
+          END ELSE
+             CRT "Get Timed out Input ":Input:" Count ":Count:" TermChar":TermChar
+          END
+       WHILE Input NE "" DO
+       REPEAT
 
 ## ORS
 
@@ -11107,7 +11230,9 @@ specified and then sent directly to the output advice.
     FOR I = 32 TO 127; OUT I; NEXT I ;* Printable chars
     BELL
 
-# jBC Functions and Statements (P - T)
+<a name="JBCFUNCPT"/>
+
+# jBC Functions and Statements (P - T) [Next](#JBCFUNCUX) [Previous](#JBCFUNCKO)
 
 ## PAGE
 
@@ -13784,9 +13909,9 @@ statement, which removes one record ID at a time from the list.
 
 ### COMMAND SYNTAX
 
-    SSELECT [variable] \[TO list.number|select list] [ON ERROR statements]
+    SSELECT [variable] [TO list.number|select list] [ON ERROR statements]
 
-    SSELECTN [variable] \[TO list.number] [ON ERROR statements]
+    SSELECTN [variable] [TO list.number] [ON ERROR statements]
 
     SSELECTV [variable] TO list.variable [ON ERROR statements]
 
@@ -14858,6 +14983,31 @@ clause will be executed if the transaction abort fails for any reason.
 Any record locks set during the transaction will be released upon
 successful completion.
 
+<a name="TRANSEND"/>
+
+## TRANSEND
+
+TRANSEND statement is used to mark the end of a successfully
+completed transaction.
+
+### COMMAND SYNTAX
+
+    TRANSEND {end-text} [THEN statement | ELSE statement]
+
+### SYNTAX ELEMENTS
+
+**end-text** specifies an optional text string to save with the
+transaction end record.
+
+A **THEN** or **ELSE** (or both) statement is required. The THEN clause
+will be executed if the transaction is successfully ended. The ELSE
+clause will be executed if the transaction end fails for any reason.
+
+### NOTES
+
+Any record locks set during the transaction will be released upon
+successful completion.
+
 ## TRANSQUERY
 
 TRANSQUERY function is used to detect whether or not a transaction is
@@ -14909,31 +15059,6 @@ processed.
 A program (or series of programs) can only have one active
 transaction at one time. If another TRANSTART statement is encountered
 whilst a transaction is active, a run-time error will be generated.
-
-<a name="TRANSEND"/>
-
-## TRANSEND
-
-TRANSEND statement is used to mark the end of a successfully
-completed transaction.
-
-### COMMAND SYNTAX
-
-    TRANSEND {end-text} [THEN statement | ELSE statement]
-
-### SYNTAX ELEMENTS
-
-**end-text** specifies an optional text string to save with the
-transaction end record.
-
-A **THEN** or **ELSE** (or both) statement is required. The THEN clause
-will be executed if the transaction is successfully ended. The ELSE
-clause will be executed if the transaction end fails for any reason.
-
-### NOTES
-
-Any record locks set during the transaction will be released upon
-successful completion.
 
 ### Transactions-related examples
 
@@ -15116,7 +15241,9 @@ tab.
 If dynamic.array evaluates to null, it returns null. If any
 element of dynamic.array is null, it returns null for that value.
 
-# jBC Functions and Statements (U - X)
+<a name="JBCFUNCUX"/>
+
+# jBC Functions and Statements (U - X) [Previous](#JBCFUNCPT)
 
 <a name="UNASSIGNED"/>
 
@@ -15863,7 +15990,7 @@ See also: [MATWRITEU](#MATWRITEU), [RELEASE](#RELEASE),
         ABORT 201, "DICT Customers"
     END
     WRITEVU Rec ON DCusts, "Xref",1 SETTING Err ON ERROR
-        CRT "I/O Error[":Err:"]
+        CRT "I/O Error[":Err:"]"
     ABORT
     END
 
