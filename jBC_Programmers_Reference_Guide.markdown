@@ -196,7 +196,7 @@ depends on that variable contents:
        V.STRING = 'YES'
        IF V.STRING THEN CRT 'Non-empty string is true'
        IF NOT('0.00') THEN CRT '0.00 is false'
-       IF NOT("-0.00") THEN CRT '"-0.00" is still false - treated as numeric'
+       IF NOT('-0.00') THEN CRT '"-0.00" is still false - treated as numeric'
     * and this test depends on PRECISION
        PRECISION 9
        IF NOT('0.00000000000001') THEN CRT '0.00000000000001 is false'  \
@@ -207,6 +207,7 @@ depends on that variable contents:
 
 Output:
 
+<pre>
     Non-numeric value -- ZERO USED ,
     Variable 'V.UNASSIGNED' , Line
     1 , Source test2.b
@@ -218,6 +219,7 @@ Output:
     "-0.00" is still false - treated as numeric
     0.00000000000001 is false
     0.00000000000001 is true with PRECISION 17
+</pre>
 
 ## Dynamic arrays
 
@@ -268,6 +270,7 @@ IF...ELSE construct can be used without THEN:
 
 Windows:
 
+<pre>
     set TAFC_HOME=[path to installed TAFC]
     set JBCGLOBALDIR=%TAFC_HOME%
     set PATH=%TAFC_HOME%\bin;[path to C Compiler]\bin;%PATH%
@@ -275,71 +278,94 @@ Windows:
     set INCLUDE=[path to C Compiler]\include;%INCLUDE%
     set LIB=[path to C Compiler]\lib;%LIB%
     set JBCBASETMP=tmp_workfile
+</pre>
 
 Unix/Linux:
 
+<pre>
     export TAFC_HOME=[path to installed TAFC]
     export JBCGLOBALDIR=$TAFC_HOME
     export PATH=$TAFC_HOME/bin:$PATH
     export JBCEMULATE=[your emulation; for T24 should be prime]
     TTYNO=`tty | cut  -f4 -d\/`
     export JBCBASETMP=$HOME/jBASEWORK/tmp_$TTYNO
-
     export LD_LIBRARY_PATH=$TAFC_HOME/lib:/usr/ccs/lib:/usr/lib:/lib
     (Linux)
-
     export LIBPATH=$TAFC_HOME/lib:/usr/ccs/lib:/usr/lib
     (AIX)
-
     export SHLIB_PATH=$TAFC_HOME/lib:${SHLIB_PATH:-/usr/lib:/lib}
     (HP-UX)
+</pre>
 
 ## Customize work folders and files location
 
+Main dictionary location (usually points to VOC file):
+
+<pre>
     JEDIFILENAME_MD
+</pre>
 
-Main dictionary location. Usually points to VOC file.
+Path to SYSTEM file (normally located in [path to installed TAFC]/src):
 
+<pre>
     JEDIFILENAME_SYSTEM
+</pre>
 
-Points to SYSTEM file (normally located in [path to installed TAFC]/src).
+Default path to jBASE data files:
 
+<pre>
     JEDIFILEPATH
+</pre>
 
-Default path to jBASE data files.
+Location where programs will be put after compilation:
 
+<pre>
     JBCDEV_BIN
+</pre>
 
-Sets the location where programs will be put after compilation.
+The folder where shared libraries for compiled subroutines are located:
 
+<pre>
     JBCDEV_LIB
+</pre>
 
-Sets the location where shared libraries for compiled subroutines are located.
+Path to jBASE spooler folder:
 
+<pre>
     JBCSPOOLERDIR
+</pre>
 
-Points to jBASE spooler folder.
+The folder where saved lists are placed:
 
+<pre>
     JBCLISTFILE
+</pre>
 
-Points to folder where saved lists are placed.
+Where to look for libraries containing compiled subroutines:
 
+<pre>
     JBCOBJECTLIST
+</pre>
 
-Where to look for libraries containing compiled subroutines. Could be several entries, e.g.:
+Could be several entries, e.g.:
 
 Windows:
 
+<pre>
     set JBCOBJECTLIST=%HOME%\lib;%HOME%\t24lib
+</pre>
 
 Unix/Linux:
 
+<pre>
     export JBCOBJECTLIST=$HOME/lib:$HOME/t24lib
+</pre>
 
 If a subroutine presents in more than one location (which can be caused by
 changing JBCDEV_LIB environment variable or accidental duplication of a
 subroutine name) then the earlier location has the preference. See jshow output:
 
+<pre>
     jshow -c ACCOUNT
     Subroutine:          C:\r11\bnk\bnk.run\lib\lib2.dll
                          jBC ACCOUNT version 11.0 Thu Sep 06 22:09:46 2012
@@ -347,109 +373,153 @@ subroutine name) then the earlier location has the preference. See jshow output:
     Subroutine (DUP!!):  C:\r11\bnk\bnk.run\t24lib\acm_accountopening\lib0.dll
                          jBC ACCOUNT version 11.0 Fri Apr 29 14:43:35 2011
                          jBC ACCOUNT source file source/R11.000/win32_TAFCR11GA
+</pre>
 
 In situation like that DECATALOG is to be used:
 
+<pre>
     DECATALOG ETC.BP ACCOUNT
     Object ACCOUNT decataloged successfully
     Library C:\r11\bnk\bnk.run\lib\lib2.dll rebuild okay
+</pre>
 
+<pre>
     jshow -c ACCOUNT
     Subroutine:          C:\r11\bnk\bnk.run\t24lib\acm_accountopening\lib0.dll
                          jBC ACCOUNT version 11.0 Fri Apr 29 14:43:35 2011
                          jBC ACCOUNT source file source/R11.000/win32_TAFCR11GA
+</pre>
 
 ## Runtime errors handling
 
+This variable allows to suppress error messages and/or a program entering the debugger when divide by
+zero is encountered:
+
+<pre>
     JBASE_ERRMSG_DIVIDE_BY_ZERO
+</pre>
 
-Allows to suppress error messages and/or a program entering the debugger when divide by
-zero is encountered.
+This variable allows to suppress error messages and/or a program entering the debugger when non-numeric
+variable is used in an equation:
 
+<pre>
     JBASE_ERRMSG_NON_NUMERIC
+</pre>
 
-Allows to suppress error messages and/or a program entering the debugger when non-numeric
-variable is used in an equation.
+This variable allows to suppress error messages and/or a program entering the debugger when uninitialized
+variable is used in an equation:
 
+<pre>
     JBASE_ERRMSG_ZERO_USED
-
-Allows to suppress error messages and/or a program entering the debugger when uninitialized
-variable is used in an equation.
+</pre>
 
 ## Regional settings
 
+Locale setting:
+
+<pre>
     JBASE_LOCALE
+</pre>
 
-Locale setting.
+In which codepage data is displayed (e.g. utf8, windows-1251 etc;
+doesn't apply to how data is stored):
 
+<pre>
     JBASE_CODEPAGE
+</pre>
 
-Directs how data is displayed (e.g. utf8, windows-1251 etc).
+Time zone:
 
+<pre>
     JBASE_TIMEZONE
 
-E.g. Europe/London.
+    E.g. Europe/London.
+</pre>
 
+Setting this variable to 1 means utf-8 environment
+(requires data files conversion when changed):
+
+<pre>
     JBASE_I18N
-
-Being set to 1 means utf-8 environment (requires data files conversion when changed).
+</pre>
 
 ## Diagnostics and tracing
 
+Being set to 1 redirects stderr to stdout (useful to catch errors to COMO output):
+
+<pre>
     JBC_STDERR
+</pre>
 
-Being set to 1 redirects stderr to stdout. Useful to catch errors to COMO output.
+Being set to 1 stipulates creation of a core dump when the session crashes:
 
+<pre>
     JBC_CORE_DUMP
+</pre>
 
-Being set to 1 stipulates creation of a core dump when the session crashes.
+jBASE tracing options:
 
+<pre>
     JDIAG
+</pre>
 
-Sets jBASE tracing options, e.g.:
+E.g.:
 
+<pre>
     set JDIAG=trace=JVM,CALLJ
     set JDIAG=TRACE=INDEX
+</pre>
 
 ## Other
 
+Being set to 1 improves performance when distributed files are used:
+
+<pre>
     JBASE_DISTRIB_FASTSCAN
-
-Being set to 1 improves performance when distributed files are used.
-
-    JEDI_DISTRIB_DEFOPEN
+</pre>
 
 Being set to 1 prevents all parts of a distributed file to be opened as soon as the stub had
-been.
+been:
 
+<pre>
+    JEDI_DISTRIB_DEFOPEN
+</pre>
+
+Terminal type (e.g. ntcon, vt220 etc):
+
+<pre>
     TERM
-
-Terminal type, e.g. ntcon, vt220 etc.
+</pre>
 
 # Compilation
 
 Done using BASIC...CATALOG commands or jcompile utility:
 
+<pre>
     BASIC MY.BP TEST.SUB
     TEST.SUB
     BASIC_1.c
     Source file TEST.SUB compiled successfully
+</pre>
 
+<pre>
     CATALOG MY.BP TEST.SUB
     TEST.SUB
     Object TEST.SUB cataloged successfully
     Library $HOME\lib\lib0.dll rebuild okay
-
     jcompile test.b
     Warning: Variable DIV.AMT2 is never assigned!
     test.c
+</pre>
 
 Compilation results in appearance of an object and executable files
 (sample for Windows):
 
+<pre>
     test.obj
     test.dll
     test.exe
+</pre>
 
 If the code is recompiled very often then it might happen that the older version
 of executable code
@@ -457,7 +527,9 @@ still resides in shared memory and the result of changes wouldn't be seen immedi
 In this case "-E" option of jcompile can be used to build executable only
 and not the shared library, e.g.:
 
+<pre>
     jcompile -E test.b
+</pre>
 
 And then test.dll isn't created. The final compilation is of course to be done
 without "-E" option. Also - without shared library CHAIN statement might work
@@ -483,77 +555,84 @@ in a jBC program or subroutine (using EXECUTE/PERFORM).
 
 Create both data and dictionary:
 
+<pre>
     CREATE-FILE F.SAMPLE 101 1
-
     [ 417 ] File F.SAMPLE]D created , type = J4
     [ 417 ] File F.SAMPLE created , type = J4
+</pre>
 
 If the file already exists, the error message appears:
 
+<pre>
     [ 413 ] File name DICT F.SAMPLE already exists
+</pre>
 
 Delete hashed file (both data and dictionary):
 
+<pre>
     DELETE-FILE F.SAMPLE
+</pre>
 
 Create hashed file (data only):
 
+<pre>
     CREATE-FILE DATA F.SAMPLE 101 1
-
     [ 417 ] File F.SAMPLE created , type = J4
+</pre>
 
 Create hashed file (dictionary only):
 
+<pre>
     CREATE-FILE DICT F.SAMPLE 101 1
-
     [ 417 ] File F.SAMPLE]D created , type = J4
+</pre>
 
 ## Create and list the data
 
 Put some data to file:
 
+<pre>
     JED F.SAMPLE REC1
-
     0001 Field 1
     0002 Field 2
     0003 Field 3
+</pre>
 
 Press Esc; then type FI to save the record.
 
 List file contents:
 
+<pre>
     LIST F.SAMPLE
-
     F.SAMPLE......
-
     REC1
-
     1 Records Listed
+</pre>
 
 No dictionary; we see only @ID. Raw output:
 
+<pre>
     CT F.SAMPLE
-
     REC1
-
     001 Field 1
     002 Field 2
     003 Field 3
+</pre>
 
 As an alternative, we can use standard correlatives:
 
+<pre>
     LIST F.SAMPLE *A1 *A2 *A3
-
     F.SAMPLE......   *A1...........   *A2...........   *A3...........
-
     REC1             Field 1          Field 2          Field 3
+</pre>
 
 ## Adding dictionary items
 
 Add a dictionary item to assign the name to a field:
 
+<pre>
     JED DICT F.SAMPLE FLD1
-
     0001 D
     0002 1
     0003
@@ -561,48 +640,51 @@ Add a dictionary item to assign the name to a field:
     0005 10L
     0006 S
     0007
+</pre>
 
 Use field name in a query:
 
+<pre>
     LIST F.SAMPLE FLD1
-
     F.SAMPLE......   FIELD 1 HEADER
-
     REC1             Field 1
-
     1 Records Listed
+</pre>
 
+<pre>
     LIST F.SAMPLE WITH FLD1 EQ ''
-
      No Records Listed
+</pre>
 
 In default view we still don’t have it:
 
+<pre>
     LIST F.SAMPLE
-
     F.SAMPLE......
-
     REC1
+</pre>
 
 Set the field to be seen by default:
 
+<pre>
     JED DICT F.SAMPLE @
-
     0001 PH
     0002 @ID FLD1
+</pre>
 
 See the result:
 
+<pre>
     LIST F.SAMPLE
-
     F.SAMPLE......   ID..................   FIELD 1 HEADER
-
     REC1             REC1                   Field 1
+</pre>
 
 ## Change of size and format, statistics, properties
 
 See file statistics:
 
+<pre>
     jstat -v F.SAMPLE
     File C:\r11\bnk\bnk.run\F.SAMPLE
     Type=J4 , Hash method = 5
@@ -612,11 +694,11 @@ See file statistics:
     File size = 417792 bytes , Inode = 29838 , Device = Id 24915
     Last Accessed Tue Nov 20 19:50:30 2012 , Last Modified Tue Nov 20 19:50:30 2012
     Backup = YES , Log = YES , Rollback = YES , Network = NO
-
     Record Count = 1 , Record Bytes = 45
     Bytes/Record = 45 , Bytes/Group = 0
     Primary file space:   Total Frames = 101 , Total Bytes = 45
     Secondary file space: Total Frames = 0 , Total Bytes = 0
+</pre>
 
 ### NOTE
 
@@ -624,32 +706,37 @@ See file statistics:
 
 Add more records:
 
+<pre>
     COPY FROM F.SAMPLE REC1,REC2
-
     1 records copied
+</pre>
 
 Try to resize the file:
 
+<pre>
     jrf -V F.SAMPLE
-
     ...
     Downsizing skipped from modulo 101 to 3.
+</pre>
 
 Resize it anyway:
 
+<pre>
     jrf -VD F.SAMPLE
-
     ...
     Downsizing from modulo 101 to 3
+</pre>
 
 Change file type to JR:
 
+<pre>
     jrf -H6 F.SAMPLE
+</pre>
 
 See statistics now:
 
+<pre>
     jstat -v F.SAMPLE
-
     File Type       = JR,        Hash method = 5, Created = Tue Nov 20 19:56:00 2012
     Frame size      = 4096,        OOG Threshold   = 2048
     File size       = 8192, Freespace       = 0 frames
@@ -664,56 +751,64 @@ See statistics now:
     Data Frames     = 1,    Ptr Frames      = 0
     OOG Bytes       = 0,    OOG Frames      = 0
     Sum Squares     = 3362, Std Dev Mean    = 41
+</pre>
 
 Turn on secure updates:
 
+<pre>
     jchmod +S F.SAMPLE
+</pre>
 
 Check the result:
 
+<pre>
     jstat -v F.SAMPLE
-
     ...
     Backup  = YES, Log      = YES,  Rollback        = YES,  Secure updates  = YES
     ...
+</pre>
 
 Delete a record:
 
+<pre>
     DELETE F.SAMPLE REC2
-
     1 record(s) deleted.
+</pre>
 
 Add data sections:
 
+<pre>
     CREATE-FILE F.SAMPLE,TWO TYPE=JR
-
     [ 417 ] File F.SAMPLE]MTWO created , type = JR
+</pre>
 
+<pre>
     CREATE-FILE F.SAMPLE,THREE TYPE=JR
-
     [ 417 ] File F.SAMPLE]MTHREE created , type = JR
+</pre>
 
 Create a record in a section:
 
+<pre>
     JED F.SAMPLE,TWO REC5
-
     0001 Section 2/1
     0002 Section 2/2
     0003 Section 2/3
+</pre>
 
 See that all sections use the same dictionary:
 
+<pre>
     LIST F.SAMPLE,TWO
-
     F.SAMPLE,TWO..    ID..................    FIELD 1 HEADER
-
     REC5              REC5                    Section 2/1
+</pre>
 
+<pre>
     LIST F.SAMPLE,THREE
-
     F.SAMPLE,THREE    ID..................    FIELD 1 HEADER
-
      No Records Listed
+</pre>
 
 ### NOTE
 
@@ -729,52 +824,68 @@ files and folders. Some examples:
 
 Create the folder:
 
+<pre>
     CREATE-FILE DATA TEST.BP TYPE=UD
     [ 417 ] File TEST.BP created , type = UD
+</pre>
 
 Create a program:
 
+<pre>
     JED TEST.BP PROG1
     0001 CRT 2*2
+</pre>
 
 Save file. Compile and run it:
 
+<pre>
     BASIC TEST.BP PROG1
     PROG1
     BASIC_3.c
     Source file PROG1 compiled successfully
+</pre>
 
+<pre>
     CATALOG TEST.BP PROG1
     PROG1
     Object PROG1 cataloged successfully
+</pre>
 
+<pre>
     PROG1
     4
+</pre>
 
 Copy data:
 
+<pre>
     COPY FROM F.SAMPLE TO TEST.BP REC1
     1 records copied
+</pre>
 
 Edit file REC1 in TEST.BP folder with any text editor so it now looks like:
 
+<pre>
     Field 1 - updated
     Field 2
     Field 3
+</pre>
 
 Copy it back to hashed file:
 
+<pre>
     COPY FROM TEST.BP TO F.SAMPLE REC1 OVERWRITING
     1 records copied
+</pre>
 
 See the result:
 
+<pre>
     LIST F.SAMPLE
-
     F.SAMPLE......     ID..................   FIELD 1 HEADER
-
     REC1               REC1                   Field 1 - upda
                                               ted
+</pre>
 
 # System ("@") variables
 
@@ -1135,7 +1246,9 @@ have spawned.
 
 <a name="JBCFUNCATE"/>
 
-# jBC Functions and Statements (@ - E) [Next](#JBCFUNCFJ)
+# jBC Functions and Statements (@ - E)
+
+<!-- [Next (F - J)](#JBCFUNCFJ) -->
 
 The following pages show the syntax of every statement and function in
 the language together with examples of their use.
@@ -5610,7 +5723,9 @@ Will display the value "1".
 
 <a name="JBCFUNCFJ"/>
 
-# jBC Functions and Statements (F - J) [Next](#JBCFUNCKO) [Previous](#JBCFUNCATE)
+# jBC Functions and Statements (F - J)
+
+<!-- [Next (K - O)](#JBCFUNCKO) | [Previous (@ - E)](#JBCFUNCATE) -->
 
 <a name="FADD"/>
 
@@ -8629,7 +8744,9 @@ Output:
 
 <a name="JBCFUNCKO"/>
 
-# jBC Functions and Statements (K - O) [Next](#JBCFUNCPT) [Previous](#JBCFUNCFJ)
+# jBC Functions and Statements (K - O)
+
+<!-- [Next (P - T)](#JBCFUNCPT) | [Previous (F - J)](#JBCFUNCFJ) -->
 
 ## KEYIN
 
@@ -11232,7 +11349,9 @@ specified and then sent directly to the output advice.
 
 <a name="JBCFUNCPT"/>
 
-# jBC Functions and Statements (P - T) [Next](#JBCFUNCUX) [Previous](#JBCFUNCKO)
+# jBC Functions and Statements (P - T)
+
+<!-- [Next (U - X)](#JBCFUNCUX) | [Previous (K - O)](#JBCFUNCKO) -->
 
 ## PAGE
 
@@ -15243,7 +15362,9 @@ element of dynamic.array is null, it returns null for that value.
 
 <a name="JBCFUNCUX"/>
 
-# jBC Functions and Statements (U - X) [Previous](#JBCFUNCPT)
+# jBC Functions and Statements (U - X)
+
+<!-- [Previous (P - T)](#JBCFUNCPT) -->
 
 <a name="UNASSIGNED"/>
 
