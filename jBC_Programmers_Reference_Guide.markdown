@@ -903,35 +903,31 @@ Main program (test.b):
 
        GOSUB SECTION1
        STOP
-
     SECTION1:
        GOSUB SECTION2
        RETURN
-
     SECTION2:
        CRT OCONV(SYSTEM(1029), 'MCP')
        CALL TEST.SUB
        RETURN
-
     END
 
 Subroutine:
 
        SUBROUTINE TEST.SUB
-
        GOSUB SECTION3
        RETURN
-
     SECTION3:
        CRT OCONV(SYSTEM(1029), 'MCP')
        RETURN
-
     END
 
 Output:
 
+<pre>
     1\2\6\test.b]1\1\1\test.b
     2\1\3\TEST.SUB]1\3\12\test.b]1\2\6\test.b]1\1\1\test.b
+</pre>
 
 ## @CODEPAGE
 
@@ -953,11 +949,13 @@ in the @DATA variable:
 
 Output of this program:
 
+<pre>
     8
     "QWE
     RTY
     "
     0
+</pre>
 
 ## @DATE
 
@@ -999,9 +997,11 @@ For B options in heading
 Used to reference the record-id in a query language
 statement:
 
+<pre>
        SORT STOCK BY-DSND @ID
        LIST STOCK WITH @ID = "1000"
        LIST STOCK WITH @ID LIKE AB...
+</pre>
 
 ## @LEVEL
 
@@ -1073,7 +1073,7 @@ find.
 
        @USER.ROOT = "Temenos T24 Financials"
        .....
-       PRINT "root user declaration is": @USER.ROOT
+       PRINT "root user declaration is" : @USER.ROOT
 
 See attribute &lt;28&gt;, USER_PROC_USER_ROOT, in the section
 "Layout of user record"
@@ -1096,7 +1096,7 @@ how many database I/O's it performed it could do this:
        EXECUTE 'COUNT fb1 WITH *A1 EQ "x"'
        info2 = @USERSTATS
        read2 = info2<USER_PROC_STATS_READ>
-       PRINT "The COUNT command took ":(read2-read1):" READ's from the database"
+       PRINT "The COUNT command took " : (read2-read1) : " READs from the database"
 
 So a program can set a user-definable string to whatever value it likes,
 up to 63 bytes, and other programs can use various methods (see "User
@@ -1128,8 +1128,9 @@ TAFC system:
        * For each user logged on read in their user information
        LOOP WHILE READNEXT key DO
            READ rec FROM PROC, key THEN
-           PRINT "Port ":rec<USER_PROC_PORT_NUMBER>:" is logged on by user ":rec<USER_PROC_ACCOUNT>
-       END
+              PRINT "Port " : rec<USER_PROC_PORT_NUMBER> :   \
+                 " is logged on by user " : rec<USER_PROC_ACCOUNT>
+          END
        REPEAT
 
 ### Layout of user record
@@ -1293,10 +1294,10 @@ this by accessing the terminfo database through the SYSTEM () function.
 ### EXAMPLE
 
        FOR I = 1 TO 5
-          CRT @(5, I):"*":
+          CRT @(5, I) : "*" :
        NEXT I
        Home = @(0,0) ;* Remember the cursor home position
-       CRT Home:"Hi honey, I'm HOME!":
+       CRT Home: "Hi honey, I'm HOME!" :
 
 ## @ (SCREENCODE)
 
@@ -1380,8 +1381,8 @@ To turn off all effects use -128.
 
 ### EXAMPLE
 
-       CRT @(-1):@(30):@(52):"jBASE Heading":@(-128):
-       CRT @(5,5):@(-4):"Prompt: ": ; INPUT Answer
+       CRT @(-1):@(30):@(52):'jBASE Heading':@(-128):
+       CRT @(5,5):@(-4):'Prompt: ': ; INPUT Answer
 
 <a name="ABORT"/>
 
@@ -1434,8 +1435,10 @@ command.
 
 Sample program output:
 
+<pre>
      ** Error [ 201 ] **
     Unable to open file XCICLJPH
+</pre>
 
 <a name="ABS"/>
 
@@ -1472,25 +1475,13 @@ returns null for that element.
 
 ### COMMAND SYNTAX
 
-ABSS (dynamic.array)
+    ABSS(dynamic.array)
 
 ### EXAMPLE
 
-    Y = REUSE(300)
-
-    Z = 500:@VM:400:@VM:300:@SM:200:@SM:100
-
-    A = SUBS (Z,Y)
-
-    PRINT A
-
-    PRINT ABSS (A)
-
-The output of this program is:
-
-    200]100]0\-100\-200
-
-    200]100]0\100\200
+       V.BEFORE = 500: @VM: 400: @VM: 300 :@SM: 200 :@SM: 100
+       V.AFTER = SUBS(V.BEFORE, REUSE(300))     ;* decrease each element by 300
+       CRT OCONV(ABSS(V.AFTER), 'MCP')          ;*  200]100]0\100\200
 
 ## ADDS
 
@@ -1510,11 +1501,9 @@ returns null for the sum of the corresponding elements.
 
        Array1 = 2 :@VM: 4 :@VM: 6 :@SM: 10
        Array2 = 1 :@VM: 2: @VM: 3 :@VM: 4
-       PRINT OCONV(ADDS(Array1, Array2), 'MCP')
+       PRINT OCONV(ADDS(Array1, Array2), 'MCP')   ;*  3]6]9\10]4
 
-The output of this program is:
-
-    3]6]9\10]4
+<a name="ALPHA"/>
 
 ## ALPHA
 
@@ -1541,11 +1530,11 @@ or not.
 
        V.STRING = 'AWERC'
     * check if there are only alphabetic characters
-       CRT ISALPHA(V.STRING)        ;* 1
+       CRT ALPHA(V.STRING)        ;* 1
     * add number to the end
        V.STRING := 1   ; CRT V.STRING    ;* AWERC1
     * check again if there are only alphabetic characters
-       CRT ISALPHA(V.STRING)        ;* 0
+       CRT ALPHA(V.STRING)        ;* 0
 
 ## ANDS
 
@@ -1563,17 +1552,13 @@ is zero or an empty string, it returns false for those elements.
 
 ### COMMAND SYNTAX
 
-ANDS (array1, array2)
+    ANDS(array1, array2)
 
 ### EXAMPLE
 
-    A = 1:@SM:4:@VM:4:@SM:1
-
-    B = 1:@SM:1-1:@VM:2
-
-    PRINT ANDS (A,B)
-
-The output of this program is: 1\0]1\0
+        A = 1 :@SM: 4 :@VM: 4 :@SM: 1
+        B = 1 :@SM: 1-1 :@VM: 2
+        PRINT OCONV(ANDS(A, B), 'MCP')    ;*  1\0]1\0
 
 ## ASCII
 
@@ -1582,7 +1567,7 @@ the EBCDIC character set to the ASCII character set.
 
 ### COMMAND SYNTAX
 
-ASCII (expression)
+    ASCII(expression)
 
 ### SYNTAX ELEMENTS
 
@@ -1594,8 +1579,8 @@ equivalent.
 
 ### EXAMPLES
 
-    READT EbcdicBlock ELSE CRT "Tape failed!"; STOP
-    AsciiBlock = ASCII (EbcdicBlock) ;* convert to ASCII
+        READT EbcdicBlock ELSE CRT "Tape failed!" ; STOP
+        AsciiBlock = ASCII(EbcdicBlock) ;* convert to ASCII
 
 <a name="ASSIGNED"/>
 
@@ -1666,7 +1651,9 @@ bit non portable.
 
 This results in 0100, and the following output is displayed:
 
-        4
+<pre>
+    4
+</pre>
 
 ## BITCHANGE
 
@@ -1716,7 +1703,7 @@ bit table.
 
 ### COMMAND SYNTAX
 
-    BITCHECK (table_no)
+    BITCHECK(table_no)
 
 ### SYNTAX ELEMENTS
 
@@ -1735,7 +1722,7 @@ values.
 
 ### COMMAND SYNTAX
 
-BITLOAD({bit-string})
+    BITLOAD({bit-string})
 
 ### SYNTAX ELEMENTS
 
@@ -1767,6 +1754,7 @@ value will always be 0 (zero) or 1.
 Loads the bit table with the value of ASCII hex string NEW.VALUE
 After assignment, the contents of the bit table is:
 
+<pre>
     0000 0001 0010 0011
     0100 0101 0110 0111
     1000 1001 1010 1011
@@ -1775,6 +1763,7 @@ After assignment, the contents of the bit table is:
     0000 0000 0000 0000
     0000 0000 0000 0000
     0000 0000 0000 0000
+</pre>
 
 **NOTE:** that all values beyond the 64th bit have been reset to 0 (zero).
 
@@ -1791,7 +1780,7 @@ specified by any numeric expression.
 
 ### COMMAND SYNTAX
 
-BITNOT (expression ?,bit#?)
+    BITNOT(expression ?,bit#?)
 
 DESCRIPTION
 
@@ -1814,11 +1803,13 @@ high-order bit non portable.
 
 ### EXAMPLE
 
-    PRINT BITNOT(6),BITNOT(15,0),BITNOT(15,1),BITNOT(15,2)
+    PRINT BITNOT(6), BITNOT(15,0), BITNOT(15,1), BITNOT(15,2)
 
 This is the program output:
 
+<pre>
     7 14 13 11
+</pre>
 
 ## BITOR
 
@@ -1827,7 +1818,7 @@ integers specified by numeric expressions.
 
 ### COMMAND SYNTAX
 
-BITOR (expression1, expression2)
+    BITOR(expression1, expression2)
 
 ### DESCRIPTION
 
@@ -1847,14 +1838,15 @@ high-order bit non portable.
 
 ### EXAMPLE
 
-    PRINT BITOR(6,12)
-
+       PRINT BITOR(6,12)
     * Binary value of 6 = 0110
     * Binary value of 12 = 1100
 
 This results in 1110, and the following output is displayed:
 
+<pre>
     14
+</pre>
 
 <a name="BITRESET"/>
 
@@ -1865,7 +1857,7 @@ zero and returns the previous value of the bit.
 
 ### COMMAND SYNTAX
 
-BITRESET (table_no)
+    BITRESET(table_no)
 
 ### SYNTAX ELEMENTS
 
@@ -1895,9 +1887,8 @@ See also: [BITSET](#BITSET)
 
 ### EXAMPLE
 
-    OLD.VALUE = BITRESET (112)
-
-    PRINT OLD.VALUE
+        OLD.VALUE = BITRESET(112)
+        PRINT OLD.VALUE
 
 If table entry 112 is one, it returns a value of one, resets bit 112
 to 0, and prints one. If table entry 112 is zero, returns a value of
@@ -1912,7 +1903,7 @@ returns the value of the bit before it was changed.
 
 ### COMMAND SYNTAX
 
-BITSET (table_no)
+    BITSET(table_no)
 
 ### SYNTAX ELEMENTS
 
@@ -1941,9 +1932,8 @@ See also: [BITRESET](#BITRESET)
 
 ### EXAMPLE
 
-    OLD.VALUE = BITSET (112)
-
-    PRINT OLD.VALUE
+        OLD.VALUE = BITSET(112)
+        PRINT OLD.VALUE
 
 If table entry 112 is zero, returns a value of zero, sets bit 112 to
 one, and prints zero. If table entry 112 is one, returns a value of
@@ -1956,7 +1946,7 @@ specified by expression.
 
 ### COMMAND SYNTAX
 
-BITTEST (expression, bit#)
+    BITTEST(expression, bit#)
 
 ### DESCRIPTION
 
@@ -1972,13 +1962,14 @@ Non integer values are truncated before the operation is performed.
 
 ### EXAMPLE
 
-    PRINT BITTEST(11,0),BITTEST(11,1),BITTEST(11,2),BITTEST(11,3)
-
-    * The binary value of 11 = 1011
+        PRINT BITTEST(11,0),BITTEST(11,1),BITTEST(11,2),BITTEST(11,3)
+     * The binary value of 11 = 1011
 
 This is the program output:
 
+<pre>
     1 1 0 1
+</pre>
 
 ## BITXOR
 
@@ -1989,7 +1980,7 @@ the two bits is 1; else, it returns a bit 0.
 
 ### COMMAND SYNTAX
 
-BITXOR (expression1, expression2)
+    BITXOR(expression1, expression2)
 
 ### DESCRIPTION
 
@@ -2005,16 +1996,18 @@ the high-order bit nonportable.
 
 ### EXAMPLE
 
-    PRINT BITXOR(6,12)
-
+       PRINT BITXOR(6,12)
     * Binary value of 6 = 0110
     * Binary value of 12 = 1100
 
 This results in 1010, and the following output is displayed:
 
+<pre>
     10
+</pre>
 
 <a name="BREAK"/>
+
 ## BREAK
 
 Terminate the currently
@@ -2052,9 +2045,11 @@ message 44, and ignore the statement.
 
 Compiler output:
 
+<pre>
     [warning	(44)] "test2.b", 9 (offset 7) :
     BREAK/EXIT is invalid outside a FOR or LOOP - Ignored
     test2.c
+</pre>
 
 ## BREAK ON/OFF
 
@@ -2063,7 +2058,7 @@ sequence intr defined by the stty command.
 
 ### COMMAND SYNTAX
 
-BREAK ON / BREAK OFF
+    BREAK ON / BREAK OFF
 
 ### EXAMPLE
 
@@ -2076,12 +2071,14 @@ BREAK ON / BREAK OFF
 
 Output (user is to try to press Ctrl-C at both prompts):
 
+<pre>
     Next 5 seconds Ctrl-C makes no action
     And next 5 seconds Ctrl-C invokes debugger
     Interrupt signal
     Source changed to .\test2.b
     0009    MSLEEP(5000)
     jBASE debugger->
+</pre>
 
 <a name="BYTELEN"/>
 
@@ -2092,7 +2089,7 @@ number of bytes rather than the number of characters.
 
 ### COMMAND SYNTAX
 
-    BYTELEN (expression)
+    BYTELEN(expression)
 
 ### SYNTAX ELEMENTS
 
@@ -2129,21 +2126,23 @@ joined together via a given delimiter.
 
 ### COMMAND SYNTAX
 
-CacheBucketList(delimiter)
+    CacheBucketList(delimiter)
 
 ### EXAMPLE
 
     INCLUDE JBC.h
-    CachePut("bucket1", "item1", "value1")
-    CachePut("bucket2", "item1", "value1")
+    CachePut('bucket1', 'item1', 'value1')
+    CachePut('bucket2', 'item1', 'value1')
     buckets = CacheBucketList(@AM)
-    CRT "First bucket: ":buckets<1>
-    CRT "Second bucket: ":buckets<2>
+    CRT "First bucket: " : buckets<1>
+    CRT "Second bucket: " : buckets<2>
 
 The output is:
 
+<pre>
     First bucket: bucket1
     Second bucket: bucket2
+</pre>
 
 ### NOTES
 
@@ -2155,20 +2154,22 @@ The CacheClear function will delete all items in a bucket of the cache.
 
 ### COMMAND SYNTAX
 
-CacheClear(bucketname)
+    CacheClear(bucketname)
 
 ### EXAMPLE
 
     INCLUDE JBC.h
-    CachePut("ACCOUNT", "username", "customer1")
-    CRT "[":CacheGet("ACCOUNT", "username"):"]"
-    CacheClear("ACCOUNT")
-    CRT "[":CacheGet("ACCOUNT", "username"):"]"
+    CachePut('ACCOUNT', 'username', 'customer1')
+    CRT '[': CacheGet('ACCOUNT', 'username'):']'
+    CacheClear('ACCOUNT')
+    CRT '[': CacheGet('ACCOUNT', 'username'):']'
 
 The output is:
 
+<pre>
     [customer1]
     []
+</pre>
 
 ### NOTES
 
@@ -2180,20 +2181,22 @@ The CacheClearAll function will clean all buckets in the cache.
 
 ### COMMAND SYNTAX
 
-CacheClearAll()
+    CacheClearAll()
 
 ### EXAMPLE
 
     INCLUDE JBC.h
-    CachePut("ACCOUNT", "username", "customer1")
-    CRT "[":CacheGet("ACCOUNT", "username"):"]"
+    CachePut('ACCOUNT', 'username', 'customer1')
+    CRT '[': CacheGet('ACCOUNT', 'username'):']'
     CacheClearAll()
-    CRT "[":CacheGet("ACCOUNT", "username"):"]"
+    CRT '[': CacheGet('ACCOUNT', 'username'):']'
 
 The output is:
 
+<pre>
     [customer1]
     []
+</pre>
 
 ### NOTES
 
@@ -2206,12 +2209,12 @@ bucket in the cache.
 
 ### COMMAND SYNTAX
 
-CacheClearStats()
+    CacheClearStats()
 
 ### EXAMPLE
 
     INCLUDE JBC.h
-    CacheClearStats("bucket1")
+    CacheClearStats('bucket1')
 
 ### NOTES
 
@@ -2224,21 +2227,23 @@ the cache.
 
 ### COMMAND SYNTAX
 
-CacheDelete(bucket, item)
+    CacheDelete(bucket, item)
 
 ### EXAMPLE
 
     INCLUDE JBC.h
-    CacheDelete("bucket1", "item1")
-    CachePut("bucket2", "item1", "value1")
+    CacheDelete('bucket1', 'item1')
+    CachePut('bucket2', 'item1', 'value1')
     buckets = CacheBucketList(@AM)
-    CRT "First bucket: ":buckets<1>
-    CRT "Second bucket: ":buckets<2>
+    CRT "First bucket: " : buckets<1>
+    CRT "Second bucket: " : buckets<2>
 
 The output is:
 
+<pre>
     First bucket: bucket1
     Second bucket: bucket2
+</pre>
 
 ### NOTES
 
@@ -2251,21 +2256,23 @@ bucket or “0” otherwise.
 
 ### COMMAND SYNTAX
 
-CacheExists(bucket, item)
+    CacheExists(bucket, item)
 
 ### EXAMPLE
 
     INCLUDE JBC.h
-    CRT CacheExists("bucket1", "item1")
-    CachePut("bucket1", "item1", "value1")
-    CRT CacheExists("bucket1", "item1")
-    CRT CacheExists("bucket2", "item1")
+    CRT CacheExists('bucket1', 'item1')
+    CachePut('bucket1', 'item1', 'value1')
+    CRT CacheExists('bucket1', 'item1')
+    CRT CacheExists('bucket2', 'item1')
 
 The output is:
 
-     0
-     1
-     0
+<pre>
+    0
+    1
+    0
+</pre>
 
 ### NOTES
 
@@ -2281,19 +2288,21 @@ returns an empty string.
 
 ### COMMAND SYNTAX
 
-CacheGet(bucket,  item)
+    CacheGet(bucket,  item)
 
 ### EXAMPLE
 
     INCLUDE JBC.h
-    CRT "[":CacheGet("bucket1", "item1"):"]"
-    CachePut("bucket1", "item1", "value1")
-    CRT "[":CacheGet("bucket1", "item1"):"]"
+    CRT '[': CacheGet('bucket1', 'item1'):']'
+    CachePut('bucket1', 'item1', 'value1')
+    CRT '[': CacheGet('bucket1', 'item1'):']'
 
 The output is:
 
+<pre>
     []
     [value1]
+</pre>
 
 ### NOTES
 
@@ -2307,23 +2316,25 @@ The CacheGetOption function will return an option of the bucket.
 
 ### COMMAND SYNTAX
 
-CacheGetOption(bucket,  option)
+    CacheGetOption(bucket,  option)
 
 ### EXAMPLE
 
     INCLUDE JBC.h
-    CRT "CACHE_MAX_SIZE: ":CacheGetOption("bucket1", CACHE_MAX_SIZE)
-    CRT "CACHE_PURGE_THRESHOLD: ":CacheGetOption("bucket1", CACHE_PURGE_THRESHOLD)
-    CachePut("bucket1", "item1", "value1")
-    CRT "CACHE_MAX_SIZE: ":CacheGetOption("bucket1", CACHE_MAX_SIZE)
-    CRT "CACHE_PURGE_THRESHOLD: ":CacheGetOption("bucket1", CACHE_PURGE_THRESHOLD)
+    CRT 'CACHE_MAX_SIZE: ': CacheGetOption('bucket1', CACHE_MAX_SIZE)
+    CRT 'CACHE_PURGE_THRESHOLD: ': CacheGetOption('bucket1', CACHE_PURGE_THRESHOLD)
+    CachePut('bucket1', 'item1', 'value1')
+    CRT 'CACHE_MAX_SIZE: ': CacheGetOption('bucket1', CACHE_MAX_SIZE)
+    CRT 'CACHE_PURGE_THRESHOLD: ': CacheGetOption('bucket1', CACHE_PURGE_THRESHOLD)
 
 The output is:
 
+<pre>
     CACHE_MAX_SIZE: 0
     CACHE_PURGE_THRESHOLD: 0
     CACHE_MAX_SIZE: 1048576
     CACHE_PURGE_THRESHOLD: 90
+</pre>
 
 ### NOTES
 
@@ -2351,21 +2362,23 @@ containing the item names joined together via a given delimiter.
 
 ### COMMAND SYNTAX
 
-CacheKeyList(bucket, delimiter)
+    CacheKeyList(bucket, delimiter)
 
 ### EXAMPLE
 
     INCLUDE JBC.h
-    CachePut("bucket1", "item1", "value1")
-    CachePut("bucket1", "item2", "value1")
-    keys = CacheKeyList("bucket1", @AM)
-    CRT "First name: ":keys<1>
-    CRT "Second name: ":keys<2>
+    CachePut('bucket1', 'item1', 'value1')
+    CachePut('bucket1', 'item2', 'value1')
+    keys = CacheKeyList('bucket1', @AM)
+    CRT 'First name: ':keys<1>
+    CRT 'Second name: ':keys<2>
 
 The output is:
 
+<pre>
     First name: item1
     Second name: item2
+</pre>
 
 ### NOTES
 
@@ -2378,17 +2391,19 @@ the cache.
 
 ### COMMAND SYNTAX
 
-CachePut(bucket,  item, value)
+    CachePut(bucket, item, value)
 
 ### EXAMPLE
 
     INCLUDE JBC.h
-    CachePut("bucket1", "item1", "value1")
-    CRT "[":CacheGet("bucket1", "item1"):"]"
+    CachePut('bucket1', 'item1', 'value1')
+    CRT '[': CacheGet('bucket1', 'item1'):']'
 
 The output is:
 
+<pre>
     [value1]
+</pre>
 
 ### NOTES
 
@@ -2400,13 +2415,13 @@ The CacheSetOption function will set an option of the bucket.
 
 ### COMMAND SYNTAX
 
-CacheSetOption(bucket,  option, value)
+    CacheSetOption(bucket,  option, value)
 
 ### EXAMPLE
 
     INCLUDE JBC.h
-    CacheSetOption("bucket1", CACHE_MAX_SIZE, 100000)
-    CacheSetOption("bucket1", CACHE_PURGE_THRESHOLD, 60)
+    CacheSetOption('bucket1', CACHE_MAX_SIZE, 100000)
+    CacheSetOption('bucket1', CACHE_PURGE_THRESHOLD, 60)
 
 ### NOTES
 
@@ -2434,28 +2449,30 @@ specified bucket in the cache.
 
 ### COMMAND SYNTAX
 
-CacheStats(bucket,  counter_id)
+    CacheStats(bucket, counter_id)
 
 ### EXAMPLE
 
     INCLUDE JBC.h
-    CachePut("bucket1", "item1", "value1")
-    CachePut("bucket1", "item2", "value2")
-    CacheGet("bucket1", "item1")
-    CacheGet("bucket1", "item3")
-    CRT "CACHE_HITS: ":CacheStats("bucket1", CACHE_HITS)
-    CRT "CACHE_GETS: ":CacheStats("bucket1", CACHE_GETS)
-    CRT "CACHE_PUTS: ":CacheStats("bucket1", CACHE_PUTS)
-    CRT "CACHE_SIZE: ":CacheStats("bucket1", CACHE_SIZE)
-    CRT "CACHE_NB_ITEMS: ":CacheStats("bucket1", CACHE_NB_ITEMS)
+    CachePut('bucket1', 'item1', 'value1')
+    CachePut('bucket1', 'item2', 'value2')
+    CacheGet('bucket1', 'item1')
+    CacheGet('bucket1', 'item3')
+    CRT "CACHE_HITS: " : CacheStats('bucket1', CACHE_HITS)
+    CRT "CACHE_GETS: " : CacheStats('bucket1', CACHE_GETS)
+    CRT "CACHE_PUTS: " : CacheStats('bucket1', CACHE_PUTS)
+    CRT "CACHE_SIZE: " : CacheStats('bucket1', CACHE_SIZE)
+    CRT "CACHE_NB_ITEMS: " : CacheStats('bucket1', CACHE_NB_ITEMS)
 
 The output is:
 
+<pre>
     CACHE_HITS: 1
     CACHE_GETS: 2
     CACHE_PUTS: 2
     CACHE_SIZE: 12
     CACHE_NB_ITEMS: 2
+</pre>
 
 ### NOTES
 
@@ -2563,6 +2580,7 @@ A calling program:
 
 Output:
 
+<pre>
     1^2^3^4
     1^3^3^4
     1^3^3^4
@@ -2575,6 +2593,7 @@ Output:
     Trap from an error message, error message name = SUBROUTINE_PARM_ERROR
     Source changed to .\test2.b
     jBASE debugger->
+</pre>
 
 
 ## CALLC
@@ -8003,27 +8022,7 @@ alphabetic characters.
 
     ISALPHA(expression)
 
-### SYNTAX ELEMENTS
-
-The expression can return a result of any type. The ISALPHA function
-will then return TRUE (1) if the expression consists of entirely
-alphabetic characters. The function will return FALSE (0) if any
-character in the expression is not alphabetic.
-
-### INTERNATIONAL MODE
-
-When the ISALPHA function is used in International Mode the properties
-of each character is determined according to the Unicode Standard.
-
-### EXAMPLE
-
-       V.STRING = 'AWERC'
-    * check if there are only alphabetic characters
-       CRT ISALPHA(V.STRING)             ;* 1
-    * add number to the end
-       V.STRING := 1   ; CRT V.STRING    ;* AWERC1
-    * check again if there are only alphabetic characters
-       CRT ISALPHA(V.STRING)             ;* 0
+Same as [ALPHA](#ALPHA).
 
 ## ISALNUM##
 
