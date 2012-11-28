@@ -172,8 +172,8 @@ It's possible to reassign parts of a string using that notation:
        CRT ISDIGIT(V.VAR)                           ;* 0 (we have minus now)
        CLEAR
        CRT V.VAR                                    ;* 0
-       V.VAR.2 = V.VAR++   ; CRT V.VAR.2            ;* 0 - old value of V.VAR
-       V.VAR.3 = ++V.VAR   ; CRT V.VAR.3            ;* 2 - value of V.VAR (1) + 1
+       V.VAR2 = V.VAR++     ; CRT V.VAR2            ;* 0 - old value of V.VAR
+       V.VAR3 = ++V.VAR     ; CRT V.VAR3            ;* 2 - value of V.VAR (1) + 1
     * other operators
        CRT 2 * 3                                    ;* 6
        CRT 2 ** 10                                  ;* power of 2 (1024)
@@ -432,7 +432,6 @@ Time zone:
 
 <pre>
     JBASE_TIMEZONE
-
     E.g. Europe/London.
 </pre>
 
@@ -593,9 +592,9 @@ Put some data to file:
 
 <pre>
     JED F.SAMPLE REC1
-    0001 Field 1
-    0002 Field 2
-    0003 Field 3
+    0001 Field one
+    0002 Field two
+    0003 Field three
 </pre>
 
 Press Esc; then type FI to save the record.
@@ -614,18 +613,16 @@ No dictionary; we see only @ID. Raw output:
 <pre>
     CT F.SAMPLE
     REC1
-    001 Field 1
-    002 Field 2
-    003 Field 3
+    001 Field one
+    002 Field two
+    003 Field three
 </pre>
 
 As an alternative, we can use standard correlatives:
 
-<pre>
-    LIST F.SAMPLE *A1 *A2 *A3
-    F.SAMPLE......   *A1...........   *A2...........   *A3...........
-    REC1             Field 1          Field 2          Field 3
-</pre>
+        LIST F.SAMPLE *A1 *A2 *A3
+        F.SAMPLE......   *A1...........   *A2...........   *A3...........
+        REC1             Field one        Field two        Field three
 
 ## Adding dictionary items
 
@@ -647,7 +644,7 @@ Use field name in a query:
 <pre>
     LIST F.SAMPLE FLD1
     F.SAMPLE......   FIELD 1 HEADER
-    REC1             Field 1
+    REC1             Field one
     1 Records Listed
 </pre>
 
@@ -677,7 +674,7 @@ See the result:
 <pre>
     LIST F.SAMPLE
     F.SAMPLE......   ID..................   FIELD 1 HEADER
-    REC1             REC1                   Field 1
+    REC1             REC1                   Field one
 </pre>
 
 ## Change of size and format, statistics, properties
@@ -866,9 +863,9 @@ Copy data:
 Edit file REC1 in TEST.BP folder with any text editor so it now looks like:
 
 <pre>
-    Field 1 - updated
-    Field 2
-    Field 3
+    Field one - updated
+    Field two
+    Field three
 </pre>
 
 Copy it back to hashed file:
@@ -883,8 +880,8 @@ See the result:
 <pre>
     LIST F.SAMPLE
     F.SAMPLE......     ID..................   FIELD 1 HEADER
-    REC1               REC1                   Field 1 - upda
-                                              ted
+    REC1               REC1                   Field one - up
+                                              dated
 </pre>
 
 # System ("@") variables
@@ -907,7 +904,7 @@ Main program (test.b):
        GOSUB SECTION2
        RETURN
     SECTION2:
-       CRT OCONV(SYSTEM(1029), 'MCP')
+       CRT OCONV( SYSTEM(1029), 'MCP' )
        CALL TEST.SUB
        RETURN
     END
@@ -918,7 +915,7 @@ Subroutine:
        GOSUB SECTION3
        RETURN
     SECTION3:
-       CRT OCONV(SYSTEM(1029), 'MCP')
+       CRT OCONV( SYSTEM(1029), 'MCP' )
        RETURN
     END
 
@@ -1481,7 +1478,7 @@ returns null for that element.
 
        V.BEFORE = 500: @VM: 400: @VM: 300 :@SM: 200 :@SM: 100
        V.AFTER = SUBS(V.BEFORE, REUSE(300))     ;* decrease each element by 300
-       CRT OCONV(ABSS(V.AFTER), 'MCP')          ;*  200]100]0\100\200
+       CRT OCONV( ABSS(V.AFTER), 'MCP' )        ;*  200]100]0\100\200
 
 ## ADDS
 
@@ -1501,7 +1498,7 @@ returns null for the sum of the corresponding elements.
 
        Array1 = 2 :@VM: 4 :@VM: 6 :@SM: 10
        Array2 = 1 :@VM: 2: @VM: 3 :@VM: 4
-       PRINT OCONV(ADDS(Array1, Array2), 'MCP')   ;*  3]6]9\10]4
+       PRINT OCONV( ADDS(Array1, Array2), 'MCP' )   ;*  3]6]9\10]4
 
 <a name="ALPHA"/>
 
@@ -1558,7 +1555,7 @@ is zero or an empty string, it returns false for those elements.
 
         A = 1 :@SM: 4 :@VM: 4 :@SM: 1
         B = 1 :@SM: 1-1 :@VM: 2
-        PRINT OCONV(ANDS(A, B), 'MCP')    ;*  1\0]1\0
+        PRINT OCONV( ANDS(A, B), 'MCP' )    ;*  1\0]1\0
 
 ## ASCII
 
@@ -1747,9 +1744,8 @@ value will always be 0 (zero) or 1.
 
 ### EXAMPLE 1
 
-    NEW.VALUE = "0123456789ABCDEF"
-
-    OLD.VALUE = BITLOAD(X)
+    VALUE.NEW = "0123456789ABCDEF"
+    VALUE.OLD = BITLOAD(X)
 
 Loads the bit table with the value of ASCII hex string NEW.VALUE
 After assignment, the contents of the bit table is:
@@ -1962,7 +1958,7 @@ Non integer values are truncated before the operation is performed.
 
 ### EXAMPLE
 
-        PRINT BITTEST(11,0),BITTEST(11,1),BITTEST(11,2),BITTEST(11,3)
+        PRINT BITTEST(11,0), BITTEST(11,1), BITTEST(11,2), BITTEST(11,3)
      * The binary value of 11 = 1011
 
 This is the program output:
@@ -2545,7 +2541,7 @@ any COMMON areas declared in the program.
 
 A subroutine:
 
-       SUBROUTINE INCR.NUM(P.NUMBER)
+       SUBROUTINE NUM.INCR(P.NUMBER)
     * increase the parameter
        P.NUMBER ++
        RETURN
@@ -2557,26 +2553,26 @@ A calling program:
        CRT FMT(V.ARRAY, 'MCP')   ;* 1^2^3^4
        V.ARRAY<2> += 1
        CRT FMT(V.ARRAY, 'MCP')  ;* 1^3^3^4 - array element can be processed directly
-       CALL INCR.NUM(V.ARRAY<2>)
+       CALL NUM.INCR(V.ARRAY<2>)
        CRT FMT(V.ARRAY, 'MCP')   ;* still 1^3^3^4 - passing to a subr doesn't work
        V.VAR = V.ARRAY<2>
-       CALL INCR.NUM(V.VAR)
+       CALL NUM.INCR(V.VAR)
        V.ARRAY<2> = V.VAR
        CRT FMT(V.ARRAY, 'MCP')   ;* now 1^4^3^4 - should use a variable
-       V.SUBR = 'INCR.NUM'
+       V.SUBR = 'NUM.INCR'
        CALL @V.SUBR(V.VAR)       ;* can call a subroutine this way
        CRT V.VAR                 ;* 5
     * Dimensioned array is ok as well
        DIM V.DIM.ARR(3)
-       V.DIM.ARR(2) = 'INCR.NUM'
+       V.DIM.ARR(2) = 'NUM.INCR'
        V.I = 2
        CALL @V.DIM.ARR(V.I) (V.VAR)
        CRT V.VAR        ;* 6
     * Pass by value rather than by reference - variable keeps its value:
-       CALL INCR.NUM((V.VAR))
+       CALL NUM.INCR((V.VAR))
        CRT V.VAR        ;* 6
     * Wrong CALL:
-       CALL INCR.NUM(V.VAR, 1)
+       CALL NUM.INCR(V.VAR, 1)
 
 Output:
 
@@ -2589,7 +2585,7 @@ Output:
     6
     6
      ** Error [ SUBROUTINE_PARM_ERROR ] **
-    'SUBROUTINE INCR.NUM' called with incorrect arguments , Line     1 , Source test2.b
+    'SUBROUTINE NUM.INCR' called with incorrect arguments , Line     1 , Source test2.b
     Trap from an error message, error message name = SUBROUTINE_PARM_ERROR
     Source changed to .\test2.b
     jBASE debugger->
@@ -2606,9 +2602,9 @@ expressions, but not arrays. Use CALLC as a command or function.
 
 ### COMMAND SYNTAX
 
-CALLC c.sub.name [(argument1[,argument2]...)]
+    CALLC c.sub.name [(argument1[,argument2]...)]
 
-CALLC @var [(argument1[,argument2]...)]
+    CALLC @var [(argument1[,argument2]...)]
 
 **Calling a C Program in TAFC**
 
@@ -2636,24 +2632,19 @@ In the following example, the called subroutine draws a circle with
 its center at the twelfth row and twelfth column and a radius of 3:
 
     RADIUS = 3
-
     CENTER = "12,12"
-
     CALLC DRAW.CIRCLE(RADIUS,CENTER)
 
 In the next example, the subroutine name is stored in the variable
 SUB.NAME, and is indirectly called:
 
     SUB.NAME = DRAW.CIRCLE
-
     CALLC @SUB.NAME(RADIUS,CENTER)
 
 The next example uses, CALLC as a function, assigning the return
-value of the subroutine
+value of the subroutine PROG.STATUS in the variable RESULT:
 
-PROGRAM.STATUS in the variable RESULT:
-
-    RESULT = CALLC PROGRAM.STATUS
+    RESULT = CALLC PROG.STATUS
 
 ## CALLdotNET
 
@@ -2687,7 +2678,9 @@ Param Any parameter (eg DynArray)
 
 ### EXAMPLE
 
-    In C#:
+In C#:
+
+<pre>
     using System;
     using System.Windows.Forms;
     namespace myNameSpace
@@ -2701,9 +2694,11 @@ Param Any parameter (eg DynArray)
 		    public Class1(){}
 	    }
     }
+</pre>
 
 In VB.NET:
 
+<pre>
     Namespace myNameSpace
       Public Class Class1
           Public Function sayHello(ByVal str As String) As String
@@ -2713,6 +2708,7 @@ In VB.NET:
           End Function
       End Class
     End Namespace
+</pre>
 
 Note: Create the .NET project as a ‘Class Library’.
 
@@ -2739,8 +2735,7 @@ not TAFC. The directory should also be in the PATH environment variable.
 
 *To call these methods from Basic*:
 
-    CALLdotNET "myNameSpace.Class1","mymethod", p SETTING ret
-
+    CALLdotNET 'myNameSpace.Class1', 'mymethod', p SETTING ret
     CRT ret
 
 ### ON ERROR
@@ -2780,13 +2775,12 @@ BASIC code using the ON ERROR would look like this:
          err = SYSTEM(0)
          BEGIN CASE
 	       CASE err = 2
-		     CRT "Cannot find dotNETWrapper.dll”
+		     CRT "Cannot find dotNETWrapper.dll"
          CASE err = 3
 		     CRT "Class " : className : "doesn't exist !"
 	       CASE err = 5
 		     CRT "Method " : methodName : "doesn't exist !"
          END CASE
-
          RETURN
 
 ## CALLJ
@@ -2797,7 +2791,7 @@ publish and subscribe, messaging, etc.)
 
 ### COMMAND SYNTAX
 
-CALLJ packageAndClassName, [$]methodName, param SETTING ret [ON ERROR] errStatment
+    CALLJ packageAndClassName, [$]methodName, param SETTING ret [ON ERROR] errStatment
 
 In order to use CALLJ, you need:
 
@@ -2852,28 +2846,30 @@ This ‘$’ will be removed from the method name before calling it.
 
 In Java:
 
+<pre>
     package mypackage;
-
+//
     public class mytestclass {
         static int i = 0;
         private mytestclass() {
         }
-
+//
         public String mymethod(String s) {
-	        return (“Java Received : “ + s) ;
+	        return ( "Java Received : " + s ) ;
         }
-
+//
         public static String mystaticmethod(String s) {
   		    i++;
   		    return s + " "  + i;
         }
     }
+</pre>
 
-  To call these methods from jBC:
+To call these methods from jBC:
 
-    CALLJ "mypackage.mytestclass","mymethod", p SETTING ret
+    CALLJ 'mypackage.mytestclass', 'mymethod', p SETTING ret
     CRT ret
-    CALLJ "mypackage/mytestclass","$mystaticmethod",p SETTING ret
+    CALLJ 'mypackage/mytestclass', '$mystaticmethod', p SETTING ret
     CRT ret
 
 ### ON ERROR
@@ -2901,9 +2897,9 @@ jBC code using the ON ERROR will look like this:
          className = ''
          methodName = ''
          param = ''
-         CRT "Please enter a Class Name : " INPUT className
-         CRT "Please enter a Method Name : " INPUT methodName
-         CRT "Please enter a Parameter : " INPUT param
+         CRT "Please enter a Class Name " :  ;   INPUT className
+         CRT "Please enter a Method Name " :  ;  INPUT methodName
+         CRT "Please enter a Parameter : "  ; INPUT param
          CALLJ className,methodName, param SETTING ret ON ERROR GOTO errHandler
          CRT "Received batch from Java : " : ret
     RETURN
@@ -3003,18 +2999,24 @@ Add “opt/java6/jrelib:/opt/java6/jvmlib” to the LD_LIBRARY_PATH
 
 Linux: looking for 'libjvm.so'
 
+<pre>
     Add 2 directories to LD_LIBRARY_PATH.
     /opt/java6/jre/lib/amd64/server:/opt/java6/jre/lib/amd64
+</pre>
 
 Solaris: looking for 'libjvm.so'
 
+<pre>
     Add 2 directories to LD_LIBRARY_PATH.
     /opt/java6/jre/lib/sparc/server:/opt/java6/jre/lib/sparc
+</pre>
 
 HP-UX 11: looking for 'libjvm.sl'
 
-  Add 2 directories to SHLIB_PATH.
+<pre>
+   Add 2 directories to SHLIB_PATH.
   /opt/java6/jre/lib/IA64W/server:/opt/java6/jre/lib/IA64W
+</pre>
 
 ### OPTIONS
 
@@ -3127,7 +3129,7 @@ SUBROUTINE to call when the program terminates.
 
 ### COMMAND SYNTAX
 
-    rc = CALLONEXIT("ErrorExit")
+    rc = CALLONEXIT('ErrorExit')
 
 The subroutine definition would look like this
 
@@ -3154,11 +3156,11 @@ EndProgram) will still be called just as they would if the program
 were allowed to terminate normally.
 
     PROGRAM PROG1
-    rc = CALLONEXIT("ErrorExit")
+    rc = CALLONEXIT('ErrorExit')
     EXECUTE "PROG2"
 
     PROGRAM PROG2
-    rc = CALLONEXIT("EndProgram")
+    rc = CALLONEXIT('EndProgram')
     DEBUG
 
 All efforts are made to call the subroutine under all circumstances.
@@ -3331,7 +3333,7 @@ arrays.
 
 ### COMMAND SYNTAX
 
-CATS (DynArr1, DynArr2)
+    CATS(DynArr1, DynArr2)
 
 ### SYNTAX ELEMENTS
 
@@ -3367,7 +3369,7 @@ never return to the originating program.
 
 ### COMMAND SYNTAX
 
-CHAIN expression
+    CHAIN expression
 
 ### SYNTAX ELEMENTS
 
@@ -3392,10 +3394,12 @@ terminates.
 ### EXAMPLES
 
     CHAIN "OFF" ;* exit via the OFF command
+
     ! Prog1
     COMMON A,B
     A = 50; B = 100
     CHAIN "NEWPROG (I"
+
     ! NEWPROG
     COMMON I,J
     ! I and J inherited
@@ -3460,7 +3464,7 @@ timestamp value.
 
 ### COMMAND SYNTAX
 
-CHANGETIMESTAMP (Timestamp, Array)
+    CHANGETIMESTAMP(Timestamp, Array)
 
 ### SYNTAX ELEMENTS
 
@@ -3481,7 +3485,7 @@ expression.
 
 ### COMMAND SYNTAX
 
-    CHAR (expression)
+    CHAR(expression)
 
 ### SYNTAX ELEMENTS
 
@@ -3523,7 +3527,7 @@ See also: [CHARS](#CHARS)
           CRT CHAR(64 + V.I):         ;* ABCDEF
        NEXT V.I
        CRT ''                         ;* starts a new line
-       CRT OCONV(CHAR(353), 'MX')     ;* C5A1
+       CRT OCONV( CHAR(353), 'MX' )   ;* C5A1
        CRT CHAR(7)                    ;* rings a bell
 
 <a name="CHARS"/>
@@ -3566,7 +3570,7 @@ process environment, to be changed.
 
 ### COMMAND SYNTAX
 
-CHDIR (expression)
+    CHDIR(expression)
 
 ### SYNTAX ELEMENTS
 
@@ -3576,12 +3580,12 @@ succeeded and a Boolean FALSE result if it failed.
 
 ### EXAMPLES
 
-    IF CHDIR ("/usr/jBASIC/src") THEN
+    IF CHDIR('/usr/jBC/src') THEN
         CRT "jBASE development system INSTALLED"
     END
 
-    IF GETENV("JBCGLOBALDIR", jgdir) THEN
-        IF CHDIR (jgdir:"\config") ELSE
+    IF GETENV('JBCGLOBALDIR', jgdir) THEN
+        IF CHDIR (jgdir:'\config') ELSE
             CRT "jBASE configuration cannot be found."
             ABORT
         END
@@ -3594,7 +3598,7 @@ string.
 
 ### COMMAND SYNTAX
 
-CHECKSUM(expression)
+    CHECKSUM(expression)
 
 ### SYNTAX ELEMENTS
 
@@ -3694,7 +3698,7 @@ opened with the OPEN statement.
 
 ### COMMAND SYNTAX
 
-    CLEARFILE {variable} {SETTING setvar} {ON ERROR statements}
+    CLEARFILE {variable} { SETTING setvar } { ON ERROR statements }
 
 ### SYNTAX ELEMENTS
 
@@ -3755,7 +3759,7 @@ In the following example, the CLEARINPUT statement clears the terminal
 type-ahead buffer to provoke a response from the user to the prompt:
 
     CLEARINPUT
-    PRINT "DO YOU WANT TO DELETE THIS FILE?(Y OR N)"; INPUT X,1
+    PRINT "DO YOU WANT TO DELETE THIS FILE?(Y OR N)" ; INPUT X,1
 
 NOTE: The CLEARINPUT command is synonymous with INPUTCLEAR.
 
@@ -3765,7 +3769,7 @@ Use the CLEARSELECT statement to clear active select lists.
 
 ### COMMAND SYNTAX
 
-CLEARSELECT {ListName | ListNumber}
+    CLEARSELECT {ListName | ListNumber}
 
 ### SYNTAX ELEMENTS
 
@@ -3780,7 +3784,7 @@ are specified then it clears the default list (0).
     SELECT A TO 3
     SELECT B TO blist
     adone = 0; bdone = 0
-
+    //
     LOOP
      READNEXT Ael FROM 3 ELSE adone = 1
        READNEXT Bel FROM blist ELSE bdone = 1
@@ -3834,7 +3838,7 @@ CLOSESEQ closes the file previously opened for sequential access.
 
 ### COMMAND SYNTAX
 
-CLOSESEQ FileVar
+    CLOSESEQ FileVar
 
 ### SYNTAX ELEMENTS
 
@@ -3883,7 +3887,7 @@ PASSDATA clause of an EXECUTE statement.
 
 ### COMMAND SYNTAX
 
-COLLECTDATAvariable
+    COLLECTDATA variable
 
 ### SYNTAX ELEMENTS
 
@@ -3902,14 +3906,17 @@ value of null.
 
 ### EXAMPLE
 
-    FIRST
+Program 1:
+
     001 EXECUTE "RUN JBASIC_PROGS SECOND" PASSDATA "Handover"
-    SECOND
+
+Program 2:
+
     001 COLLECTDATA PassedMessage
     002 CRT PassedMessage
 
-In the above example, program FIRST will EXECUTE program SECOND and
-will pass the string "Handover" in the PASSDATA clause. Program SECOND
+In the above example, program 1 will EXECUTE program 2 and
+will pass the string "Handover" in the PASSDATA clause. Program 2
 retrieves the string to a variable PassedMessage and prints the string
 on the Terminal screen.
 
@@ -3968,7 +3975,7 @@ indicating whether or not they are equal.
 
 ### COMMAND SYNTAX
 
-COMPARE(expression1, expression2{, justification})
+    COMPARE(expression1, expression2{, justification})
 
 ### SYNTAX ELEMENTS
 
@@ -3992,9 +3999,9 @@ The function returns one of the following values:
 
     A = "XY999"
     B = "XY1000"
-    R1 = COMPARE(A,B,"L")
-    R2 = COMPARE(A,B,"R")
-    CRT R1,R2
+    R1 = COMPARE(A, B, 'L')
+    R2 = COMPARE(A, B, 'R')
+    CRT R1, R2
 
 The code above displays 1 -1, which indicates that XY999 is greater than
 XY1000 in a left justified comparison and XY999 is less than XY1000 in
@@ -4045,7 +4052,7 @@ rather than being restricted to variables.
 
 ### COMMAND SYNTAX
 
-CONVERT (expression1, expression2, expression3)
+    CONVERT(expression1, expression2, expression3)
 
 ### SYNTAX ELEMENTS
 
@@ -4056,7 +4063,7 @@ expression1.
 
 **expression3** is the list of characters that will be converted to.
 
-NOTE: For Prime, Universe and Unidata emulations:
+*NOTE:* For Prime, Universe and Unidata emulations:
 
 **expression1** is the list of all characters to translate in
 expression1.
@@ -4069,9 +4076,9 @@ See also: [CONVERT (STATEMENT)](#CONVERTSTATEMENT)
 
 ### EXAMPLES
 
-    Value = CONVERT (Value, "#.,", "$,.")
-    Value = CONVERT(PartCode, "abc", "ABC")
-    Value = CONVERT(Code, "1234567890", "0987654321")
+    Value = CONVERT(Value, '#.,', '$,.')
+    Value = CONVERT(PartCode, 'abc', 'ABC')
+    Value = CONVERT(Code, '1234567890', '0987654321')
 
 <a name="CONVERTSTATEMENT"/>
 
@@ -4082,7 +4089,7 @@ their corresponding replacement characters.
 
 ### COMMAND SYNTAX
 
-CONVERT expression1 TO expression2 IN expression3
+    CONVERT expression1 TO expression2 IN expression3
 
 ### SYNTAX ELEMENTS
 
@@ -4121,7 +4128,7 @@ program, which makes it very accurate.
 
 ### COMMAND SYNTAX
 
-COS(expression)
+    COS(expression)
 
 This function calculates the cosine of an expression.
 
@@ -4149,7 +4156,7 @@ in another.
 
 ### COMMAND SYNTAX
 
-COUNT(expression1, expression2)
+    COUNT(expression1, expression2)
 
 ### SYNTAX ELEMENTS
 
@@ -4167,7 +4174,7 @@ See also: [DCOUNT](#DCOUNT)
 ### EXAMPLES
 
     Calc = "56 * 23 / 45 * 12"
-    CRT "There are ":COUNT(Calc, "*"):" multiplications"
+    CRT "There are " : COUNT(Calc, '*') : " multiplications"
 
 ## COUNTS
 
@@ -4178,7 +4185,7 @@ elements in the dynamic array.
 
 ### COMMAND SYNTAX
 
-COUNTS (dynamic.array, substring)
+    COUNTS(dynamic.array, substring)
 
 **dynamic.array** specifies the dynamic array whose elements are to
 be searched.
@@ -4197,14 +4204,16 @@ element in dynamic.array is null, null is returned.
 
 ### EXAMPLE
 
-    ARRAY="A":@VM:"AA":@SM:"AAAAA"
-    PRINT COUNTS (ARRAY, "A")
-    PRINT COUNTS(ARRAY, "AA")
+    ARRAY= "A" :@VM: "AA" :@SM: "AAAAA"
+    PRINT COUNTS(ARRAY, 'A')
+    PRINT COUNTS(ARRAY, 'AA')
 
 The output of this program is:
 
+<pre>
     1]2\5
     0]1\2
+</pre>
 
 ## CREATE
 
@@ -4229,7 +4238,7 @@ if no record or file is created, it executes the ELSE statements.
 
 ### COMMAND SYNTAX
 
-CREATE file.variable {THEN statements [ELSE statements] | ELSE statements}
+    CREATE file.variable { THEN statements [ ELSE statements ] | ELSE statements }
 
 ### EXAMPLE
 
@@ -4354,7 +4363,9 @@ Program test2.b:
 If test2 is run by itself, it asks for user input. If test is run, the
 output is:
 
+<pre>
     I got 12345 and 67890
+</pre>
 
 ## DATE
 
@@ -4376,7 +4387,7 @@ See also: [TIMEDATE](#TIMEDATE)
 
 ### EXAMPLES
 
-       CRT OCONV(DATE(), 'D')    ;* e.g. 17 OCT 2012
+       CRT OCONV( DATE(), 'D' )  ;* e.g. 17 OCT 2012
        CRT DATE()                ;* number of days (e.g. 16362) since day 1...
        CRT OCONV(1, 'D')         ;*  ...which is:  01 JAN 1968
 
@@ -4386,12 +4397,12 @@ Displays today's date in the form: 14 JUL 64
 
 ## DCOUNT
 
-The DCOUNT( ) function counts the number of field elements in a string
+The DCOUNT() function counts the number of field elements in a string
 that are separated by a specified delimiter.
 
 ### COMMAND SYNTAX
 
-DCOUNT(expression1, expression2)
+    DCOUNT(expression1, expression2)
 
 ### SYNTAX ELEMENTS
 
@@ -4415,7 +4426,7 @@ See also: [COUNT](#COUNT)
 ### EXAMPLES
 
     A = "A:B:C:D"
-    CRT DCOUNT(A, ":")
+    CRT DCOUNT(A, ':')
 
 Displays the value 4
 
@@ -4426,7 +4437,7 @@ debugger.
 
 ### COMMAND SYNTAX
 
-DEBUG
+    DEBUG
 
 ### NOTES
 
@@ -4457,7 +4468,7 @@ The DECRYPT function decrypts strings.
 
 ### COMMAND SYNTAX
 
-DECRYPT(string, key, method)
+    DECRYPT(string, key, method)
 
 ### SYNTAX ELEMENTS
 
@@ -4510,28 +4521,31 @@ See also: [ENCRYPT](#ENCRYPT)
 ### EXAMPLES
 
     INCLUDE JBC.h
-    X = DECRYPT(X, Ekey, JBASE_CRYPT_GENERAL)
-    IF DECRYPT("rknzcyr”,"", JBASE_CRYPT_ROT13) = "example" THEN
+    //
+    IF DECRYPT('rknzcyr', '', JBASE_CRYPT_ROT13) = "example" THEN
       CRT "ROT13 ok"
     END
-
-    IF ENCRYPT("g{ehvkm","9", JBASE_CRYPT_XOR11) = "example" THEN
+    //
+    IF ENCRYPT('g{ehvkm', '9', JBASE_CRYPT_XOR11) = "example" THEN
       CRT "XOR.MOD11 ok"
     END
-
+    //
     cipher = JBASE_CRYPT_BLOWFISH_BASE64
     key    = "Our Very Secret Key"
     str    = "String to encrypt"
     enc = ENCRYPT( str, key, cipher )
-    CRT "Encrypted: ":enc
+    CRT "Encrypted: " : enc
     dec = DECRYPT( enc, key, cipher )
-    CRT "Decrypted: ":dec
+    CRT "Decrypted: " : dec
 
 Displays as output:
 
+<pre>
+    ROT13 ok
+    XOR.MOD11 ok
     Encrypted: xuy6DXxUkD32spyfsKEvUtXrsjP7mC+R
-
     Decrypted: String to encrypt
+</pre>
 
 <a name="DEFC"/>
 
@@ -4547,7 +4561,7 @@ upon the function return type.
 
 ### COMMAND SYNTAX
 
-DEFC {FuncType} FuncName ({ArgType {, ArgType ...}})
+    DEFC {FuncType} FuncName ({ArgType {, ArgType ...}})
 
 ### SYNTAX ELEMENTS
 
@@ -4560,15 +4574,17 @@ type conversions on these arguments.
 
 ### EXAMPLE
 
+<pre>
+
     #include <jsystem.h>
     #include <assert.h>
-
+    //
     #ifdef DPSTRUCT_DEF
     #define JBASEDP		  DPSTRUCT *dp,
     #else
     #define JBASEDP
     #endif
-
+    //
     VAR *MyString(VAR *Result, JBASEDP  VAR *VarPtr)
     {
         char *Ptr;
@@ -4578,7 +4594,7 @@ type conversions on these arguments.
         STORE_VBI(Result, strlen(Ptr) );
         return(Result);
     }
-
+    //
     INT32 MyCalc(INT32 Value1, INT32 Value2)
     {
         INT32  Result;
@@ -4586,6 +4602,8 @@ type conversions on these arguments.
         printf("MyCalc: %d\n", Result);
         return(Result);
     }
+
+</pre>
 
 ### NOTES
 
@@ -4621,6 +4639,7 @@ For C functions that do not require TAFC functions use the DEFCE
 statement, however the passing arguments can only be of type INT,
 FLOAT and STRING.
 
+<pre>
     DEFCE INT MYFUNC3(INT)
     INT32 MYFUNC3(INT32 Count)
     {
@@ -4628,12 +4647,13 @@ FLOAT and STRING.
 	    ...
 	    return Result;
     }
+</pre>
 
 ### EXAMPLE 2
 
-    DEFCE INT cfunc( INT, FLOAT, VAR)
-    Var1 = cfunc( A, 45, B)
-    cfunc( 34, C, J)
+    DEFCE INT cfunc( INT, FLOAT, VAR )
+    Var1 = cfunc( A, 45, B )
+    cfunc( 34, C, J )
 
 You can call standard UNIX functions directly by declaring them with
 the DEFC statement according to their parameter requirements. You can
@@ -4643,7 +4663,7 @@ float/double or that the return type may be ignored.
 ### EXAMPLE 3
 
     DEFCE INT getpid()
-    CRT "Process id =":getpid()
+    CRT "Process id =" : getpid()
 
 ## DEFFUN
 
@@ -4653,7 +4673,7 @@ that calls the function.
 
 ### COMMAND SYNTAX
 
-DEFFUN FuncName  ({ {MAT} Argument1, {MAT} Argument2...})
+    DEFFUN FuncName ({ { MAT } Argument1, { MAT } Argument2...})
 
 ### SYNTAX ELEMENTS
 
@@ -4684,7 +4704,7 @@ returns an empty string.
     B = 20
     sum = Add(A, B)
     PRINT sum
-    X = RND (42)
+    X = RND(42)
     Y = RND(24)
     PRINT Add(X, Y)
 
@@ -4953,8 +4973,8 @@ of a file. This function returns a dynamic array with four attributes.
           CRT 'TAFC_HOME not defined'
           STOP
        END
-       CRT OCONV(DIR(V.HOME), 'MCP')                  ;* e.g. 0^16214^32712^D
-       CRT OCONV(DIR(V.HOME : '/jbcmessages'), 'MCP') ;* e.g. 204800^15815^57980
+       CRT OCONV( DIR(V.HOME), 'MCP' )                  ;* e.g. 0^16214^32712^D
+       CRT OCONV( DIR(V.HOME : '/jbcmessages'), 'MCP' ) ;* e.g. 204800^15815^57980
 
 ## DIV
 
@@ -7127,8 +7147,8 @@ unless the emulation option iconv_nonnumeric_return_null is set.
     * calculate difference between dates
        CRT ICONV('20121231', 'D') - ICONV('20111231', 'D')   ;* 366
     * check if a year is a leap one
-       CRT OCONV(ICONV('20111231', 'D4'), 'DJ')    ;*  365
-       CRT OCONV(ICONV('20121231', 'D4'), 'DJ')    ;*  366
+       CRT OCONV( ICONV('20111231', 'D4'), 'DJ' )    ;*  365
+       CRT OCONV( ICONV('20121231', 'D4'), 'DJ' )    ;*  366
 
 <a name="ICONVS"/>
 
@@ -7939,14 +7959,14 @@ Print the time and data of last update for each record in filename.
     *
        record.size = record.info<1>
        record.utc = record.info<2>
-       record.time = OCONV(record.utc,"U0ff0")
-       record.date = OCONV(record.utc,"U0ff1")
+       record.time = OCONV(record.utc, "U0ff0")
+       record.date = OCONV(record.utc, "U0ff1")
     *
     * Print the information.
     *
-       PRINT "Record key ":record.key:" last updated at ":
-       PRINT OCONV(record.time,"MTS"):" ":
-       PRINT OCONV(record.date,"D4")
+       PRINT "Record key " :record.key: " last updated at " :
+       PRINT OCONV(record.time, "MTS"):" ":
+       PRINT OCONV(record.date, "D4")
     REPEAT
 
 **JIOCTL_COMMAND_HASH_RECORD COMMAND**
@@ -9262,7 +9282,7 @@ follows:
 
        V.ARRAY = 1 :@FM: 2 :@FM: 3 :@FM: 4
        CRT OCONV(V.ARRAY, 'MCP')                      ;*  1^2^3^4
-       CRT OCONV(LOWER(V.ARRAY), 'MCP')               ;*  1]2]3]4
+       CRT OCONV( LOWER(V.ARRAY), 'MCP' )             ;*  1]2]3]4
 
 ## MAKETIMESTAMP
 
@@ -10455,11 +10475,11 @@ expression2. Shown below are valid conversion codes:
 
     * See examples in FMT() section - most samples form there work both ways -
     * e.g., the following 2 lines produce equal results:
-       CRT FMT(DATE(), 'D4/')
-       CRT OCONV(DATE(), 'D4/')                          ;*  e.g. 11/05/2012
+       CRT FMT( DATE(), 'D4/' )
+       CRT OCONV( DATE(), 'D4/' )                          ;*  e.g. 11/05/2012
     * it's not the same for next 2 lines though...
-       CRT DQUOTE(FMT(123456.78, 'R2,$#15'))             ;*  "    $123,456.78"
-       CRT DQUOTE(OCONV(123456.78, 'R2,$#15'))           ;*  Error in Range Test
+       CRT DQUOTE( FMT(123456.78, 'R2,$#15') )             ;*  "    $123,456.78"
+       CRT DQUOTE( OCONV(123456.78, 'R2,$#15') )           ;*  Error in Range Test
     * Example of a "user exit":
        CRT OCONV("", "U50BB")        ;* port number and user name
 
@@ -11804,8 +11824,8 @@ which are raised as follows:
 ### EXAMPLE
 
        V.ARRAY = 1 :@TM: 2 :@SM: 3 :@VM: 4
-       CRT OCONV(V.ARRAY, 'MCP')                      ;*  1.2\3]4
-       CRT OCONV(RAISE(V.ARRAY), 'MCP')               ;*  1\2]3^4
+       CRT OCONV( V.ARRAY, 'MCP' )                      ;*  1.2\3]4
+       CRT OCONV( RAISE(V.ARRAY), 'MCP' )               ;*  1\2]3^4
 
 <a name="READ"/>
 
@@ -13318,7 +13338,7 @@ For more information about sequential file processing, See also:
        CLOSESEQ F.FILE.OUT
     * read full file contents
        OSREAD V.ALL FROM V.FILE.OUT ELSE CRT 'Read error'  ;  STOP
-       CRT FMT(FMT(OCONV(V.ALL, 'MX'), '2L'), 'MCP ')
+       CRT FMT( FMT( OCONV(V.ALL, 'MX'), '2L'), 'MCP ')
     * 31 32 33 34 35 36 37 38 39 30 41 42 43 44 45 46 FE 00 00 00 56 57 58 59 5A
 
 <a name="SELECT"/>
@@ -14870,7 +14890,7 @@ Returns the time as the number of seconds past midnight
 ### EXAMPLES
 
 
-    CRT "Time is ":OCONV(TIME(), "MTS")
+    CRT "Time is " : OCONV( TIME(), "MTS" )
 
 <a name="TIMEDATE"/>
 
@@ -15756,7 +15776,7 @@ See also: [DELETELIST](#DELETELIST), [READLIST](#READLIST),
        EXECUTE 'SELECT . SAMPLE 5' RTNLIST V.LIST
        WRITELIST V.LIST TO 'SOME-FILES'
        GETLIST 'SOME-FILES' TO V.FILES.L ELSE NULL
-       CRT OCONV(V.FILES.L, 'MCP')  ;* e.g. &COMO&^&COMO&]D^&ED&^&ED&]D^&PH&
+       CRT OCONV( V.FILES.L, 'MCP' )  ;* e.g. &COMO&^&COMO&]D^&ED&^&ED&]D^&PH&
 
 <a name="WRITESEQ"/>
 
