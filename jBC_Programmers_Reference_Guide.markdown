@@ -620,9 +620,11 @@ No dictionary; we see only @ID. Raw output:
 
 As an alternative, we can use standard correlatives:
 
-        LIST F.SAMPLE *A1 *A2 *A3
-        F.SAMPLE......   *A1...........   *A2...........   *A3...........
-        REC1             Field one        Field two        Field three
+<pre>
+    LIST F.SAMPLE &lowast;A1 &lowast;A2 &lowast;A3
+    F.SAMPLE......   &lowast;A1...........   &lowast;A2...........   &lowast;A3...........
+    REC1             Field one        Field two         Field three
+</pre>
 
 ## Adding dictionary items
 
@@ -4767,7 +4769,7 @@ Use the DELETE statement to delete a record from a jBASE file.
 
 ### COMMAND SYNTAX
 
-    DELETE {variable,} expression {SETTING setvar} {ON ERROR statements}
+    DELETE {variable,} expression { SETTING setvar } { ON ERROR statements }
 
 ### SYNTAX ELEMENTS
 
@@ -4820,10 +4822,11 @@ will release the lock.
 
 Output:
 
+<pre>
     REC1
     REC3
      2 Records Listed
-
+</pre>
 
 <a name="DELETELIST"/>
 
@@ -4860,11 +4863,13 @@ DELETESEQ deletes a sequential file.
 
 ### COMMAND SYNTAX
 
-DELETESEQ Expression  {SETTING setvar} {ON ERROR statements} {LOCKED statements} THEN | ELSE statements
+    DELETESEQ Expression { SETTING setvar } { ON ERROR statements } \
+    { LOCKED statements } THEN | ELSE statements
 
 Or
 
-DELETESEQ Expression, Filename {SETTING setvar} {ON ERROR statements} {LOCKED statements} THEN | ELSE statements
+    DELETESEQ Expression, Filename { SETTING setvar } { ON ERROR statements } \
+    { LOCKED statements } THEN | ELSE statements
 
 ### SYNTAX ELEMENTS
 
@@ -4954,7 +4959,7 @@ Use the DIR function to return information about a file.
 
 ### COMMAND SYNTAX
 
-    DIR (filename)
+    DIR(filename)
 
 The filename is a string argument representing the path and filename
 of a file. This function returns a dynamic array with four attributes.
@@ -4969,7 +4974,7 @@ of a file. This function returns a dynamic array with four attributes.
 
 ### EXAMPLE
 
-       IF NOT(GETENV('TAFC_HOME', V.HOME)) THEN
+       IF NOT( GETENV('TAFC_HOME', V.HOME) ) THEN
           CRT 'TAFC_HOME not defined'
           STOP
        END
@@ -4985,7 +4990,7 @@ division of the dividend by the divisor.
 
 ### COMMAND SYNTAX
 
-DIV (dividend, divisor)
+    DIV(dividend, divisor)
 
 The dividend and divisor expressions can evaluate to any numeric
 value. The only exception is that the divisor cannot be zero. If
@@ -4993,8 +4998,8 @@ either dividend or divisor evaluates to null, it returns null.
 
 ### EXAMPLE
 
-    I=400; K=200
-    J = DIV (I,K)
+    I=400;  K=200
+    J = DIV(I, K)
     PRINT J
 
 "2" is the output of this program.
@@ -5008,7 +5013,7 @@ of the element-by-element division of two dynamic arrays.
 
 ### COMMAND SYNTAX
 
-DIVS (array1, array2)
+    DIVS(array1, array2)
 
 The division of each element of array1 is by the corresponding element
 of array2, which returns the result in the corresponding element of a
@@ -5039,7 +5044,7 @@ characters.
 
 ### COMMAND SYNTAX
 
-DOWNCASE|LOWCASE(expression) / UPCASE (expression)
+    DOWNCASE(expression) | LOWCASE(expression) / UPCASE(expression)
 
 ### INTERNATIONAL MODE
 
@@ -5091,6 +5096,7 @@ Default precision is four places.
 
 Output:
 
+<pre>
     Default:	3.1416
     3
     3.1
@@ -5113,6 +5119,7 @@ Output:
     3.141592653589793238
     3.1415926535897932385
     3.14159265358979323846
+</pre>
 
 <a name="DTX"/>
 
@@ -5123,7 +5130,7 @@ expression.
 
 ### COMMAND SYNTAX
 
-DTX(expression)
+    DTX(expression)
 
 ### SYNTAX ELEMENTS
 
@@ -5147,13 +5154,13 @@ displays FE
 
 ### COMMAND SYNTAX
 
-DYNTOXML (array,xsl,result)
+    DYNTOXML(array, xsl, result)
 
 ### SYNTAX ELEMENTS
 
 Convert the array to XML using the optimal xsl to transform
 
-XML = (DYNTOXML(array,””,result)
+    XML = DYNTOXML(array, '', result)
 
 Takes the contents of the dynamic array held in an array, and returns a
 generic XML representation of that array or an error
@@ -5163,59 +5170,65 @@ generic XML representation of that array or an error
 ### EXAMPLE
 
     a = "Tom" : @AM : "Dick" : @AM : "Harry"
-    xml = DYNTOXML(a,"",result)
+    xml = DYNTOXML(a, '', result)
     CRT xml
 
 **SCREEN OUTPUT**
 
-    <?xml version="1.0" encoding ="ISO-8859-1"?>
-    <array>
-      <data attribute="1" value="1" subvalue="1">Tom</data>
-      <data attribute="2" value="1" subvalue="1">Dick</data>
-      <data attribute="3" value="1" subvalue="1">Harry</data>
-    </array>
+<pre>
+    &lt;?xml version="1.0" encoding ="ISO-8859-1"?&gt;
+    &lt;array&gt;
+      &lt;data attribute="1" value="1" subvalue="1">Tom&lt;/data&gt;
+      &lt;data attribute="2" value="1" subvalue="1">Dick&lt;/data&gt;
+      &lt;data attribute="3" value="1" subvalue="1">Harry&lt;/data&gt;
+    &lt;/array>
+</pre>
 
 If a style sheet is passed in the second parameter, it performs a
 transform to give a different format of XML.
 
 ### EXAMPLE
 
-    xml = DYNTOXML(a,xsl,result)
+    xml = DYNTOXML(a, xsl, result)
     CRT xml
 
 **SCREEN OUTPUT**
 
-    <mycustomer>
-      <firstname>Tom</firstname>
-      <lastname>Dick</lastname>
-      <address>Harry</address>
-    </mycustomer>
+<pre>
+    &lt;mycustomer&gt;
+      &lt;firstname&gt;Tom&lt;/firstname&gt;
+      &lt;lastname&gt;Dick&lt;/lastname&gt;
+      &lt;address&gt;Harry&lt;/address&gt;
+    &lt;/mycustomer&gt;
+</pre>
 
 **XSL CONTENTS**
 
-    <xsl:template match="/">
-    <mycustomer>
-      <xsl:for-each select="array/data">
-        <xsl:if test="@attribute=1">
-          <firstname>
-            <xsl:value-of select="."/>
-          </firstname>
-        </xsl:if>
-        <xsl:if test="@attribute=2">
-          <lastname>
-            <xsl:value-of select="."/>
-          </lastname>
-        </xsl:if>
-        <xsl:if test="@attribute=3">
-          <address>
-            <xsl:value-of select="."/>
-          </address>
-        </xsl:if>
-        <xsl:if test="@attribute=4">
-          <address2>
-            <xsl:value-of select="."/>
-          </address2>
-       </xsl:if>
+<pre>
+    &lt;xsl:template match="/"&gt;
+    &lt;mycustomer&gt;
+      &lt;xsl:for-each select="array/data"&gt;
+        &lt;xsl:if test="@attribute=1"&gt;
+          &lt;firstname&gt;
+            &lt;xsl:value-of select="."/&gt;
+          &lt;/firstname&gt;
+        &lt;/xsl:if&gt;
+        &lt;xsl:if test="@attribute=2"&gt;
+          &lt;lastname&gt;
+            &lt;xsl:value-of select="."/&gt;
+          &lt;/lastname&gt;
+        &lt;/xsl:if&gt;
+        &lt;xsl:if test="@attribute=3"&gt;
+          &lt;address&gt;
+            &lt;xsl:value-of select="."/&gt;
+          &lt;/address&gt;
+        &lt;/xsl:if&gt;
+        &lt;xsl:if test="@attribute=4"&gt;
+          &lt;address2&gt;
+            &lt;xsl:value-of select="."/&gt;
+          &lt;/address2&gt;
+       &lt;/xsl:if&gt;
+</pre>
 
 ## EBCDIC
 
@@ -5224,7 +5237,7 @@ from the ASCII character set to the EBCDIC character set.
 
 ### COMMAND SYNTAX
 
-EBCDIC(expression)
+    EBCDIC(expression)
 
 ### SYNTAX ELEMENTS
 
@@ -5236,7 +5249,7 @@ of the function is now the EBCDIC equivalent.
 
 ### EXAMPLE
 
-  READT AsciiBlock ELSE CRT "Tape failed!"; STOP
+  READT AsciiBlock ELSE CRT "Tape failed!" ; STOP
   EbcdicBlock = EBCDIC(AsciiBlock) ;* Convert to EBCDIC
 
 ## ECHO
@@ -5246,11 +5259,11 @@ typed at the keyboard.
 
 ### COMMAND SYNTAX
 
-ECHO ON
+    ECHO ON
 
-ECHO OFF
+    ECHO OFF
 
-ECHO expression
+    ECHO expression
 
 ### SYNTAX ELEMENTS
 
@@ -5271,7 +5284,7 @@ FALSE if disabled.
 ### EXAMPLES
 
     ECHO OFF
-    CRT "Enter your password ":
+    CRT "Enter your password " :
     INPUT Password
     ECHO ON
     .....
@@ -5286,7 +5299,7 @@ The ENCRYPT function encrypts strings.
 
 ### COMMAND SYNTAX
 
-ENCRYPT(string, key, method)
+    ENCRYPT(string, key, method)
 
 ### SYNTAX ELEMENTS
 
@@ -5341,28 +5354,30 @@ See also: [DECRYPT](#DECRYPT).
 ### EXAMPLES
 
     INCLUDE JBC.h
-    X = DECRYPT(X, Ekey, JBASE_CRYPT_GENERAL)
-    IF DECRYPT("rknzcyr”,"", JBASE_CRYPT_ROT13) = "example" THEN
+    IF DECRYPT('rknzcyr', '', JBASE_CRYPT_ROT13) = "example" THEN
     CRT "ROT13 ok"
     END
-
-    IF ENCRYPT("g{ehvkm","9", JBASE_CRYPT_XOR11) = "example" THEN
+    //
+    IF ENCRYPT('g{ehvkm', '9', JBASE_CRYPT_XOR11) = "example" THEN
     CRT "XOR.MOD11 ok"
     END
-
+    //
     cipher = JBASE_CRYPT_BLOWFISH_BASE64
     key    = "Our Very Secret Key"
     str    = "String to encrypt"
     enc = ENCRYPT( str, key, cipher )
-    CRT "Encrypted: ":enc
+    CRT "Encrypted: " : enc
     dec = DECRYPT( enc, key, cipher )
-    CRT "Decrypted: ":dec
+    CRT "Decrypted: " : dec
 
 Displays as output:
 
+<pre>
+    ROT13 ok
+    XOR.MOD11 ok
     Encrypted: xuy6DXxUkD32spyfsKEvUtXrsjP7mC+R
     Decrypted: String to encrypt
-
+</pre>
 
 ### Hashing
 
@@ -5376,17 +5391,17 @@ The ENCRYPT function now supports SHA-2 hashing algorithms.
 
 ### Hashing Example
 
-	INCLUDE JBC.h
-	Key = "" ;# unused for hashing
-	EncryptType = JBASE_SECUREHASH_SHA256_BASE64
-    StrOut = ENCRYPT(StrIn,Key,EncryptType)
+    INCLUDE JBC.h
+    Key = "" ;* unused for hashing
+    EncryptType = JBASE_SECUREHASH_SHA256_BASE64
+    StrOut = ENCRYPT(StrIn, Key, EncryptType)
 
 
 ### NOTES
 
 See also: [DECRYPT](#DECRYPT).
 
-See also: http://en.wikipedia.org/wiki/SHA-2
+See also: <a href="http://en.wikipedia.org/wiki/SHA-2">Wiki</a>
 
 ## ENTER
 
@@ -5395,9 +5410,9 @@ executable program.
 
 ### COMMAND SYNTAX
 
-ENTER program_name
+    ENTER program_name
 
-ENTER @variable_name
+    ENTER @variable_name
 
 ### SYNTAX ELEMENTS
 
@@ -5428,8 +5443,9 @@ program terminates.
 ### EXAMPLES
 
     ENTER "menu"
+
     ProgName = "UPDATE"
-    ENTER @ ProgName
+    ENTER @ProgName
 
 ## EQS
 
@@ -5438,7 +5454,7 @@ to the elements of another dynamic array.
 
 ### COMMAND SYNTAX
 
-EQS (array1, array2)
+    EQS(array1, array2)
 
 EQS compares each element of array1 with the corresponding element
 of array2 and returns, a one if the two elements are equal in the
@@ -5450,7 +5466,7 @@ element.
 
 ### EXAMPLE
 
-    A=1:@VM:45:@SM:3:@VM:"one"
+    A=1:@VM:45:@SM:3:@VM:'one'
     B=0:@VM:45:@VM:1
     PRINT EQS(A,B)
 
@@ -5494,12 +5510,12 @@ to change one line in your program.
 
 ### EXAMPLE
 
-       DIM INV_LINE(10)
-       MAT INV_LINE = 100
+       DIM NV_LINE(10)
+       MAT NV_LINE = 100
        COMMON FLAG
        EQUATE NO_CHARGE TO FLAG
        EQUATE CR TO CHAR (13), TRUE TO 1, FALSE TO 0
-       EQUATE PRICE TO INV_LINE(7), TAX TO 0.175
+       EQUATE PRICE TO NV_LINE(7), TAX TO 0.175
        EQUATE DASHES TO "-------"
        IF NO_CHARGE = TRUE THEN PRICE = 0
        CRT "Tax =":PRICE * TAX:CR:DASHES
@@ -5517,7 +5533,7 @@ each occurrence of a substring.
 
 ### COMMAND SYNTAX
 
-EREPLACE (expression, substring, replacement [,occurrence [,begin] ] )
+    EREPLACE(expression, substring, replacement [,occurrence [,begin] ] )
 
 ### SYNTAX ELEMENTS
 
@@ -5536,15 +5552,17 @@ function except when substring evaluates to an empty string.
 ### EXAMPLE
 
     A = "AAABBBCCCDDDBBB"
-    PRINT EREPLACE (A,"BBB","ZZZ")
-    PRINT EREPLACE (A,"","ZZZ")
-    PRINT EREPLACE (A,"BBB","")
+    PRINT EREPLACE(A,'BBB', 'ZZZ')
+    PRINT EREPLACE(A, '', 'ZZZ')
+    PRINT EREPLACE(A, 'BBB', '')
 
 The output of this program is:
 
+<pre>
     AAAZZZCCCDDDZZZ
     ZZZAAABBBCCCDDDBBB
     AAACCCDDD
+</pre>
 
 <a name="EXECUTE"/>
 
@@ -5558,7 +5576,8 @@ including another jBC program or a TAFC command.
 
 ### COMMAND SYNTAX
 
-    EXECUTE|PERFORM expression {CAPTURING variable} {RETURNING|SETTING variable} {PASSLIST {expression}} {RTNLIST {variable}}{PASSDATA variable} {RTNDATA variable}
+    EXECUTE | PERFORM expression { CAPTURING variable} { RETURNING | SETTING variable} \
+      { PASSLIST {expression}} { RTNLIST {variable}}{ PASSDATA variable} { RTNDATA variable}
 
 Executes external programs or OS commands;
 you can intercept screen output and error messages from any program.
@@ -5650,6 +5669,7 @@ only one of each clause may exist.
 
 Sample output of the last example:
 
+<pre>
     [Filesystem    MB blocks      Free %Used    Iused %Iused Mounted on]
     [/dev/hd4         512.00    276.03   47%    12020    16% /]
     [/dev/hd2        5120.00   1398.12   73%    67516    18% /usr]
@@ -5657,6 +5677,7 @@ Sample output of the last example:
     [/dev/hd3         768.00    505.89   35%     8812     7% /tmp]
     [/dev/hd1         128.00    121.68    5%      185     1% /home]
     [/proc                 -         -    -         -     -  /proc]
+</pre>
 
 <a name="EXIT"/>
 
@@ -5669,9 +5690,9 @@ In this case, it is synonymous with the [BREAK](#BREAK) statement.
 
 ### COMMAND SYNTAX
 
-EXIT (expression)
+    EXIT (expression)
 
-EXIT
+    EXIT
 
 ### SYNTAX ELEMENTS
 
@@ -5693,7 +5714,7 @@ See also: [BREAK](#BREAK)
 ### EXAMPLE
 
     READ Record FROM FileDesc, RecordKey ELSE
-        CRT "Record ":RecordKey:" is missing"
+        CRT "Record " : RecordKey : " is missing"
         EXIT(1)
     END ELSE
         CRT "All required records are present"
@@ -5716,7 +5737,7 @@ power.
 
 ### COMMAND SYNTAX
 
-EXP(expression)
+    EXP(expression)
 
 ### SYNTAX ELEMENTS
 
@@ -5740,7 +5761,7 @@ a dynamic array other than using the <n,n,n> syntax described earlier.
 
 ### COMMAND SYNTAX
 
-EXTRACT(expression1, expression2 {, expression3 {, expression4}})
+    EXTRACT(expression1, expression2 {, expression3 {, expression4}})
 
 ### SYNTAX ELEMENTS
 
@@ -5755,7 +5776,7 @@ value to extract and expression4 the sub-value to extract.
 
 ### EXAMPLES
 
-    A = "0"; A<2> = "1"; A<3> = "2"
+    A = "0" ; A<2> = "1" ; A<3> = "2"
     CRT EXTRACT(A, 2)
 
 Will display the value "1".
@@ -5775,7 +5796,7 @@ values.
 
 ### COMMAND SYNTAX
 
-FADD(expression1, expression2)
+    FADD(expression1, expression2)
 
 ### SYNTAX ELEMENTS
 
@@ -5790,7 +5811,7 @@ If either of the arguments evaluates to null then a run time
 ### EXAMPLES
 
     PRECISION 7
-    CRT FADD(0.5044,23.7290002)
+    CRT FADD(0.5044, 23.7290002)
 
 displays 24.2334002
 
@@ -5803,7 +5824,7 @@ values.
 
 ### COMMAND SYNTAX
 
-FDIV(expression1, expression2)
+    FDIV(expression1, expression2)
 
 ### SYNTAX ELEMENTS
 
@@ -5825,7 +5846,6 @@ The calculation is not subject to the PRECISION setting.
         CRT FDIV(1,7)
 
 displays 0.1428571429
-
 
 ## FIELD
 
@@ -5869,7 +5889,7 @@ See also: [GROUP](#GROUP)
     * More than one field
        CRT FIELD(V.STRING, '/', 2, 2)      ;* DEF/QWE
        CRT V.STRING['/', 2, 3]             ;* DEF/QWE/XYZ
-       CRT DQUOTE(FIELD(V.STRING, '/', 2, 99))    ;* take "all the rest after 1st"
+       CRT DQUOTE( FIELD(V.STRING, '/', 2, 99) )    ;* take "all the rest after 1st"
 
 ## FIELDS
 
@@ -5879,7 +5899,7 @@ array of strings.
 
 ### COMMAND SYNTAX
 
-FIELDS(DynArr, Delimiter, Occurrence{, ExtractCount})
+    FIELDS(DynArr, Delimiter, Occurrence{, ExtractCount})
 
 ### SYNTAX ELEMENTS
 
@@ -5907,12 +5927,12 @@ changed with the FIELDS function.
 
     t = ""
     t<1> = "a:b:c:d:e:f"
-    t<2> = "aa:bb:cc:dd:ee:ff" : @VM: "1:2:3:4" : @SVM: ":W:X:Y:Z"
-    t<3> = "aaa:bbb:ccc:ddd:eee:fff":@VM:@SVM
+    t<2> = "aa:bb:cc:dd:ee:ff" : @VM: "1:2:3:4" : @SM: ":W:X:Y:Z"
+    t<3> = "aaa:bbb:ccc:ddd:eee:fff" :@VM:@SM
     t<4> = "aaaa:bbbb:cccc:dddd:eeee:ffff"
-    r1 = FIELDS(t,":",2)
-    r2 = FIELDS(t,":",2,3)
-    r3 = FIELDS(t,"bb",1,1)
+    r1 = FIELDS(t,':',2)
+    r2 = FIELDS(t,':',2,3)
+    r3 = FIELDS(t,'bb',1,1)
 
 The above program creates three dynamic arrays.
 
@@ -5954,7 +5974,7 @@ Returns 1 if file.variable is a valid file variable, zero otherwise.
 
 ### EXAMPLE
 
-       IF NOT(GETENV('JEDIFILENAME_SYSTEM', FN.SYSTEM)) THEN ABORT
+       IF NOT( GETENV('JEDIFILENAME_SYSTEM', FN.SYSTEM) ) THEN ABORT
        OPEN FN.SYSTEM TO F.SYSTEM ELSE NULL
        OPEN 'SOMENONEXISTENTFILE' TO F.SOMEFILE ELSE NULL
        CRT FILEINFO(F.SYSTEM, 0)        ;* 1
@@ -5973,9 +5993,9 @@ program enters the debugger.
 
 ### COMMAND SYNTAX
 
-FILELOCK filevar {LOCKED statements} {ON ERROR statements}
+    FILELOCK filevar { LOCKED statements } { ON ERROR statements }
 
-FILEUNLOCK filevar {ON ERROR statements}
+    FILEUNLOCK filevar { ON ERROR statements }
 
 ### DESCRIPTION
 
@@ -6041,7 +6061,7 @@ FILELOCK statement.
 
 ### COMMAND SYNTAX
 
-FILEUNLOCK [file.variable] \[ON ERROR statements]
+    FILEUNLOCK [file.variable] [ ON ERROR statements ]
 
 **file.variable** specifies a file previously locked with a
 FILELOCK statement. If file.variable is not specified, the default
@@ -6066,7 +6086,7 @@ In the following example, the first FILEUNLOCK statement unlocks
 the default file. The second FILEUNLOCK statement unlocks the file
 variable FILE.
 
-    OPEN '','SLIPPERS' ELSE STOP "CAN'T OPEN SLIPPERS"
+    OPEN '', 'SLIPPERS' ELSE STOP "CAN'T OPEN SLIPPERS"
     FILELOCK
     FILEUNLOCK
     OPEN 'PIPE' TO FILEVAR ELSE STOP
@@ -6082,7 +6102,8 @@ element in a dynamic array.
 
 ### COMMAND SYNTAX
 
-    FIND expression1 IN Var1 {, expression2} SETTING Var2 {, Var3 {, Var4}} THEN | ELSE statement(s)
+    FIND expression1 IN Var1 {, expression2} SETTING Var2 {, Var3 {, Var4}} \
+         THEN | ELSE statement(s)
 
 ### SYNTAX ELEMENTS
 
@@ -6143,7 +6164,8 @@ the full match isn't required.
 
 ### COMMAND SYNTAX
 
-    FINDSTR expression1 IN Var1 {, expression2} SETTING Var2 {,Var3 {, Var4}} THEN | ELSE statement(s)
+    FINDSTR expression1 IN Var1 {, expression2} SETTING Var2 {,Var3 {, Var4}} \
+            THEN | ELSE statement(s)
 
 ### SYNTAX ELEMENTS
 
@@ -6188,16 +6210,16 @@ dynamic array.
 
 ### COMMAND SYNTAX
 
-FORMLIST variable1 {TO variable2 | listnum}
+    FORMLIST dyn.array { TO listname | listnum }
 
 ### SYNTAX ELEMENTS
 
-**variable1** specifies the dynamic array from which the active
+**dyn.array** specifies the dynamic array from which the active
 select list is to be created
 
-If **variable2** is specified then the newly created list will be
+If **listname** is specified then the newly created list will be
 placed in the variable. Alternatively, a select list number in the
-range 0 to 10 can be specified with listnum. If neither variable2
+range 0 to 10 can be specified with listnum. If neither listname
 nor listnum is specified then the default list variable will be
 assumed.
 
@@ -6205,11 +6227,11 @@ assumed.
 
 See also: [DELETELIST](#DELETELIST), [READLIST](#READLIST), [WRITELIST](#WRITELIST)
 
-### EXAMPLES
+### EXAMPLE
 
     MyList = "key1":@AM:"key2":@AM:"key3"
     FORMLIST MyList TO ListVar
-
+    //
     LOOP
        READNEXT Key FROM ListVar ELSE EXIT
        READ Item FROM Key THEN
@@ -6225,7 +6247,7 @@ are not immediately flushed.
 
 ### COMMAND SYNTAX
 
-FLUSH file.variable {THEN statements [ELSE statements] | ELSE statements}
+    FLUSH file.variable { THEN statements [ ELSE statements ] | ELSE statements }
 
 **file.variable** specifies a file previously opened for sequential
 processing. If file.variable evaluates to null, the FLUSH statement
@@ -6337,17 +6359,17 @@ See also: [OCONV](#OCONV) for date/time/numeric masks and [FMTS](#FMTS).
 ### EXAMPLES
 
        X = 1234.56
-       CRT DQUOTE(FMT(X, 'R2#10'))             ;*  "   1234.56"
+       CRT DQUOTE( FMT(X, 'R2#10') )           ;*  "   1234.56"
        CRT FMT(X, 'L2%10')                     ;*  1234.56000
        CRT FMT(X, 'R2%10')                     ;*  0001234.56
        CRT FMT(X, 'L2*10')                     ;*  1234.56***
        CRT FMT(X, 'R2*10')                     ;*  ***1234.56
        X = 123456.78
-       CRT DQUOTE(FMT(X, 'R2,$#15'))           ;*  "    $123,456.78"
-       CRT DQUOTE(FMT(X, 'R2,&$#15'))          ;*  "     123,456.78"
-       CRT DQUOTE(FMT(X, 'R2,& $#15'))         ;*  "    $123,456.78"
+       CRT DQUOTE( FMT(X, 'R2,$#15') )         ;*  "    $123,456.78"
+       CRT DQUOTE( FMT(X, 'R2,&$#15') )        ;*  "     123,456.78"
+       CRT DQUOTE( FMT(X, 'R2,& $#15') )       ;*  "    $123,456.78"
        X = -123456.78
-       CRT DQUOTE(FMT(X, 'R2,C&*$#15'))        ;*  "  $123,456.78CR"
+       CRT DQUOTE( FMT(X, 'R2,C&*$#15') )      ;*  "  $123,456.78CR"
        X = 1234567890
        CRT FMT(X, 'R((###) ###-###)')          ;*  (234) 567-890
        CRT FMT(X, 'R((#3) #2-#4)')             ;*  (234) 56-7890
@@ -6388,7 +6410,7 @@ an element in a new dynamic array.
 **format** is an expression that evaluates to a string of formatting
 codes. The Syntax of the format expression is:
 
-[width] \[background] justification [edit] \[mask]
+[width] [background] justification [edit] [mask]
 
 The format expression specifies the width of the output field, the
 placement of background or fill characters, line justification,
@@ -6403,11 +6425,13 @@ the debugger.
 ### EXAMPLE
 
        X = 1234.56 :@FM: 123456.78 :@FM: -123456.78 :@FM: 1234567890
-       CRT FMTS(X, 'R2*12')
+       CRT OCONV( FMTS(X, 'R2*12'), 'MCP' )
 
 Output:
 
-    *****1234.56^***123456.78^**-123456.78^234567890.00
+<pre>
+    &lowast;&lowast;&lowast;&lowast;&lowast;1234.56^&lowast;&lowast;&lowast;123456.78^&lowast;&lowast;-123456.78^234567890.00
+</pre>
 
 <a name="FOLD"/>
 
@@ -6418,7 +6442,7 @@ attribute marks at positions defined by a length parameter.
 
 ### COMMAND SYNTAX
 
-FOLD(expression1, expression2)
+    FOLD(expression1, expression2)
 
 ### SYNTAX ELEMENTS
 =
@@ -6437,32 +6461,42 @@ enclosed in sub-strings and removes extraneous spaces.
 
 ### EXAMPLES
 
-The following ###EXAMPLES show how the FOLD function delimits
+The following examples show how the FOLD function delimits
 text based on the length parameter. The underscores represent
 attribute marks.
 
     q = "Smoking is one of the leading causes of statistics"
-    CRT FOLD(q, 7)
+    CRT OCONV( FOLD(q, 7), 'MCP' )
 
-    Smoking_is one_of the_leading_causes_of_statist_ics
+Output:
+<pre>
+    Smoking^is one^of the^leading^causes^of^statist^ics
+</pre>
 
     q = "Hello world"
-    CRT FOLD(q, 5)
+    CRT OCONV( FOLD(q, 5), 'MCP' )
 
-    Hello_world
+Output:
+<pre>
+    Hello^world
+</pre>
 
     q = "Let this be a reminder to you all that this organization will not tolerate failure."
+    CRT OCONV( FOLD(q, 30), 'MCP')
 
-    CRT FOLD(q, 30)
+Output:
 
-    let this be a reminder to you_all that this organization_will not
-
-    tolerate failure.
+<pre>
+Let this be a reminder to you^all that this organization^will not tolerate failure.
+</pre>
 
     q = "the end"
-    CRT FOLD(q, 0)
+    CRT OCONV( FOLD(q, 0), 'MCP' )
 
-    t_h_e_e_n_d
+Output:
+<pre>
+    t^h^e^e^n^d
+</pre>
 
 <a name="FOOTING"/>
 
@@ -6477,7 +6511,7 @@ is specified either in the current HEADING or in this FOOTING).
 
 ### COMMAND SYNTAX
 
-FOOTING expression
+    FOOTING expression
 
 ### SYNTAX ELEMENTS
 
@@ -6509,7 +6543,7 @@ output is to the terminal then all output is paged.
 
 ### EXAMPLE
 
-FOOTING "Programming staff by weight Page "P"
+    FOOTING 'Programming staff by weight Page "P"'
 
 <a name="FOR"/>
 
@@ -6521,7 +6555,9 @@ terminated early by expressions tested after every iteration.
 
 ### COMMAND SYNTAX
 
-    FOR var=expression1 TO expression2 {STEP expression3} {WHILE | UNTIL expression4}...NEXT {var}
+    FOR var=expression1 TO expression2 { STEP expression3 } { WHILE | UNTIL expression4 }
+    ...
+    NEXT {var}
 
 ### SYNTAX ELEMENTS
 
@@ -6584,7 +6620,7 @@ values.
 
 ### COMMAND SYNTAX
 
-FSUB(expression1, expression2)
+    FSUB(expression1, expression2)
 
 ### SYNTAX ELEMENTS
 
@@ -6599,7 +6635,7 @@ error will occur.
 ### EXAMPLES
 
     PRECISION 7
-    CRT FSUB(2.54,5.703358)
+    CRT FSUB(2.54, 5.703358)
 
 displays -3.163358
 
@@ -6610,7 +6646,7 @@ programs, arguments to the function can optionally be declared.
 
 ### COMMAND SYNTAX
 
-    FUNCTION name({MAT} variable, {MAT} variable...)
+    FUNCTION name({ MAT } variable, { MAT } variable...)
 
 ### SYNTAX ELEMENTS
 
@@ -6667,7 +6703,7 @@ array.
 
 ### COMMAND SYNTAX
 
-GES (array1, array2)
+    GES(array1, array2)
 
 ### SYNTAX ELEMENTS
 
@@ -6691,7 +6727,8 @@ The GET statement reads a block of data directly from a device.
 
 ### COMMAND SYNTAX
 
-GET Var {,length} {SETTING Count} FROM Device {UNTIL TermChars} {RETURNING TermChar}  {WAITING Timeout} THEN | ELSE statements
+    GET Var {,length} { SETTING Count } FROM Device { UNTIL TermChars } \
+        { RETURNING TermChar }  { WAITING Timeout } THEN | ELSE statements
 
 ### SYNTAX ELEMENTS
 
@@ -6738,7 +6775,7 @@ function.
 
 ### COMMAND SYNTAX
 
-GETCWD(Var)
+    GETCWD(Var)
 
 ### SYNTAX ELEMENTS
 
@@ -6754,7 +6791,7 @@ concept of the current working directory.
 ### EXAMPLES
 
     IF GETCWD(Cwd) THEN
-       CRT "Current Working Directory = ":Cwd
+       CRT "Current Working Directory = " : Cwd
     END ELSE
        CRT "Could not determine CWD!"
     END
@@ -6770,7 +6807,7 @@ the environment variables associated with it.
 
 ### COMMAND SYNTAX
 
-GETENV(expression, variable)
+    GETENV(expression, variable)
 
 ### SYNTAX ELEMENTS
 
@@ -6784,8 +6821,8 @@ See: [PUTENV](#PUTENV)
 
 ### EXAMPLE
 
-    IF GETENV("PATH", ExecPath) THEN
-        CRT "Execution path is ":ExecPath
+    IF GETENV('PATH', ExecPath) THEN
+        CRT "Execution path is " : ExecPath
     END ELSE
         CRT "Execution path is not set up"
     END
@@ -6800,13 +6837,13 @@ variable.
 
 ### COMMAND SYNTAX
 
-    GETLIST expression TO variable1 {SETTING variable2} THEN|ELSE statements
+    GETLIST expression TO variable1 { SETTING variable2 } THEN | ELSE statements
 
 ### SYNTAX ELEMENTS
 
 **variable1** is the variable into which the list will be read.
 expression should evaluate to the name of a previously stored list
-to retrieve, or null. If expression evaluates to null, the current
+to retrieve, or null. If **expression** evaluates to null, the current
 default external select list (generated by a previous
 [SELECT](#SELECT) command for example) will be retrieved. If
 specified, **variable2** will be set to the number of elements in
@@ -6838,13 +6875,14 @@ See also: [DELETELIST](#DELETELIST), [WRITELIST](#WRITELIST)
 
 Output of this program looks like:
 
+<pre>
     5 record(s) saved to list 'FILES-LIST'
     [&COMO&]
     [&COMO&]D]
     [&ED&]
     [&ED&]D]
     [&PH&]
-
+</pre>
 
 ## GETUSERGROUP
 
@@ -6854,19 +6892,19 @@ returns zero.
 
 ### COMMAND SYNTAX
 
-GETUSERGROUP(uid)
+    GETUSERGROUP(uid)
 
 ### EXAMPLES
 
 In the following example, the program statement assigns the user group
 to variable X:
 
-X = GETUSERGROUP(@UID)
+    X = GETUSERGROUP(@UID)
 
 In the next example, the program statement assigns the user group for
 1023 to variable X:
 
-X = GETUSERGROUP(1023)
+    X = GETUSERGROUP(1023)
 
 <a name="GETX"/>
 
@@ -6877,7 +6915,8 @@ directly from a device.
 
 ### COMMAND SYNTAX
 
-GETX Var {,length} {SETTING Count} FROM Device {UNTIL TermChars} {RETURNING TermChar}  {WAITING Timeout} THEN | ELSE statements
+    GETX Var {,length} { SETTING Count } FROM Device { UNTIL TermChars } \
+         { RETURNING TermChar } { WAITING Timeout } THEN | ELSE statements
 
 ### SYNTAX ELEMENTS
 
@@ -6940,13 +6979,13 @@ code, which identifies the start of a local subroutine.
 ### EXAMPLE
 
        V.IN = NEGS(1:@FM:2:@FM:3)
-       GOSUB OUTP                               ;* -1^-2^-3
+       GOSUB SCROUTP                               ;* -1^-2^-3
        V.IN = NEGS(-1:@FM:-2:@FM:-3)
-       GOSUB OUTP                               ;*  1^2^3
+       GOSUB SCROUTP                               ;*  1^2^3
        V.IN = NEGS(1:@FM:-2:@FM:3)
-       GOSUB OUTP                               ;*  -1^2^-3
+       GOSUB SCROUTP                               ;*  -1^2^-3
        STOP
-    OUTP:
+    SCROUTP:
        CRT FMT(V.IN, 'MCP')
        RETURN
 
@@ -6957,7 +6996,7 @@ specified label.
 
 ### COMMAND SYNTAX
 
-GO{TO} Label
+    GO{TO} Label
 
 ### SYNTAX ELEMENTS
 
@@ -6978,10 +7017,12 @@ will cause the program to terminate.
 
 ### EXAMPLE
 
-    GOTO Exception;* jump to the exception handler
+    GOTO Exception ;* jump to the exception handler
     .....
-    Exception:* exception handler
-    ....STOP
+    * exception handler
+    Exception:
+    ....
+    STOP
 
 <a name="GROUP"/>
 
@@ -6991,7 +7032,7 @@ The GROUP function is equivalent to the FIELD function.
 
 ### COMMAND SYNTAX
 
-GROUP(Expression1, Expression2, Expression3, Expression4)
+    GROUP(Expression1, Expression2, Expression3, Expression4)
 
 ### SYNTAX ELEMENTS
 
@@ -7015,14 +7056,14 @@ fields to be delimited with complex expressions.
 ### EXAMPLES
 
     A = "123:-456:-789:-987:-"
-    CRT GROUP(A, ":-", 2, 2)
+    CRT GROUP(A, ':-', 2, 2)
 
-This example displays:
+This example displays the following on the terminal (being the second and
+third fields and their delimiter within variable A):
 
+<pre>
     456:-789
-
-  on the terminal being the second and third fields and their delimiter
-  within variable A
+</pre>
 
 ## GROUPSTORE
 
@@ -7053,7 +7094,7 @@ specified.
 
 ### COMMAND SYNTAX
 
-HEADING expression
+    HEADING expression
 
 ### SYNTAX ELEMENTS
 
@@ -7084,7 +7125,7 @@ specify the “N” option, all output sent to the terminal is paged.
 
 ### EXAMPLES
 
-HEADING "Programming staff by size of waist Page "P"
+    HEADING 'Programming staff by size of waist Page "P"'
 
 ## HEADINGE and HEADINGN##
 
@@ -7159,7 +7200,7 @@ internal storage format.
 
 ### COMMAND SYNTAX
 
-ICONVS (dynamic.array, conversion)
+    ICONVS(dynamic.array, conversion)
 
 ### SYNTAX ELEMENTS
 
@@ -7195,7 +7236,7 @@ Allows other statements to be conditionally executed
 
 ### COMMAND SYNTAX
 
-IF expression THEN|ELSE statements
+    IF expression THEN | ELSE statements
 
 ### SYNTAX ELEMENTS
 
@@ -7234,13 +7275,13 @@ that the same form of each clause is coded.
 ### NOTES
 
 IF statements can be nested within either clause to any number of
-levels
+levels.
 
 ### EXAMPLE
 
-    CRT "Are you sure (Y/N) ":
-    INPUT Answer,1_
-    IF OCONV (Answer, "MCU")= "Y" THEN
+    CRT "Are you sure (Y/N) " :
+    INPUT Answer, 1_
+    IF OCONV (Answer, 'MCU') = "Y" THEN
         GOSUB DeleteFiles
         CRT "Files have been deleted"
     END ELSE
@@ -7255,13 +7296,13 @@ contents of a third dynamic array.
 
 ### COMMAND SYNTAX
 
-IFS (dynamic.array, true.array, false.array)
+    IFS(dynamic.array, true.array, false.array)
 
-IFS evaluate each element of the dynamic.array. If the element
+IFS evaluate each element of the **dynamic.array**. If the element
 evaluates to true, it returns the corresponding element from
-true.array to the same element of a new dynamic array. If the
+**true.array** to the same element of a new dynamic array. If the
 element evaluates to false, it returns the corresponding element
-from false.array. If there is no corresponding element in the
+from **false.array**. If there is no corresponding element in the
 correct response array, it returns an empty string for that
 element. If an element is null, that element evaluates to false.
 
@@ -7275,7 +7316,7 @@ at a time.
 
 ### COMMAND SYNTAX
 
-IN Var {FOR expression THEN|ELSE statements}
+    IN Var { FOR expression THEN | ELSE statements }
 
 ### SYNTAX ELEMENTS
 
@@ -7318,7 +7359,7 @@ characters within another string.
 
 ### COMMAND SYNTAX
 
-INDEX(expression1, expression2, expression3)
+    INDEX(expression1, expression2, expression3)
 
 ### SYNTAX ELEMENTS
 
@@ -7339,15 +7380,17 @@ expression1 then it returns Zero (0).
 ### EXAMPLE
 
     ABet = "abcdefghijklmnopqrstuvwxyzabc"
-    CRT INDEX(ABet, "a", 1)
-    CRT INDEX(ABet, "a", 2)
-    CRT INDEX(ABet, "jkl", 1)
+    CRT INDEX(ABet, 'a', 1)
+    CRT INDEX(ABet, 'a', 2)
+    CRT INDEX(ABet, 'jkl', 1)
 
 The above code will display:
 
+<pre>
     1
     27
     10
+</pre>
 
 ## INMAT
 
@@ -7355,7 +7398,7 @@ The INMAT() function returns the number of dimensioned array elements.
 
 ### COMMAND SYNTAX
 
-INMAT( {array} )
+    INMAT( {array} )
 
 DESCRIPTION
 
@@ -7399,7 +7442,8 @@ stacked input from the same or separate program.
 
 ### COMMAND SYNTAX
 
-    INPUT {@ (expression1 {, expression2 )}{:} Var{{, expression3}, expression4} {:}{_} {WITH expression5} {FOR expression6 THEN|ELSE statements}
+    INPUT {@ (expression1 {, expression2 )}{:} Var{{, expression3}, expression4} \
+          {:}{_} { WITH expression5 } { FOR expression6 THEN | ELSE statements }
 
 ### SYNTAX ELEMENTS
 
@@ -7501,7 +7545,7 @@ The INPUTCLEAR statement clears the type-ahead buffer.
 
 ### COMMAND SYNTAX
 
-INPUTCLEAR
+    INPUTCLEAR
 
 ### SYNTAX ELEMENTS
 
@@ -7532,7 +7576,7 @@ will allow a null input to be seen by the INPUT@ statement.
 
 ### COMMAND SYNTAX
 
-INPUTNULL expression
+    INPUTNULL expression
 
 ### SYNTAX ELEMENTS
 
@@ -7599,9 +7643,12 @@ number currently existing.
        NEXT I
        CRT FMT(Values, 'MCP')
 
-The output is:
+The output is (one line):
 
-    1^2^3^4^5^6^7]14]21]28]35]42]49]56]63]70]77]84^8^9^10^11^12^13^14^15^16^17^18^19^20^21^22^23^24^25^26^27^28^29^30^31^32^33^34^35^36^37^38^39^40^41^42^43^44^45^46^47^48^49^50
+<pre>
+    1^2^3^4^5^6^7]14]21]28]35]42]49]56]63]70]77]84^8^9^10^11^12^13^14^15^16^17^18^19^20^21^22^23^
+    24^25^26^27^28^29^30^31^32^33^34^35^36^37^38^39^40^41^42^43^44^45^46^47^48^49^50
+</pre>
 
 ## INSERT
 
@@ -7610,14 +7657,14 @@ given to the use of INS.
 
 ### COMMAND SYNTAX
 
-INSERT(expression1, expression2{, expression3 {, expression4 }}; expression5)
+    INSERT(expression1, expression2{, expression3 {, expression4 }}; expression5)
 
 ### SYNTAX ELEMENTS
 
 **expression1** evaluates to a dynamic array in which to insert a
 new element and will normally be a variable.
 
-**expression2** expression3 and expression4 should evaluate to numeric
+**expression2**, **expression3** and **expression4** should evaluate to numeric
 values and specify the Field, Value and Sub-Value before which the new
 element will be inserted.
 
@@ -7626,7 +7673,9 @@ expression1.
 
 ### EXAMPLES
 
-    A = INSERT(B, 1,4; "Field1Value4")
+        B = 'Field 1' :@VM: 2 :@VM: 3 :@VM: 5 :@FM: 'Field 2'
+        A = INSERT(B, 1, 4; 'Field1Value4')
+        CRT OCONV(A, 'MCP')          ;* Field 1]2]3]Field1Value4]5^Field 2
 
 ## INT
 
@@ -7635,7 +7684,7 @@ form.
 
 ### COMMAND SYNTAX
 
-INT( expression)
+    INT(expression)
 
 ### SYNTAX ELEMENTS
 
@@ -7674,10 +7723,10 @@ First, an example of a source program that opens a file and finds
 the type of file:
 
     INCLUDE JBC.h
-    OPEN "MD" TO DSCB ELSE STOP 201,"MD"
-    status=""
-    IF IOCTL(DSCB,JIOCTL_COMMAND_FILESTATUS,status) THEN
-       PRINT "Type of file = ":DQUOTE(status<1>)
+    OPEN "MD" TO DSCB ELSE STOP 201, "MD"
+    status = ""
+    IF IOCTL(DSCB, JIOCTL_COMMAND_FILESTATUS, status) THEN
+       PRINT "Type of file = " : DQUOTE(status<1>)
     END ELSE
        PRINT "IOCTL FAILED !! unknown file type"
     END
@@ -7693,7 +7742,7 @@ JBC.h" statement.
 
 The format of the IOCTL function is:
 
-IOCTL( Filevar, Command, Parameter)
+    IOCTL(Filevar, Command, Parameter)
 
 Where:
 
@@ -7705,7 +7754,8 @@ For example:
 
     OPEN "MD" ELSE STOP
     filevar = -1
-    IF IOCTL(filevar,JIOCTL_COMMAND_xxx,status) ...
+    IF IOCTL(filevar, JIOCTL_COMMAND_xxx, status)
+    ...
 
 **command** can be any numeric value (or variable containing a
 numeric). However, it is up to the database driver to support that
@@ -7739,12 +7789,12 @@ Open the file CUSTOMERS and find out the exact path that was used to
 open the file.
 
     INCLUDE JBC.h
-    OPEN "CUSTOMERS" TO DSCB ELSE STOP 201,"CUSTOMERS"
+    OPEN "CUSTOMERS" TO DSCB ELSE STOP 201, "CUSTOMERS"
     filename = ""
-    IF IOCTL(DSCB,JBC_COMMAND_GETFILENAME,filename) ELSE
+    IF IOCTL(DSCB, JBC_COMMAND_GETFILENAME, filename) ELSE
        CRT "IOCTL failed !!" ; EXIT(2)
     END
-    PRINT "Full file path = ":DQUOTE(filename)
+    PRINT "Full file path = " : DQUOTE(filename)
 
 This command is executed by the jBC library code rather than the jEDI
 library code or the database drivers, so it can be run against a file
@@ -7784,7 +7834,7 @@ that use the same file descriptor. Consider the following code:
     INCLUDE JBC.h
     OPEN "MD" TO FILEVAR1 ELSE ...
     OPEN "MD" TO FILEVAR2 ELSE ...
-    IF IOCTL(FILEVAR1,JIOCTL_COMMAND_CONVERT,"RB")
+    IF IOCTL(FILEVAR1, JIOCTL_COMMAND_CONVERT, 'RB')
 
 In the above example, any future file operations using variable
 FILEVAR1 will be controlled by the change forced in the IOCTL
@@ -7823,9 +7873,9 @@ input to this IOCTL function are:
 The application wants to open a file, and to ensure that all reads and writes to that file are in binary, and that no translation such as new-lines to attribute marks is performed.
 
     INCLUDE JBC.h
-    OPEN "FILE" TO DSCB ELSE STOP 201,"FILE"
-    IF IOCTL(DSCB,JIOCTL_COMMAND_CONVERT,"RB,WB") ELSE
-     CRT "UNABLE TO IOCTL FILE 'FILE'" ; EXIT(2)
+    OPEN "FILE" TO DSCB ELSE STOP 201, "FILE"
+    IF IOCTL(DSCB,JIOCTL_COMMAND_CONVERT, 'RB,WB') ELSE
+       CRT "UNABLE TO IOCTL FILE 'FILE'" ; EXIT(2)
     END
 
 ### EXAMPLE 2
@@ -7833,10 +7883,10 @@ The application wants to open a file, and to ensure that all reads and writes to
 Read a record from a file, and find out if the last record read was in text format (were new-lines converted to attribute marks and the trailing new-line deleted), or in binary format (with no conversion at all).
 
     INCLUDE JBC.h
-    OPEN "." TO DSCB ELSE STOP 201,"."
-    READ rec FROM DSCB,"prog.o" ELSE STOP 202,"prog.o"
+    OPEN "." TO DSCB ELSE STOP 201, "."
+    READ rec FROM DSCB, "prog.o" ELSE STOP 202, "prog.o"
     status = "RS"
-    IF IOCTL(DSCB,JIOCTL_COMMAND_CONVERT,status) THEN
+    IF IOCTL(DSCB, JIOCTL_COMMAND_CONVERT, status) THEN
        IF status EQ "T" THEN CRT "TEXT" ELSE CRT "BINARY"
     END ELSE
        CRT "The IOCTL failed !!"
@@ -7871,15 +7921,15 @@ The JIOCTL_COMMAND_FILESTATUS command will return an attribute delimited list of
 Open a file and see if the file type is a directory.
 
     INCLUDE JBC.h
-    OPEN ".." TO DSCB ELSE STOP 201,".."
+    OPEN ".." TO DSCB ELSE STOP 201, ".."
     status = ""
-    IF IOCTL(DSCB,JIOCTL_COMMAND_FILESTATUS,status) ELSE
+    IF IOCTL(DSCB, JIOCTL_COMMAND_FILESTATUS, status) ELSE
        CRT "IOCTL failed !!" ; EXIT(2)
     END
     IF status<1> EQ "UD" THEN
        PRINT "File is a directory"
     END ELSE
-       PRINT "File type is ":DQUOTE(status<1>)
+       PRINT "File type is " : DQUOTE(status<1>)
        PRINT "This is not expected for .."
     END
 
@@ -7890,14 +7940,14 @@ it. Make sure the file has not been removed as a transaction type
 file by a previous invocation of the command "jchmod -T CUSTOMERS".
 
     INCLUDE JBC.h
-    OPEN "CUSTOMERS" TO DSCB ELSE STOP 201,"CUSTOMERS"
-    IF IOCTL(DSCB,JIOCTL_COMMAND_FILESTATUS,status) ELSE
+    OPEN "CUSTOMERS" TO DSCB ELSE STOP 201, "CUSTOMERS"
+    IF IOCTL(DSCB, JIOCTL_COMMAND_FILESTATUS, status) ELSE
        CRT "IOCTL failed !!" ; EXIT(2)
     END
     IF status<8,2> THEN
        CRT "Error ! File CUSTOMERS is not"
        CRT "part of transaction boundaries !!"
-       CRT "Use "jchmod +T CUSTOMERS" !!"
+       CRT 'Use "jchmod +T CUSTOMERS" !!'
        EXIT(2)
     END
 
@@ -7915,10 +7965,10 @@ to simply test if the output record already exists, rather than reading
 it in using the READ statement to see if it exists.
 
     INCLUDE JBC.h
-    OPEN "outputfile" TO DSCB ELSE STOP 201,"outputfile"
-    ... Make up the output record to write out in "output"
+    OPEN "outputfile" TO DSCB ELSE STOP 201, "outputfile"
+    * Make up the output record to write out in "output"
     key = "output.out"
-    rc = IOCTL(DSCB,JIOCTL_COMMAND_FINDRECORD,key)
+    rc = IOCTL(DSCB, JIOCTL_COMMAND_FINDRECORD, key)
     BEGIN CASE
        CASE rc EQ 0
           WRITE output ON DSCB,key
@@ -7940,7 +7990,7 @@ null is returned. The time/date stamp is returned in UTC format.
 Print the time and data of last update for each record in filename.
 
     INCLUDE JBC.h
-    OPEN "filename" TO DSCB ELSE STOP 201,"filename"
+    OPEN "filename" TO DSCB ELSE STOP 201, "filename"
     *
     * Select each record in the newly opened file
     *
@@ -7950,7 +8000,7 @@ Print the time and data of last update for each record in filename.
     * Get the details on the record and look for errors.
     *
        record.info = record.key
-       IF IOCTL(DSCB,JIOCTL_COMMAND_FINDRECORD_EXTENDED,record.info) ELSE
+       IF IOCTL(DSCB, JIOCTL_COMMAND_FINDRECORD_EXTENDED, record.info) ELSE
           CRT "Error! File driver does not support this"
           STOP
        END
@@ -7959,14 +8009,14 @@ Print the time and data of last update for each record in filename.
     *
        record.size = record.info<1>
        record.utc = record.info<2>
-       record.time = OCONV(record.utc, "U0ff0")
-       record.date = OCONV(record.utc, "U0ff1")
+       record.time = OCONV(record.utc, 'U0ff0')
+       record.date = OCONV(record.utc, 'U0ff1')
     *
     * Print the information.
     *
        PRINT "Record key " :record.key: " last updated at " :
-       PRINT OCONV(record.time, "MTS"):" ":
-       PRINT OCONV(record.date, "D4")
+       PRINT OCONV(record.time, 'MTS'): " " :
+       PRINT OCONV(record.date, 'D4')
     REPEAT
 
 **JIOCTL_COMMAND_HASH_RECORD COMMAND**
@@ -8000,8 +8050,8 @@ would be found in.
     OPEN "WEDDING-PRESENTS" TO DSCB ELSE STOP
     key = "PIPE&SLIPPER"
     parm = key
-    IF IOCTL(DSCB,JIOCTL_COMMAND_HASH_RECORD,parm) THEN
-      PRINT "key ":key:" would be in bucket ":parm<2>
+    IF IOCTL(DSCB, JIOCTL_COMMAND_HASH_RECORD, parm) THEN
+      PRINT "key " :key: " would be in bucket " :parm<2>
     END ELSE
        CRT "IOCTL failed, command not supported"
     END
@@ -8026,11 +8076,11 @@ of locks taken should include the lock taken by this program.
     OPEN "WEDDING-PRESENTS" TO DSCB ELSE STOP
     key = "PIPE&SLIPPER"
     parm = key
-    IF IOCTL(DSCB,JIOCTL_COMMAND_HASH_LOCK,parm) ELSE
+    IF IOCTL(DSCB, JIOCTL_COMMAND_HASH_LOCK, parm) ELSE
        CRT "IOCTL failed, command not supported"
        EXIT(2)
     END
-    PRINT "The lock ID for the key is ":parm
+    PRINT "The lock ID for the key is " : parm
     PRINT "Our process id is " : getpid()
 
 ## ISALPHA
@@ -8067,7 +8117,7 @@ of each character is determined according to the Unicode Standard.
 
 ### EXAMPLE
 
-Extending the example right above:
+Extending the example for [ISALPHA](#ISALPHA):
 
        V.STRING = 'AWERC'
     * check if there are only alphabetic characters
@@ -8142,7 +8192,7 @@ lower case characters.
 
 ### COMMAND SYNTAX
 
-ISLOWER(expression)
+    ISLOWER(expression)
 
 ### SYNTAX ELEMENTS
 
@@ -8163,7 +8213,7 @@ printable characters.
 
 ### COMMAND SYNTAX
 
-ISPRINT(expression)
+    ISPRINT(expression)
 
 ### SYNTAX ELEMENTS
 
@@ -8184,7 +8234,7 @@ space type characters.
 
 ### COMMAND SYNTAX
 
-ISSPACE(expression)
+    ISSPACE(expression)
 
 ### SYNTAX ELEMENTS
 
@@ -8205,7 +8255,7 @@ upper case characters.
 
 ### COMMAND SYNTAX
 
-ISUPPER(expression)
+    ISUPPER(expression)
 
 ### SYNTAX ELEMENTS
 
@@ -8220,6 +8270,7 @@ When the ISUPPER function is used in International Mode the properties
 of each character is determined according to the Unicode Standard.
 
 <a name="ITYPE"/>
+
 ## ITYPE
 
 ITYPE function is used to return the value resulting from the
@@ -8227,7 +8278,7 @@ evaluation of an I-type expression in a jBASE file dictionary.
 
 ### COMMAND SYNTAX
 
-ITYPE (i.type)
+    ITYPE(i.type)
 
 **I.type** is an expression evaluating to the contents of the compiled
 I-descriptor. You must compile the I-descriptor before the ITYPE
@@ -8259,39 +8310,40 @@ This is the SLIPPER file content:
 
 This is the DICT SLIPPER content:
 
-**SIZE**
-
+<pre>
+&lowast;&lowast;SIZE&lowast;&lowast;
     001 D
     002 1
     003
     004
     005 10L
     006 L
+</pre>
 
 This is the program source code:
 
     OPEN 'SLIPPERS' TO FILE ELSE STOP
     OPEN 'DICT','SLIPPERS' TO D.FILE ELSE STOP
-    *
     READ ITYPEDESC FROM D.FILE, 'SIZE' ELSE STOP
     *
     EXECUTE 'SELECT SLIPPERS'
-    @FILENAME = “SLIPPERS”
+    @FILENAME = 'SLIPPERS'
     LOOP
-    READNEXT @ID DO
+       READNEXT @ID DO
     *
-    READ @RECORD FROM FILE, @ID THEN
-    *
-    PRINT @ID: "WEARS SLIPPERS SIZE " ITYPE(ITYPEDESC)
-    END
+       READ @RECORD FROM FILE, @ID THEN
+       PRINT @ID: " WEARS SLIPPERS SIZE " : ITYPE(ITYPEDESC)
+       END
     REPEAT
 
 The output of this program is:
 
+<pre>
     3 records selected
     JIM WEARS SLIPPERS SIZE 8
     GREG WEARS SLIPPERS SIZE 10
     ALAN WEARS SLIPPERS SIZE 5
+</pre>
 
 ## JBASECOREDUMP
 
@@ -8306,31 +8358,36 @@ analysis.
 
 ### COMMAND SYNTAX
 
-JBASECOREDUMP(expression1, expression2)
+    JBASECOREDUMP(expression1, expression2)
 
 ### SYNTAX ELEMENTS
 
-expression1 should evaluate to a string:
+**expression1** should evaluate to a string:
 
 If assigned a value, expression1 will be used as the extension for the external
 text file created to hold execution snapshot.
 
-    rc = JBASECORDUMP(“SERVICE”,0)
-    JBASECOREDUMP.<<UUID>>.<<expression1>>
-    JBASECOREDUMP.a57d07cc-6539-470f-9959-24ed7c715f4f.SERVICE
+    rc = JBASECOREDUMP('SERVICE', 0)
+
+This will create the file with name structured as "JBASECOREDUMP.&lt;&lt;UUID&gt;&gt;.&lt;&lt;expression1&gt;&gt;",
+e.g. JBASECOREDUMP.a57d07cc-6539-470f-9959-24ed7c715f4f.SERVICE.
 
 If a null string is used:
 
-    rc = JBASECORDUMP(“”,0)
-    JBASECOREDUMP.<<UUID>>
-    JBASECOREDUMP.a57d07cc-6539-470f-9959-24ed7c715f4f
+    rc = JBASECOREDUMP('', 0)
 
-expression2 should evaluate to a numeric integer:
+This will create the file with name structured as "JBASECOREDUMP.&lt;&lt;UUID&gt;&gt;,
+e.g. JBASECOREDUMP.a57d07cc-6539-470f-9959-24ed7c715f4f
 
-    0, Add all varables to the external text file.
-    1, Suppess any UNASSIGNED varables saved to the external file.
+**expression2** should evaluate to a numeric integer:
+
+<pre>
+ 0, Add all varables to the external text file.
+ 1, Suppess any UNASSIGNED varables saved to the external file.
+</pre>
 
 ### NOTES
+
 jBC functionality will be affected in the following areas:
 
 - Calling from a jbc subroutine.
@@ -8339,53 +8396,42 @@ jBC functionality will be affected in the following areas:
 - Calling process started via EXECUTE/PERFORM from within a jbc program.
 - When called via jAgent, using a jbc subroutine.
 
-Calling from a jbc subroutine.
+*Calling from a jbc subroutine.*
 
 When the JBASECOREDUMP function is called from a jbc program it will stop execution.
 The call stack is saved to a file, and also saved to the logs.
 Each core dump now is assigned a unique ID.
 
-Running a program in a jsh.
+*Running a program in a jsh.*
 
 If called from a program while in a jSH, a message is now displayed along
 with the UUID for the core dump, you can use this to locate the stack trace
 in the logs.
 
-    ** Error [ JBASECOREDUMP ] ** Program Aborted, Coredump UUID: <<UUIID>>
+<pre>
+    &lowast;&lowast; Error [ JBASECOREDUMP ] &lowast;&lowast; Program Aborted, Coredump UUID: &lt;&lt;UUID&gt;&gt;
+</pre>
 
-External text filenames are now unique for coredump files.
-
-If expression1 was supplied when calling JBASECOREDUMP.
-
-    rc = JBASECORDUMP(“ERRORFILE”,0)
-    JBASECOREDUMP.<<UUID>>.<<expression1>>
-    JBASECOREDUMP.a57d07cc-6539-470f-9959-24ed7c715f4f.ERRORFILE
-
-If expression1 is null.
-
-    rc = JBASECORDUMP(“”,0)
-    JBASECOREDUMP.<<UUID>>
-    JBASECOREDUMP.a57d07cc-6539-470f-9959-24ed7c715f4f
-
-Calling process started via EXECUTE/PERFORM from within a jbc program.
+*Calling process started via EXECUTE/PERFORM from within a jbc program.*
 
 If JBASECOREDUMP is called from a process started via EXECUTE/PERFORM from a
 jbc program, use RETURNING/SETTING to capture the output associated with any
 error messages the executing program issues.
 
     EXECUTE “MYPROGRAM” CAPTURING junk SETTING rc
-    rc<1,1> holds the error code “JBASECORDUMP”.
-    rc<1,2> holds the UUID for the core dump.
+         * rc<1,1> holds the error code “JBASECOREDUMP”.
+         * rc<1,2> holds the UUID for the core dump.
 
 Because all JBASECOREDUMP's are logged you can use this UUID to check the log files.
 
-When called via jAgent, using a jbc subroutine.
+*When called via jAgent, using a jbc subroutine.*
 
 A new exception type has been created to return the UUID to the client
 application. (JSubroutineCoreDumpException)
 
 The following is a simple example of how to check for core dumps.
 
+<pre>
     try {
       _connection.call("CALLCOREDUMP_WITH_FILENAME", null);
     }
@@ -8393,6 +8439,7 @@ The following is a simple example of how to check for core dumps.
       const std::string uuid = e.getMessage()->c_str();
       // handle exception
     }
+</pre>
 
 Use this UUID to check on the server for what went wrong.
 The Java and C# clients have also been updated to handle this new exception
@@ -8402,28 +8449,29 @@ type.
 
 example.b:
 
-    001 rc = JBASECOREDUMP("ERRORFILE","")
-
-Display:
-
-    CT . example.b
+    001 rc = JBASECOREDUMP('ERRORFILE', '')
 
 Compile:
 
+<pre>
     jcompile example.b
+</pre>
 
-example:
+run:
 
-    ** Error [ JBASECOREDUMP ] ** Program Aborted, Coredump UUID: 4d5a252a-c009-4aec-9e1f-73d3251c6b81
+<pre>
+    &lowast;&lowast; Error [ JBASECOREDUMP ] &lowast;&lowast; Program Aborted,
+    Coredump UUID: 4d5a252a-c009-4aec-9e1f-73d3251c6b81
+</pre>
 
-dir JBASECOREDUMP*
-
+<pre>
+     dir JBASECOREDUMP*
     JBASECOREDUMP.4d5a252a-c009-4aec-9e1f-73d3251c6b81.ERRORFILE
+</pre>
 
-ct . JBASECOREDUMP.4d5a252a-c009-4aec-9e1f-73d3251c6b81.ERRORFILE
-
+<pre>
+    ct . JBASECOREDUMP.4d5a252a-c009-4aec-9e1f-73d3251c6b81.ERRORFILE
     JBASECOREDUMP.4d5a252a-c009-4aec-9e1f-73d3251c6b81.ERRORFILE
-
     001 jBASE Core dump created at Fri Feb 24 11:21:10 2012
     002 UUID: 4d5a252a-c009-4aec-9e1f-73d3251c6b81
     003 Program example , port 87 , process id 3488
@@ -8444,47 +8492,70 @@ ct . JBASECOREDUMP.4d5a252a-c009-4aec-9e1f-73d3251c6b81.ERRORFILE
     018
     019 SUBROUTINE main()
     020 00000000006BEE90 : rc : (V) String : 0 bytes at address 0000000055740A58 :
+</pre>
 
 Locating entry in the logs using the UUID.
 
+<pre>
     find "4d5a252a-c009-4aec-9e1f-73d3251c6b81" %TAFC_HOME%\log\default
+</pre>
 
 The following lines may appear in the log file:
 
+<pre>
     ---------- C:\R12\LOG\DEFAULT\EXAMPLE.HML0001.JBCUSER.LOG.ERROR.20120224-112110.3488
-    E0224 11:21:10.737900 5832 tafc_logger_c_api.cpp:33] Coredump file: JBASECOREDUMP.4d5a252a-c009-4aec-9e1f-73d3251c6b81.ERRORFILE
-    E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] UUID: 4d5a252a-c009-4aec-9e1f-73d3251c6b81
+    E0224 11:21:10.737900 5832 tafc_logger_c_api.cpp:33]
+    Coredump file: JBASECOREDUMP.4d5a252a-c009-4aec-9e1f-73d3251c6b81.ERRORFILE
+    E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33]
+    UUID: 4d5a252a-c009-4aec-9e1f-73d3251c6b81
+</pre>
 
 Type the following command to display the log file:
 
-    CT %TAFC_HOME%\log\default\LOG\DEFAULT\EXAMPLE.HML0001.JBCUSER.LOG.ERROR.20120224-112110.3488
+<pre>
+    CT %TAFC_HOME%\log\default\LOG\DEFAULT\EXAMPLE.HML0001.JBCUSER.LOG.ERROR.20120224-
+       112110.3488
+</pre>
 
 The below log file will appear "example.HML0001.JBCUSER.LOG.ERROR.20120224-112110.3488"
 
+<pre>
     001 Log file created at: 2012/02/24 11:21:10
     002 Running on machine: HML0001
     003 Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
-    004 E0224 11:21:10.737900 5832 tafc_logger_c_api.cpp:33] Coredump file: JBASECOREDUMP.4d5a252a-c009-4aec-9e1f-73d3251c6b81.ERRORFILE
-    005 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] jBASE Core dump created at Fri Feb 24 11:21:10 2012
-    006 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] UUID: 4d5a252a-c009-4aec-9e1f-73d3251c6b81
-    007 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] Program example , port 87 , process id 3488
+    004 E0224 11:21:10.737900 5832 tafc_logger_c_api.cpp:33] Coredump file:
+        JBASECOREDUMP.4d5a252a-c009-4aec-9e1f-73d3251c6b81.ERRORFILE
+    005 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] jBASE Core dump created at
+        Fri Feb 24 11:21:10 2012
+    006 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] UUID:
+        4d5a252a-c009-4aec-9e1f-73d3251c6b81
+    007 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] Program example , port 87,
+        process id 3488
     008 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33]
     009 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] CALL/GOSUB stack
     010 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33]
     011 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] Backtrace:
     012 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] #0: jmainfunction.b:1219
-    013 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] #1: example.b:1 -> Line 1 , Source jmainfunction.b
+    013 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] #1: example.b:1 -> Line 1,
+        Source jmainfunction.b
     014 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33]
     015 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] Backtrace log:
-    016 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] Program jmainfunction.b, Line 1, Stack level 0
-    017 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] Line 0 , Source jmainfunction.b , Level 0
-    018 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] >>> Program example.b, Line 1, Stack level 1
-    019 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] Line 1 , Source jmainfunction.b
+    016 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] Program jmainfunction.b,
+        Line 1, Stack level 0
+    017 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] Line 0 ,
+        Source jmainfunction.b , Level 0
+    018 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] >>> Program example.b,
+        Line 1, Stack level 1
+    019 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] Line 1 ,
+        Source jmainfunction.b
     020 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33]
-    021 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] All the defined VAR's in the program
+    021 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] All the defined VAR's
+        in the program
     022 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33]
     023 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] SUBROUTINE main()
-    024 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] 00000000006BEE90 : rc : (V) String : 0 bytes at address 0000000055740A58 :
+    024 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] 00000000006BEE90 :
+        rc : (V) String : 0 bytes at address 0000000055740A58 :
+</pre>
 
 ## JBASESubroutineExist
 
@@ -8512,7 +8583,7 @@ JBASETHREADCreate command is used to start a new thread.
 
 ### COMMAND SYNTAX
 
-JBASETHREADCreate(ProgramName, Arguments, User, Handle)
+    JBASETHREADCreate(ProgramName, Arguments, User, Handle)
 
 ### SYNTAX ELEMENTS
 
@@ -8549,7 +8620,7 @@ JQLCOMPILE compiles a jQL statement.
 
 ### COMMAND SYNTAX
 
-JQLCOMPILE (Statement, Command, Options, Messages)
+    JQLCOMPILE(Statement, Command, Options, Messages)
 
 ### SYNTAX ELEMENTS
 
@@ -8575,14 +8646,14 @@ is in the STOP format, therefore STOP messages can be programmed and
 printed. Provides a history of compilation for troubleshooting
 purposes; Returns -1 if there is a problem found in the statement
 and 0 for no problem.
- 
+
 ## JQLEXECUTE
 
 JQLEXECUTE starts executing a compiled jQL statement.
 
 ### COMMAND SYNTAX
 
-JQLEXECUTE (Statement, SelectVar)
+    JQLEXECUTE(Statement, SelectVar)
 
 ### SYNTAX ELEMENTS
 
@@ -8590,14 +8661,15 @@ JQLEXECUTE (Statement, SelectVar)
 JQLCOMPILE (Statement, …)
 
 **SelectVar** is a valid select list used to limit the statement to a
-predefined set of items. For example:
+predefined set of items. For example - how it's used in jQL (note the "&gt;") prompt:
 
+<pre>
     SELECT PROGRAMMERS WITH IQ_IN_PTS > 250
     1 Item Selected
     > LIST PROGRAMMERS NAME
-
     PROGRAMMERS...    NAME
     0123              COOPER, F B
+</pre>
 
 This function returns -1 in the event of a problem, such as an
 incorrect statement variable. It will cause the statement to run
@@ -8609,7 +8681,7 @@ JQLFETCH is used to fetch the next result in a compiled jQL statement.
 
 ### COMMAND SYNTAX
 
-JQLFETCH (Statement, ControlVar, DataVar)
+    JQLFETCH(Statement, ControlVar, DataVar)
 
 ### SYNTAX ELEMENTS
 
@@ -8620,13 +8692,14 @@ by a valid call to JQLEXECUTE().
 For example, if there are BREAK values in the statement, described here
 is the the format of ControlVar is:
 
-    Attr 1  Level: 0 means detail line 1 – 25 for the control breaks,
-the same   as the A correlative NB.
+<pre>
+    Attr 1  Level: 0 means detail line 1 – 25 for the control breaks, the same as the
+            A correlative NB.
     Attr 2  Item ID
-    Attr 3  Break control Value is 1 if a blank line should be output
-first.
+    Attr 3  Break control Value is 1 if a blank line should be output first.
     Attr 4  Pre-break value for 'B' option in header
     Attr 5  Post-break value for 'B' option in header
+</pre>
 
 **DataVar** will receive the actual screen data on a LIST statement for
 instance. The format is one attribute per column.
@@ -8650,7 +8723,7 @@ JQLGETPROPERTY is used to get the property of a compiled jQL statement
 
 ### COMMAND SYNTAX
 
-JQLGETPROPERTY (PropertyValue, Statement, Column, PropertyName)
+    JQLGETPROPERTY(PropertyValue, Statement, Column, PropertyName)
 
 ### SYNTAX ELEMENTS
 
@@ -8682,7 +8755,7 @@ JQLPUTPROPERTY sets a property in a compiled jQL statement.
 
 ### COMMAND SYNTAX
 
-JQLPUTPROPERTY (PropertyValue, Statement, Column, PropertyName)
+    JQLPUTPROPERTY(PropertyValue, Statement, Column, PropertyName)
 
 ### SYNTAX ELEMENTS
 
@@ -8713,41 +8786,42 @@ executing.
 ## Sample program illustrating the usage of compiled jQL statement:
 
     INCLUDE jQLProperties.h
-
-       IF NOT(GETENV('TAFC_HOME', V.HOME)) THEN
+       //
+       IF NOT( GETENV('TAFC_HOME', V.HOME) ) THEN
           CRT 'TAFC_HOME not defined'
           STOP
        END
-
+       //
        V.QUERY = 'LIST ONLY ' : V.HOME : '/jbcmessages'
        V.STMT = ''
-
+       //
        V.DUMMY = JQLCOMPILE(V.STMT, V.QUERY, 0, V.MSG)
-
+       //
        V.SEL.VAR = ''
        V.RET = JQLEXECUTE(V.STMT, V.SEL.VAR)
        IF V.RET NE 0 THEN CRT 'JQLEXECUTE RETURNED', V.RET  ; STOP
-
+       //
        LOOP
           GOSUB GET.NEXT
        UNTIL V.FETCH NE 1
        REPEAT
-
+       //
        STOP
-
+       //
     GET.NEXT:
-
+       //
        V.FETCH = JQLFETCH(V.STMT, V.CTRL, V.DATA)
        IF V.FETCH NE 1 THEN RETURN
        V.RET = JQLGETPROPERTY(PropertyValue, V.STMT, 0, \
     	 STMT_PROPERTY_EXECUTE_COUNT)
-       CRT '@ID #' : PropertyValue : ':' , V.DATA<1>
-
+       CRT 'ID #' : PropertyValue : ':' , V.DATA<1>
+       //
        RETURN
     END
 
 Output:
 
+<pre>
     @ID #1:	INV_FILE_TYPE
     @ID #2:	DEVICE_QUIT
     @ID #3:	RTN_NOGOSUB
@@ -8760,6 +8834,7 @@ Output:
     @ID #488:	80044228
     @ID #489:	80044233
     @ID #490:	80045024
+</pre>
 
 <a name="JBCFUNCKO"/>
 
@@ -8804,7 +8879,7 @@ equivalent.
 
 ### COMMAND SYNTAX
 
-LATIN1(expression)
+    LATIN1(expression)
 
 ### SYNTAX ELEMENTS
 
@@ -8825,7 +8900,7 @@ beginning of a string.
 
 ### COMMAND SYNTAX
 
-LEFT(expression, length)
+    LEFT(expression, length)
 
 ### SYNTAX ELEMENTS
 
@@ -8845,15 +8920,17 @@ See also: [RIGHT](#RIGHT)
 ### EXAMPLES
 
     S = "The world is my lobster"
-    CRT DQUOTE (LEFT(S,9))
-    CRT DQUOTE(LEFT(S,999))
-    CRT DQUOTE(LEFT(S,0))
+    CRT DQUOTE( LEFT(S,9) )
+    CRT DQUOTE( LEFT(S,999) )
+    CRT DQUOTE( LEFT(S,0) )
 
 This code displays:
 
+<pre>
     "The world"
     "The world is my lobster"
     ""
+</pre>
 
 ## LEN
 
@@ -8890,11 +8967,13 @@ Do not use programs manipulating byte counts in International Mode.
        V.LEN = LEN(V.STRING)
        V.OFF.L = INT((V.WIDTH - V.LEN) / 2)    ;* left offset
        V.OFF.R = V.WIDTH - V.LEN - V.OFF.L     ;* right offset
-       CRT SQUOTE(STR(' ', V.OFF.L) : V.STRING : STR(' ', V.OFF.R))
+       CRT SQUOTE( STR(' ', V.OFF.L) : V.STRING : STR(' ', V.OFF.R) )
 
 Output is:
 
+<pre>
     '             I AM IN THE VERY CENTER              '
+</pre>
 
 ## LENDP
 
@@ -8902,7 +8981,7 @@ LENDP function returns the display length of an expression
 
 ### COMMAND SYNTAX
 
-LENDP(expression)
+    LENDP(expression)
 
 ### SYNTAX ELEMENTS
 
@@ -8930,7 +9009,7 @@ in each element of the dynamic.array.
 
 ### COMMAND SYNTAX
 
-LENS (dynamic.array)
+    LENS(dynamic.array)
 
 Each element of dynamic.array must be a string value. The characters
 in each element of dynamic.array are counted, with the counts returned.
@@ -8964,7 +9043,7 @@ array.
 
 ### COMMAND SYNTAX
 
-LES (array1, array2)
+    LES(array1, array2)
 
 It compares each element of array1 with the corresponding element
 of array2. If the element from array1 is less than or equal to the
@@ -8985,7 +9064,7 @@ value.
 
 ### COMMAND SYNTAX
 
-LN( expression)
+    LN(expression)
 
 ### SYNTAX ELEMENTS
 
@@ -8997,7 +9076,7 @@ then return the natural logarithm of that value.
 The calculation of the natural logarithm is by using the mathematical
 constant ‘e’ as a number base.
 
-### EXAMPLES
+### EXAMPLE
 
     A = LN(22/7)
 
@@ -9008,7 +9087,7 @@ TimeZone combination.
 
 ### COMMAND SYNTAX
 
-LOCALDATE(Timestamp, TimeZone)
+    LOCALDATE(Timestamp, TimeZone)
 
 ### SYNTAX ELEMENTS
 
@@ -9023,7 +9102,7 @@ TimeZone combination.
 
 ### COMMAND SYNTAX
 
-LOCALTIME(Timestamp, TimeZone)
+    LOCALTIME(Timestamp, TimeZone)
 
 ### SYNTAX ELEMENTS
 
@@ -9040,7 +9119,8 @@ dimension of a dynamic array.
 
 ### COMMAND SYNTAX
 
-    LOCATE expression1 IN expression2{<expression3{,expression4}>}, {, expression5} {BY expression6} SETTING Var THEN|ELSE statement(s)
+    LOCATE expression1 IN expression2{<expression3{,expression4}>}, {, expression5}  \
+           { BY expression6 } SETTING Var THEN | ELSE statement(s)
 
 ### SYNTAX ELEMENTS
 
@@ -9119,7 +9199,7 @@ other jBC program to wait until this program has released it.
 
 ### COMMAND SYNTAX
 
-LOCK expression {THEN|ELSE statements}
+    LOCK expression { THEN | ELSE statements}
 
 ### SYNTAX ELEMENTS
 
@@ -9149,14 +9229,14 @@ lock taken is the specified number modulo 64.
     STOP
     END
 
-## LOGGER##
+## Logger
 
 The logger function allows you to log your message in a file or display to
 screen.
 
 ### COMMAND SYNTAX
 
-Logger(Category, Severity, Message)
+    Logger(Category, Severity, Message)
 
 ### SYNTAX ELEMENTS
 
@@ -9184,9 +9264,9 @@ guide for more details.
 ### EXAMPLE
 
     INCLUDE JBC.h
-    Logger(“ACC”, TAFC_LOG_INFO, “Message for ACC category at INFO level”)
-    Logger(“ACC”, TAFC_LOG_WARNING, “Message for ACC category at WARNING level”)
-    Logger(“ACC”, TAFC_LOG_ERROR, “Message for ACC category at ERROR level”)
+    Logger('ACC', TAFC_LOG_INFO, 'Message for ACC category at INFO level')
+    Logger('ACC', TAFC_LOG_WARNING, 'Message for ACC category at WARNING level')
+    Logger('ACC', TAFC_LOG_ERROR, 'Message for ACC category at ERROR level')
 
 ## LOOP
 
@@ -9195,7 +9275,7 @@ conditions.
 
 ### COMMAND SYNTAX
 
-    LOOP statements1 WHILE|UNTIL expression DO statements2 REPEAT
+    LOOP statements1 WHILE | UNTIL expression DO statements2 REPEAT
 
 ### SYNTAX ELEMENTS
 
@@ -9220,11 +9300,11 @@ See also: [BREAK](#BREAK), [CONTINUE](#CONTINUE)
 
 ### EXAMPLE
 
-      IF NOT(GETENV('TAFC_HOME', V.HOME)) THEN
+      IF NOT( GETENV('TAFC_HOME', V.HOME) ) THEN
           CRT 'TAFC_HOME not defined'
           STOP
        END
-      EXECUTE 'SELECT ' : V.HOME : '/jbcmessages' : ' SAMPLE 10' RTNLIST V.MSG.L
+      EXECUTE 'SELECT ' : V.HOME : '/jbcmessages SAMPLE 10' RTNLIST V.MSG.L
     * Retrieve @IDs one by one
        LOOP
           REMOVE V.ID FROM V.MSG.L SETTING V.STATUS
@@ -9234,6 +9314,7 @@ See also: [BREAK](#BREAK), [CONTINUE](#CONTINUE)
 
 Output looks like:
 
+<pre>
     INV_FILE_TYPE
     DEVICE_QUIT
     RTN_NOGOSUB
@@ -9244,6 +9325,7 @@ Output looks like:
     SP-HoldCount
     603
     1134
+</pre>
 
 The loop used in this example can also be defined this way:
 
@@ -9300,8 +9382,8 @@ time zone specification to return a UTC timestamp in decimal seconds.
 
 ### EXAMPLE
 
-       CRT MAKETIMESTAMP(DATE(), TIME(), 'Europe/London')    ;* e.g. 1352113823.755
-       CRT MAKETIMESTAMP(DATE(), TIME(), 'Europe/Belgrade')  ;* e.g. 1352110223.755
+       CRT MAKETIMESTAMP( DATE(), TIME(), 'Europe/London')   ;* e.g. 1352113823.755
+       CRT MAKETIMESTAMP( DATE(), TIME(), 'Europe/Belgrade') ;* e.g. 1352110223.755
 
 ## MAT##
 
@@ -9311,6 +9393,7 @@ specified array or to assign the entire contents of one array to another.
 ### COMMAND SYNTAX
 
     MAT Array = expression
+
     MAT Array1 = MAT Array2
 
 ### SYNTAX ELEMENTS
@@ -9339,7 +9422,7 @@ array.
 
 ### COMMAND SYNTAX
 
-    MATBUILD variable FROM array{, expression1{, expression2}} {USING expression3}
+    MATBUILD variable FROM array{, expression1{, expression2}} { USING expression3}
 
 ### SYNTAX ELEMENTS
 
@@ -9466,7 +9549,7 @@ This function is used to check a string against a match pattern.
 
 ### COMMAND SYNTAX
 
-MATCHFIELD (string, pattern, field)
+    MATCHFIELD(string, pattern, field)
 
 ### SYNTAX ELEMENTS
 
@@ -9484,12 +9567,12 @@ and the program terminates with a run-time error.
 in string. For example, the following statement returns an empty
 string because not all parts of string are specified in the pattern:
 
-    MATCHFIELD ("XYZ123AB", "3X3N", 1)
+    MATCHFIELD('XYZ123AB', '3X3N', 1)
 
 To achieve a positive pattern match on the string above, use the
 following statement:
 
-    MATCHFIELD ("XYZ123AB", "3X3N0X", 1)
+    MATCHFIELD('XYZ123AB', '3X3N0X', 1)
 
 This statement returns a value of "XYZ".
 
@@ -9500,37 +9583,20 @@ matching.
 
 ### EXAMPLES
 
-In the following example, the entire string does not match the pattern:
-
-*Source Lines Program Output*
-
-    Q=MATCHFIELD("AA123BBB9","2A0N3A0N",3)
-    PRINT "Q= ",Q
-    Q= BBB
-    ADDR='20 GREEN ST. NATICK, MA.,01234'
-    ZIP=MATCHFIELD(ADDR,"0N0X5N",3)
-    PRINT "ZIP= ",ZIP
-    ZIP= 01234
-    INV='PART12345 BLUE AU'
-    COL=MATCHFIELD(INV,"10X4A3X",2)
-    PRINT "COL= ",COL
-    COL= BLUE
-
-*Source Lines Program Output*
-
-    XYZ=MATCHFIELD('ABCDE1234',"2N3A4N",1)
-    PRINT "XYZ= ",XYZ
-    XYZ=
-
-*Source Lines Program Output*
-
-    ABC=MATCHFIELD('1234AB',"4N1A",2)
-    PRINT "ABC= ",ABC
-    ABC=
+        Q = MATCHFIELD('AA123BBB9', '2A0N3A0N', 3)
+        PRINT 'Q=', Q                               ;*  Q=     BBB
+        ADDR = '20 GREEN ST. NATICK, MA.,01234'
+        ZIP = MATCHFIELD(ADDR, '0N0X5N', 3)
+        PRINT 'ZIP=' , ZIP                          ;*  ZIP=   01234
+        UNV = 'PART12345 BLUE AU'
+        COL = MATCHFIELD(UNV, '10X4A3X', 2)
+        PRINT 'COL= ', COL                          ;*  COL=   BLUE
+        XYZ = MATCHFIELD('ABCDE1234', '2N3A4N', 1)
+        PRINT 'XYZ= ', XYZ                          ;*  XYZ=
+        ABC = MATCHFIELD('1234AB', '4N1A', 2)
+        PRINT 'ABC= ', ABC                          ;*  ABC=
 
 <a name="MATPARSE"/>
-
-<a name="MATREADL"/>
 
 ## MATPARSE
 
@@ -9539,7 +9605,8 @@ elements of a dynamic array.
 
 ### COMMAND SYNTAX
 
-    MATPARSE array{, expression1{, expression2}} FROM variable1 {USING expression3} SETTING variable2
+    MATPARSE array{, expression1{, expression2}} FROM variable1 { USING expression3}  \
+             SETTING variable2
 
 ### SYNTAX ELEMENTS
 
@@ -9548,20 +9615,20 @@ from each element of the dynamic array. variable1 is the jBC variable
 from which the matrix array will be stored.
 
 **expression1** and **expression2** should evaluate to numeric
-integers. expression1 specifies which element of the array the
-assignment will start with; expression2 specifies which element of
+integers. **expression1** specifies which element of the array the
+assignment will start with; **expression2** specifies which element of
 the array the assignment will end with (inclusive).
 
 By default, the dynamic array assumes the use of a field mark to
-separate each array element. By specifying expression3, the
-separator character can be changed. If expression3 evaluates to
+separate each array element. By specifying **expression3**, the
+separator character can be changed. If **expression3** evaluates to
 more than a single character, only
 the first character of the string is used.
 
 As assignment will stop when the contents of the dynamic array
 have been exhausted, it can be useful to determine the number of
 matrix elements that were actually assigned to. If the SETTING
-clause is specified then variable2 will be set to the number of
+clause is specified then **variable2** will be set to the number of
 elements of the array that were assigned to.
 
 ### NOTES
@@ -9622,7 +9689,8 @@ be read and mapped directly into a dimensioned array.
 
 ### COMMAND SYNTAX
 
-MATREAD array FROM {variable1,}expression {SETTING setvar} {ON ERROR statements} {LOCKED statements} {THEN|ELSE statements}
+    MATREAD array FROM {variable1,} expression { SETTING setvar } { ON ERROR statements } \
+            { LOCKED statements} { THEN | ELSE statements}
 
 ### SYNTAX ELEMENTS
 
@@ -9691,16 +9759,18 @@ not
 ### EXAMPLES
 
     MATREAD Xref FROM CFile, "XREF" ELSE MAT Xref = "
+
     MATREAD Ind FROM IFile, "INDEX" ELSE MAT Ind = 0
+
     MATREAD record FROM filevar, id SETTING val ON ERROR
-    PRINT "Error number ":val:" occurred which prevented record from being read."
-    	    STOP
+    PRINT "Error number " :val: " occurred which prevented record from being read."
+       STOP
     END THEN
-    	    PRINT 'Record read successfully'
+       PRINT 'Record read successfully'
     END ELSE
-    	    PRINT 'Record not on file'
+       PRINT 'Record not on file'
     END
-    PRINT "Number of attributes in record = ": val
+    PRINT "Number of attributes in record = " : val
 
 <a name="MATREADU"/>
 
@@ -9712,7 +9782,8 @@ locked for update by the program.
 
 ### COMMAND SYNTAX
 
-MATREADU array FROM {variable1,}expression {SETTING setvar} {ON ERROR statements} {LOCKED statements} {THEN|ELSE statements}
+    MATREADU array FROM {variable1,} expression { SETTING setvar } { ON ERROR statements } \
+            { LOCKED statements } { THEN | ELSE statements }
 
 ### SYNTAX ELEMENTS
 
@@ -9776,7 +9847,7 @@ not
 
 ### EXAMPLES
 
-    MATREADU Xref FROM CFile, "XREF" ELSE MAT Xref = "
+    MATREADU Xref FROM CFile, "XREF" ELSE MAT Xref = ''
     MATREADU Ind FROM IFile, "INDEX" LOCKED
        GOSUBInformUserLock ;* Say it is locked
     END THEN
@@ -9784,17 +9855,18 @@ not
     END ELSE
        MAT Ind = 0 ;* It was not there
     END
+
     MATREADU record FROM filevar, id SETTING val ON ERROR
-        PRINT "Error number ":val:" occurred which prevented record from being read."
-        STOP
+       PRINT "Error number " :val: " occurred which prevented record from being read."
+       STOP
     END LOCKED
-        PRINT "Record is locked"
+       PRINT "Record is locked"
     END THEN
-        PRINT 'Record read successfully'
+       PRINT 'Record read successfully'
     END ELSE
-        PRINT 'Record not on file'
+       PRINT 'Record not on file'
     END
-    PRINT "Number of attributes in record = ": val
+    PRINT "Number of attributes in record = " : val
 
 <a name="MATWRITE"/>
 
@@ -9805,7 +9877,7 @@ array to a specified record on disc.
 
 ### COMMAND SYNTAX
 
-MATWRITE array ON {variable,}expression {SETTING setvar} {ON ERROR statements}
+    MATWRITE array TO | ON {variable,} expression { SETTING setvar } { ON ERROR statements }
 
 ### SYNTAX ELEMENTS
 
@@ -9846,7 +9918,7 @@ array before its use in the statement.
     MAT A = 99
     ....
     MATWRITE A ON "NewArray" SETTING ErrorCode ON ERROR
-    CRT "Error: ":ErrorCode:"  Record could not be written."
+    CRT "Error: " :ErrorCode: " Record could not be written."
     END
     ...
     MATWRITE A ON RecFile, "OldArray"
@@ -9861,7 +9933,7 @@ MATWRITE statement. An existing record lock will be preserved.
 
 ### COMMAND SYNTAX
 
-MATWRITEU array ON {variable,}expression {SETTING setvar} {ON ERROR statements}
+    MATWRITEU array TO | ON {variable,} expression { SETTING setvar } { ON ERROR statements }
 
 ### SYNTAX ELEMENTS
 
@@ -9916,7 +9988,7 @@ the highest numerical value.
 
 ### SYNTAX ELEMENTS
 
-DynArr should evaluate to a dynamic array.
+**DynArr** should evaluate to a dynamic array.
 
 ### NOTES
 
@@ -9981,7 +10053,7 @@ MOD function returns the arithmetic modulo of two numeric expressions.
 
 ### COMMAND SYNTAX
 
-MOD (expression1, expression2)
+    MOD(expression1, expression2)
 
 ### SYNTAX ELEMENTS
 
@@ -9997,10 +10069,10 @@ expression1 is returned.
 ### EXAMPLES
 
     FOR I = 1 TO 10000
-    	    IF MOD (I, 1000) = 0 THEN CRT "+":
+       IF MOD(I, 1000) = 0 THEN CRT "+" :
     NEXT I
 
-displays a "+" on the screen every 1000 iterations
+displays a "+" on the screen every 1000 iterations.
 
 ## MODS
 
@@ -10010,12 +10082,14 @@ arrays.
 
 ### COMMAND SYNTAX
 
-MODS (array1, array2)
+    MODS(array1, array2)
 
 The MODS function calculates each element according to the following
 formula:
 
-    XY.element = X ??(INT (X / Y) * Y)
+<pre>
+    XY.element = X ?? (INT(X / Y) * Y)
+</pre>
 
 X is an element of array1 and Y is the corresponding element of array2.
 The resulting element is returned in the corresponding element of a new
@@ -10026,11 +10100,9 @@ elements is null, null is returned for that element.
 
 ### EXAMPLES
 
-    A=3:@VM:7
-    B=2:@SM:7:@VM:4
-    PRINT MODS (A,B)
-
-The output of this program is: 1\0]3
+       A = 3 :@VM: 7
+       B = 2: @SM: 7 :@VM: 4
+       PRINT OCONV( MODS(A, B), 'MCP' )       ;*  1\0]3
 
 <a name="MSLEEP"/>
 
@@ -10041,7 +10113,7 @@ milliseconds.
 
 ### COMMAND SYNTAX
 
-MSLEEP {milliseconds}
+    MSLEEP {milliseconds}
 
 ### SYNTAX ELEMENTS
 
@@ -10079,7 +10151,7 @@ multiplication of two dynamic arrays.
 
 ### COMMAND SYNTAX
 
-MULS (array1, array2)
+    MULS(array1, array2)
 
 Each element of **array1** is multiplied by the corresponding element
 of **array2** with the result being returned in the corresponding element
@@ -10094,11 +10166,9 @@ See also: Floating point Operations
 
 ### EXAMPLE
 
-    A=1:@VM:2:@VM:3:@SM:4
-    B=4:@VM:5:@VM:6:@VM:9
-    PRINT MULS (A,B)
-
-The output of this program is: 4]10]18\0]0
+       A = 1 :@VM: 2 :@VM: 3 :@SM: 4
+       B = 4 :@VM: 5 :@VM: 6 :@VM: 9
+       PRINT OCONV( MULS(A, B), 'MCP' )       ;*  4]10]18\0]0
 
 ## NEGS
 
@@ -10116,13 +10186,13 @@ is null, null is returned for that element.
 ### EXAMPLE
 
        V.IN = NEGS(1:@FM:2:@FM:3)
-       GOSUB OUTP                               ;* -1^-2^-3
+       GOSUB SCROUTP                               ;* -1^-2^-3
        V.IN = NEGS(-1:@FM:-2:@FM:-3)
-       GOSUB OUTP                               ;*  1^2^3
+       GOSUB SCROUTP                               ;*  1^2^3
        V.IN = NEGS(1:@FM:-2:@FM:3)
-       GOSUB OUTP                               ;*  -1^2^-3
+       GOSUB SCROUTP                               ;*  -1^2^-3
        STOP
-    OUTP:
+    SCROUTP:
        CRT FMT(V.IN, 'MCP')
        RETURN
 
@@ -10133,7 +10203,7 @@ array are equal to the elements of another dynamic array.
 
 ### COMMAND SYNTAX
 
-NES (array1, array2)
+    NES(array1, array2)
 
 Each element of **array1** is compared with the corresponding element
 of **array2**. If the two elements are equal, 0 is returned in the
@@ -10147,7 +10217,6 @@ for that element.
 
 Terminator statement for [FOR](#FOR) loop.
 
-
 ## NOBUF
 
 NOBUF statement turns off buffering for a file previously opened for
@@ -10155,7 +10224,7 @@ sequential processing.
 
 ### COMMAND SYNTAX
 
-NOBUF file.variable {THEN statements [ELSE statements] | ELSE statements}
+    NOBUF file.variable { THEN statements [ ELSE statements ] | ELSE statements }
 
 ### DESCRIPTION
 
@@ -10185,7 +10254,7 @@ It is useful for explicitly testing for a false condition.
 
 ### COMMAND SYNTAX
 
-NOT (expression)
+    NOT(expression)
 
 ### SYNTAX ELEMENTS
 
@@ -10200,11 +10269,11 @@ returns a Boolean TRUE.
 The NOT function is useful for explicitly testing for the false
 condition of some test and can clarify the logic of such a test.
 
-### EXAMPLES
+### EXAMPLE
 
-    EQU Sunday TO NOT (MOD (DATE(), 7))
+    EQU Sunday TO NOT( MOD( DATE(), 7))
     IF Sunday THEN
-    	    CRT "It is Sunday!"
+       CRT "It is Sunday!"
     END
 
 In this example, the expression MOD (DATE(),7) will return 0 (FALSE)
@@ -10220,7 +10289,7 @@ complements of each element of dynamic.array.
 
 ### COMMAND SYNTAX
 
-NOTS (dynamic.array)
+    NOTS(dynamic.array)
 
 If the value of the element is true, the NOTS function returns a
 false value (0) in the corresponding element of the returned array.
@@ -10240,12 +10309,8 @@ element.
 
 ### EXAMPLE
 
-    X=5; Y=5
-    PRINT NOTS(X-Y:@VM:X+Y)
-
-The output of this program is:
-
-    1]0
+       X = 5  ; Y = 5
+       PRINT OCONV( NOTS(X-Y :@VM: X+Y), 'MCP' )     ;*  1]0
 
 ## NULL
 
@@ -10255,7 +10320,7 @@ does not wish to perform any actions.
 
 ### COMMAND SYNTAX
 
-NULL
+    NULL
 
 ### SYNTAX ELEMENTS
 
@@ -10312,7 +10377,7 @@ dynamic array are numeric or nonnumeric strings.
 
 ### COMMAND SYNTAX
 
-NUMS (dynamic.array)
+    NUMS(dynamic.array)
 
 If an element is numeric, a numeric string, or an empty string,
 it evaluates to true, and returns a value of 1 to the corresponding
@@ -10340,7 +10405,7 @@ subroutine and the calling OBjEX program.
 
 ### COMMAND SYNTAX
 
-OBJEXCALLBACK expression1, expression2 THEN|ELSE statements
+    OBJEXCALLBACK expression1, expression2 THEN | ELSE statements
 
 ### SYNTAX ELEMENTS
 
@@ -10481,7 +10546,7 @@ expression2. Shown below are valid conversion codes:
        CRT DQUOTE( FMT(123456.78, 'R2,$#15') )             ;*  "    $123,456.78"
        CRT DQUOTE( OCONV(123456.78, 'R2,$#15') )           ;*  Error in Range Test
     * Example of a "user exit":
-       CRT OCONV("", "U50BB")        ;* port number and user name
+       CRT OCONV('', 'U50BB')        ;* port number and user name
 
 <a name="OCONVS"/>
 
@@ -10492,7 +10557,7 @@ format for external output.
 
 ### COMMAND SYNTAX
 
-OCONVS (dynamic.array, conversion)
+    OCONVS(dynamic.array, conversion)
 
 Converts the elements to the external output format specified by
 conversion and returns it in a dynamic array.
@@ -10534,7 +10599,6 @@ internal format, see also: [ICONVS](#ICONVS) function.
 Description of date, time, number and currency conversions when used
 in ICONV and International Mode.
 
-
 ## ONGOTO
 
 The ON...GOSUB and ON...GOTO statements are used to transfer program
@@ -10542,8 +10606,9 @@ execution to a label based upon a calculation.
 
 ### COMMAND SYNTAX
 
-ON expression GOTO label{, label...}
-ON expression GOSUB label{, label...}
+    ON expression GOTO label{, label...}
+
+    ON expression GOSUB label{, label...}
 
 ### SYNTAX ELEMENTS
 
@@ -10587,7 +10652,7 @@ variable within jBC.
 
 ### COMMAND SYNTAX
 
-    OPEN {expression1,}expression2 TO {variable} {SETTING setvar} THEN|ELSE statements
+    OPEN {expression1,}expression2 TO {variable} { SETTING setvar } THEN | ELSE statements
 
 ### SYNTAX ELEMENTS
 
@@ -10652,7 +10717,7 @@ Get list of current processes and output port number and PID for each:
        SELECT PROC TO SEL
        LOOP
        WHILE READNEXT key FROM SEL DO
-          READ PROCESSRECORD FROM PROC, key ELSE CRT "Read Error"; STOP
+          READ PROCESSRECORD FROM PROC, key ELSE CRT "Read Error"  ;  STOP
           V.PORTNO = PROCESSRECORD<1>
           V.PID = PROCESSRECORD<4>
           PRINT FMT(V.PORTNO, '2R') : '|' : FMT(V.PID, '8R')
@@ -10665,7 +10730,7 @@ writing and/or reading.
 
 ### COMMAND SYNTAX
 
-OPENDEV Device TO FileVar { LOCKED statements } THEN | ELSE statements
+    OPENDEV Device TO FileVar { LOCKED statements } THEN | ELSE statements
 
 ### SYNTAX ELEMENTS
 
@@ -10703,7 +10768,7 @@ the SELECT statement.
 
 ### COMMAND SYNTAX
 
-OPENINDEX filename,indexname TO indexvar {SETTING setvar} THEN|ELSE statements
+    OPENINDEX filename,indexname TO indexvar { SETTING setvar } THEN | ELSE statements
 
 ### SYNTAX ELEMENTS
 
@@ -10746,7 +10811,7 @@ See also: [OPEN](#OPEN) statement.
 
 ### COMMAND SYNTAX
 
-OPENPATH expression1 TO {variable} {SETTING setvar} THEN|ELSE statements
+    OPENPATH expression1 TO {variable} { SETTING setvar } THEN | ELSE statements
 
 ### SYNTAX ELEMENTS
 
@@ -10883,10 +10948,12 @@ Run the previous example several times, then - this one
 
 Output will look like:
 
+<pre>
     [1]Line 1
     [2]One more line
     [3]One more line
     ...
+</pre>
 
 <a name="OPENSER"/>
 
@@ -10901,7 +10968,7 @@ function.
 
 ### COMMAND SYNTAX
 
-OPENSER Path,DevInfo| PIPE TO FileVar THEN | ELSE Statements
+    OPENSER Path,DevInfo | PIPE TO FileVar THEN | ELSE Statements
 
 ### SYNTAX ELEMENTS
 
@@ -10940,9 +11007,9 @@ the result back via the [GET](#GET)/[READSEQ](#READSEQ) statements.
           WaitTime = 4
           GET Input SETTING Count FROM File UNTIL Terminator RETURNING TermChar \
                 WAITING WaitTime THEN
-             CRT "Get Ok, Input ":Input:" Count ":Count:"TermChar":TermChar
+             CRT "Get Ok, Input " :Input: " Count " :Count: "TermChar" :TermChar
           END ELSE
-             CRT "Get Timed out Input ":Input:" Count ":Count:" TermChar":TermChar
+             CRT "Get Timed out Input " :Input: " Count " : Count: " TermChar" :TermChar
           END
        WHILE Input NE "" DO
        REPEAT
@@ -10969,11 +11036,9 @@ or an empty string, it returns true.
 
 ### EXAMPLE
 
-    A="A":@SM:0:@VM:4:@SM:1
-    B=0:@SM:1-1:@VM:2
-    PRINT ORS (A,B)
-
-The output of this program is: 1\0]1\1
+       A = "A" :@SM: 0 :@VM: 4 :@SM: 1
+       B = 0 :@SM: 1-1 :@VM :2
+       PRINT OCONV( ORS(A, B), 'MCP')         ;*   1\0]1\1
 
 <a name="OSBREAD"/>
 
@@ -10985,7 +11050,7 @@ variable.
 
 ### COMMAND SYNTAX
 
-OSBREAD var FROM file.var [AT byte.expr] LENGTH length.expr [ON ERROR statements]
+    OSBREAD var FROM file.var [ AT byte.expr ] LENGTH length.expr [ ON ERROR statements ]
 
 OSBREAD performs an operating system block read on a UNIX or
 Windows file.
@@ -11022,13 +11087,14 @@ jBASE uses the ASCII 0 character [CHAR (0)] as a string-end delimiter.
 Therefore, ASCII 0 cannot be used in any string variable within jBASE.
 OSBREAD converts CHAR(0) to CHAR(128) when reading a block of data.
 
-### EXAMPLES
+### EXAMPLE
 
-In the following example, the program statement reads 10,000 bytes of
-the file MYPIPE from the beginning of the file. The program assigns
-the data and reads to the variable TEST.
+In the following example, the program test.b reads itself and outputs its
+contents to the screen:
 
-OSBREAD Data FROM MYPIPE AT 0 LENGTH 10000
+       OSOPEN 'test.b' TO MYFILE ELSE STOP
+       OSBREAD Data FROM MYFILE AT 0 LENGTH 10000
+       CRT Data
 
 <a name="OSBWRITE"/>
 
@@ -11039,7 +11105,7 @@ specified byte location.
 
 ### COMMAND SYNTAX
 
-OSBWRITE expr {ON | TO} file.var [AT byte.expr] \[NODELAY] [ON ERROR statements]
+    OSBWRITE expr { ON | TO } file.var [ AT byte.expr ] [ NODELAY ] [ ON ERROR statements ]
 
 OSBWRITE immediately writes a file segment out to the UNIX, Windows
 NT, or Windows 2000 file. There is no necessity to specify a length
@@ -11101,7 +11167,7 @@ OSOPEN or OPENSEQ command.
 
 ### COMMAND SYNTAX
 
-OSCLOSE file.var [ON ERROR statements]
+    OSCLOSE file.var [ ON ERROR statements ]
 
 ### SYNTAX ELEMENTS
 
@@ -11137,7 +11203,7 @@ OSDELETE command deletes a NT or UNIX file.
 
 ### COMMAND SYNTAX
 
-OSDELETE filename [ON ERROR statements]
+    OSDELETE filename [ ON ERROR statements ]
 
 ### SYNTAX ELEMENTS
 
@@ -11178,12 +11244,10 @@ the line delimiter.
 
 ### COMMAND SYNTAX
 
-OSOPEN filename TO file.var
+    OSOPEN filename TO file.var [ ON ERROR statements ] { THEN | ELSE } statements
 
-[ON ERROR statements] {THEN | ELSE} statements [END]
-
-Read/write access mode is the default. Specify this access mode by
-omitting READONLY and WRITEONLY.
+Read/write access mode is the default. Override this access mode by
+using READONLY and WRITEONLY.
 
 ### SYNTAX ELEMENTS
 
@@ -11228,7 +11292,7 @@ OSREAD reads an OS file.
 
 ### COMMAND SYNTAX
 
-    OSREAD Variable FROM expression {ON ERROR Statements}  {THEN | ELSE} Statements {END}
+    OSREAD Variable FROM expression { ON ERROR Statements } { THEN | ELSE } Statements
 
 ### SYNTAX ELEMENTS
 
@@ -11283,10 +11347,11 @@ to the resulting variable:
        CLOSESEQ F.FILE.OUT
        OSREAD V.ALL FROM V.FILE.OUT ELSE CRT 'Read error'  ;  STOP
        CRT LEN(V.ALL)
-       CRT DQUOTE(RIGHT(V.ALL, 20))
+       CRT DQUOTE( RIGHT(V.ALL, 20) )
 
 Output:
 
+<pre>
     1000
     2000
     3000
@@ -11299,6 +11364,7 @@ Output:
     10000
     9999
     "...................."
+</pre>
 
 <a name="OSWRITE"/>
 
@@ -11309,7 +11375,7 @@ sequential file.
 
 ### COMMAND SYNTAX
 
-OSWRITE expr {ON | TO} filename [ON ERROR statements]
+    OSWRITE expr { ON | TO } filename [ ON ERROR statements ]
 
 ### SYNTAX ELEMENTS
 
@@ -11335,10 +11401,10 @@ CHAR(0) when writing a block of characters.
 ### EXAMPLE
 
 In the following example, the program segment writes the contents of
-FOOTWEAR to the file called "PINK" in the
+FOOTWEAR variable to the file called "PINK" in the
 directory ‘/usr/local/myslippers’
 
-OSWRITE FOOTWEAR ON "/usr/local/myslippers"
+    OSWRITE FOOTWEAR ON "/usr/local/myslippers/PINK"
 
 ## OUT
 
@@ -11347,7 +11413,7 @@ device (normally the terminal).
 
 ### COMMAND SYNTAX
 
-OUT expression
+    OUT expression
 
 ### SYNTAX ELEMENTS
 
@@ -11379,7 +11445,7 @@ print any heading statement on the current output device.
 
 ### COMMAND SYNTAX
 
-PAGE {expression}
+    PAGE {expression}
 
 ### SYNTAX ELEMENTS
 
@@ -11403,7 +11469,7 @@ a timeout occurs.
 
 ### COMMAND SYNTAX
 
-PAUSE {expression}
+    PAUSE {expression}
 
 ### SYNTAX ELEMENTS
 
@@ -11435,7 +11501,7 @@ the decimal point.
 
 ### COMMAND SYNTAX
 
-PRECISION integer
+    PRECISION integer
 
 ### SYNTAX ELEMENTS
 
@@ -11456,8 +11522,8 @@ precision to format the number.
 
 ### EXAMPLE
 
-    PRECISION 6
-    CRT 2/3
+        PRECISION 6
+        CRT 2/3
 
 will print the value 0.666666 (note: truncation not rounding!).
 
@@ -11484,7 +11550,7 @@ or printer.
 
 ### COMMAND SYNTAX
 
-PRINT expression {, expression...} {:}
+    PRINT expression {, expression...} {:}
 
 ### SYNTAX ELEMENTS
 
@@ -11507,9 +11573,9 @@ See also: SP-ASSIGN command and [CRT](#CRT).
 
 ### EXAMPLES
 
-    PRINT A "L#5"
-
-    PRINT @ (8,20):"Patrick":
+       A = 3
+       PRINT DQUOTE(A 'R#5')            ;*  "    3"
+       PRINT @(8,20) : "Patrick" :
 
 ## PRINTER
 
@@ -11518,7 +11584,7 @@ statement.
 
 ### COMMAND SYNTAX
 
-PRINTER ON|OFF|CLOSE
+    PRINTER ON | OFF | CLOSE
 
 ### NOTES
 
@@ -11533,14 +11599,14 @@ currently active spool job created by the active PRINTER ON statement.
 
 ### EXAMPLES
 
-    PRINTER ON;* Open a spool job
-    FOR I =1 TO 60
-    	    PRINT "Line ":I ;* Send to printer
-    	    PRINTER OFF
-    	    PRINT "+": ;* Send to terminal
-    	    PRINTER ON ;* Back to printer
-    NEXT I
-    PRINTER CLOSE ;* Allow spooler to print it
+        PRINTER ON             ;* Open a spool job
+        FOR I = 1 TO 60
+           PRINT "Line " : I   ;* Send to printer
+           PRINTER OFF
+           PRINT "+" :         ;* Send to terminal
+           PRINTER ON          ;* Back to printer
+        NEXT I
+        PRINTER CLOSE          ;* Allow spooler to print it
 
 ## PRINTERR
 
@@ -11548,7 +11614,7 @@ PRINTERR statement is used to print standard jBASE error messages.
 
 ### COMMAND SYNTAX
 
-PRINTERR expression
+    PRINTERR expression
 
 ### SYNTAX ELEMENTS
 
@@ -11582,7 +11648,14 @@ systems.
 
 ### EXAMPLE
 
-  PRINTERR 201:CHAR (254):"CUSTOMERS"
+       PRINTERR 201 : CHAR(254) : "CUSTOMERS"
+
+Output:
+
+<pre>
+     &lowast;&lowast; Error [ 201 ] &lowast;&lowast;
+    Unable to open file CUSTOMERS
+</pre>
 
 <a name="PROCREAD"/>
 
@@ -11593,7 +11666,7 @@ jCL program.
 
 ### COMMAND SYNTAX
 
-PROCREAD variable THEN|ELSE statements
+    PROCREAD variable THEN | ELSE statements
 
 ### SYNTAX ELEMENTS
 
@@ -11628,7 +11701,7 @@ buffer of a calling jCL program.
 
 ### COMMAND SYNTAX
 
-PROCWRITE expression
+    PROCWRITE expression
 
 ### SYNTAX ELEMENTS
 
@@ -11638,9 +11711,9 @@ PROCWRITE expression
 
 See also: [PROCREAD](#PROCREAD)
 
-### EXAMPLES
+### EXAMPLE
 
-    PROCWRITE "Success":CHAR (254):"0"
+    PROCWRITE "Success" : CHAR(254) : "0"
 
 ## PROGRAM
 
@@ -11649,13 +11722,13 @@ source code.
 
 ### COMMAND SYNTAX
 
-PROGRAM progname
+    PROGRAM progname
 
 ### SYNTAX ELEMENTS
 
 Progname can be any string of characters.
 
-### EXAMPLES
+### EXAMPLE
 
     PROGRAM HelpUser
     !
@@ -11668,7 +11741,7 @@ input commands.
 
 ### COMMAND SYNTAX
 
-PROMPT expression
+    PROMPT expression
 
 ### SYNTAX ELEMENTS
 
@@ -11741,11 +11814,11 @@ PWR function raises a number to the n'th power.
 
 ### COMMAND SYNTAX
 
-PWR (expression1, expression2)
+    PWR(expression1, expression2)
 
 or
 
-expression1 ^ expression2
+    expression1 ^ expression2
 
 ### SYNTAX ELEMENTS
 
@@ -11753,26 +11826,28 @@ Both **expression1** and **expression2** should evaluate to numeric
 arguments. The function will return the value of expression1 raised
 to the value of expression2.
 
-### NOTES
+### NOTE
 
 If expression1 is negative and expression2 is not an integer then a
 maths library error is displayed and the function returns the value
-0. The error message displayed is:
+0. The resulting output is "0.0nan".
 
 pow: DOMAIN error
 
 All calculations are performed at the maximum precision supported on
 the host machine and truncated to the compiled precision on completion.
 
-### EXAMPLES
+### EXAMPLE
 
-      A = 2
-      B = 31
-      CRT "2 GB is ":A^B
-
-or
-
-      CRT "2 GB is": PWR (A, B)
+          A = 2
+          B = 31
+          CRT "2 GB is " : A^B                     ;* 2 GB is 2147483648
+          CRT "2 GB is definitely " : PWR(A, B)    ;* 2 GB is definitely 2147483648
+          CRT "-2 GB is " : NEG(A)^B               ;* -2 GB is -2147483648
+          CRT "2 to the power of 31.5 is " : PWR(A, B+0.5)
+                                       ;* 2 to the power of 31.5 is 3037000499.9761
+          CRT "-2 to the power of 31.5 is " : PWR( NEG(A), B+0.5)
+                                       ;* -2 to the power of 31.5 is 0.0nan
 
 ## QUOTE / DQUOTE / SQUOTE
 
@@ -11781,11 +11856,11 @@ at the beginning and end of a string.
 
 ### COMMAND SYNTAX
 
-QUOTE(expression)
+    QUOTE(expression)
 
-DQUOTE(expression)
+    DQUOTE(expression)
 
-SQUOTE(expression)
+    SQUOTE(expression)
 
 ### SYNTAX ELEMENTS
 
@@ -11804,7 +11879,7 @@ highest delimiter.
 
 ### COMMAND SYNTAX
 
-    RAISE (expression)
+    RAISE(expression)
 
 ### SYNTAX ELEMENTS
 
@@ -11836,7 +11911,8 @@ opened file into a variable.
 
 ### COMMAND SYNTAX
 
-    READ variable1 FROM {variable2,} expression {SETTING setvar} {ON ERROR statements} THEN|ELSE statements
+    READ variable1 FROM {variable2,} expression { SETTING setvar } { ON ERROR statements }  \
+         THEN | ELSE statements
 
 ### SYNTAX ELEMENTS
 
@@ -11871,7 +11947,7 @@ with the [READU](#READU) statement.
 
 ### EXAMPLE
 
-       IF NOT(GETENV('TAFC_HOME', V.HOME)) THEN
+       IF NOT( GETENV('TAFC_HOME', V.HOME) ) THEN
           CRT 'TAFC_HOME not defined'
           STOP
        END
@@ -11884,7 +11960,10 @@ with the [READU](#READU) statement.
 
 Program output:
 
-    ** Error [ ARRAY_ILLEGAL_SIZE ] ** ^NEWLINE^^DEBUGQUIT^Attempt to DIMension a variable with 0 or fewer elements , Line ^LINENO^ , Source ^SOURCENAME^
+<pre>
+    &lowast;&lowast; Error [ ARRAY_ILLEGAL_SIZE ] &lowast;&lowast; ^NEWLINE^^DEBUGQUIT^Attempt to DIMension
+    a variable with 0 or fewer elements , Line ^LINENO^ , Source ^SOURCENAME^
+</pre>
 
 <a name="READBLK"/>
 
@@ -11896,7 +11975,8 @@ it to a variable.
 
 ### COMMAND SYNTAX
 
-    READBLK variable FROM file.variable, blocksize { THEN statements [ELSE statements] | ELSE statements }
+    READBLK variable FROM file.variable, blocksize { THEN statements [ ELSE statements ]  \
+          | ELSE statements }
 
 The READBLK statement reads a block of data beginning at the
 current position in the file and continuing for blocksize bytes
@@ -11948,7 +12028,7 @@ single line of data.
 
 ### EXAMPLE
 
-       IF NOT(GETENV('TAFC_HOME', V.HOME)) THEN
+       IF NOT( GETENV('TAFC_HOME', V.HOME) ) THEN
           CRT 'TAFC_HOME not defined'
           STOP
        END
@@ -11979,7 +12059,8 @@ lock.
 
 ### COMMAND SYNTAX
 
-READL variable1 FROM {variable2,} expression {SETTING setvar} {ON ERROR statements} {LOCKED statements} THEN|ELSE statements
+    READL variable1 FROM {variable2,} expression { SETTING setvar } { ON ERROR statements } \
+          { LOCKED statements } THEN | ELSE statements
 
 ### SYNTAX ELEMENTS
 
@@ -12089,14 +12170,14 @@ READLIST allows the program to retrieve a previously stored list
 
 ### COMMAND SYNTAX
 
-READLIST variable1 FROM expression {SETTING variable2} THEN|ELSE statements
+    READLIST variable1 FROM expression { SETTING variable2 } THEN | ELSE statements
 
 ### SYNTAX ELEMENTS
 
 **variable1** is the variable into which the list will be read.
 
 **expression** should evaluate to the name of a previously stored
-list to retrieve. If specified, variable2 will be set to the
+list to retrieve. If specified, **variable2** will be set to the
 number of elements in the list.
 
 If the statement succeeds in retrieving the list, then the
@@ -12131,7 +12212,7 @@ READNEXT retrieves the next element in a list variable.
 
 ### COMMAND SYNTAX
 
-    READNEXT variable1, variable2 {FROM variable3} {SETTING setvar} {THEN|ELSE statements}
+    READNEXT variable1, variable2 { FROM variable3 } { SETTING setvar } { THEN | ELSE statements }
 
 ### SYNTAX ELEMENTS
 
@@ -12330,6 +12411,7 @@ Sequential File Extensions.
 
 Line ends in this file are shown here (JED, Ctrl-E to go to line end):
 
+<pre>
     0001 ------1050------1060------1070------1080------1090------1100
     0002 ------1050------1060------1070------1080------1090------1100
     0003 ------1050------1060------1070------1080------1090------1100
@@ -12341,6 +12423,7 @@ Line ends in this file are shown here (JED, Ctrl-E to go to line end):
     0009 ------1050------1060------1070------1080------1090------1100
     0010 ------1050------1060------1070------1080------1090------1100
     -------------------------------- End Of Record --------------------------------
+</pre>
 
 ### Step 2. Read a line from this text file using plain READSEQ:
 
@@ -12413,7 +12496,7 @@ READT statement is used to read a range of tape devices 0-9.
 
 ### COMMAND SYNTAX
 
-READT variable {FROM expression} THEN|ELSE statements
+    READT variable { FROM expression } THEN | ELSE statements
 
 ### SYNTAX ELEMENTS
 
@@ -12453,7 +12536,7 @@ has been allocated by the T-ATT command.
     	  READT TapeRec FROM 5 ELSE
         	  Reason = SYSTEM(0)
         	  IF Reason = 2 THEN BREAK ;* done
-        	  CRT "ERROR"; STOP
+        	  CRT "ERROR"  ;  STOP
     	  END
     REPEAT
 
@@ -13114,9 +13197,9 @@ See also: [LEFT](#LEFT)
 
     S = "The world is my lobster"
 
-    CRT DQUOTE (RIGHT (S,7))
-    CRT DQUOTE(RIGHT(S,99))
-    CRT DQUOTE(RIGHT(S,0))
+    CRT DQUOTE( RIGHT (S,7))
+    CRT DQUOTE( RIGHT(S,99) )
+    CRT DQUOTE( RIGHT(S,0) )
 
 This code displays:
 
@@ -14305,7 +14388,7 @@ executed; any THEN statements are ignored.
 
 ### EXAMPLE
 
-       IF NOT(GETENV('JEDIFILENAME_SYSTEM', FN.SYSTEM)) THEN ABORT
+       IF NOT( GETENV('JEDIFILENAME_SYSTEM', FN.SYSTEM) ) THEN ABORT
        OPEN FN.SYSTEM TO F.SYSTEM ELSE NULL
        STATUS V.INFO.L FROM F.SYSTEM ELSE ABORT
        CRT V.INFO.L<5>       ;*  permissions in octal, e.g. 655
@@ -14839,7 +14922,7 @@ The following system functions are supported by TAFC:
        PROMPT 'Your choice:'
        CRT SYSTEM(26)        ;*  Your choice:
     * Active SELECT
-       IF NOT(GETENV('TAFC_HOME', V.HOME)) THEN
+       IF NOT( GETENV('TAFC_HOME', V.HOME) ) THEN
           CRT 'TAFC_HOME not defined'
           STOP
        END
