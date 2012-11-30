@@ -1,7 +1,5 @@
 # jBC Programmers Reference Guide
 
-Version: Project builds
-
 ## Preface
 
 jBC is a programming language that is used in jBASE post-relational
@@ -80,13 +78,13 @@ extensions can be developed in (but not limited to) jBC.
 
 # Introduction to some jBC syntax features
 
-### Note
+## Note
 
 In examples presented here and below deleting and creation of temporary file
 called F.TEMP is often used, so if you have such file with something valuable
 in it in your current directory, backup it first.
 
-### Note 2
+## Note 2
 
 OCONV() or FMT() with second parameter 'MCP' is often used; its only purpose is
 to convert FM, VM and SM delimiters to a printable form, e.g.:
@@ -218,8 +216,7 @@ Output:
     0.00 is false
     "-0.00" is still false - treated as numeric
     0.00000000000001 is false
-    0.00000000000001 is true with PRECISION 17
-</pre>
+    0.00000000000001 is true with PRECISION 17</pre>
 
 ## Dynamic arrays
 
@@ -277,8 +274,7 @@ Windows:
     set JBCEMULATE=[your emulation; for T24 should be prime]
     set INCLUDE=[path to C Compiler]\include;%INCLUDE%
     set LIB=[path to C Compiler]\lib;%LIB%
-    set JBCBASETMP=tmp_workfile
-</pre>
+    set JBCBASETMP=tmp_workfile</pre>
 
 Unix/Linux:
 
@@ -294,72 +290,61 @@ Unix/Linux:
     export LIBPATH=$TAFC_HOME/lib:/usr/ccs/lib:/usr/lib
     (AIX)
     export SHLIB_PATH=$TAFC_HOME/lib:${SHLIB_PATH:-/usr/lib:/lib}
-    (HP-UX)
-</pre>
+    (HP-UX)</pre>
 
 ## Customize work folders and files location
 
 Main dictionary location (usually points to VOC file):
 
 <pre>
-    JEDIFILENAME_MD
-</pre>
+    JEDIFILENAME_MD</pre>
 
 Path to SYSTEM file (normally located in [path to installed TAFC]/src):
 
 <pre>
-    JEDIFILENAME_SYSTEM
-</pre>
+    JEDIFILENAME_SYSTEM</pre>
 
 Default path to jBASE data files:
 
 <pre>
-    JEDIFILEPATH
-</pre>
+    JEDIFILEPATH</pre>
 
 Location where programs will be put after compilation:
 
 <pre>
-    JBCDEV_BIN
-</pre>
+    JBCDEV_BIN</pre>
 
 The folder where shared libraries for compiled subroutines are located:
 
 <pre>
-    JBCDEV_LIB
-</pre>
+    JBCDEV_LIB</pre>
 
 Path to jBASE spooler folder:
 
 <pre>
-    JBCSPOOLERDIR
-</pre>
+    JBCSPOOLERDIR</pre>
 
 The folder where saved lists are placed:
 
 <pre>
-    JBCLISTFILE
-</pre>
+    JBCLISTFILE</pre>
 
 Where to look for libraries containing compiled subroutines:
 
 <pre>
-    JBCOBJECTLIST
-</pre>
+    JBCOBJECTLIST</pre>
 
 Could be several entries, e.g.:
 
 Windows:
 
 <pre>
-    set JBCOBJECTLIST=%HOME%\lib;%HOME%\t24lib
-</pre>
+    set JBCOBJECTLIST=%HOME%\lib;%HOME%\t24lib</pre>
 
 Unix/Linux:
 
 <pre>
-    export JBCOBJECTLIST=$HOME/lib:$HOME/t24lib
-</pre>
+    export JBCOBJECTLIST=$HOME/lib:$HOME/t24lib</pre>
 
 If a subroutine presents in more than one location (which can be caused by
 changing JBCDEV_LIB environment variable or accidental duplication of a
@@ -372,23 +357,20 @@ subroutine name) then the earlier location has the preference. See jshow output:
                          jBC ACCOUNT source file ETC.BP
     Subroutine (DUP!!):  C:\r11\bnk\bnk.run\t24lib\acm_accountopening\lib0.dll
                          jBC ACCOUNT version 11.0 Fri Apr 29 14:43:35 2011
-                         jBC ACCOUNT source file source/R11.000/win32_TAFCR11GA
-</pre>
+                         jBC ACCOUNT source file source/R11.000/win32_TAFCR11GA</pre>
 
 In situation like that DECATALOG is to be used:
 
 <pre>
     DECATALOG ETC.BP ACCOUNT
     Object ACCOUNT decataloged successfully
-    Library C:\r11\bnk\bnk.run\lib\lib2.dll rebuild okay
-</pre>
+    Library C:\r11\bnk\bnk.run\lib\lib2.dll rebuild okay</pre>
 
 <pre>
     jshow -c ACCOUNT
     Subroutine:          C:\r11\bnk\bnk.run\t24lib\acm_accountopening\lib0.dll
                          jBC ACCOUNT version 11.0 Fri Apr 29 14:43:35 2011
-                         jBC ACCOUNT source file source/R11.000/win32_TAFCR11GA
-</pre>
+                         jBC ACCOUNT source file source/R11.000/win32_TAFCR11GA</pre>
 
 ## Runtime errors handling
 
@@ -396,120 +378,104 @@ This variable allows to suppress error messages and/or a program entering the de
 zero is encountered:
 
 <pre>
-    JBASE_ERRMSG_DIVIDE_BY_ZERO
-</pre>
+    JBASE_ERRMSG_DIVIDE_BY_ZERO</pre>
 
 This variable allows to suppress error messages and/or a program entering the debugger when non-numeric
 variable is used in an equation:
 
 <pre>
-    JBASE_ERRMSG_NON_NUMERIC
-</pre>
+    JBASE_ERRMSG_NON_NUMERIC</pre>
 
 This variable allows to suppress error messages and/or a program entering the debugger when uninitialized
 variable is used in an equation:
 
 <pre>
-    JBASE_ERRMSG_ZERO_USED
-</pre>
+    JBASE_ERRMSG_ZERO_USED</pre>
 
 ## Regional settings
 
 Locale setting:
 
 <pre>
-    JBASE_LOCALE
-</pre>
+    JBASE_LOCALE</pre>
 
 In which codepage data is displayed (e.g. utf8, windows-1251 etc;
 doesn't apply to how data is stored):
 
 <pre>
-    JBASE_CODEPAGE
-</pre>
+    JBASE_CODEPAGE</pre>
 
 Time zone:
 
 <pre>
     JBASE_TIMEZONE
-    E.g. Europe/London.
-</pre>
+    E.g. Europe/London.</pre>
 
 Setting this variable to 1 means utf-8 environment
 (requires data files conversion when changed):
 
 <pre>
-    JBASE_I18N
-</pre>
+    JBASE_I18N</pre>
 
 ## Diagnostics and tracing
 
 Being set to 1 redirects stderr to stdout (useful to catch errors to COMO output):
 
 <pre>
-    JBC_STDERR
-</pre>
+    JBC_STDERR</pre>
 
 Being set to 1 stipulates creation of a core dump when the session crashes:
 
 <pre>
-    JBC_CORE_DUMP
-</pre>
+    JBC_CORE_DUMP</pre>
 
 jBASE tracing options:
 
 <pre>
-    JDIAG
-</pre>
+    JDIAG</pre>
 
 E.g.:
 
 <pre>
     set JDIAG=trace=JVM,CALLJ
-    set JDIAG=TRACE=INDEX
-</pre>
+    set JDIAG=TRACE=INDEX</pre>
 
 ## Other
 
 Being set to 1 improves performance when distributed files are used:
 
 <pre>
-    JBASE_DISTRIB_FASTSCAN
-</pre>
+    JBASE_DISTRIB_FASTSCAN</pre>
 
 Being set to 1 prevents all parts of a distributed file to be opened as soon as the stub had
 been:
 
 <pre>
-    JEDI_DISTRIB_DEFOPEN
-</pre>
+    JEDI_DISTRIB_DEFOPEN</pre>
 
 Terminal type (e.g. ntcon, vt220 etc):
 
 <pre>
-    TERM
-</pre>
+    TERM</pre>
 
 # Compilation
 
-Done using BASIC...CATALOG commands or jcompile utility:
+## Introduction to BASIC...CATALOG and jcompile
 
 <pre>
-    BASIC MY.BP TEST.SUB
+    **BASIC MY.BP TEST.SUB**
     TEST.SUB
     BASIC_1.c
-    Source file TEST.SUB compiled successfully
-</pre>
+    Source file TEST.SUB compiled successfully</pre>
 
 <pre>
-    CATALOG MY.BP TEST.SUB
+    **CATALOG MY.BP TEST.SUB**
     TEST.SUB
     Object TEST.SUB cataloged successfully
     Library $HOME\lib\lib0.dll rebuild okay
     jcompile test.b
     Warning: Variable DIV.AMT2 is never assigned!
-    test.c
-</pre>
+    test.c</pre>
 
 Compilation results in appearance of an object and executable files
 (sample for Windows):
@@ -517,8 +483,7 @@ Compilation results in appearance of an object and executable files
 <pre>
     test.obj
     test.dll
-    test.exe
-</pre>
+    test.exe</pre>
 
 If the code is recompiled very often then it might happen that the older version
 of executable code
@@ -527,8 +492,7 @@ In this case "-E" option of jcompile can be used to build executable only
 and not the shared library, e.g.:
 
 <pre>
-    jcompile -E test.b
-</pre>
+    **jcompile -E test.b**</pre>
 
 And then test.dll isn't created. The final compilation is of course to be done
 without "-E" option. Also - without shared library CHAIN statement might work
@@ -541,10 +505,13 @@ Full information about jcompile options - "jcompile -H".
 
 # Data files
 
-The most widely used formats for data files nowadays are “J4” and “JR”. The former has size
-limitation (up to 2Gb if OS-level limits allow that) and needs resizing on regular basis though
-when it’s properly sized it’s faster. “JR” – “resilient” – doesn’t have size limitation and
-doesn’t need resizing.
+## Introduction to jBASE/TAFC data files
+
+The most widely used formats for data files nowadays are "J4" and "JR".
+The former has size limitation (up to 2Gb if OS-level limits allow that)
+and needs resizing on regular basis though when it's properly sized it's
+faster. "JR" - "resilient" - doesn't have size limitation and
+doesn't need resizing.
 
 The following examples serve as a brief introduction to jBASE data storage.
 They can be executed in jshell prompt or (except JED - it makes no sense)
@@ -555,136 +522,121 @@ in a jBC program or subroutine (using EXECUTE/PERFORM).
 Create both data and dictionary:
 
 <pre>
-    CREATE-FILE F.SAMPLE 101 1
+    **CREATE-FILE F.SAMPLE 101 1**
     [ 417 ] File F.SAMPLE]D created , type = J4
-    [ 417 ] File F.SAMPLE created , type = J4
-</pre>
+    [ 417 ] File F.SAMPLE created , type = J4</pre>
 
 If the file already exists, the error message appears:
 
 <pre>
-    [ 413 ] File name DICT F.SAMPLE already exists
-</pre>
+    [ 413 ] File name DICT F.SAMPLE already exists</pre>
 
 Delete hashed file (both data and dictionary):
 
 <pre>
-    DELETE-FILE F.SAMPLE
-</pre>
+    **DELETE-FILE F.SAMPLE</pre>**
 
 Create hashed file (data only):
 
 <pre>
-    CREATE-FILE DATA F.SAMPLE 101 1
-    [ 417 ] File F.SAMPLE created , type = J4
-</pre>
+    **CREATE-FILE DATA F.SAMPLE 101 1**
+    [ 417 ] File F.SAMPLE created , type = J4</pre>
 
 Create hashed file (dictionary only):
 
 <pre>
-    CREATE-FILE DICT F.SAMPLE 101 1
-    [ 417 ] File F.SAMPLE]D created , type = J4
-</pre>
+    **CREATE-FILE DICT F.SAMPLE 101 1**
+    [ 417 ] File F.SAMPLE]D created , type = J4</pre>
 
 ## Create and list the data
 
 Put some data to file:
 
 <pre>
-    JED F.SAMPLE REC1
+    **JED F.SAMPLE REC1**
     0001 Field one
     0002 Field two
-    0003 Field three
-</pre>
+    0003 Field three</pre>
 
 Press Esc; then type FI to save the record.
 
 List file contents:
 
 <pre>
-    LIST F.SAMPLE
+    **LIST F.SAMPLE**
     F.SAMPLE......
     REC1
-    1 Records Listed
-</pre>
+    1 Records Listed</pre>
 
 No dictionary; we see only @ID. Raw output:
 
 <pre>
-    CT F.SAMPLE
+    **CT F.SAMPLE**
     REC1
     001 Field one
     002 Field two
-    003 Field three
-</pre>
+    003 Field three</pre>
 
 As an alternative, we can use standard correlatives:
 
 <pre>
-    LIST F.SAMPLE &lowast;A1 &lowast;A2 &lowast;A3
+    **LIST F.SAMPLE &lowast;A1 &lowast;A2 &lowast;A3**
     F.SAMPLE......   &lowast;A1...........   &lowast;A2...........   &lowast;A3...........
-    REC1             Field one        Field two         Field three
-</pre>
+    REC1             Field one        Field two         Field three</pre>
 
 ## Adding dictionary items
 
 Add a dictionary item to assign the name to a field:
 
 <pre>
-    JED DICT F.SAMPLE FLD1
+    **JED DICT F.SAMPLE FLD1**
     0001 D
     0002 1
     0003
     0004 FIELD 1 HEADER
     0005 10L
     0006 S
-    0007
-</pre>
+    0007</pre>
 
 Use field name in a query:
 
 <pre>
-    LIST F.SAMPLE FLD1
+    **LIST F.SAMPLE FLD1**
     F.SAMPLE......   FIELD 1 HEADER
     REC1             Field one
-    1 Records Listed
-</pre>
+    1 Records Listed</pre>
 
 <pre>
-    LIST F.SAMPLE WITH FLD1 EQ ''
-     No Records Listed
-</pre>
+    **LIST F.SAMPLE WITH FLD1 EQ ''**
+     No Records Listed</pre>
 
 In default view we still don’t have it:
 
 <pre>
-    LIST F.SAMPLE
+    **LIST F.SAMPLE**
     F.SAMPLE......
-    REC1
-</pre>
+    REC1</pre>
 
 Set the field to be seen by default:
 
 <pre>
-    JED DICT F.SAMPLE @
+    **JED DICT F.SAMPLE @**
     0001 PH
-    0002 @ID FLD1
-</pre>
+    0002 @ID FLD1</pre>
 
 See the result:
 
 <pre>
-    LIST F.SAMPLE
+    **LIST F.SAMPLE**
     F.SAMPLE......   ID..................   FIELD 1 HEADER
-    REC1             REC1                   Field one
-</pre>
+    REC1             REC1                   Field one</pre>
 
 ## Change of size and format, statistics, properties
 
 See file statistics:
 
 <pre>
-    jstat -v F.SAMPLE
+    **jstat -v F.SAMPLE**
     File C:\r11\bnk\bnk.run\F.SAMPLE
     Type=J4 , Hash method = 5
     Created at Tue Nov 20 19:38:25 2012
@@ -696,8 +648,7 @@ See file statistics:
     Record Count = 1 , Record Bytes = 45
     Bytes/Record = 45 , Bytes/Group = 0
     Primary file space:   Total Frames = 101 , Total Bytes = 45
-    Secondary file space: Total Frames = 0 , Total Bytes = 0
-</pre>
+    Secondary file space: Total Frames = 0 , Total Bytes = 0</pre>
 
 ### NOTE
 
@@ -706,36 +657,32 @@ See file statistics:
 Add more records:
 
 <pre>
-    COPY FROM F.SAMPLE REC1,REC2
-    1 records copied
-</pre>
+    **COPY FROM F.SAMPLE REC1,REC2**
+    1 records copied</pre>
 
 Try to resize the file:
 
 <pre>
-    jrf -V F.SAMPLE
+    **jrf -V F.SAMPLE**
     ...
-    Downsizing skipped from modulo 101 to 3.
-</pre>
+    Downsizing skipped from modulo 101 to 3.</pre>
 
 Resize it anyway:
 
 <pre>
-    jrf -VD F.SAMPLE
+    **jrf -VD F.SAMPLE**
     ...
-    Downsizing from modulo 101 to 3
-</pre>
+    Downsizing from modulo 101 to 3</pre>
 
 Change file type to JR:
 
 <pre>
-    jrf -H6 F.SAMPLE
-</pre>
+    **jrf -H6 F.SAMPLE**</pre>
 
 See statistics now:
 
 <pre>
-    jstat -v F.SAMPLE
+    **jstat -v F.SAMPLE**
     File Type       = JR,        Hash method = 5, Created = Tue Nov 20 19:56:00 2012
     Frame size      = 4096,        OOG Threshold   = 2048
     File size       = 8192, Freespace       = 0 frames
@@ -749,65 +696,56 @@ See statistics now:
     Bytes/Record    = 41,   Bytes/Group     = 82
     Data Frames     = 1,    Ptr Frames      = 0
     OOG Bytes       = 0,    OOG Frames      = 0
-    Sum Squares     = 3362, Std Dev Mean    = 41
-</pre>
+    Sum Squares     = 3362, Std Dev Mean    = 41</pre>
 
 Turn on secure updates:
 
 <pre>
-    jchmod +S F.SAMPLE
-</pre>
+    **jchmod +S F.SAMPLE**</pre>
 
 Check the result:
 
 <pre>
-    jstat -v F.SAMPLE
+    **jstat -v F.SAMPLE**
     ...
     Backup  = YES, Log      = YES,  Rollback        = YES,  Secure updates  = YES
-    ...
-</pre>
+    ...</pre>
 
 Delete a record:
 
 <pre>
-    DELETE F.SAMPLE REC2
-    1 record(s) deleted.
-</pre>
+    **DELETE F.SAMPLE REC2**
+    1 record(s) deleted.</pre>
 
 Add data sections:
 
 <pre>
-    CREATE-FILE F.SAMPLE,TWO TYPE=JR
-    [ 417 ] File F.SAMPLE]MTWO created , type = JR
-</pre>
+    **CREATE-FILE F.SAMPLE,TWO TYPE=JR**
+    [ 417 ] File F.SAMPLE]MTWO created , type = JR</pre>
 
 <pre>
-    CREATE-FILE F.SAMPLE,THREE TYPE=JR
-    [ 417 ] File F.SAMPLE]MTHREE created , type = JR
-</pre>
+    **CREATE-FILE F.SAMPLE,THREE TYPE=JR**
+    [ 417 ] File F.SAMPLE]MTHREE created , type = JR</pre>
 
 Create a record in a section:
 
 <pre>
-    JED F.SAMPLE,TWO REC5
+    **JED F.SAMPLE,TWO REC5**
     0001 Section 2/1
     0002 Section 2/2
-    0003 Section 2/3
-</pre>
+    0003 Section 2/3</pre>
 
 See that all sections use the same dictionary:
 
 <pre>
-    LIST F.SAMPLE,TWO
+    **LIST F.SAMPLE,TWO**
     F.SAMPLE,TWO..    ID..................    FIELD 1 HEADER
-    REC5              REC5                    Section 2/1
-</pre>
+    REC5              REC5                    Section 2/1</pre>
 
 <pre>
-    LIST F.SAMPLE,THREE
+    **LIST F.SAMPLE,THREE**
     F.SAMPLE,THREE    ID..................    FIELD 1 HEADER
-     No Records Listed
-</pre>
+     No Records Listed</pre>
 
 ### NOTE
 
@@ -824,67 +762,58 @@ files and folders. Some examples:
 Create the folder:
 
 <pre>
-    CREATE-FILE DATA TEST.BP TYPE=UD
-    [ 417 ] File TEST.BP created , type = UD
-</pre>
+    **CREATE-FILE DATA TEST.BP TYPE=UD**
+    [ 417 ] File TEST.BP created , type = UD</pre>
 
 Create a program:
 
 <pre>
-    JED TEST.BP PROG1
-    0001 CRT 2*2
-</pre>
+    **JED TEST.BP PROG1**
+    0001 CRT 2*2</pre>
 
 Save file. Compile and run it:
 
 <pre>
-    BASIC TEST.BP PROG1
+    **BASIC TEST.BP PROG1**
     PROG1
     BASIC_3.c
-    Source file PROG1 compiled successfully
-</pre>
+    Source file PROG1 compiled successfully</pre>
 
 <pre>
-    CATALOG TEST.BP PROG1
+    **CATALOG TEST.BP PROG1**
     PROG1
-    Object PROG1 cataloged successfully
-</pre>
+    Object PROG1 cataloged successfully</pre>
 
 <pre>
-    PROG1
-    4
-</pre>
+    **PROG1**
+    4</pre>
 
 Copy data:
 
 <pre>
-    COPY FROM F.SAMPLE TO TEST.BP REC1
-    1 records copied
-</pre>
+    **COPY FROM F.SAMPLE TO TEST.BP REC1**
+    1 records copied</pre>
 
 Edit file REC1 in TEST.BP folder with any text editor so it now looks like:
 
 <pre>
-    Field one - updated
+    Field one **- updated**
     Field two
-    Field three
-</pre>
+    Field three</pre>
 
 Copy it back to hashed file:
 
 <pre>
-    COPY FROM TEST.BP TO F.SAMPLE REC1 OVERWRITING
-    1 records copied
-</pre>
+    **COPY FROM TEST.BP TO F.SAMPLE REC1 OVERWRITING**
+    1 records copied</pre>
 
 See the result:
 
 <pre>
-    LIST F.SAMPLE
+    **LIST F.SAMPLE**
     F.SAMPLE......     ID..................   FIELD 1 HEADER
     REC1               REC1                   Field one - up
-                                              dated
-</pre>
+                                              dated</pre>
 
 # System ("@") variables
 
@@ -925,8 +854,7 @@ Output:
 
 <pre>
     1\2\6\test.b]1\1\1\test.b
-    2\1\3\TEST.SUB]1\3\12\test.b]1\2\6\test.b]1\1\1\test.b
-</pre>
+    2\1\3\TEST.SUB]1\3\12\test.b]1\2\6\test.b]1\1\1\test.b</pre>
 
 ## @CODEPAGE
 
@@ -953,8 +881,7 @@ Output of this program:
     "QWE
     RTY
     "
-    0
-</pre>
+    0</pre>
 
 ## @DATE
 
@@ -980,8 +907,7 @@ End of File character from TTY characteristics:
 
 ## @FILENAME
 
-Current file name (is to be assigned for such operations as
-[ITYPE] (#ITYPE) function call).
+Current file name (is to be assigned for such operations as [ITYPE](#ITYPE) function call).
 
 ## @FOOTER.BREAK
 
@@ -999,8 +925,7 @@ statement:
 <pre>
        SORT STOCK BY-DSND @ID
        LIST STOCK WITH @ID = "1000"
-       LIST STOCK WITH @ID LIKE AB...
-</pre>
+       LIST STOCK WITH @ID LIKE AB...</pre>
 
 ## @LEVEL
 
@@ -1244,14 +1169,7 @@ have spawned.
 
 &lt;52,n> Any data set by the application using @USER.THREAD
 
-<a name="JBCFUNCATE"/>
-
 # jBC Functions and Statements (@ - E)
-
-<!-- [Next (F - J)](#JBCFUNCFJ) -->
-
-The following pages show the syntax of every statement and function in
-the language together with examples of their use.
 
 <a name="@"/>
 
@@ -1435,9 +1353,8 @@ command.
 Sample program output:
 
 <pre>
-     ** Error [ 201 ] **
-    Unable to open file XCICLJPH
-</pre>
+     &lowast;&lowast;&lowast; Error [ 201 ] &lowast;&lowast;
+    Unable to open file XCICLJPH</pre>
 
 <a name="ABS"/>
 
@@ -1651,8 +1568,7 @@ bit non portable.
 This results in 0100, and the following output is displayed:
 
 <pre>
-    4
-</pre>
+    4</pre>
 
 ## BITCHANGE
 
@@ -1760,8 +1676,7 @@ After assignment, the contents of the bit table is:
     0000 0000 0000 0000
     0000 0000 0000 0000
     0000 0000 0000 0000
-    0000 0000 0000 0000
-</pre>
+    0000 0000 0000 0000</pre>
 
 **NOTE:** that all values beyond the 64th bit have been reset to 0 (zero).
 
@@ -1806,8 +1721,7 @@ high-order bit non portable.
 This is the program output:
 
 <pre>
-    7 14 13 11
-</pre>
+    7 14 13 11</pre>
 
 ## BITOR
 
@@ -1843,8 +1757,7 @@ high-order bit non portable.
 This results in 1110, and the following output is displayed:
 
 <pre>
-    14
-</pre>
+    14</pre>
 
 <a name="BITRESET"/>
 
@@ -1966,8 +1879,7 @@ Non integer values are truncated before the operation is performed.
 This is the program output:
 
 <pre>
-    1 1 0 1
-</pre>
+    1 1 0 1</pre>
 
 ## BITXOR
 
@@ -2001,8 +1913,7 @@ the high-order bit nonportable.
 This results in 1010, and the following output is displayed:
 
 <pre>
-    10
-</pre>
+    10</pre>
 
 <a name="BREAK"/>
 
@@ -2046,8 +1957,7 @@ Compiler output:
 <pre>
     [warning	(44)] "test2.b", 9 (offset 7) :
     BREAK/EXIT is invalid outside a FOR or LOOP - Ignored
-    test2.c
-</pre>
+    test2.c</pre>
 
 ## BREAK ON/OFF
 
@@ -2075,8 +1985,7 @@ Output (user is to try to press Ctrl-C at both prompts):
     Interrupt signal
     Source changed to .\test2.b
     0009    MSLEEP(5000)
-    jBASE debugger->
-</pre>
+    jBASE debugger-></pre>
 
 <a name="BYTELEN"/>
 
@@ -2139,8 +2048,7 @@ The output is:
 
 <pre>
     First bucket: bucket1
-    Second bucket: bucket2
-</pre>
+    Second bucket: bucket2</pre>
 
 ### NOTES
 
@@ -2166,8 +2074,7 @@ The output is:
 
 <pre>
     [customer1]
-    []
-</pre>
+    []</pre>
 
 ### NOTES
 
@@ -2193,8 +2100,7 @@ The output is:
 
 <pre>
     [customer1]
-    []
-</pre>
+    []</pre>
 
 ### NOTES
 
@@ -2240,8 +2146,7 @@ The output is:
 
 <pre>
     First bucket: bucket1
-    Second bucket: bucket2
-</pre>
+    Second bucket: bucket2</pre>
 
 ### NOTES
 
@@ -2269,8 +2174,7 @@ The output is:
 <pre>
     0
     1
-    0
-</pre>
+    0</pre>
 
 ### NOTES
 
@@ -2299,8 +2203,7 @@ The output is:
 
 <pre>
     []
-    [value1]
-</pre>
+    [value1]</pre>
 
 ### NOTES
 
@@ -2331,8 +2234,7 @@ The output is:
     CACHE_MAX_SIZE: 0
     CACHE_PURGE_THRESHOLD: 0
     CACHE_MAX_SIZE: 1048576
-    CACHE_PURGE_THRESHOLD: 90
-</pre>
+    CACHE_PURGE_THRESHOLD: 90</pre>
 
 ### NOTES
 
@@ -2375,8 +2277,7 @@ The output is:
 
 <pre>
     First name: item1
-    Second name: item2
-</pre>
+    Second name: item2</pre>
 
 ### NOTES
 
@@ -2400,8 +2301,7 @@ the cache.
 The output is:
 
 <pre>
-    [value1]
-</pre>
+    [value1]</pre>
 
 ### NOTES
 
@@ -2469,8 +2369,7 @@ The output is:
     CACHE_GETS: 2
     CACHE_PUTS: 2
     CACHE_SIZE: 12
-    CACHE_NB_ITEMS: 2
-</pre>
+    CACHE_NB_ITEMS: 2</pre>
 
 ### NOTES
 
@@ -2586,12 +2485,11 @@ Output:
     5
     6
     6
-     ** Error [ SUBROUTINE_PARM_ERROR ] **
+     &lowast;&lowast; Error [ SUBROUTINE_PARM_ERROR ] &lowast;&lowast;
     'SUBROUTINE NUM.INCR' called with incorrect arguments , Line     1 , Source test2.b
     Trap from an error message, error message name = SUBROUTINE_PARM_ERROR
     Source changed to .\test2.b
-    jBASE debugger->
-</pre>
+    jBASE debugger-></pre>
 
 
 ## CALLC
@@ -2695,8 +2593,7 @@ In C#:
 		    }
 		    public Class1(){}
 	    }
-    }
-</pre>
+    }</pre>
 
 In VB.NET:
 
@@ -2709,8 +2606,7 @@ In VB.NET:
             sayHello = sAnswer
           End Function
       End Class
-    End Namespace
-</pre>
+    End Namespace</pre>
 
 Note: Create the .NET project as a ‘Class Library’.
 
@@ -2864,8 +2760,7 @@ In Java:
   		    i++;
   		    return s + " "  + i;
         }
-    }
-</pre>
+    }</pre>
 
 To call these methods from jBC:
 
@@ -3003,22 +2898,19 @@ Linux: looking for 'libjvm.so'
 
 <pre>
     Add 2 directories to LD_LIBRARY_PATH.
-    /opt/java6/jre/lib/amd64/server:/opt/java6/jre/lib/amd64
-</pre>
+    /opt/java6/jre/lib/amd64/server:/opt/java6/jre/lib/amd64</pre>
 
 Solaris: looking for 'libjvm.so'
 
 <pre>
     Add 2 directories to LD_LIBRARY_PATH.
-    /opt/java6/jre/lib/sparc/server:/opt/java6/jre/lib/sparc
-</pre>
+    /opt/java6/jre/lib/sparc/server:/opt/java6/jre/lib/sparc</pre>
 
 HP-UX 11: looking for 'libjvm.sl'
 
 <pre>
    Add 2 directories to SHLIB_PATH.
-  /opt/java6/jre/lib/IA64W/server:/opt/java6/jre/lib/IA64W
-</pre>
+  /opt/java6/jre/lib/IA64W/server:/opt/java6/jre/lib/IA64W</pre>
 
 ### OPTIONS
 
@@ -3355,13 +3247,13 @@ of the CATS function is the non-null dynamic array.
 The assigned value to variable Z is:
 
     a1 : @VM : b2 : @VM : c3
-    A = "a" : @SVM : "b" : @VM : "c": @VM : "d"
-    B = "x" : @VM : "y" : @SVM : "z"
+    A = "a" : @SM : "b" : @VM : "c": @VM : "d"
+    B = "x" : @VM : "y" : @SM : "z"
     C = CATS(A, B)
 
 The assigned value to variable C is:
 
-    ax : @SVM : b : @VM : cy : @SVM : z : @VM : d
+    ax : @SM : b : @VM : cy : @SM : z : @VM : d
 
 ## CHAIN
 
@@ -4214,8 +4106,7 @@ The output of this program is:
 
 <pre>
     1]2\5
-    0]1\2
-</pre>
+    0]1\2</pre>
 
 ## CREATE
 
@@ -4366,8 +4257,7 @@ If test2 is run by itself, it asks for user input. If test is run, the
 output is:
 
 <pre>
-    I got 12345 and 67890
-</pre>
+    I got 12345 and 67890</pre>
 
 ## DATE
 
@@ -4458,9 +4348,11 @@ run-time versions of  cataloged jBC programs.
 
 ### COMMAND SYNTAX
 
-DECATALOG SourceFilename ProgramName
+<pre>
+    DECATALOG SourceFilename ProgramName</pre>
 
-DECATALOG ProgramName
+<pre>
+    DECATALOG ProgramName</pre>
 
 <a name="DECRYPT"/>
 
@@ -4546,8 +4438,7 @@ Displays as output:
     ROT13 ok
     XOR.MOD11 ok
     Encrypted: xuy6DXxUkD32spyfsKEvUtXrsjP7mC+R
-    Decrypted: String to encrypt
-</pre>
+    Decrypted: String to encrypt</pre>
 
 <a name="DEFC"/>
 
@@ -4577,21 +4468,20 @@ type conversions on these arguments.
 ### EXAMPLE
 
 <pre>
-
-    #include <jsystem.h>
-    #include <assert.h>
+    #include &lt;jsystem.h&gt;
+    #include &lt;assert.h&gt;
     //
     #ifdef DPSTRUCT_DEF
-    #define JBASEDP		  DPSTRUCT *dp,
+    #define JBASEDP		  DPSTRUCT &lowast;dp,
     #else
     #define JBASEDP
     #endif
     //
-    VAR *MyString(VAR *Result, JBASEDP  VAR *VarPtr)
+    VAR &lowast;MyString(VAR &lowast;Result, JBASEDP  VAR &lowast;VarPtr)
     {
-        char *Ptr;
+        char &lowast;Ptr;
         assert(dp != NULL);
-        Ptr = (char *) CONV_SFB(VarPtr);
+        Ptr = (char &lowast;) CONV_SFB(VarPtr);
         printf("MyString: %s - %d\n", Ptr, strlen(Ptr) );
         STORE_VBI(Result, strlen(Ptr) );
         return(Result);
@@ -4603,9 +4493,7 @@ type conversions on these arguments.
         Result =  (Value1 / Value2);
         printf("MyCalc: %d\n", Result);
         return(Result);
-    }
-
-</pre>
+    }</pre>
 
 ### NOTES
 
@@ -4648,8 +4536,7 @@ FLOAT and STRING.
       INT32 Result;
 	    ...
 	    return Result;
-    }
-</pre>
+    }</pre>
 
 ### EXAMPLE 2
 
@@ -4825,8 +4712,7 @@ Output:
 <pre>
     REC1
     REC3
-     2 Records Listed
-</pre>
+     2 Records Listed</pre>
 
 <a name="DELETELIST"/>
 
@@ -4938,7 +4824,7 @@ See also: [COMMON](#COMMON)
 
 ### EXAMPLES
 
-       DIM V.ARRAY(10)
+       DIMENSION V.ARRAY(10)
        MAT V.ARRAY = '!'
        V.ARRAY(5) = '?'
        FOR V.I = 1 TO 10
@@ -5118,8 +5004,7 @@ Output:
     3.14159265358979324
     3.141592653589793238
     3.1415926535897932385
-    3.14159265358979323846
-</pre>
+    3.14159265358979323846</pre>
 
 <a name="DTX"/>
 
@@ -5181,8 +5066,7 @@ generic XML representation of that array or an error
       &lt;data attribute="1" value="1" subvalue="1">Tom&lt;/data&gt;
       &lt;data attribute="2" value="1" subvalue="1">Dick&lt;/data&gt;
       &lt;data attribute="3" value="1" subvalue="1">Harry&lt;/data&gt;
-    &lt;/array>
-</pre>
+    &lt;/array&gt;</pre>
 
 If a style sheet is passed in the second parameter, it performs a
 transform to give a different format of XML.
@@ -5199,8 +5083,7 @@ transform to give a different format of XML.
       &lt;firstname&gt;Tom&lt;/firstname&gt;
       &lt;lastname&gt;Dick&lt;/lastname&gt;
       &lt;address&gt;Harry&lt;/address&gt;
-    &lt;/mycustomer&gt;
-</pre>
+    &lt;/mycustomer&gt;</pre>
 
 **XSL CONTENTS**
 
@@ -5227,8 +5110,7 @@ transform to give a different format of XML.
           &lt;address2&gt;
             &lt;xsl:value-of select="."/&gt;
           &lt;/address2&gt;
-       &lt;/xsl:if&gt;
-</pre>
+       &lt;/xsl:if&gt;</pre>
 
 ## EBCDIC
 
@@ -5376,8 +5258,7 @@ Displays as output:
     ROT13 ok
     XOR.MOD11 ok
     Encrypted: xuy6DXxUkD32spyfsKEvUtXrsjP7mC+R
-    Decrypted: String to encrypt
-</pre>
+    Decrypted: String to encrypt</pre>
 
 ### Hashing
 
@@ -5561,8 +5442,7 @@ The output of this program is:
 <pre>
     AAAZZZCCCDDDZZZ
     ZZZAAABBBCCCDDDBBB
-    AAACCCDDD
-</pre>
+    AAACCCDDD</pre>
 
 <a name="EXECUTE"/>
 
@@ -5676,8 +5556,7 @@ Sample output of the last example:
     [/dev/hd9var      640.00     95.71   86%    13280    36% /var]
     [/dev/hd3         768.00    505.89   35%     8812     7% /tmp]
     [/dev/hd1         128.00    121.68    5%      185     1% /home]
-    [/proc                 -         -    -         -     -  /proc]
-</pre>
+    [/proc                 -         -    -         -     -  /proc]</pre>
 
 <a name="EXIT"/>
 
@@ -5690,7 +5569,7 @@ In this case, it is synonymous with the [BREAK](#BREAK) statement.
 
 ### COMMAND SYNTAX
 
-    EXIT (expression)
+    EXIT(expression)
 
     EXIT
 
@@ -5781,11 +5660,7 @@ value to extract and expression4 the sub-value to extract.
 
 Will display the value "1".
 
-<a name="JBCFUNCFJ"/>
-
 # jBC Functions and Statements (F - J)
-
-<!-- [Next (K - O)](#JBCFUNCKO) | [Previous (@ - E)](#JBCFUNCATE) -->
 
 <a name="FADD"/>
 
@@ -6430,8 +6305,7 @@ the debugger.
 Output:
 
 <pre>
-    &lowast;&lowast;&lowast;&lowast;&lowast;1234.56^&lowast;&lowast;&lowast;123456.78^&lowast;&lowast;-123456.78^234567890.00
-</pre>
+    &lowast;&lowast;&lowast;&lowast;&lowast;1234.56^&lowast;&lowast;&lowast;123456.78^&lowast;&lowast;-123456.78^234567890.00</pre>
 
 <a name="FOLD"/>
 
@@ -6470,16 +6344,14 @@ attribute marks.
 
 Output:
 <pre>
-    Smoking^is one^of the^leading^causes^of^statist^ics
-</pre>
+    Smoking^is one^of the^leading^causes^of^statist^ics</pre>
 
     q = "Hello world"
     CRT OCONV( FOLD(q, 5), 'MCP' )
 
 Output:
 <pre>
-    Hello^world
-</pre>
+    Hello^world</pre>
 
     q = "Let this be a reminder to you all that this organization will not tolerate failure."
     CRT OCONV( FOLD(q, 30), 'MCP')
@@ -6487,16 +6359,14 @@ Output:
 Output:
 
 <pre>
-Let this be a reminder to you^all that this organization^will not tolerate failure.
-</pre>
+Let this be a reminder to you^all that this organization^will not tolerate failure.</pre>
 
     q = "the end"
     CRT OCONV( FOLD(q, 0), 'MCP' )
 
 Output:
 <pre>
-    t^h^e^e^n^d
-</pre>
+    t^h^e^e^n^d</pre>
 
 <a name="FOOTING"/>
 
@@ -6881,8 +6751,7 @@ Output of this program looks like:
     [&COMO&]D]
     [&ED&]
     [&ED&]D]
-    [&PH&]
-</pre>
+    [&PH&]</pre>
 
 ## GETUSERGROUP
 
@@ -7062,8 +6931,7 @@ This example displays the following on the terminal (being the second and
 third fields and their delimiter within variable A):
 
 <pre>
-    456:-789
-</pre>
+    456:-789</pre>
 
 ## GROUPSTORE
 
@@ -7389,8 +7257,7 @@ The above code will display:
 <pre>
     1
     27
-    10
-</pre>
+    10</pre>
 
 ## INMAT
 
@@ -7647,8 +7514,7 @@ The output is (one line):
 
 <pre>
     1^2^3^4^5^6^7]14]21]28]35]42]49]56]63]70]77]84^8^9^10^11^12^13^14^15^16^17^18^19^20^21^22^23^
-    24^25^26^27^28^29^30^31^32^33^34^35^36^37^38^39^40^41^42^43^44^45^46^47^48^49^50
-</pre>
+    24^25^26^27^28^29^30^31^32^33^34^35^36^37^38^39^40^41^42^43^44^45^46^47^48^49^50</pre>
 
 ## INSERT
 
@@ -8317,8 +8183,7 @@ This is the DICT SLIPPER content:
     003
     004
     005 10L
-    006 L
-</pre>
+    006 L</pre>
 
 This is the program source code:
 
@@ -8342,8 +8207,7 @@ The output of this program is:
     3 records selected
     JIM WEARS SLIPPERS SIZE 8
     GREG WEARS SLIPPERS SIZE 10
-    ALAN WEARS SLIPPERS SIZE 5
-</pre>
+    ALAN WEARS SLIPPERS SIZE 5</pre>
 
 ## JBASECOREDUMP
 
@@ -8383,8 +8247,7 @@ e.g. JBASECOREDUMP.a57d07cc-6539-470f-9959-24ed7c715f4f
 
 <pre>
  0, Add all varables to the external text file.
- 1, Suppess any UNASSIGNED varables saved to the external file.
-</pre>
+ 1, Suppess any UNASSIGNED varables saved to the external file.</pre>
 
 ### NOTES
 
@@ -8409,8 +8272,7 @@ with the UUID for the core dump, you can use this to locate the stack trace
 in the logs.
 
 <pre>
-    &lowast;&lowast; Error [ JBASECOREDUMP ] &lowast;&lowast; Program Aborted, Coredump UUID: &lt;&lt;UUID&gt;&gt;
-</pre>
+    &lowast;&lowast; Error [ JBASECOREDUMP ] &lowast;&lowast; Program Aborted, Coredump UUID: &lt;&lt;UUID&gt;&gt;</pre>
 
 *Calling process started via EXECUTE/PERFORM from within a jbc program.*
 
@@ -8438,8 +8300,7 @@ The following is a simple example of how to check for core dumps.
     catch (const JSubroutineCoreDumpException &e) {
       const std::string uuid = e.getMessage()->c_str();
       // handle exception
-    }
-</pre>
+    }</pre>
 
 Use this UUID to check on the server for what went wrong.
 The Java and C# clients have also been updated to handle this new exception
@@ -8454,20 +8315,17 @@ example.b:
 Compile:
 
 <pre>
-    jcompile example.b
-</pre>
+    jcompile example.b</pre>
 
 run:
 
 <pre>
     &lowast;&lowast; Error [ JBASECOREDUMP ] &lowast;&lowast; Program Aborted,
-    Coredump UUID: 4d5a252a-c009-4aec-9e1f-73d3251c6b81
-</pre>
+    Coredump UUID: 4d5a252a-c009-4aec-9e1f-73d3251c6b81</pre>
 
 <pre>
-     dir JBASECOREDUMP*
-    JBASECOREDUMP.4d5a252a-c009-4aec-9e1f-73d3251c6b81.ERRORFILE
-</pre>
+     dir JBASECOREDUMP&lowast;
+    JBASECOREDUMP.4d5a252a-c009-4aec-9e1f-73d3251c6b81.ERRORFILE</pre>
 
 <pre>
     ct . JBASECOREDUMP.4d5a252a-c009-4aec-9e1f-73d3251c6b81.ERRORFILE
@@ -8491,14 +8349,12 @@ run:
     017 All the defined VAR's in the program
     018
     019 SUBROUTINE main()
-    020 00000000006BEE90 : rc : (V) String : 0 bytes at address 0000000055740A58 :
-</pre>
+    020 00000000006BEE90 : rc : (V) String : 0 bytes at address 0000000055740A58 :</pre>
 
 Locating entry in the logs using the UUID.
 
 <pre>
-    find "4d5a252a-c009-4aec-9e1f-73d3251c6b81" %TAFC_HOME%\log\default
-</pre>
+    find "4d5a252a-c009-4aec-9e1f-73d3251c6b81" %TAFC_HOME%\log\default</pre>
 
 The following lines may appear in the log file:
 
@@ -8507,15 +8363,13 @@ The following lines may appear in the log file:
     E0224 11:21:10.737900 5832 tafc_logger_c_api.cpp:33]
     Coredump file: JBASECOREDUMP.4d5a252a-c009-4aec-9e1f-73d3251c6b81.ERRORFILE
     E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33]
-    UUID: 4d5a252a-c009-4aec-9e1f-73d3251c6b81
-</pre>
+    UUID: 4d5a252a-c009-4aec-9e1f-73d3251c6b81</pre>
 
 Type the following command to display the log file:
 
 <pre>
     CT %TAFC_HOME%\log\default\LOG\DEFAULT\EXAMPLE.HML0001.JBCUSER.LOG.ERROR.20120224-
-       112110.3488
-</pre>
+       112110.3488</pre>
 
 The below log file will appear "example.HML0001.JBCUSER.LOG.ERROR.20120224-112110.3488"
 
@@ -8554,8 +8408,7 @@ The below log file will appear "example.HML0001.JBCUSER.LOG.ERROR.20120224-11211
     022 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33]
     023 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] SUBROUTINE main()
     024 E0224 11:21:10.739899 5832 tafc_logger_c_api.cpp:33] 00000000006BEE90 :
-        rc : (V) String : 0 bytes at address 0000000055740A58 :
-</pre>
+        rc : (V) String : 0 bytes at address 0000000055740A58 :</pre>
 
 ## JBASESubroutineExist
 
@@ -8664,12 +8517,11 @@ JQLCOMPILE (Statement, …)
 predefined set of items. For example - how it's used in jQL (note the "&gt;") prompt:
 
 <pre>
-    SELECT PROGRAMMERS WITH IQ_IN_PTS > 250
+    **SELECT PROGRAMMERS WITH IQ_IN_PTS > 250**
     1 Item Selected
-    > LIST PROGRAMMERS NAME
+    > **LIST PROGRAMMERS NAME**
     PROGRAMMERS...    NAME
-    0123              COOPER, F B
-</pre>
+    0123              COOPER, F B</pre>
 
 This function returns -1 in the event of a problem, such as an
 incorrect statement variable. It will cause the statement to run
@@ -8698,8 +8550,7 @@ is the the format of ControlVar is:
     Attr 2  Item ID
     Attr 3  Break control Value is 1 if a blank line should be output first.
     Attr 4  Pre-break value for 'B' option in header
-    Attr 5  Post-break value for 'B' option in header
-</pre>
+    Attr 5  Post-break value for 'B' option in header</pre>
 
 **DataVar** will receive the actual screen data on a LIST statement for
 instance. The format is one attribute per column.
@@ -8833,14 +8684,9 @@ Output:
     @ID #487:	417
     @ID #488:	80044228
     @ID #489:	80044233
-    @ID #490:	80045024
-</pre>
-
-<a name="JBCFUNCKO"/>
+    @ID #490:	80045024</pre>
 
 # jBC Functions and Statements (K - O)
-
-<!-- [Next (P - T)](#JBCFUNCPT) | [Previous (F - J)](#JBCFUNCFJ) -->
 
 ## KEYIN
 
@@ -8868,7 +8714,7 @@ presses q or Q key.
              CRT V.HOME:TIMEDATE():     ;* e.g. 22:27:08 24 OCT 2012
              MSLEEP 3000
           REPEAT
-          V.KEY = UPCASE(KEYIN())
+          V.KEY = UPCASE( KEYIN() )
           IF V.KEY EQ 'Q' THEN BREAK    ;* exit if q or Q was pressed
        REPEAT
 
@@ -8929,8 +8775,7 @@ This code displays:
 <pre>
     "The world"
     "The world is my lobster"
-    ""
-</pre>
+    ""</pre>
 
 ## LEN
 
@@ -8972,8 +8817,7 @@ Do not use programs manipulating byte counts in International Mode.
 Output is:
 
 <pre>
-    '             I AM IN THE VERY CENTER              '
-</pre>
+    '             I AM IN THE VERY CENTER              '</pre>
 
 ## LENDP
 
@@ -9324,8 +9168,7 @@ Output looks like:
     QLPARAMERR
     SP-HoldCount
     603
-    1134
-</pre>
+    1134</pre>
 
 The loop used in this example can also be defined this way:
 
@@ -10088,8 +9931,7 @@ The MODS function calculates each element according to the following
 formula:
 
 <pre>
-    XY.element = X ?? (INT(X / Y) * Y)
-</pre>
+    XY.element = X ?? (INT(X / Y) * Y)</pre>
 
 X is an element of array1 and Y is the corresponding element of array2.
 The resulting element is returned in the corresponding element of a new
@@ -10244,7 +10086,7 @@ enters the debugger.
 In the following example, if RECORD in DIRFILE can be opened,
 output buffering is turned off:
 
-    OPENSEQ 'DIRFILE', 'RECORD' TO DATA THEN NOBUF DATA
+    OPENSEQ 'DIRFILE', 'RECORD' TO FILE THEN NOBUF FILE
     ELSE ABORT
 
 ## NOT
@@ -10641,7 +10483,7 @@ execution and a warning message will be issued.
 ### EXAMPLES
 
     INPUT Ans,1_
-    ON SEQ (Ans)-SEQ(A)+1 GOSUB RoutineA, RoutineB...
+    ON SEQ(Ans) - SEQ(A) + 1 GOSUB RoutineA, RoutineB...
 
 <a name="OPEN"/>
 
@@ -10952,8 +10794,7 @@ Output will look like:
     [1]Line 1
     [2]One more line
     [3]One more line
-    ...
-</pre>
+    ...</pre>
 
 <a name="OPENSER"/>
 
@@ -11363,8 +11204,7 @@ Output:
     9000
     10000
     9999
-    "...................."
-</pre>
+    "...................."</pre>
 
 <a name="OSWRITE"/>
 
@@ -11432,11 +11272,7 @@ specified and then sent directly to the output advice.
     FOR I = 32 TO 127; OUT I; NEXT I ;* Printable chars
     BELL
 
-<a name="JBCFUNCPT"/>
-
 # jBC Functions and Statements (P - T)
-
-<!-- [Next (U - X)](#JBCFUNCUX) | [Previous (K - O)](#JBCFUNCKO) -->
 
 ## PAGE
 
@@ -11455,7 +11291,7 @@ value.
 
 ### EXAMPLES
 
-    HEADING "10 PAGE REPORT"
+    HEADING '10 PAGE REPORT'
     FOR I = 1 TO 10
     	    PAGE
     	    GOSUB PrintPage
@@ -11654,8 +11490,7 @@ Output:
 
 <pre>
      &lowast;&lowast; Error [ 201 ] &lowast;&lowast;
-    Unable to open file CUSTOMERS
-</pre>
+    Unable to open file CUSTOMERS</pre>
 
 <a name="PROCREAD"/>
 
@@ -11793,14 +11628,14 @@ See also: [GETENV](#GETENV)
 ### EXAMPLE
 
        V.ENV = 'JBASE_ERRMSG_ZERO_USED'
-       IF NOT(PUTENV(V.ENV : '=35')) THEN
+       IF NOT( PUTENV(V.ENV : '=35') ) THEN
           CRT 'PUTENV failed'
           STOP
        END
        CRT 'See the impact of JBASE_ERRMSG_ZERO_USED'
        CRT '=35'
        CRT V.VAR     ;* variable not assigned; nothing is being output
-       IF NOT(PUTENV(V.ENV : '=0')) THEN
+       IF NOT( PUTENV(V.ENV : '=0') ) THEN
           CRT 'PUTENV failed'
           STOP
        END
@@ -11962,8 +11797,7 @@ Program output:
 
 <pre>
     &lowast;&lowast; Error [ ARRAY_ILLEGAL_SIZE ] &lowast;&lowast; ^NEWLINE^^DEBUGQUIT^Attempt to DIMension
-    a variable with 0 or fewer elements , Line ^LINENO^ , Source ^SOURCENAME^
-</pre>
+    a variable with 0 or fewer elements , Line ^LINENO^ , Source ^SOURCENAME^</pre>
 
 <a name="READBLK"/>
 
@@ -12212,7 +12046,8 @@ READNEXT retrieves the next element in a list variable.
 
 ### COMMAND SYNTAX
 
-    READNEXT variable1, variable2 { FROM variable3 } { SETTING setvar } { THEN | ELSE statements }
+    READNEXT variable1, variable2 { FROM variable3 } { SETTING setvar }  \
+             { THEN | ELSE statements }
 
 ### SYNTAX ELEMENTS
 
@@ -12422,8 +12257,7 @@ Line ends in this file are shown here (JED, Ctrl-E to go to line end):
     0008 ------1050------1060------1070------1080------1090------1100
     0009 ------1050------1060------1070------1080------1090------1100
     0010 ------1050------1060------1070------1080------1090------1100
-    -------------------------------- End Of Record --------------------------------
-</pre>
+    -------------------------------- End Of Record --------------------------------</pre>
 
 ### Step 2. Read a line from this text file using plain READSEQ:
 
@@ -12550,7 +12384,8 @@ specified record for update.
 
 ### COMMAND SYNTAX
 
-    READU variable1 FROM {variable2,} expression {SETTING setvar} {WAIT timeout} {ON ERROR statements} {LOCKED statements} THEN|ELSE statements
+    READU variable1 FROM {variable2,} expression { SETTING setvar } { WAIT timeout }  \
+          { ON ERROR statements } { LOCKED statements } THEN | ELSE statements
 
 ### SYNTAX ELEMENTS
 
@@ -12649,7 +12484,8 @@ record in a previously opened file into a variable.
 
 ### COMMAND SYNTAX
 
-READV variable1 FROM { variable2,} expression1, expression2 {SETTING setvar} {ON ERROR statements} THEN|ELSE statements
+    READV variable1 FROM { variable2,} expression1, expression2 { SETTING setvar }  \
+         { ON ERROR statements } THEN | ELSE statements
 
 ### SYNTAX ELEMENTS
 
@@ -12726,7 +12562,8 @@ record locking and locks the specified record for update.
 
 ### COMMAND SYNTAX
 
-READVU variable1 FROM {variable2,} expression1, expression2 {SETTING setvar} {ON ERROR statements} {LOCKED statements} THEN|ELSE statements
+    READVU variable1 FROM {variable2,} expression1, expression2 { SETTING setvar }  \
+           { ON ERROR statements } { LOCKED statements } THEN | ELSE statements
 
 ### SYNTAX ELEMENTS
 
@@ -12828,22 +12665,23 @@ DICT->@READXML to transform the data into xml format
 
 ### EXAMPLE
 
-    READ rec FROM file,id THEN
+       READ rec FROM file,id THEN
           CRT rec
        END
        READXML xml FROM file,id THEN
           CRT xml
        END
 
-*Screen output*
+Screen output:
 
+<pre>
     CLIVE^PIPENSLIPPERS^999 LETSBE AVENUE
-    …
-    <?xml version="1.0" encoding="UTF-8"?>
-    <mycustomer>
-    <firstname>CLIVE</firstname>
-    <lastname>PIPENSLIPPERS</lastname>
-    <address>999 LETSBE AVENUE</address>
+    ...
+    &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+    &lt;mycustomer&gt;
+    &lt;firstname&gt;CLIVE&lt;/firstname&gt;
+    &lt;lastname&gt;PIPENSLIPPERS&lt;/lastname&gt;
+    &lt;address&gt;999 LETSBE AVENUE&lt;/address&gt;</pre>
 
 ## RECORDLOCKED
 
@@ -12930,25 +12768,25 @@ was invalid then the function returns -1.
 ### EXAMPLES
 
        String = "jBASE Software Inc."          ;* position of the character "t"
-       CRT REGEXP(String, "S[^t]*")            ;* in "Software" = 4
+       CRT REGEXP(String, 'S[^t]*')            ;* in "Software" = 4
     * find an exact value in a list
-       CRT REGEXP("051", "^(050|5001|051|053|265|4007|5007|037|060|098)$")   ;* 1
-       CRT REGEXP("05123", "^(050|5001|051|053|265|4007|5007|037|060|098)$") ;* 0
+       CRT REGEXP('051', '^(050|5001|051|053|265|4007|5007|037|060|098)$')   ;* 1
+       CRT REGEXP('05123', '^(050|5001|051|053|265|4007|5007|037|060|098)$') ;* 0
     * everything in range "000" - "999" except "037"
-       CRT REGEXP("036", "(0[0-24-9][0-9]|0[0-9][0-68-9]|[1-9][0-9][0-9])")  ;* 1
-       CRT REGEXP("037", "(0[0-24-9][0-9]|0[0-9][0-68-9]|[1-9][0-9][0-9])")  ;* 0
-       CRT REGEXP("137", "(0[0-24-9][0-9]|0[0-9][0-68-9]|[1-9][0-9][0-9])")  ;* 1
+       CRT REGEXP('036', '(0[0-24-9][0-9]|0[0-9][0-68-9]|[1-9][0-9][0-9])')  ;* 1
+       CRT REGEXP('037', '(0[0-24-9][0-9]|0[0-9][0-68-9]|[1-9][0-9][0-9])')  ;* 0
+       CRT REGEXP('137', '(0[0-24-9][0-9]|0[0-9][0-68-9]|[1-9][0-9][0-9])')  ;* 1
     * everything in range "000" - "999" except "037" and "057"
-       CRT REGEXP("036", "(0[0-246-9][0-9]|0[0-9][0-68-9]|[1-9][0-9][0-9])") ;* 1
-       CRT REGEXP("037", "(0[0-246-9][0-9]|0[0-9][0-68-9]|[1-9][0-9][0-9])") ;* 0
-       CRT REGEXP("057", "(0[0-246-9][0-9]|0[0-9][0-68-9]|[1-9][0-9][0-9])") ;* 0
-       CRT REGEXP("957", "(0[0-246-9][0-9]|0[0-9][0-68-9]|[1-9][0-9][0-9])") ;* 1
+       CRT REGEXP('036', '(0[0-246-9][0-9]|0[0-9][0-68-9]|[1-9][0-9][0-9])') ;* 1
+       CRT REGEXP('037', '(0[0-246-9][0-9]|0[0-9][0-68-9]|[1-9][0-9][0-9])') ;* 0
+       CRT REGEXP('057', '(0[0-246-9][0-9]|0[0-9][0-68-9]|[1-9][0-9][0-9])') ;* 0
+       CRT REGEXP('957', '(0[0-246-9][0-9]|0[0-9][0-68-9]|[1-9][0-9][0-9])') ;* 1
     * all 2-character country codes except "RS"
-       CRT REGEXP('RS', "([A-QS-Z][A-Z]|[R][A-RT-Z])")                       ;* 0
-       CRT REGEXP('AE', "([A-QS-Z][A-Z]|[R][A-RT-Z])")                       ;* 1
-       CRT REGEXP('RU', "([A-QS-Z][A-Z]|[R][A-RT-Z])")                       ;* 1
+       CRT REGEXP('RS', '([A-QS-Z][A-Z]|[R][A-RT-Z])')                       ;* 0
+       CRT REGEXP('AE', '([A-QS-Z][A-Z]|[R][A-RT-Z])')                       ;* 1
+       CRT REGEXP('RU', '([A-QS-Z][A-Z]|[R][A-RT-Z])')                       ;* 1
     * negative lookahead assertion isn't supported ("all not containing 'bar'")
-       CRT REGEXP("bar", '"^(?!.*?bar).*"')                                 ;* -1
+       CRT REGEXP('bar', '"^(?!.*?bar).*"')                                 ;* -1
 
 <a name="RELEASE"/>
 
@@ -13092,7 +12930,7 @@ case the jBC compiler will optimize the assignment.
 ### EXAMPLE
 
        X = "jBASE" :@VM: "is" :@VM: "great" :@FM: '!'
-       Y = REPLACE(X, 1, 2; "is really")
+       Y = REPLACE(X, 1, 2; 'is really')
        CRT FMT(X, 'MCP')                    ;*  jBASE]is]great^!
        CRT FMT(Y, 'MCP')                    ;*  jBASE]is really]great^!
 
@@ -13105,11 +12943,11 @@ subroutine/function or to a specific label in the program.
 
 ### COMMAND SYNTAX
 
-RETURN {TO label}
+    RETURN {TO label}
 
 or
 
-RETURN (expression)
+    RETURN(expression)
 
 ### SYNTAX ELEMENTS
 
@@ -13144,7 +12982,7 @@ specified channel.
 
 ### COMMAND SYNTAX
 
-REWIND {ON expression} THEN|ELSE statements
+    REWIND { ON expression } THEN | ELSE statements
 
 ### SYNTAX ELEMENTS
 
@@ -13176,7 +13014,7 @@ of a specified string.
 
 ### COMMAND SYNTAX
 
-RIGHT (expression, length)
+    RIGHT(expression, length)
 
 ### SYNTAX ELEMENTS
 
@@ -13197,17 +13035,16 @@ See also: [LEFT](#LEFT)
 
     S = "The world is my lobster"
 
-    CRT DQUOTE( RIGHT (S,7))
+    CRT DQUOTE( RIGHT(S,7))
     CRT DQUOTE( RIGHT(S,99) )
     CRT DQUOTE( RIGHT(S,0) )
 
 This code displays:
 
+<pre>
     "lobster"
-
     "The world is my lobster"
-
-    ""
+    ""</pre>
 
 ## RND
 
@@ -13215,7 +13052,7 @@ RND function allows the generation of random numbers by a program.
 
 ### COMMAND SYNTAX
 
-RND (expression)
+    RND(expression)
 
 ### SYNTAX ELEMENTS
 
@@ -13234,7 +13071,7 @@ See also: [ABS](#ABS)
 ### EXAMPLE
 
     FOR I=1 TO 20
-       CRT RND (100):", ":
+       CRT RND(100) : ", " :
     NEXT I
 
 prints 20 random numbers in the inclusive range 0 to 99.
@@ -13250,7 +13087,7 @@ RTNDATA clause of another program's [EXECUTE](#EXECUTE) statement.
 
 ### COMMAND SYNTAX
 
-RTNDATA expression
+    RTNDATA expression
 
 ### SYNTAX ELEMENTS
 
@@ -13274,7 +13111,7 @@ SADD function performs string addition of two base 10-string numbers.
 
 ### COMMAND SYNTAX
 
-SADD (expr1, expr2)
+    SADD(expr1, expr2)
 
 ### SYNTAX ELEMENTS
 
@@ -13292,11 +13129,11 @@ returned by SADD.
 
     A = 4000000000000000000000000000000
     B = 7
-    CRT SADD (A,B)
+    CRT SADD(A,B)
 
 Displays 4000000000000000000000000000007 to the screen
 
-    CRT SADD (4.33333333333333333,1.8)
+    CRT SADD(4.33333333333333333,1.8)
 
 Displays 6.13333333333333333 to the screen
 
@@ -13309,7 +13146,7 @@ and rounds the result to 14 decimal places.
 
 ### COMMAND SYNTAX
 
-SDIV (expr1, expr2)
+    SDIV(expr1, expr2)
 
 ### SYNTAX ELEMENTS
 
@@ -13328,11 +13165,11 @@ returned by SDIV.
 
     A = 2
     B = 3
-    CRT SDIV (A,B)
+    CRT SDIV(A,B)
 
 Displays 0.66666666666666 to the screen
 
-    CRT SDIV (355,113)
+    CRT SDIV(355,113)
 
 Displays 3.14159292035398 to the screen
 
@@ -13344,8 +13181,8 @@ or the end of the file.
 
 ### COMMAND SYNTAX
 
-SEEK file.variable [ , offset [ , relto] ]
-{THEN statements [ELSE statements] | ELSE statements}
+    SEEK file.variable [ , offset [ , relto] ] { THEN statements [ ELSE statements ]  \
+        | ELSE statements }
 
 ### SYNTAX ELEMENTS
 
@@ -13433,7 +13270,7 @@ variable.
 
 ### COMMAND SYNTAX
 
-SELECT {variable1} {TO variable2 | listnum} {SETTING setvar}
+    SELECT {variable1} { TO variable2 | listnum } { SETTING setvar }
 
 ### SYNTAX ELEMENTS
 
@@ -13501,10 +13338,10 @@ See also: the extensions for secondary indexes.
 
     OPEN "Customers" TO CustFvar ELSE ABORT 201, "Customers"
     SELECT CustFvar TO 2
-    DONE = 0
+    Done = 0
     LOOP
        READNEXT CustId FROM 2 ELSE Done = 1
-    UNTIL DONE DO
+    UNTIL Done DO
        GOSUB ProcessCust
     REPEAT
 
@@ -13530,7 +13367,7 @@ SEND statement sends a block of data directly to a device.
 
 ### COMMAND SYNTAX
 
-SEND output {:} TO FileVar THEN | ELSE statements
+    SEND output {:} TO FileVar THEN | ELSE statements
 
 ### SYNTAX ELEMENTS
 
@@ -13566,7 +13403,7 @@ device.
 
 ### COMMAND SYNTAX
 
-SENDX output {:} TO FileVar THEN | ELSE statements
+    SENDX output {:} TO FileVar THEN | ELSE statements
 
 ### SYNTAX ELEMENTS
 
@@ -13591,7 +13428,7 @@ See also: [SEND](#SEND)
 
 ### EXAMPLES
 
-See also: Sequential File Processing ###EXAMPLES.
+See: Sequential File Processing examples.
 
 ## SENTENCE
 
@@ -13600,7 +13437,7 @@ invoke it and the arguments it was given.
 
 ### COMMAND SYNTAX
 
-SENTENCE ({expression})
+    SENTENCE({expression})
 
 ### SYNTAX ELEMENTS
 
@@ -13622,7 +13459,7 @@ delimited.
 ### EXAMPLES
 
     DIM Parm(4)
-    ProgName = SENTENCE (0) ;* program is?
+    ProgName = SENTENCE(0) ;* program is?
     FOR I = 1 TO 4
        Parm(I) = SENTENCE(I) ;* get parameters
     NEXT I
@@ -13658,14 +13495,14 @@ sequences representing any Unicode values above 0x000000ff.
 ### EXAMPLE 2
 
     * C5A1: Unicode Character 'LATIN SMALL LETTER S WITH CARON'
-       CRT SEQ(ICONV('C5A1', 'MX'))
+       CRT SEQ( ICONV('C5A1', 'MX') )
        CRT ICONV('C5A1', 'MX')
 
 Output:
 
-353
-
-&#353;
+<pre>
+    353
+    &#353;</pre>
 
 ## SEQS
 
@@ -13674,7 +13511,7 @@ their numeric string equivalents.
 
 ### COMMAND SYNTAX
 
-SEQS (dynamic.array)
+    SEQS(dynamic.array)
 
 ### SYNTAX ELEMENTS
 
@@ -13695,12 +13532,15 @@ sequences representing any Unicode values above 0x000000ff.
 
 ### EXAMPLE
 
-    G="T":@VM:"G"
-    A=SEQS (G)
+    G = 'T' :@VM: "G"
+    A = SEQS(G)
     PRINT A
-    PRINT SEQS("G")
+    PRINT SEQS('G')
 
-The output of this program is: 84]71 71
+The output of this program is:
+
+<pre>
+    84]71 71</pre>
 
 ## SIN
 
@@ -13709,7 +13549,7 @@ expression.
 
 ### COMMAND SYNTAX
 
-SIN (expression)
+    SIN(expression)
 
 ### SYNTAX ELEMENTS
 
@@ -13724,9 +13564,9 @@ truncate the value according to the PRECISION of the program.
 
 ### EXAMPLE
 
-    CRT @ (-1):
+    CRT @(-1):
     FOR I = 0 TO 79
-    	    CRT @ (I,12+INT(SIN (360/80*(I+1))*10)):"*":
+       CRT @(I,12 + INT( SIN(360/80*(I+1))*10)) : "*" :
     NEXT I
 
 <a name="SLEEP"/>
@@ -13738,7 +13578,7 @@ period.
 
 ### COMMAND SYNTAX
 
-SLEEP {expression}
+    SLEEP {expression}
 
 ### SYNTAX ELEMENTS
 
@@ -13763,7 +13603,8 @@ will not wake up at the desired time;
 If invoking the debugger while a program is sleeping and the execution
 continued, the user will be prompted:
 
-    Continue with SLEEP (Y/N)?
+<pre>
+    Continue with SLEEP (Y/N)?</pre>
 
 If "N" is the response, the program will continue at the next statement
 after the SLEEP.
@@ -13775,7 +13616,7 @@ See also: MSLEEP to sleep for a specified number of milliseconds.
 Sleep until the end of the working day for anyone who doesn't program
 computers:
 
-    SLEEP "17:30”
+    SLEEP "17:30"
     * 40 winks...
     SLEEP 40
     * Sleep for two and a half seconds...
@@ -13790,7 +13631,7 @@ numbers.
 
 ### COMMAND SYNTAX
 
-SMUL (expr1, expr2)
+    SMUL(expr1, expr2)
 
 ### SYNTAX ELEMENTS
 
@@ -13808,24 +13649,24 @@ The PRECISION declaration does not affect the value returned by SMUL.
 
     A = 243603310027840922
     B = 3760
-    CRT SMUL (A,B)
+    CRT SMUL(A,B)
 
 Displays 915948445704681866720 to the screen
 
-    CRT SMUL (0.0000000000000475,3.61)
+    CRT SMUL(0.0000000000000475,3.61)
 
 Displays 0.0000000000001714 to the screen
 
-## SORT
+See also: Floating point Operations.
 
-See also: Floating point Operations
+## SORT
 
 The SORT function sorts all elements of a dynamic array in ascending
 left-justified order.
 
 ### COMMAND SYNTAX
 
-SORT (expression)
+    SORT(expression)
 
 ### SYNTAX ELEMENTS
 
@@ -13837,20 +13678,21 @@ it evaluates to a dynamic array.
 The dynamic array can contain any number and combination of system
 delimiters.
 
-The SORT () function will return an attribute-delimited array of the
+The SORT function will return an attribute-delimited array of the
 sorted elements.
 
 All system delimiters in expression will be converted to an attribute
 mark '0xFE' in the sorted result. For example, the following code
 
     MyArray = 'GEORGE':@VM:'FRED':@AM:'JOHN':@SM:'ANDY'
-    CRT SORT (MyArray)
+    CRT OCONV( SORT(MyArray), 'MCP')
 
-will return
+will display:
 
-    ANDY^FRED^GEORGE^JOHN
+<pre>
+    ANDY^FRED^GEORGE^JOHN</pre>
 
-where '^' is an attribute mark, '0xFE'. MyArray remains unchanged.
+MyArray remains unchanged.
 
 The SORT is achieved by the quick sort algorithm, which sorts in situ
 and is very fast.
@@ -13862,20 +13704,13 @@ use the currently configured locale to determine the rules by which
 each string is considered less than or greater than the other for
 sort purposes.
 
-### EXAMPLE
-
-    Read a list, sort it and write it back
-    *READ List FROM "Unsorted" ELSE List = "
-    List = SORT (List)
-    WRITE List ON "Sorted"
-
 ## SOUNDEX
 
 SOUNDEX function allows phonetic conversions of strings.
 
 ### COMMAND SYNTAX
 
-SOUNDEX (expression)
+    SOUNDEX(expression)
 
 ### SYNTAX ELEMENTS
 
@@ -13909,9 +13744,8 @@ foolproof should not be the sole method of identifying a word.
 ### EXAMPLE
 
     INPUT Lastname
-
-    Lastname = SOUNDEX (Lastname)
-    search the databases
+    Lastname = SOUNDEX(Lastname)
+    *search the databases
 
 ## SPACE
 
@@ -13919,7 +13753,7 @@ SPACE function generates a specific number of ASCII space characters.
 
 ### COMMAND SYNTAX
 
-SPACE (expression)
+    SPACE(expression)
 
 ### SYNTAX ELEMENTS
 
@@ -13933,7 +13767,7 @@ inefficient, accomplish this by using the [@](#@).
 
 ### EXAMPLES
 
-    TenSpaces = SPACE (10)
+    TenSpaces = SPACE(10)
 
 ## SPACES
 
@@ -13942,7 +13776,7 @@ composed of blank spaces.
 
 ### COMMAND SYNTAX
 
-SPACES (dynamic.array)
+    SPACES(dynamic.array)
 
 ### SYNTAX ELEMENTS
 
@@ -13958,7 +13792,7 @@ concatenated elements by the value of expression.
 
 ### COMMAND SYNTAX
 
-SPLICE (array1, expression, array2)
+    SPLICE(array1, expression, array2)
 
 ### SYNTAX ELEMENTS
 
@@ -13973,14 +13807,15 @@ for the entire dynamic array.
 
 ### EXAMPLE
 
-    A="A":@VM:"B":@SM:"C"
-    B="D":@SM:"E":@VM:"F"
-    C='-'
-    PRINT SPLICE (A,C,B)
+    A = "A" :@VM: "B" :@SM: "C"
+    B = "D" :@SM: "E" :@VM: "F"
+    C = '-'
+    PRINT SPLICE(A,C,B)
 
 The output of this program is:
 
-    A-D\-E]B-F\C-
+<pre>
+    A-D\-E]B-F\C-</pre>
 
 ## SPOOLER
 
@@ -13988,7 +13823,7 @@ SPOOLER function returns information from the jBASE spooler.
 
 ### COMMAND SYNTAX
 
-SPOOLER (n{, Port|User})
+    SPOOLER(n{, Port|User})
 
 ### SYNTAX ELEMENTS
 
@@ -14090,7 +13925,7 @@ SQRT function returns the mathematical square root of a value.
 
 ### COMMAND SYNTAX
 
-SQRT (expression)
+    SQRT(expression)
 
 ### SYNTAX ELEMENTS
 
@@ -14109,7 +13944,7 @@ See also: Floating point Operations
 ### EXAMPLES
 
     FOR I = 1 TO 1000000
-        J = SQRT (I)
+        J = SQRT(I)
     NEXT I
 
 <a name="SSELECT"/>
@@ -14130,11 +13965,11 @@ statement, which removes one record ID at a time from the list.
 
 ### COMMAND SYNTAX
 
-    SSELECT [variable] [TO list.number|select list] [ON ERROR statements]
+    SSELECT [variable] [ TO list.number|select list ] [ ON ERROR statements ]
 
-    SSELECTN [variable] [TO list.number] [ON ERROR statements]
+    SSELECTN [variable] [ TO list.number] [ ON ERROR statements ]
 
-    SSELECTV [variable] TO list.variable [ON ERROR statements]
+    SSELECTV [variable] TO list.variable [ ON ERROR statements ]
 
 **variable** can specify a dynamic array or a file variable. If
 it specifies a dynamic array, the record IDs must be separated by
@@ -14208,11 +14043,13 @@ Using SSELECTV to sort a dynamic array:
 
 Sample output:
 
-    Got strings from AALUKTJZ to ZZQTIWFQ
+<pre>
+    Got strings from AALUKTJZ to ZZQTIWFQ</pre>
 
 Or:
 
-    Got strings from AAGPKJJP to ZZTMYNNX
+<pre>
+    Got strings from AAGPKJJP to ZZTMYNNX</pre>
 
 ## SSELECTN
 
@@ -14228,7 +14065,7 @@ SSUB function performs string subtraction of two base 10-string numbers.
 
 ### COMMAND SYNTAX
 
-SSUB (expr1, expr2)
+    SSUB(expr1, expr2)
 
 ### SYNTAX ELEMENTS
 
@@ -14248,7 +14085,7 @@ See also: Floating Point Operations
 
     A = 2.3000000123456789
     B = 5.0000000000000001
-    CRT SSUB (A,B)
+    CRT SSUB(A,B)
 
 Displays -2.69999998765432 to the screen.
 
@@ -14283,7 +14120,7 @@ Value = Operating System error code if previous command failed
 
 ### COMMAND SYNTAX
 
-STATUS()
+    STATUS()
 
 ### DESCRIPTION
 
@@ -14330,7 +14167,7 @@ it to an array.
 
 ### COMMAND SYNTAX
 
-    STATUS array FROM variable THEN statements ELSE statements|ELSE statements
+    STATUS array FROM variable THEN statements ELSE statements | ELSE statements
 
 ### SYNTAX ELEMENTS
 
@@ -14410,7 +14247,7 @@ STR function allows the duplication of a string a number of times.
 
 ### COMMAND SYNTAX
 
-STR (expression1, expression2)
+    STR(expression1, expression2)
 
 ### SYNTAX ELEMENTS
 
@@ -14422,7 +14259,7 @@ the number of times the string will be duplicated.
 
 ### EXAMPLE
 
-    LongString = STR ("long string ", 999)
+    LongString = STR('long string ', 999 )
 
 ## STRS
 
@@ -14431,7 +14268,7 @@ specified number of repetitions of each element of dynamic.array.
 
 ### COMMAND SYNTAX
 
-STRS (dynamic.array, repeat)
+    STRS(dynamic.array, repeat)
 
 **dynamic.array** is an expression that evaluates to the strings
 to be generated.
@@ -14448,12 +14285,13 @@ enters the debugger.
 
 ### EXAMPLES
 
-    ABC="A":@VM:"B":@VM:"C"
-    PRINT STRS (ABC,3)
+    ABC= "A" :@VM: "B" :@VM: "C"
+    PRINT STRS(ABC,3)
 
 The output of this program is:
 
-    AAA]BBB]CCC
+<pre>
+    AAA]BBB]CCC</pre>
 
 ## SUBROUTINE
 
@@ -14463,7 +14301,7 @@ parameters to the compiler.
 
 ### COMMAND SYNTAX
 
-SUB{ROUTINE} Name {({MAT} variable{,{MAT} variable...})}
+    SUB{ROUTINE} Name {({ MAT } variable{,{ MAT } variable...})}
 
 ### SYNTAX ELEMENTS
 
@@ -14519,7 +14357,7 @@ array argument.
 
 ### COMMAND SYNTAX
 
-SUBS(DynArr1, DynArr2)
+    SUBS(DynArr1, DynArr2)
 
 ### SYNTAX ELEMENTS
 
@@ -14539,7 +14377,7 @@ error.
 
 The variable S is assigned the value:
 
-  0 : @VM : -5 : @VM : -3 : @VM : -62 : @SVM : 27 : @VM : -15
+    0 : @VM : -5 : @VM : -3 : @VM : -62 : @SVM : 27 : @VM : -15
 
 ## SUBSTRINGS
 
@@ -14548,7 +14386,7 @@ sub-strings of the corresponding elements in a supplied dynamic array.
 
 ### COMMAND SYNTAX
 
-SUBSTRINGS (DynArr, Start, Length)
+    SUBSTRINGS(DynArr, Start, Length)
 
 ### SYNTAX ELEMENTS
 
@@ -14576,9 +14414,9 @@ changed with the FIELDS function.
 
     t = ""
     t<1> = "AAAAA"
-    t<2> = "BBBBB" : @VM: "CCCCC" : @SVM: "DDDDD"
-    t<3> = "EEEEE":@VM:@SVM
-    r1 = SUBSTRINGS (t,3,2)
+    t<2> = "BBBBB" :@VM: "CCCCC" : @SM: "DDDDD"
+    t<3> = "EEEEE" :@VM: @SM
+    r1 = SUBSTRINGS(t,3,2)
     r2 = SUBSTRINGS(t,4,20)
     r3 = SUBSTRINGS(t,0,1)
 
@@ -14622,15 +14460,15 @@ Non-numeric sub-values, values and attributes are ignored.
 ### EXAMPLES
 
        V.ARRAY = 1 :@FM: 2 :@FM: 3.1
-       CRT FMT(SUM(V.ARRAY), 'MCP')         ;*  6.1
+       CRT FMT( SUM(V.ARRAY), 'MCP' )         ;*  6.1
        V.ARRAY<4> = 6
-       CRT FMT(SUM(V.ARRAY), 'MCP')         ;*  12.1
+       CRT FMT( SUM(V.ARRAY), 'MCP' )         ;*  12.1
        V.ARRAY<4,2> = 7
-       CRT FMT(SUM(V.ARRAY), 'MCP')         ;*  1^2^3.1^13
+       CRT FMT( SUM(V.ARRAY), 'MCP' )         ;*  1^2^3.1^13
        V.ARRAY<4,3> = 'QWERTY'
-       CRT FMT(SUM(V.ARRAY), 'MCP')         ;*  still 1^2^3.1^13
+       CRT FMT( SUM(V.ARRAY), 'MCP' )         ;*  still 1^2^3.1^13
        V.ARRAY<4,3,2> = 8
-       CRT FMT(SUM(V.ARRAY), 'MCP')         ;*  1^2^3.1^6]7]8
+       CRT FMT( SUM(V.ARRAY), 'MCP' )         ;*  1^2^3.1^6]7]8
 
 ## SWAP
 
@@ -14639,7 +14477,7 @@ one string with another
 
 ### COMMAND SYNTAX
 
-SWAP (variable, expression1, expression2)
+    SWAP(variable, expression1, expression2)
 
 ### SYNTAX ELEMENTS
 
@@ -14663,8 +14501,8 @@ See also: [CHANGE](#CHANGE) function.
     String1 = "Jim"
     String2 = "James"
     Variable = "Pick up the tab Jim"
-    CRT SWAP ( Variable, String1, String2)
-    CRT SWAP( Variable, "tab", "check")
+    CRT SWAP(Variable, String1, String2)
+    CRT SWAP(Variable, 'tab', 'check')
 
 ## System Functions
 
@@ -14939,7 +14777,7 @@ TAN function returns the mathematical tangent of an angle.
 
 ### COMMAND SYNTAX
 
-TAN (expression)
+    TAN(expression)
 
 ### SYNTAX ELEMENTS
 
@@ -14955,8 +14793,7 @@ after calculation.
 
     Adjacent = 42
     Angle = 34
-
-    CRT "Opposite length = ":TAN (Angle)*Adjacent
+    CRT "Opposite length = " : TAN(Angle)*Adjacent
 
 ## TIME
 
@@ -14964,14 +14801,13 @@ TIME() function returns the current system time.
 
 ### COMMAND SYNTAX
 
-TIME ()
+    TIME()
 
 ### NOTES
 
 Returns the time as the number of seconds past midnight
 
-### EXAMPLES
-
+### EXAMPLE
 
     CRT "Time is " : OCONV( TIME(), "MTS" )
 
@@ -14984,7 +14820,7 @@ string.
 
 ### COMMAND SYNTAX
 
-TIMEDATE ()
+    TIMEDATE()
 
 ### NOTES
 
@@ -14993,7 +14829,7 @@ in the appropriate format for your international date setting.
 
 ### EXAMPLES
 
-    CRT "The time and date is ":TIMEDATE ()
+    CRT "The time and date is " : TIMEDATE()
 
 ## TIMEDIFF
 
@@ -15002,7 +14838,7 @@ array.
 
 ### COMMAND SYNTAX
 
-Time Diff(Timestamp1, Timestamp2,Mask)
+    TIMEDIFF(Timestamp1, Timestamp2, Mask)
 
 ### SYNTAX ELEMENTS
 
@@ -15031,7 +14867,7 @@ terminate a [READSEQ](#READSEQ) or [READBLK](#READBLK) statement.
 
 ### COMMAND SYNTAX
 
-TIMEOUT file.variable, time
+    TIMEOUT file.variable, time
 
 ### SYNTAX ELEMENTS
 
@@ -15051,8 +14887,8 @@ statement fails and the program enters the debugger.
 ### EXAMPLES
 
     TIMEOUT SLIPPERS, 10
-    READBLK VAR1 FROM SLIPPERS, 15 THEN PRINT VAR1 ELSE
-    PRINT "TIMEOUT OCCURRED"
+    READBLK Var1 FROM SLIPPERS, 15 THEN PRINT Var1 ELSE
+       PRINT "TIMEOUT OCCURRED"
     END
 
 ## TIMESTAMP
@@ -15080,8 +14916,8 @@ of a second."
 
        V.TS = TIMESTAMP()
        CRT V.TS                     ;* e.g. 1352316687.1156
-       CRT (MAKETIMESTAMP(DATE(), TIME(), 'Europe/Amsterdam') - V.TS) / 3600 ;* -1
-       CRT (MAKETIMESTAMP(DATE(), TIME(), 'Asia/Singapore') - V.TS) / 3600   ;* -8
+       CRT ( MAKETIMESTAMP( DATE(), TIME(), 'Europe/Amsterdam') - V.TS ) / 3600 ;* -1
+       CRT ( MAKETIMESTAMP( DATE(), TIME(), 'Asia/Singapore') - V.TS ) / 3600   ;* -8
 
 ## TRANS
 
@@ -15090,7 +14926,7 @@ of the file, the record key, the field number, and an action code.
 
 ### COMMAND SYNTAX
 
-TRANS ([DICT] filename, key, field#, action.code)
+    TRANS([ DICT ] filename, key, field#, action.code)
 
 ### SYNTAX ELEMENTS
 
@@ -15135,19 +14971,20 @@ record with the record key of "12345" and which contains the value of
 "ABC Company" in field 1,
 
     VENDOR.ID = "12345"
-    VENDOR.NAME = TRANS ("VENDORS",VENDOR.ID,1,"X")
+    VENDOR.NAME = TRANS('VENDORS', VENDOR.ID, 1 , 'X')
     CRT VENDOR.NAME
 
 will display: ABC Company
 
 Retrieval of an array:  Suppose field 6 of the VENDORS file contains a
-multivalued list of purchase order numbers, such as
+multivalued list of purchase order numbers, such as:
 
-    10011]10062]10079
+<pre>
+    10011]10062]10079</pre>
 
 use the TRANS function to retrieve it:
 
-    PO.LIST = TRANS ("VENDORS",VENDOR.ID,6,"X")
+    PO.LIST = TRANS('VENDORS', VENDOR.ID, 6, 'X')
     CRT PO.LIST
 
 will display: 10011\10062\10079
@@ -15158,6 +14995,7 @@ indicating that the delimiter is now CHAR(252).
 Retrieval of an entire dictionary item: Given a dictionary item
 called "VENDOR.NAME" with the following content:
 
+<pre>
     001 A
     002 1
     003 Vendor Name
@@ -15167,17 +15005,18 @@ called "VENDOR.NAME" with the following content:
     007
     008
     009 L
-    010 30
+    010 30</pre>
 
 these statements
 
-    DICT.ID = "VENDOR.NAME"
-    DICT.REC = TRANS ("DICT VENDORS",VENDOR.ID,-1,"C")
-    PRINT DICT.REC
+    DIC.ID = "VENDOR.NAME"
+    DIC.REC = TRANS('DICT VENDORS', DIC.ID, -1, 'C')
+    PRINT DIC.REC
 
 will display
 
-    A]1]Vendor Name]]]]]L]30
+<pre>
+    A]1]Vendor Name]]]]]L]30</pre>
 
 <a name="TRANSABORT"/>
 
@@ -15188,7 +15027,7 @@ reverse any updates to the database.
 
 ### COMMAND SYNTAX
 
-    TRANSABORT {abort-text} [THEN statement | ELSE statement]
+    TRANSABORT {abort-text} [ THEN statement | ELSE statement ]
 
 ### SYNTAX ELEMENTS
 
@@ -15213,7 +15052,7 @@ completed transaction.
 
 ### COMMAND SYNTAX
 
-    TRANSEND {end-text} [THEN statement | ELSE statement]
+    TRANSEND {end-text} [ THEN statement | ELSE statement ]
 
 ### SYNTAX ELEMENTS
 
@@ -15258,7 +15097,7 @@ beginning of a transaction.
 
 ### COMMAND SYNTAX
 
-    TRANSTART {SYNC}{start-text} [THEN statement | ELSE statement]
+    TRANSTART { SYNC }{start-text} [ THEN statement | ELSE statement ]
 
 ### SYNTAX ELEMENTS
 
@@ -15299,13 +15138,11 @@ Write to file without transactions:
 
 Output: LIST will show the same results both times:
 
-    LIST F.TEMP *A1 *A2 *A3
-
-    DICT F.TEMP...    *A1...........    *A2...........    *A3...........
-
+<pre>
+    **LIST F.TEMP &lowast;A1 &lowast;A2 &lowast;A3**
+    DICT F.TEMP...    &lowast;A1...........    &lowast;A2...........    &lowast;A3...........
     REC1              LINE 1            LINE 2            LINE 3
-
-     1 Records Listed
+     1 Records Listed</pre>
 
 Write to file in a transaction:
 
@@ -15328,22 +15165,15 @@ Write to file in a transaction:
 
 Until transaction is over -- no records will be shown:
 
-    LIST F.TEMP *A1 *A2 *A3
-
-    DICT F.TEMP...    *A1...........    *A2...........    *A3...........
-
-
+<pre>
+    **LIST F.TEMP &lowast;A1 &lowast;A2 &lowast;A3**
+    DICT F.TEMP...    &lowast;A1...........    &lowast;A2...........    &lowast;A3...........
      No Records Listed
-
     Press any key to continue
-
-    LIST F.TEMP *A1 *A2 *A3
-
-    DICT F.TEMP...    *A1...........    *A2...........    *A3...........
-
+    **LIST F.TEMP &lowast;A1 &lowast;A2 &lowast;A3**
+    DICT F.TEMP...    &lowast;A1...........    &lowast;A2...........    &lowast;A3...........
     REC1              LINE 1            LINE 2            LINE 3
-
-     1 Records Listed
+     1 Records Listed</pre>
 
 ### EXAMPLE 2
 
@@ -15363,14 +15193,12 @@ Until transaction is over -- no records will be shown:
 
 Output:
 
-    LIST F.TEMP *A1 *A2 *A3
-
-    DICT F.TEMP...    *A1...........    *A2...........    *A3...........
-
+<pre>
+    **LIST F.TEMP &lowast;A1 &lowast;A2 &lowast;A3**
+    DICT F.TEMP...    &lowast;A1...........    &lowast;A2...........    &lowast;A3...........
     REC1              LINE 1            LINE 2            LINE 3
     REC3              LINE 1            LINE 2            LINE 3
-
-     2 Records Listed
+     2 Records Listed</pre>
 
 <a name="TRIM"/>
 
@@ -15433,7 +15261,7 @@ from each element of dynamic.array.
 
 ### COMMAND SYNTAX
 
-TRIMBS (dynamic.array)
+    TRIMBS(dynamic.array)
 
 TRIMBS removes all trailing spaces and tabs from each element and
 reduces multiple occurrences of spaces and tabs to a single space
@@ -15453,7 +15281,7 @@ from each element of dynamic.array.
 
 ### COMMAND SYNTAX
 
-TRIMFS (dynamic.array)
+    TRIMFS(dynamic.array)
 
 TRIMFS removes all leading spaces and tabs from each element and
 reduces multiple occurrences of spaces and tabs to a single space or
@@ -15462,11 +15290,7 @@ tab.
 If dynamic.array evaluates to null, it returns null. If any
 element of dynamic.array is null, it returns null for that value.
 
-<a name="JBCFUNCUX"/>
-
 # jBC Functions and Statements (U - X)
-
-<!-- [Previous (P - T)](#JBCFUNCPT) -->
 
 <a name="UNASSIGNED"/>
 
@@ -15522,17 +15346,18 @@ also known as GUID (Globally Unique IDentifier).
 ### EXAMPLE
 
        FOR V.I = 1 TO 5
-          CRT FMT(DOWNCASE(FMT(UNIQUEKEY(), 'MX')),   \
+          CRT FMT( DOWNCASE( FMT( UNIQUEKEY(), 'MX')),   \
                 'L(########-####-####-############)')
        NEXT V.I
 
 Sample output:
 
+<pre>
     41505741-4141-4445-7935727a6a35
     41505741-4141-4445-7935727a6a36
     41505741-4141-4445-7935727a6a37
     41505741-4141-4445-7935727a6a38
-    41505741-4141-4445-7935727a6a39
+    41505741-4141-4445-7935727a6a39</pre>
 
 ## UNLOCK
 
@@ -15540,7 +15365,7 @@ UNLOCK statement releases a previously LOCKed execution lock.
 
 ### COMMAND SYNTAX
 
-UNLOCK {expression}
+    UNLOCK {expression}
 
 ### SYNTAX ELEMENTS
 
@@ -15571,7 +15396,7 @@ See also: [EXECUTE](#EXECUTE)
 
 ## UPCASE
 
-See also: [DOWNCASE](#DOWNCASE)
+See: [DOWNCASE](#DOWNCASE)
 
 <a name="UTF8"/>
 
@@ -15582,7 +15407,7 @@ equivalent byte sequence.
 
 ### COMMAND SYNTAX
 
-UTF8 (expression)
+    UTF8(expression)
 
 ### SYNTAX ELEMENTS
 
@@ -15604,7 +15429,7 @@ executed a PAUSE statement.
 
 ### COMMAND SYNTAX
 
-WAKE PortNumber
+    WAKE PortNumber
 
 ### SYNTAX ELEMENTS
 
@@ -15619,7 +15444,7 @@ tape device.
 
 ### COMMAND SYNTAX
 
-WEOF {ON expression}
+    WEOF { ON expression }
 
 ### SYNTAX ELEMENTS
 
@@ -15657,7 +15482,7 @@ WEOFSEQ truncates a file opened for sequential access.
 
 ### COMMAND SYNTAX
 
-    WEOFSEQ FileVar {THEN | ELSE Statements}
+    WEOFSEQ FileVar { THEN | ELSE Statements }
 
 ### SYNTAX ELEMENTS
 
@@ -15696,7 +15521,8 @@ opened file.
 
 ### COMMAND SYNTAX
 
-    WRITE variable1 ON|TO {variable2,} expression {SETTING setvar} {ON ERROR statements}
+    WRITE variable1 ON | TO {variable2,} expression { SETTING setvar }  \
+          { ON ERROR statements }
 
 ### SYNTAX ELEMENTS
 
@@ -15749,7 +15575,8 @@ sequential processing.
 
 ### COMMAND SYNTAX
 
-    WRITEBLK expression ON|TO file.variable {THEN statements [ELSE statements] | ELSE statements}
+    WRITEBLK expression ON | TO file.variable { THEN statements [ ELSE statements ]  \
+           | ELSE statements}
 
 ### SYNTAX ELEMENTS
 
@@ -15828,7 +15655,7 @@ the global list file.
 
 ### COMMAND SYNTAX
 
-    WRITELIST variable ON|TO expression {SETTING setvar} {ON ERROR statements}
+    WRITELIST variable ON | TO expression { SETTING setvar } { ON ERROR statements }
 
 ### SYNTAX ELEMENTS
 
@@ -15869,7 +15696,7 @@ WRITESEQ writes data to a file opened for sequential access.
 
 ### COMMAND SYNTAX
 
-    WRITESEQ Expression {APPEND} ON|TO FileVar THEN | ELSE statements
+    WRITESEQ Expression { APPEND } ON | TO FileVar THEN | ELSE statements
 
 ### SYNTAX ELEMENTS
 
@@ -15924,8 +15751,8 @@ executed.
 
 ### SYNTAX
 
-WRITESEQF expression {ON | TO} file.variable [ON ERROR statements]
-{THEN statements [ELSE statements] | ELSE statements}
+    WRITESEQF expression { ON | TO } file.variable [ ON ERROR statements ]  \
+              { THEN statements [ ELSE statements ] | ELSE statements }
 
 The sequential file must be open, and the end-of-file marker must be
 reached before you can write to the file. You can use the
@@ -15974,7 +15801,7 @@ devices between 0-9.
 
 ### COMMAND SYNTAX
 
-WRITET variable {ON|TO expression} THEN|ELSE statements
+    WRITET variable { ON | TO expression } THEN | ELSE statements
 
 ### SYNTAX ELEMENTS
 
@@ -16012,11 +15839,11 @@ tape devices for instance).
 ### EXAMPLE
 
     LOOP
-        WRITET TapeRec ON 5 ELSE
-           Reason = SYSTEM(0)
-            IF Reason = 2 THEN BREAK ;* done
-            CRT "ERROR"; STOP
-    END
+       WRITET TapeRec ON 5 ELSE
+          Reason = SYSTEM(0)
+          IF Reason = 2 THEN BREAK ;* done
+          CRT "ERROR"  ;  STOP
+       END
     REPEAT
 
 <a name="WRITEU"/>
@@ -16029,7 +15856,8 @@ preserved.
 
 ### COMMAND SYNTAX
 
-    WRITEU variable1 ON|TO {variable2,} expression {SETTING setvar} {ON ERROR statements}
+    WRITEU variable1 ON | TO {variable2,} expression { SETTING setvar }  \
+           { ON ERROR statements }
 
 ### SYNTAX ELEMENTS
 
@@ -16102,7 +15930,8 @@ of a record in a previously opened file.
 
 ### COMMAND SYNTAX
 
-WRITEV variable1 ON|TO {variable2,} expression1, expression2 {SETTING setvar} {ON ERROR statements}
+    WRITEV variable1 ON | TO {variable2,} expression1, expression2 { SETTING setvar }  \
+           { ON ERROR statements }
 
 ### SYNTAX ELEMENTS
 
@@ -16141,11 +15970,11 @@ record, do so explicitly with the WRITEVU statement.
 
     OPEN "Customers" ELSE ABORT 201, "Customers"
     OPEN "DICT Customers" TO DCusts ELSE
-        ABORT 201, "DICT Customers"
+       ABORT 201, "DICT Customers"
     END
-    WRITEV Rec ON DCusts, "Xref",7 Setting Err ON ERROR
-        CRT "I/O Error[":Err:"]"
-        ABORT
+    WRITEV Rec ON DCusts, 'Xref',7 Setting Err ON ERROR
+       CRT "I/O Error[" :Err: "]"
+       ABORT
     END
 
 <a name="WRITEVU"/>
@@ -16158,7 +15987,8 @@ be preserved.
 
 ### COMMAND SYNTAX
 
-WRITEVU variable1 ON|TO {variable2,} expression1, expression2 {SETTING setvar} {ON ERROR statements}
+    WRITEVU variable1 ON | TO {variable2,} expression1, expression2 { SETTING setvar }  \
+            { ON ERROR statements }
 
 ### SYNTAX ELEMENTS
 
@@ -16210,28 +16040,28 @@ See also: [MATWRITEU](#MATWRITEU), [RELEASE](#RELEASE),
 
     OPEN "Customers" ELSE ABORT 201, "Customers"
     OPEN "DICT Customers" TO DCusts ELSE
-        ABORT 201, "DICT Customers"
+       ABORT 201, "DICT Customers"
     END
-    WRITEVU Rec ON DCusts, "Xref",1 SETTING Err ON ERROR
-        CRT "I/O Error[":Err:"]"
-    ABORT
+    WRITEVU Rec ON DCusts, 'Xref', 1 SETTING Err ON ERROR
+       CRT "I/O Error[" :Err: "]"
+       ABORT
     END
 
 <a name="WRITEXML"/>
 
 ## WRITEXML##
 
-WRITEXML rec ON file,id ELSE STOP 210,id
+Use WRITEXML to write an XML record to a hashed file.
 
-Write a dynamic array in xml format using a style sheet from the
-DICT
+### COMMAND SYNTAX
 
-Use WRITEXML to write an XML record to a hash file
+    WRITEXML rec ON file,id ELSE statements | ON ERROR statements
 
-Transforms the XML into a dynamic array before being written to
-the file
+Writes a dynamic array in xml format using a style sheet from the
+DICT; transforms the XML into a dynamic array before being written to
+the file.
 
-The transform takes place using the style sheet in DICT->@WRITEXML
+The transform takes place using the style sheet in DICT (record @WRITEXML).
 
 ### EXAMPLE
 
@@ -16246,7 +16076,7 @@ name of the file, the record key, the field number, and an action code.
 
 ### COMMAND SYNTAX
 
-XLATE ([DICT] filename, key, field#, action.code)
+    XLATE([ DICT ] filename, key, field#, action.code)
 
 ### SYNTAX ELEMENTS
 
@@ -16289,7 +16119,7 @@ a record with the record key of "12345" and which contains the value of
 "ABC Company" in field 1,
 
     VENDOR.ID = "12345"
-    VENDOR.NAME = XLATE("VENDORS",VENDOR.ID,1,"X")
+    VENDOR.NAME = XLATE('VENDORS', VENDOR.ID, 1, 'X')
     CRT VENDOR.NAME
 
 will display: ABC Company
@@ -16297,11 +16127,12 @@ will display: ABC Company
 Retrieval of an array:  Suppose field 6 of the VENDORS file contains a
 multivalued list of purchase order numbers, such as
 
-10011]10062]10079
+<pre>
+    10011]10062]10079</pre>
 
 use the XLATE function to retrieve it:
 
-    PO.LIST = XLATE("VENDORS",VENDOR.ID,6,"X")
+    PO.LIST = XLATE('VENDORS', VENDOR.ID, 6, 'X')
     CRT PO.LIST
 
 will display: 10011\10062\10079
@@ -16312,6 +16143,7 @@ that the delimiter is now CHAR(252).
 Retrieval of an entire dictionary item:  Given a dictionary item called
 "VENDOR.NAME" with the following content:
 
+<pre>
     001 A
     002 1
     003 Vendor Name
@@ -16321,19 +16153,18 @@ Retrieval of an entire dictionary item:  Given a dictionary item called
     007
     008
     009 L
-
-    010 30
+    010 30</pre>
 
 these statements
 
     DICT.ID = "VENDOR.NAME"
-    DICT.REC = XLATE("DICT VENDORS",VENDOR.ID,-1,"C")
-
+    DICT.REC = XLATE('DICT VENDORS', VENDOR.ID, -1, 'C')
     PRINT DICT.REC
 
 will display
 
-    A]1]Vendor Name]]]]]L]30
+<pre>
+    A]1]Vendor Name]]]]]L]30</pre>
 
 <a name="XMLTODYN"/>
 
@@ -16343,7 +16174,7 @@ XMLTODYN converts the XML to a dynamic array using the optional XSL.
 
 ### COMMAND SYNTAX
 
-XMLTODYN(XML,XSL,result)
+    XMLTODYN(XML, XSL, result)
 
 ### SYNTAX ELEMENTS
 
@@ -16357,49 +16188,52 @@ There is no requirement for xsl if you are reconverting from generic xml
 to dynarray
 
     a = "Tom" : @AM : "Dick" : @AM : "Harry"
-	  xml = DYNTOXML(a,"",result)
-	  b = XMLTODYN(xml,"",result
-	  CRT CHANGE(b	,@AM," ")
+    xml = DYNTOXML(a, '', result)
+    b = XMLTODYN(xml, '', result
+    CRT CHANGE(b, @AM, ' ')
 
-*SCREEN OUTPUT*
+Screen output:
 
-    Tom Dick Harry
+<pre>
+    Tom Dick Harry</pre>
 
 If passing a stylesheet in the second parameter, it performs a transform
 to give a different format of the array.
 
 *XML CONTENTS*
 
-    <?xml version="1.0" encoding="UTF-8"?>
-    <mycustomer>
-      <firstname>Tom</firstname>
-      <lastname>Dick</lastname>
-      <address>Harry</address>
-    </mycustomer>
+<pre>
+    &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+    &lt;mycustomer&gt;
+      &lt;firstname&gt;Tom&lt;/firstname&gt;
+      &lt;lastname&gt;Dick&lt;/lastname&gt;
+      &lt;address&gt;Harry&lt;/address&gt;
+    &lt;/mycustomer></pre>
 
 ### EXAMPLE
 
-    a = XMLTODYN(xml,xsl,rc)
-    CRT CHANGE(a,@AM," ")
+    a = XMLTODYN(xml, xsl, rc)
+    CRT CHANGE(a, @AM, ' ')
 
 ### XSL CONTENTS
 
-    <xsl:template match="mycustomer">
-    <array>
-    <xsl:apply-templates/>
-    </array>
-    </xsl:template>
-    <xsl:template match="firstname">
-    <data>
-    <xsl:attribute name="attribute">1</xsl:attribute>
-    <xsl:attribute name="value">
-	  <xsl:number level="single"/>
-    </xsl:attribute>
-    <xsl:attribute name="subvalue">1</xsl:attribute>
-    <xsl:value-of select="."/>
-    </data>
-    </xsl:template>
-    Etc
+<pre>
+    &lt;xsl:template match="mycustomer"&gt;
+    &lt;array&gt;
+    &lt;xsl:apply-templates/&gt;
+    &lt;/array&gt;
+    &lt;/xsl:template&gt;
+    &lt;xsl:template match="firstname"&gt;
+    &lt;data&gt;
+    &lt;xsl:attribute name="attribute"&gt;1&lt;/xsl:attribute&gt;
+    &lt;xsl:attribute name="value"&gt;
+	  &lt;xsl:number level="single"/&gt;
+    &lt;/xsl:attribute&gt;
+    &lt;xsl:attribute name="subvalue"&gt;1&lt;/xsl:attribute&gt;
+    &lt;xsl:value-of select="."/&gt;
+    &lt;/data&gt;
+    &lt;/xsl:template&gt;
+    Etc</pre>
 
 <a name="XMLTOXML"/>
 
@@ -16409,34 +16243,36 @@ XMLTOXML transforms the XML using the XSL.
 
 ### COMMAND SYNTAX
 
-XMLTOXML(xml,xsl,result)
+    XMLTOXML(xml,xsl,result)
 
 ### SYNTAX ELEMENTS
 
-If result=0, newxml will contain a transformed version of xml using xsl
+If result=0, newxml will contain a transformed version of xml using xsl.
 
-If result=1, newxml will hold an error message
+If result=1, newxml will hold an error message.
 
 *XSL CONTENTS*
 
-    <?xml version="1.0" ?>
-    <xsl:stylesheet version="1.0"
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-    <xsl:template match="person">
-    <p><xsl:value-of select="name" /></p>
-    </xsl:template>
-    </xsl:stylesheet>
+<pre>
+    &lt;?xml version="1.0" ?&gt;
+    &lt;xsl:stylesheet version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"&gt;
+    &lt;xsl:template match="person"&gt;
+    &lt;p&gt;&lt;xsl:value-of select="name" /&gt;&lt;/p&gt;
+    &lt;/xsl:template&gt;
+    &lt;/xsl:stylesheet&gt;</pre>
 
 *XML CONTENTS*
 
-    <list>
-    <person>
-	    <name>Bob</name>
-    </person>
-    <person>
-	    <name>Amy</name>
-    </person>
-    <list>
+<pre>
+    &lt;list&gt;
+    &lt;person&gt;
+	    &lt;name&gt;Bob&lt;/name&gt;
+    &lt;/person&gt;
+    &lt;person&gt;
+	    &lt;name&gt;Amy&lt;/name&gt;
+    &lt;/person&gt;
+    &lt;/list&gt;</pre>
 
 ### EXAMPLE
 
@@ -16445,7 +16281,8 @@ If result=1, newxml will hold an error message
 
 *SCREEN OUTPUT*
 
-    <p>Bob</p><p>Amy</p>
+<pre>
+    &lt;p&gt;Bob&lt;/p&gt;&lt;p&gt;Amy&lt;/p&gt;</pre>
 
 <a name="XTD"/>
 
@@ -16455,7 +16292,7 @@ XTD function converts hexadecimal numbers into its decimal equivalent.
 
 ### COMMAND SYNTAX
 
-XTD(expression)
+    XTD(expression)
 
 ### SYNTAX ELEMENTS
 
@@ -16474,6 +16311,8 @@ See also: [DTX](#DTX).
     CRT XTD(A)
 
 # Embedded SQL for jBC
+
+## Introduction to embedded SQL
 
 The name "SQL" is an abbreviation for "Structured Query Language". The
 SQL language enables the defining, manipulating and controlling of data
