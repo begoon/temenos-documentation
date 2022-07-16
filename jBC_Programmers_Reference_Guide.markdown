@@ -7,7 +7,9 @@ jBC is a programming language that is used in jBASE post-relational
 converts the source code to C which in turn is compiled for the target platform
 with the usage of standard C compiler.
 
-Thos is unofficial document; use it at your own risk - like TAFC :))
+For TAFJ it is converted to Java code rather than to C.
+
+This is unofficial document; use it at your own risk - like TAFC :)) .. no, no joke - read its license agreement carefully.
 
 ### Latest changes
 
