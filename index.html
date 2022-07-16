@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>jBC</title>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="index.css">
+<link href="data:image/x-icon;base64,AAABAAEAEBAAAAAAAABoBQAAFgAAACgAAAAQAAAAIAAAAAEACAAAAAAAQAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////ALaKNwDk1YgAlVMAAMKWdgDu4cgA07lmAKRoJgDexqoAxaJOAM6rjQC2gmAA+PPgAOzirgDcyXUAsXxKAJ9jEADcxZQAzq54AK16JwDAl10AvJREAK14OADp3Z4Ay61eAPz58ADWuZwA9O7OAOfWwADdyYQA2L2KAPDmvADhzZ0Au49UAKlwLwDKpm8At4dLANO2gQCaWwgAqHMfAObVpgCjaxcA4dF9AMqkhQDiz68AvpBvAOfalQD28NcA8unFAN3FnwDJqlYA+vbpAMOfVQD9/PcAvJJNAO7kzwDAmkYA7uO0AOrcrwCmay0A49CpAM6yXgDcw6QAwpxcAPPrygD38dwArnwrAPHnwQC4hmAA3ciRAO/kuADl06MA/v36ANzGnADMrWEA8Oi+AN7GoQD9+/UA/PryAPn25wDz68wA9u/XAPDlvADu47MAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAE9BGEIAAAAAAAAAAAAANi1HRwMrUQAAAAAAAABJUiAlOjorAisOAAAAAABQICA7CBJGOQQzKxg2AAAAICAgEwgmQAQEPisHL1AANDogUyMkIAoEBD4rFhQZADA6Oh8VIEhDBAQRFCcqBwBEIB8XOzpGOQQEBAQUNQNPRykIFylTVA8qBAQEFCsYDUciCAgyUlI9SyoEBAQrDjEhPBBFLlIsGz83KAQEM0xNRQwuDAwLBQwuCUoWJygcTh0GUlJSUlJSUlJSUR4WOAAAGlJSUlJSUlJSUjAwVDYAAAABNFJSUlJSUlINNDYAAAAAAABJDVJCNE8BAAAAAP4fAAD4DwAA4AcAAMABAADAAAAAgAAAAIAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAAAA4AEAAPgPAAA=" rel="icon" type="image/x-icon" />
+</head>
+<body>
+<div id="search">
+<input type="text" placeholder="Search..." />
+</div>
+<div id="sidebar">
+<h2>jBC Programmers Reference Guide</h2>
+<ul><li><a href="pages/preface.html">Preface</a></li>
+<li><a href="pages/what_is_tafc.html">What is TAFC</a></li>
+<li><a href="pages/tafc_releases.html">TAFC releases</a></li>
+<li><a href="pages/what_is_t24.html">What is T24</a></li>
+<li><a href="pages/jbc_jbase_features.html">jBC/jBASE features</a></li>
+</ul>
+<h2>Introduction to some jBC syntax features</h2>
+<ul><li><a href="pages/note.html">Note</a></li>
+<li><a href="pages/note_2.html">Note 2</a></li>
+<li><a href="pages/variables_visibility_and_lifetime.html">Variables visibility and lifetime</a></li>
+<li><a href="pages/to_wrap_a_long_line.html">To wrap a long line</a></li>
+<li><a href="pages/several_statements_on_the_same_line.html">Several statements on the same line</a></li>
+<li><a href="pages/comments.html">Comments</a></li>
+<li><a href="pages/string_variables.html">String variables</a></li>
+<li><a href="pages/numeric_variables.html">Numeric variables</a></li>
+<li><a href="pages/boolean_variables.html">Boolean variables</a></li>
+<li><a href="pages/dynamic_arrays.html">Dynamic arrays</a></li>
+<li><a href="pages/dimensioned_arrays.html">Dimensioned arrays</a></li>
+<li><a href="pages/other_notes.html">Other notes</a></li>
+</ul>
+<h2>Guidelines for writing the source code</h2>
+<ul><li><a href="pages/recommendations_not_rules.html">Recommendations (not rules)</a></li>
+</ul>
+<h2>Environment variables relevant to jBC programming</h2>
+<ul><li><a href="pages/minimum_set_of_variables_necessary_to_start_development.html">Minimum set of variables necessary to start development</a></li>
+<li><a href="pages/customize_work_folders_and_files_location.html">Customize work folders and files location</a></li>
+<li><a href="pages/runtime_errors_handling.html">Runtime errors handling</a></li>
+<li><a href="pages/regional_settings.html">Regional settings</a></li>
+<li><a href="pages/diagnostics_and_tracing.html">Diagnostics and tracing</a></li>
+<li><a href="pages/other.html">Other</a></li>
+</ul>
+<h2>Compilation</h2>
+<ul><li><a href="pages/introduction_to_basiccatalog_and_jcompile.html">Introduction to BASIC...CATALOG and jcompile</a></li>
+</ul>
+<h2>Data files</h2>
+<ul><li><a href="pages/introduction_to_jbase_tafc_data_files.html">Introduction to jBASE/TAFC data files</a></li>
+<li><a href="pages/create_delete_hashed_file.html">Create/delete hashed file</a></li>
+<li><a href="pages/create_and_list_the_data.html">Create and list the data</a></li>
+<li><a href="pages/adding_dictionary_items.html">Adding dictionary items</a></li>
+<li><a href="pages/change_of_size_and_format_statistics_properties.html">Change of size and format, statistics, properties</a></li>
+<li><a href="pages/ud_type.html">UD type</a></li>
+</ul>
+<h2>System ("@") variables</h2>
+<ul><li><a href="pages/@am_@fm_@vm_@sm_@tm.html">@AM (@FM), @VM, @SM, @TM</a></li>
+<li><a href="pages/@callstack.html">@CALLSTACK</a></li>
+<li><a href="pages/@codepage.html">@CODEPAGE</a></li>
+<li><a href="pages/@data.html">@DATA</a></li>
+<li><a href="pages/@date.html">@DATE</a></li>
+<li><a href="pages/@day.html">@DAY</a></li>
+<li><a href="pages/@eof.html">@EOF</a></li>
+<li><a href="pages/@filename.html">@FILENAME</a></li>
+<li><a href="pages/@footerbreak.html">@FOOTER.BREAK</a></li>
+<li><a href="pages/@headerbreak.html">@HEADER.BREAK</a></li>
+<li><a href="pages/@id.html">@ID</a></li>
+<li><a href="pages/@level.html">@LEVEL</a></li>
+<li><a href="pages/@locale.html">@LOCALE</a></li>
+<li><a href="pages/@lptrhigh.html">@LPTRHIGH</a></li>
+<li><a href="pages/@month.html">@MONTH</a></li>
+<li><a href="pages/@parasentence.html">@PARASENTENCE</a></li>
+<li><a href="pages/@path.html">@PATH</a></li>
+<li><a href="pages/@pid.html">@PID</a></li>
+<li><a href="pages/@record.html">@RECORD</a></li>
+<li><a href="pages/@selected.html">@SELECTED</a></li>
+<li><a href="pages/@termtype.html">@TERMTYPE</a></li>
+<li><a href="pages/@time.html">@TIME</a></li>
+<li><a href="pages/@timezone.html">@TIMEZONE</a></li>
+<li><a href="pages/@tty.html">@TTY</a></li>
+<li><a href="pages/@uid.html">@UID</a></li>
+<li><a href="pages/@userroot_@userthread_and_@userstats.html">@USER.ROOT, @USER.THREAD and @USERSTATS</a></li>
+</ul>
+<h2>jBC Functions and Statements (@ - E)</h2>
+<ul><li><a href="pages/@.html">@</a></li>
+<li><a href="pages/@_screencode.html">@ (SCREENCODE)</a></li>
+<li><a href="pages/abort.html">ABORT</a></li>
+<li><a href="pages/abs.html">ABS</a></li>
+<li><a href="pages/abss.html">ABSS</a></li>
+<li><a href="pages/adds.html">ADDS</a></li>
+<li><a href="pages/alpha.html">ALPHA</a></li>
+<li><a href="pages/ands.html">ANDS</a></li>
+<li><a href="pages/ascii.html">ASCII</a></li>
+<li><a href="pages/assigned.html">ASSIGNED</a></li>
+<li><a href="pages/bitand.html">BITAND</a></li>
+<li><a href="pages/bitchange.html">BITCHANGE</a></li>
+<li><a href="pages/bitcheck.html">BITCHECK</a></li>
+<li><a href="pages/bitload.html">BITLOAD</a></li>
+<li><a href="pages/bitnot.html">BITNOT</a></li>
+<li><a href="pages/bitor.html">BITOR</a></li>
+<li><a href="pages/bitreset.html">BITRESET</a></li>
+<li><a href="pages/bitset.html">BITSET</a></li>
+<li><a href="pages/bittest.html">BITTEST</a></li>
+<li><a href="pages/bitxor.html">BITXOR</a></li>
+<li><a href="pages/break.html">BREAK</a></li>
+<li><a href="pages/break_on_off.html">BREAK ON/OFF</a></li>
+<li><a href="pages/bytelen.html">BYTELEN</a></li>
+<li><a href="pages/cachebucketlist.html">CacheBucketList</a></li>
+<li><a href="pages/cacheclear.html">CacheClear</a></li>
+<li><a href="pages/cacheclearall.html">CacheClearAll</a></li>
+<li><a href="pages/cacheclearstats.html">CacheClearStats</a></li>
+<li><a href="pages/cachedelete.html">CacheDelete</a></li>
+<li><a href="pages/cacheexists.html">CacheExists</a></li>
+<li><a href="pages/cacheget.html">CacheGet</a></li>
+<li><a href="pages/cachegetoption.html">CacheGetOption</a></li>
+<li><a href="pages/cachekeylist.html">CacheKeyList</a></li>
+<li><a href="pages/cacheput.html">CachePut</a></li>
+<li><a href="pages/cachesetoption.html">CacheSetOption</a></li>
+<li><a href="pages/cachestats.html">CacheStats</a></li>
+<li><a href="pages/call.html">CALL</a></li>
+<li><a href="pages/callc.html">CALLC</a></li>
+<li><a href="pages/calldotnet.html">CALLdotNET</a></li>
+<li><a href="pages/callj.html">CALLJ</a></li>
+<li><a href="pages/calljee.html">CALLJEE</a></li>
+<li><a href="pages/callonexit.html">CALLONEXIT</a></li>
+<li><a href="pages/case.html">CASE</a></li>
+<li><a href="pages/catalog_command.html">CATALOG Command</a></li>
+<li><a href="pages/cats.html">CATS</a></li>
+<li><a href="pages/chain.html">CHAIN</a></li>
+<li><a href="pages/change.html">CHANGE</a></li>
+<li><a href="pages/changetimestamp.html">CHANGETIMESTAMP</a></li>
+<li><a href="pages/char.html">CHAR</a></li>
+<li><a href="pages/chars.html">CHARS</a></li>
+<li><a href="pages/chdir.html">CHDIR</a></li>
+<li><a href="pages/checksum.html">CHECKSUM</a></li>
+<li><a href="pages/clear.html">CLEAR</a></li>
+<li><a href="pages/clearcommon.html">CLEARCOMMON</a></li>
+<li><a href="pages/cleardata.html">CLEARDATA</a></li>
+<li><a href="pages/clearfile.html">CLEARFILE</a></li>
+<li><a href="pages/clearinput.html">CLEARINPUT</a></li>
+<li><a href="pages/clearselect.html">CLEARSELECT</a></li>
+<li><a href="pages/close.html">CLOSE</a></li>
+<li><a href="pages/closeseq.html">CLOSESEQ</a></li>
+<li><a href="pages/col1_and_col2.html">COL1 and COL2</a></li>
+<li><a href="pages/collectdata.html">COLLECTDATA</a></li>
+<li><a href="pages/common.html">COMMON</a></li>
+<li><a href="pages/compare.html">COMPARE</a></li>
+<li><a href="pages/continue.html">CONTINUE</a></li>
+<li><a href="pages/convert.html">CONVERT</a></li>
+<li><a href="pages/convert_statement.html">CONVERT (STATEMENT)</a></li>
+<li><a href="pages/cos.html">COS</a></li>
+<li><a href="pages/count.html">COUNT</a></li>
+<li><a href="pages/counts.html">COUNTS</a></li>
+<li><a href="pages/create.html">CREATE</a></li>
+<li><a href="pages/crt.html">CRT</a></li>
+<li><a href="pages/data.html">DATA</a></li>
+<li><a href="pages/date.html">DATE</a></li>
+<li><a href="pages/dcount.html">DCOUNT</a></li>
+<li><a href="pages/debug.html">DEBUG</a></li>
+<li><a href="pages/decatalog_and_deletecatalog_commands.html">DECATALOG and DELETE-CATALOG Commands</a></li>
+<li><a href="pages/decrypt.html">DECRYPT</a></li>
+<li><a href="pages/defc.html">DEFC</a></li>
+<li><a href="pages/defce.html">DEFCE</a></li>
+<li><a href="pages/deffun.html">DEFFUN</a></li>
+<li><a href="pages/del.html">DEL</a></li>
+<li><a href="pages/delete.html">DELETE</a></li>
+<li><a href="pages/deletelist.html">DELETELIST</a></li>
+<li><a href="pages/deleteseq.html">DELETESEQ</a></li>
+<li><a href="pages/deleteu.html">DELETEU</a></li>
+<li><a href="pages/dimension.html">DIMENSION</a></li>
+<li><a href="pages/dir.html">DIR</a></li>
+<li><a href="pages/div.html">DIV</a></li>
+<li><a href="pages/divs.html">DIVS</a></li>
+<li><a href="pages/downcase.html">DOWNCASE</a></li>
+<li><a href="pages/dround.html">DROUND</a></li>
+<li><a href="pages/dtx.html">DTX</a></li>
+<li><a href="pages/dyntoxml.html">DYNTOXML</a></li>
+<li><a href="pages/ebcdic.html">EBCDIC</a></li>
+<li><a href="pages/echo.html">ECHO</a></li>
+<li><a href="pages/encrypt.html">ENCRYPT</a></li>
+<li><a href="pages/enter.html">ENTER</a></li>
+<li><a href="pages/eqs.html">EQS</a></li>
+<li><a href="pages/equate.html">EQUATE</a></li>
+<li><a href="pages/ereplace.html">EREPLACE</a></li>
+<li><a href="pages/execute.html">EXECUTE</a></li>
+<li><a href="pages/exit.html">EXIT</a></li>
+<li><a href="pages/exp.html">EXP</a></li>
+<li><a href="pages/extract.html">EXTRACT</a></li>
+</ul>
+<h2>jBC Functions and Statements (F - J)</h2>
+<ul><li><a href="pages/fadd.html">FADD</a></li>
+<li><a href="pages/fdiv.html">FDIV</a></li>
+<li><a href="pages/field.html">FIELD</a></li>
+<li><a href="pages/fields.html">FIELDS</a></li>
+<li><a href="pages/fileinfo.html">FILEINFO</a></li>
+<li><a href="pages/filelock.html">FILELOCK</a></li>
+<li><a href="pages/fileunlock.html">FILEUNLOCK</a></li>
+<li><a href="pages/find.html">FIND</a></li>
+<li><a href="pages/findstr.html">FINDSTR</a></li>
+<li><a href="pages/formlist.html">FORMLIST</a></li>
+<li><a href="pages/flush.html">FLUSH</a></li>
+<li><a href="pages/fmt.html">FMT</a></li>
+<li><a href="pages/fmts.html">FMTS</a></li>
+<li><a href="pages/fold.html">FOLD</a></li>
+<li><a href="pages/footing.html">FOOTING</a></li>
+<li><a href="pages/for.html">FOR</a></li>
+<li><a href="pages/fsub.html">FSUB</a></li>
+<li><a href="pages/function.html">FUNCTION</a></li>
+<li><a href="pages/ges.html">GES</a></li>
+<li><a href="pages/get.html">GET</a></li>
+<li><a href="pages/getcwd.html">GETCWD</a></li>
+<li><a href="pages/getenv.html">GETENV</a></li>
+<li><a href="pages/getlist.html">GETLIST</a></li>
+<li><a href="pages/getusergroup.html">GETUSERGROUP</a></li>
+<li><a href="pages/getx.html">GETX</a></li>
+<li><a href="pages/gosub.html">GOSUB</a></li>
+<li><a href="pages/goto.html">GOTO</a></li>
+<li><a href="pages/group.html">GROUP</a></li>
+<li><a href="pages/groupstore.html">GROUPSTORE</a></li>
+<li><a href="pages/heading.html">HEADING</a></li>
+<li><a href="pages/headinge_and_headingn.html">HEADINGE and HEADINGN</a></li>
+<li><a href="pages/hush.html">HUSH</a></li>
+<li><a href="pages/iconv.html">ICONV</a></li>
+<li><a href="pages/iconvs.html">ICONVS</a></li>
+<li><a href="pages/if_statement.html">IF (statement)</a></li>
+<li><a href="pages/ifs.html">IFS</a></li>
+<li><a href="pages/in.html">IN</a></li>
+<li><a href="pages/index.html">INDEX</a></li>
+<li><a href="pages/inmat.html">INMAT</a></li>
+<li><a href="pages/input.html">INPUT</a></li>
+<li><a href="pages/inputclear.html">INPUTCLEAR</a></li>
+<li><a href="pages/inputnull.html">INPUTNULL</a></li>
+<li><a href="pages/ins.html">INS</a></li>
+<li><a href="pages/insert.html">INSERT</a></li>
+<li><a href="pages/int.html">INT</a></li>
+<li><a href="pages/ioctl.html">IOCTL</a></li>
+<li><a href="pages/isalpha.html">ISALPHA</a></li>
+<li><a href="pages/isalnum.html">ISALNUM</a></li>
+<li><a href="pages/iscntrl.html">ISCNTRL</a></li>
+<li><a href="pages/isdigit.html">ISDIGIT</a></li>
+<li><a href="pages/islower.html">ISLOWER</a></li>
+<li><a href="pages/isprint.html">ISPRINT</a></li>
+<li><a href="pages/isspace.html">ISSPACE</a></li>
+<li><a href="pages/isupper.html">ISUPPER</a></li>
+<li><a href="pages/itype.html">ITYPE</a></li>
+<li><a href="pages/jbasecoredump.html">JBASECOREDUMP</a></li>
+<li><a href="pages/jbasesubroutineexist.html">JBASESubroutineExist</a></li>
+<li><a href="pages/jbasethreadcreate.html">JBASETHREADCreate</a></li>
+<li><a href="pages/jbasethreadstatus.html">JBASETHREADStatus</a></li>
+<li><a href="pages/jqlcompile.html">JQLCOMPILE</a></li>
+<li><a href="pages/jqlexecute.html">JQLEXECUTE</a></li>
+<li><a href="pages/jqlfetch.html">JQLFETCH</a></li>
+<li><a href="pages/jqlgetproperty.html">JQLGETPROPERTY</a></li>
+<li><a href="pages/jqlputproperty.html">JQLPUTPROPERTY</a></li>
+<li><a href="pages/sample_program_illustrating_the_usage_of_compiled_jql_statement.html">Sample program illustrating the usage of compiled jQL statement:</a></li>
+</ul>
+<h2>jBC Functions and Statements (K - O)</h2>
+<ul><li><a href="pages/keyin.html">KEYIN</a></li>
+<li><a href="pages/latin1.html">LATIN1</a></li>
+<li><a href="pages/left.html">LEFT</a></li>
+<li><a href="pages/len.html">LEN</a></li>
+<li><a href="pages/lendp.html">LENDP</a></li>
+<li><a href="pages/lens.html">LENS</a></li>
+<li><a href="pages/les.html">LES</a></li>
+<li><a href="pages/ln.html">LN</a></li>
+<li><a href="pages/localdate.html">LOCALDATE</a></li>
+<li><a href="pages/localtime.html">LOCALTIME</a></li>
+<li><a href="pages/locate.html">LOCATE</a></li>
+<li><a href="pages/lock.html">LOCK</a></li>
+<li><a href="pages/logger.html">Logger</a></li>
+<li><a href="pages/loop.html">LOOP</a></li>
+<li><a href="pages/lower.html">LOWER</a></li>
+<li><a href="pages/maketimestamp.html">MAKETIMESTAMP</a></li>
+<li><a href="pages/mat.html">MAT</a></li>
+<li><a href="pages/matbuild.html">MATBUILD</a></li>
+<li><a href="pages/matches.html">MATCHES</a></li>
+<li><a href="pages/matchfield.html">MATCHFIELD</a></li>
+<li><a href="pages/matparse.html">MATPARSE</a></li>
+<li><a href="pages/matread.html">MATREAD</a></li>
+<li><a href="pages/matreadu.html">MATREADU</a></li>
+<li><a href="pages/matwrite.html">MATWRITE</a></li>
+<li><a href="pages/matwriteu.html">MATWRITEU</a></li>
+<li><a href="pages/maximum.html">MAXIMUM</a></li>
+<li><a href="pages/minimum.html">MINIMUM</a></li>
+<li><a href="pages/mod.html">MOD</a></li>
+<li><a href="pages/mods.html">MODS</a></li>
+<li><a href="pages/msleep.html">MSLEEP</a></li>
+<li><a href="pages/muls.html">MULS</a></li>
+<li><a href="pages/negs.html">NEGS</a></li>
+<li><a href="pages/nes.html">NES</a></li>
+<li><a href="pages/next.html">NEXT</a></li>
+<li><a href="pages/nobuf.html">NOBUF</a></li>
+<li><a href="pages/not.html">NOT</a></li>
+<li><a href="pages/nots.html">NOTS</a></li>
+<li><a href="pages/null.html">NULL</a></li>
+<li><a href="pages/num.html">NUM</a></li>
+<li><a href="pages/nums.html">NUMS</a></li>
+<li><a href="pages/objexcallback.html">OBJEXCALLBACK</a></li>
+<li><a href="pages/oconv.html">OCONV</a></li>
+<li><a href="pages/oconvs.html">OCONVS</a></li>
+<li><a href="pages/ongoto.html">ONGOTO</a></li>
+<li><a href="pages/open.html">OPEN</a></li>
+<li><a href="pages/opendev.html">OPENDEV</a></li>
+<li><a href="pages/openindex.html">OPENINDEX</a></li>
+<li><a href="pages/openpath.html">OPENPATH</a></li>
+<li><a href="pages/openseq.html">OPENSEQ</a></li>
+<li><a href="pages/openser.html">OPENSER</a></li>
+<li><a href="pages/ors.html">ORS</a></li>
+<li><a href="pages/osbread.html">OSBREAD</a></li>
+<li><a href="pages/osbwrite.html">OSBWRITE</a></li>
+<li><a href="pages/osclose.html">OSCLOSE</a></li>
+<li><a href="pages/osdelete.html">OSDELETE</a></li>
+<li><a href="pages/osopen.html">OSOPEN</a></li>
+<li><a href="pages/osread.html">OSREAD</a></li>
+<li><a href="pages/oswrite.html">OSWRITE</a></li>
+<li><a href="pages/out.html">OUT</a></li>
+</ul>
+<h2>jBC Functions and Statements (P - T)</h2>
+<ul><li><a href="pages/page.html">PAGE</a></li>
+<li><a href="pages/pause.html">PAUSE</a></li>
+<li><a href="pages/perform.html">PERFORM</a></li>
+<li><a href="pages/precision.html">PRECISION</a></li>
+<li><a href="pages/print.html">PRINT</a></li>
+<li><a href="pages/printer.html">PRINTER</a></li>
+<li><a href="pages/printerr.html">PRINTERR</a></li>
+<li><a href="pages/procread.html">PROCREAD</a></li>
+<li><a href="pages/procwrite.html">PROCWRITE</a></li>
+<li><a href="pages/program.html">PROGRAM</a></li>
+<li><a href="pages/prompt.html">PROMPT</a></li>
+<li><a href="pages/putenv.html">PUTENV</a></li>
+<li><a href="pages/pwr.html">PWR</a></li>
+<li><a href="pages/quote___dquote___squote.html">QUOTE / DQUOTE / SQUOTE</a></li>
+<li><a href="pages/raise.html">RAISE</a></li>
+<li><a href="pages/read.html">READ</a></li>
+<li><a href="pages/readblk.html">READBLK</a></li>
+<li><a href="pages/readl.html">READL</a></li>
+<li><a href="pages/readlist.html">READLIST</a></li>
+<li><a href="pages/readnext.html">READNEXT</a></li>
+<li><a href="pages/readprev.html">READPREV</a></li>
+<li><a href="pages/readselect.html">READSELECT</a></li>
+<li><a href="pages/readseq.html">READSEQ</a></li>
+<li><a href="pages/readt.html">READT</a></li>
+<li><a href="pages/readu.html">READU</a></li>
+<li><a href="pages/readv.html">READV</a></li>
+<li><a href="pages/readvl.html">READVL</a></li>
+<li><a href="pages/readvu.html">READVU</a></li>
+<li><a href="pages/readxml.html">READXML</a></li>
+<li><a href="pages/recordlocked.html">RECORDLOCKED</a></li>
+<li><a href="pages/regexp.html">REGEXP</a></li>
+<li><a href="pages/release.html">RELEASE</a></li>
+<li><a href="pages/remove.html">REMOVE</a></li>
+<li><a href="pages/replace.html">REPLACE</a></li>
+<li><a href="pages/return.html">RETURN</a></li>
+<li><a href="pages/rewind.html">REWIND</a></li>
+<li><a href="pages/right.html">RIGHT</a></li>
+<li><a href="pages/rnd.html">RND</a></li>
+<li><a href="pages/rqm.html">RQM</a></li>
+<li><a href="pages/rtndata.html">RTNDATA</a></li>
+<li><a href="pages/sadd.html">SADD</a></li>
+<li><a href="pages/sdiv.html">SDIV</a></li>
+<li><a href="pages/seek.html">SEEK</a></li>
+<li><a href="pages/select.html">SELECT</a></li>
+<li><a href="pages/send.html">SEND</a></li>
+<li><a href="pages/sendx.html">SENDX</a></li>
+<li><a href="pages/sentence.html">SENTENCE</a></li>
+<li><a href="pages/seq.html">SEQ</a></li>
+<li><a href="pages/seqs.html">SEQS</a></li>
+<li><a href="pages/sin.html">SIN</a></li>
+<li><a href="pages/sleep.html">SLEEP</a></li>
+<li><a href="pages/smul.html">SMUL</a></li>
+<li><a href="pages/sort.html">SORT</a></li>
+<li><a href="pages/soundex.html">SOUNDEX</a></li>
+<li><a href="pages/space.html">SPACE</a></li>
+<li><a href="pages/spaces.html">SPACES</a></li>
+<li><a href="pages/splice.html">SPLICE</a></li>
+<li><a href="pages/spooler.html">SPOOLER</a></li>
+<li><a href="pages/sqrt.html">SQRT</a></li>
+<li><a href="pages/sselect.html">SSELECT</a></li>
+<li><a href="pages/sselectn.html">SSELECTN</a></li>
+<li><a href="pages/sselectv.html">SSELECTV</a></li>
+<li><a href="pages/ssub.html">SSUB</a></li>
+<li><a href="pages/status.html">STATUS</a></li>
+<li><a href="pages/status_statement.html">STATUS statement</a></li>
+<li><a href="pages/stop.html">STOP</a></li>
+<li><a href="pages/str.html">STR</a></li>
+<li><a href="pages/strs.html">STRS</a></li>
+<li><a href="pages/subroutine.html">SUBROUTINE</a></li>
+<li><a href="pages/subs.html">SUBS</a></li>
+<li><a href="pages/substrings.html">SUBSTRINGS</a></li>
+<li><a href="pages/sum.html">SUM</a></li>
+<li><a href="pages/swap.html">SWAP</a></li>
+<li><a href="pages/system_functions.html">System Functions</a></li>
+<li><a href="pages/tan.html">TAN</a></li>
+<li><a href="pages/time.html">TIME</a></li>
+<li><a href="pages/timedate.html">TIMEDATE</a></li>
+<li><a href="pages/timediff.html">TIMEDIFF</a></li>
+<li><a href="pages/timeout.html">TIMEOUT</a></li>
+<li><a href="pages/timestamp.html">TIMESTAMP</a></li>
+<li><a href="pages/trans.html">TRANS</a></li>
+<li><a href="pages/transabort.html">TRANSABORT</a></li>
+<li><a href="pages/transend.html">TRANSEND</a></li>
+<li><a href="pages/transquery.html">TRANSQUERY</a></li>
+<li><a href="pages/transtart.html">TRANSTART</a></li>
+<li><a href="pages/trim.html">TRIM</a></li>
+<li><a href="pages/trimb.html">TRIMB</a></li>
+<li><a href="pages/trimbs.html">TRIMBS</a></li>
+<li><a href="pages/trimf.html">TRIMF</a></li>
+<li><a href="pages/trimfs.html">TRIMFS</a></li>
+</ul>
+<h2>jBC Functions and Statements (U - X)</h2>
+<ul><li><a href="pages/unassigned.html">UNASSIGNED</a></li>
+<li><a href="pages/uniquekey.html">UNIQUEKEY</a></li>
+<li><a href="pages/unlock.html">UNLOCK</a></li>
+<li><a href="pages/udtexecute.html">UDTEXECUTE</a></li>
+<li><a href="pages/upcase.html">UPCASE</a></li>
+<li><a href="pages/utf8.html">UTF8</a></li>
+<li><a href="pages/wake.html">WAKE</a></li>
+<li><a href="pages/weof.html">WEOF</a></li>
+<li><a href="pages/weofseq.html">WEOFSEQ</a></li>
+<li><a href="pages/write.html">WRITE</a></li>
+<li><a href="pages/writeblk.html">WRITEBLK</a></li>
+<li><a href="pages/writelist.html">WRITELIST</a></li>
+<li><a href="pages/writeseq.html">WRITESEQ</a></li>
+<li><a href="pages/writeseqf.html">WRITESEQF</a></li>
+<li><a href="pages/writet.html">WRITET</a></li>
+<li><a href="pages/writeu.html">WRITEU</a></li>
+<li><a href="pages/writev.html">WRITEV</a></li>
+<li><a href="pages/writevu.html">WRITEVU</a></li>
+<li><a href="pages/writexml.html">WRITEXML</a></li>
+<li><a href="pages/xlate.html">XLATE</a></li>
+<li><a href="pages/xmltodyn.html">XMLTODYN</a></li>
+<li><a href="pages/xmltoxml.html">XMLTOXML</a></li>
+<li><a href="pages/xtd.html">XTD</a></li>
+</ul>
+<h2>Embedded SQL for jBC</h2>
+
+</div>
+<div id="scrollable">
+<div id="content"><div id="timestamp">Last update: Sat, 16 Jul 2022 20:06 UTC+5</div></div>
+</div>
+<script type="text/javascript">
+window.location = "/pages/preface.html";
+var js = {
+store: (function(){
+if (sessionStorage) {
+return function(){
+if (arguments[0] !== undefined && arguments[1] !== undefined) {
+if (arguments[1] == null) {
+sessionStorage.removeItem(arguments[0]);return true;
+} else {
+sessionStorage[arguments[0]] = arguments[1];
+return true;
+}
+} else if (arguments[0]) {
+return sessionStorage[arguments[0]];
+}
+};
+} else {
+return function(){
+if (arguments[0] !== undefined && arguments[1] !== undefined) {
+if (arguments[1] == null) {
+document.cookie = arguments[0] + "=" + encodeURIComponent(null) + new Date(0).toGMTString();
+return true;
+} else {
+document.cookie = arguments[0] + "=" + encodeURIComponent(arguments[1]);
+return true;
+}
+} else if (arguments[0]) {
+var regexp  = new RegExp("(?:; )?" + arguments[0] + "=([^;]*);?");
+if (regexp.test(document.cookie)) {
+    return decodeURIComponent(regexp["$1"]);
+}
+return false;
+}
+}
+}})(),
+search: {
+links: [],
+headers: [],
+init: function(){
+var sidebar = document.getElementById("sidebar");
+sidebar.scrollTop = js.store("scroll") ? js.store("scroll") : 0;
+sidebar.addEventListener("scroll", function(){
+js.store("scroll", this.scrollTop);
+}, false)
+sidebar.scrollTop = js.store("scroll") ? js.store("scroll") : 0;
+this.links = sidebar.getElementsByTagName("a");
+var h1 = document.getElementById("scrollable").getElementsByTagName("h1")[0].innerHTML;
+this.headers = sidebar.getElementsByTagName("h2");
+for (var a = js.search.links.length; a--;) {
+if (js.search.links[a].innerHTML == h1) {
+js.search.links[a].parentNode.className = "current";
+}
+}
+var search_input = document.getElementById("search").getElementsByTagName("input")[0];
+search_input.onkeyup = function(){
+for (var a = js.search.links.length; a--;) {
+if (this.value == "") {
+js.store("search", null);
+for (var h = js.search.headers.length; h--;) {
+js.search.headers[h].style.display = "block";
+}
+} else {
+js.store("search", this.value);
+for (var h = js.search.headers.length; h--;) {
+js.search.headers[h].style.display = "none";
+}
+}
+if (js.search.links[a].innerHTML.toLowerCase().indexOf(this.value.toLowerCase()) != -1 || this.value == "") {
+js.search.links[a].parentNode.style.display = "list-item";
+} else {
+js.search.links[a].parentNode.style.display = "none";
+}
+}
+};
+if (js.store("search")) {
+search_input.value = js.store("search");
+search_input.onkeyup.apply(search_input);
+}
+}
+}
+};
+js.search.init();
+</script>
+</body>
+</html>
