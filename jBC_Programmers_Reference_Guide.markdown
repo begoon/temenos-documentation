@@ -15,11 +15,9 @@ jBASE and the jBASE logo (dove) are registered trademarks of T-jBASE SA, a compa
 
 ### Latest changes
 
+Saturday, 16 Jul 2022. Made available via github.io.
+
 Tuesday, 30 Sep 2014. Another example for [@](#@) function.
-
-Sunday, 17 Aug 2014. Another example for [SSELECT](#SSELECT).
-
-Thursday, 14 Aug 2014. New example for [EXTRACT](#EXTRACT).
 
 ## What is TAFC
 
@@ -37,23 +35,6 @@ be used, e.g. R10 or R11.
 
 T24 is the core banking system developed by Temenos company. The system
 extensions can be developed in (but not limited to) jBC.
-
-## Supported platforms
-
-| Platform                  | Compiler version                     | Releases |
-|---------------------------|--------------------------------------|----------|
-| AIX v5.3                  | IBM XL C/C++ v8.0.0.20               | R11, R12 |
-| AIX v6.1                  | IBM XL C/C++ v9.0.0.15               | R11, R12 |
-| AIX v7.1                  | IBM XL C/C++ v11.1.0.2               | R12      |
-| Windows Server 2008       | Microsoft Visual Studio 2010         | R11, R12 |
-| Redhat Enterprise Linux 5 | gcc 4.1.2 20080704 (Red Hat 4.1.2-50)| R11, R12 |
-| Redhat Enterprise Linux 6 | gcc 4.4.5 20110214 (Red Hat 4.4.5-6) | R12      |
-| HP Itanium2 11.31 V3      | HP C/aCC++ B3910B A.06.22            | R11, R12 |
-| Solaris 10 SPARC          | Sun Studio 11                        | R11      |
-| Solaris 10 SPARC          | Solaris Studio 12.3                  | R12      |
-| Solaris 10 x86-64         | Sun Studio 12.1                      | R11, R12 |
-| Solaris 11 SPARC          | Solaris Studio 12.3                  | R12      |
-| Solaris 11 x86-64         | Solaris Studio 12.3                  | R12      |
 
 ## jBC/jBASE features
 
@@ -136,7 +117,6 @@ Use semicolon to delimit several statements on the same line; don't forget about
 code readability. You can combine statements with comments (though as soon as
 you have a comment, the following statements turn to comments as well):
 
-<!--jBC-->
     V.VAR = 1  ;  V.VAR++  ;  CRT V.VAR
     V.VAR-- ;* comment starts here so no "1" in the output ; CRT V.VAR
     V.VAR-- ; CRT V.VAR  ;* 0 will be displayed
@@ -144,7 +124,6 @@ you have a comment, the following statements turn to comments as well):
 Conditional statements are also supported (though code readability suffers in
 the following example):
 
-<!--jBC-->
     var_1 = 1 ; var_2 = 2 ; IF var_1 + var_2 EQ 3 THEN
        CRT var_1, '+', var_2, '= 3'
     END
@@ -271,7 +250,6 @@ Other common string operations:
 Boolean variables as such don't exist in jBC; the result of a statement like IF (VAR) THEN...
 depends on that variable contents:
 
-<!--jBC-->
        IF NOT(unassigned_var) THEN CRT 'Unassigned var is false'
        true_var = 1  ;  false_var = 0
        IF true_var THEN CRT '1 is true'
