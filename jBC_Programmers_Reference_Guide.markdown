@@ -4628,7 +4628,7 @@ See also: [CONVERT (STATEMENT)](#CONVERT_(STATEMENT))
 ### EXAMPLE
 
     * compile this program under same emulation that you're testing
-       IF NOT(GETENV('JBCEMULATE', jbc_emu)) THEN
+       IF NOT( GETENV('JBCEMULATE', jbc_emu) ) THEN
           CRT 'Emulation setting not found'
           STOP
        END
