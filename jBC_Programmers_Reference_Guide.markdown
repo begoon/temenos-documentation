@@ -1229,7 +1229,6 @@ implemented. SYSTEM(1029) could be used to obtain call stack information, e.g:
 
 Main program (test.b):
 
-<!--jBC-->
        GOSUB SECTION1
        STOP
        *-------------
@@ -1245,7 +1244,6 @@ Main program (test.b):
 
 Subroutine:
 
-<!--jBC-->
        SUBROUTINE TEST.SUB
     *
        GOSUB SECTION3
@@ -1393,7 +1391,6 @@ starts, whereas the function reflects the current time.
 
 ### EXAMPLE
 
-<!--jBC-->
        MSLEEP 3000
        CRT @TIME, TIME()     ;*  e.g. 26359   26362
 
@@ -1942,7 +1939,6 @@ is zero or an empty string, it returns false for those elements.
 
 ### EXAMPLE
 
-<!--jBC-->
         A = 1 :@SM: 4 :@VM: 4 :@SM: 1
         B = 1 :@SM: 1 - 1 :@VM: 2
         PRINT OCONV( ANDS(A, B), 'MCP' )    ;*  1\0]1\0
@@ -1975,7 +1971,6 @@ Create the file test.txt in hex editor containing the following characters (in h
 
 Run the following program:
 
-<!--jBC-->
        OSREAD the_line FROM 'test.txt' ELSE NULL
        CRT ASCII(the_line)
 
@@ -3816,7 +3811,6 @@ of the CATS function is the non-null dynamic array.
 
 ### EXAMPLES
 
-<!--jBC-->
     * Same array structure -------------
        an_array =   "a" : @VM : "b" : @VM : "c"
        another_array = 1 : @VM : 2 : @VM : 3
@@ -4118,7 +4112,6 @@ Use CLEAR at any time during the execution of the program.
 
 ### EXAMPLE
 
-<!--jBC-->
        COMMON /MY.COMM/ global_var
        global_var = 1000
        var = 5            ;   CRT var           ;* 5
@@ -4141,7 +4134,6 @@ a value of zero.
 
 ### EXAMPLE
 
-<!--jBC-->
        COMMON /MY.COMM/ global_var
        COMMON gl_unnamed
        global_var = 1000
@@ -4167,7 +4159,6 @@ None
 
 ### EXAMPLE
 
-<!--jBC-->
     * SYSTEM(14) returns the number of characters available in input buffer
        CRT SYSTEM(14)        ;*  0
        DATA '123'
@@ -7614,7 +7605,6 @@ code, which identifies the start of a local subroutine.
 
 ### EXAMPLE
 
-<!--jBC-->
        var_1 = 1  ; var_2 = 2  ; var_3 = 3
        GOSUB MAKE.ARRAY
        GOSUB OUTPUT                               ;* -1^-2^-3
@@ -9841,7 +9831,6 @@ date format.
 
 ### EXAMPLE
 
-<!--jBC-->
     start_time = MAKETIMESTAMP(DATE(), TIME(), '')
     time_shift = 100  ;  time_shift<8> = ''    ;* add 100 years to current date
     end_time = CHANGETIMESTAMP(start_time, time_shift)
@@ -17316,7 +17305,6 @@ record, do so explicitly with the WRITEVU statement.
 
 ### EXAMPLE
 
-<!--jBC-->
        EXECUTE 'DELETE-FILE DATA F.TEMP'
        EXECUTE 'CREATE-FILE DATA F.TEMP 1 101 TYPE=J4'
        OPEN 'F.TEMP' TO f_temp ELSE ABORT 201, 'F.TEMP'
