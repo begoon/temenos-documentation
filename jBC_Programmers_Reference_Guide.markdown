@@ -469,7 +469,6 @@ Compilation under **jbase** emulation:
 
 Another example:
 
-<!--jBC-->
     * number of seconds past midnight
        CRT SYSTEM(12)   ;* e.g. 30938703.4097 under prime, 309387 under ros
 
