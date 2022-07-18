@@ -13,6 +13,8 @@ This is unofficial document; use it at your own risk - like TAFC :)) .. no, no j
 
 ### Latest changes
 
+Monday, 18 Jul 2022. Another example for [COUNT](#COUNT) function, note corrected.
+
 Saturday, 16 Jul 2022. Made available via github.io.
 
 Tuesday, 30 Sep 2014. Another example for [@](#@) function.
@@ -4731,9 +4733,11 @@ logically they will evaluate to character strings.
 
 ### NOTES
 
-The count is made on overlapping occurrences as a pattern match from
+Quote from older documentation: "The count is made on overlapping occurrences as a pattern match from
 each character in expression1. This means that the string jjj occurs
-3 times in the string jjjjj.
+3 times in the string jjjjj".
+
+This is no more the case (TAFC R19), see example 2 below.
 
 See also: [DCOUNT](#DCOUNT)
 
@@ -4741,6 +4745,8 @@ See also: [DCOUNT](#DCOUNT)
 
     Calc = "56 * 23 / 45 * 12"
     CRT "There are " : COUNT(Calc, '*') : " multiplications"
+
+    CRT COUNT('jjjjj', 'jjj')     ;* 1
 
 ## COUNTS
 
