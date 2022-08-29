@@ -13,6 +13,8 @@ This is unofficial document; use it at your own risk - like TAFC :)) .. no, no j
 
 ### Latest changes
 
+24-25 Aug 2022. Started inputting TAFJ compatibility notes (tested under TAFJ R19 SP44). See [Note 2](#Note 2), [Comments](#Comments), [COLLECTDATA](#COLLECTDATA), [EXECUTE](#EXECUTE), [MSLEEP](#MSLEEP), [SLEEP](#SLEEP), [System Functions](#System Functions) and [To wrap a long line](#To wrap a long line).
+
 Monday, 18 Jul 2022. Another example for [COUNT](#COUNT) function, note corrected.
 
 Saturday, 16 Jul 2022. Made available via github.io.
@@ -88,6 +90,8 @@ to convert FM, VM and SM delimiters to a printable form, e.g.:
 
 Where possible, the output is shown in a comment (as it is in the example above).
 
+***TAFJ note: 'MCP' option doesn't work neither for OCONV() nor for FMT(). The former keeps delimiters as they are, the latter returns just 'CP'. Workaround: use CONVERT(@FM:@VM:@SM, '^]\', V.ARRAY)***
+
 ## Variables visibility and lifetime
 
 Variable is visible throughout the program or its subroutine (i.e. in
@@ -105,6 +109,8 @@ Use a backslash:
 
        V.LINE = 'The report for the year ' :@FM: V.YEAR : ', prepared at ' \
             : TIMEDATE()
+
+***TAFJ note: routine with such line extension won't even compile.***
 
 Or - if line ends with a comma - that's not necessary:
 
@@ -139,6 +145,8 @@ Comments can be defined in different ways:
        CRT '1'    ;* this is a comment sharing the same line with some code
        CRT '2'    // yet another way to define a comment
        CRT '3'
+
+***TAFJ note: double slash as a comment indicator isn't supported.***
 
 ## String variables
 
@@ -4389,6 +4397,8 @@ to retrieve the passed data.
 If a PASSDATA clause is not in effect, variable will be assigned a
 value of null.
 
+***TAFJ note: COLLECTDATA statement is not supported.***
+
 ### EXAMPLE
 
 Program test.b:
@@ -6231,6 +6241,16 @@ use the RTNDATA statement to pass data back to the calling program.
 
 The clauses may be specified in any order within the statement but
 only one of each clause may exist.
+
+***TAFJ note 1: RTNLIST clause in EXECUTE 'SELECT' doesn't work.***
+
+***TAFJ note 2: RETURNING clause in EXECUTE 'COUNT' doesn't work.***
+
+***TAFJ note 3: EXECUTE of 2 commands delimited with @FM returns code from the first command, not from the second one.***
+
+***TAFJ note 4: PASSLIST clause in EXECUTE doesn't work.***
+
+***TAFJ note 5: EXIT() in EXECUTEd program stops the EXECUTing one as well.***
 
 ### EXAMPLE
 
@@ -10902,6 +10922,8 @@ after the MSLEEP.
 See also: [SLEEP](#SLEEP) to sleep for a specified number of seconds or
 until a specified time.
 
+***TAFJ note: MSLEEP() function isn't supported***
+
 ### EXAMPLES
 
        CRT MAKETIMESTAMP( DATE(), TIME(), '' )           ;*  e.g. 1353068005.934
@@ -14736,6 +14758,8 @@ the current time and the time supplied and sleeping for that many
 seconds. If in the meantime the host clock is changed the program
 will not wake up at the desired time;
 
+***TAFJ note: sleeping until a specified time doesn't work.***
+
 If invoking the debugger while a program is sleeping and the execution
 continued, the user will be prompted:
 
@@ -15957,6 +15981,10 @@ The following system functions are supported by TAFC:
 |              |  by this process;     |
 |              |  1    Enterprise                                                         |
 |              |  13.  Server                                                             |
+
+***TAFJ note 1: Non-working ones: SYSTEM(14), SYSTEM(16), SYSTEM(26), SYSTEM(101), SYSTEM(1000), SYSTEM(1001), SYSTEM(1018), SYSTEM(1026), SYSTEM(1030).***
+
+***TAFJ note 2: SYSTEM(1027) shows only current process.***
 
 ### EXAMPLES
 
