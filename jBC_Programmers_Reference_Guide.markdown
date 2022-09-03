@@ -13,6 +13,8 @@ This is unofficial document; use it at your own risk - like TAFC :)) .. no, no j
 
 ### Latest changes
 
+30-31 Aug 2022. Continued with TAFJ compatibility notes. See [@CALLSTACK](#@CALLSTACK), [@DATA](#@DATA), [OSWRITE](#OSWRITE), [FMT](#FMT), [OCONV](#OCONV), [IOCTL](#IOCTL), [@](#@), [ANDS](#ANDS), [CLEARCOMMON](#CLEARCOMMON), [ASSIGNED](#ASSIGNED), [DECRYPT](#DECRYPT), [ENTER](#ENTER), [CacheBucketList](#CacheBucketList), [CacheKeyList](#CacheKeyList), [FILEINFO](#FILEINFO), [@TTY](#@TTY), [@PID](#@PID), [@LEVEL](#@LEVEL), [GROUP](#GROUP), [GROUPSTORE](#GROUPSTORE), [IN](#IN), [READSEQ](#READSEQ), [ISCNTRL](#ISCNTRL), [ISPRINT](#ISPRINT), [GETENV](#GETENV), [JBASESubroutineExist](#JBASESubroutineExist), [KEYIN](#KEYIN), [INPUT](#INPUT), [XTD](#XTD), [OSBWRITE](#OSBWRITE), [OSREAD](#OSREAD), [READPREV](#READPREV), [REGEXP](#REGEXP), [SADD](#SADD), [SEQS](#SEQS), [SSELECTV](#SSELECTV), [STATUS](#STATUS), [DELETE](#DELETE), [TRANS](#TRANS), [UNASSIGNED](#UNASSIGNED), [UTF8](#UTF8), [HUSH](#HUSH), [DELETESEQ](#DELETESEQ), [COMPARE](#COMPARE), [OSBREAD](#OSBREAD). Also - one more note for [EXECUTE](#EXECUTE) and one more example for [MATCHES](#MATCHES).
+
 24-25 Aug 2022. Started inputting TAFJ compatibility notes (tested under TAFJ R19 SP44). See [Note 2](#Note 2), [Comments](#Comments), [COLLECTDATA](#COLLECTDATA), [EXECUTE](#EXECUTE), [MSLEEP](#MSLEEP), [SLEEP](#SLEEP), [System Functions](#System Functions) and [To wrap a long line](#To wrap a long line).
 
 Monday, 18 Jul 2022. Another example for [COUNT](#COUNT) function, note corrected.
@@ -1234,6 +1236,8 @@ Attribute (field) mark (ASCII 254), value mark (ASCII 253), subvalue mark
 
 ## @CALLSTACK
 
+***TAFJ note: not supported.***
+
 Intended to return current call stack information; isn't yet
 implemented. SYSTEM(1029) could be used to obtain call stack information, e.g:
 
@@ -1277,6 +1281,8 @@ Returns current codepage setting:
        CRT @CODEPAGE      ;* e.g. utf8
 
 ## @DATA
+
+***TAFJ note: not supported.***
 
 Data statements used in conjunction with INPUT statements are
 stored in data stack or input queue. This stack is accessible
@@ -1343,7 +1349,9 @@ statement:
 
 ## @LEVEL
 
-The nesting level of execution statements - non stacked
+The nesting level of execution statements - non stacked.
+
+***TAFJ note: variable @LEVEL isn't supported.***
 
 ## @LOCALE
 
@@ -1368,7 +1376,9 @@ Pathname of the current account
 
 ## @PID
 
-Returns current process ID
+Returns current process ID.
+
+***TAFJ note: contains wrong data, e.g. for PID 3892 it returned 1252655163.***
 
 ## @RECORD
 
@@ -1411,6 +1421,8 @@ As per jBASE Timezone
 ## @TTY
 
 Returns the terminal port name.
+
+***TAFJ note: contains "0".***
 
 ## @UID
 
@@ -1607,6 +1619,8 @@ have spawned.
 
 Use the @ function to position the cursor to a specific point on the
 terminal screen
+
+***TAFJ note: screen positioning doesn't work.***
 
 ### COMMAND SYNTAX
 
@@ -1953,6 +1967,12 @@ is zero or an empty string, it returns false for those elements.
         B = 1 :@SM: 1 - 1 :@VM: 2
         PRINT OCONV( ANDS(A, B), 'MCP' )    ;*  1\0]1\0
 
+***TAFJ note: in the following example output is 1^1]0]1\ (trailing 0 is missing):***
+
+       dyn_arr_one = 1 :@FM: 1 :@VM: 0 :@VM: 1 :@SM: 1
+       dyn_arr_two = 1 :@FM: 1 :@VM: 1 :@VM: 1
+       CRT ANDS(dyn_arr_one, dyn_arr_two)
+
 ## ASCII
 
 <a name="ASCII"/>
@@ -2006,12 +2026,6 @@ ASSIGNED returns 1 if the variable has an assigned value
 before the execution of this statement. If the variable has no
 assigned value then the function returns 0.
 
-### NOTES
-
-Provision of this function is due to its implementation in older
-versions of the language. You are advised to program in such a way,
-to avoid using this statement.
-
 See also: [UNASSIGNED](#UNASSIGNED)
 
 ### EXAMPLE
@@ -2023,6 +2037,17 @@ See also: [UNASSIGNED](#UNASSIGNED)
        CRT ASSIGNED(V.VAR2)   ;* 0
        V.VAR1 = 'YES'
        V.VAR2 = 'NO'
+
+### EXAMPLE 2
+
+       EXECUTE 'DELETE-FILE DATA F.TEMP'
+       EXECUTE 'CREATE-FILE DATA F.TEMP TYPE=MSSQL'
+       OPEN 'F.TEMP' TO f_temp ELSE ABORT 201, 'F.TEMP'
+       CRT ASSIGNED(f_temp)   ;* 1
+       CLOSE f_temp
+       CRT ASSIGNED(f_temp)   ;* 0
+
+***TAFJ note: outputs 1 and 1 instead of 1 and 0.***
 
 ## BITAND
 
@@ -2538,6 +2563,8 @@ The output is:
 
 This function does not affect the bucket statistics.
 
+***TAFJ note: list isn't sorted by bucket name like it is in TAFC.***
+
 ## CacheClear
 
 <a name="CacheClear"/>
@@ -2782,6 +2809,8 @@ The output is:
 ### NOTES
 
 This function does not affect statistics of the bucket.
+
+***TAFJ note: list isn't sorted by item name like it is in TAFC.***
 
 ## CachePut
 
@@ -4153,6 +4182,8 @@ a value of zero.
        CRT global_var                           ;* 1000
        CRT gl_unnamed                           ;* 0
 
+***TAFJ note: Variables in named COMMON area ARE cleared by CLEARCOMMON.***
+
 ## CLEARDATA
 
 <a name="CLEARDATA"/>
@@ -4566,9 +4597,11 @@ The function returns one of the following values:
     R2 = COMPARE(A, B, 'R')
     CRT R1, R2
 
-The code above displays 1 -1, which indicates that XY999 is greater than
+The code above should display 1 -1, which indicates that XY999 is greater than
 XY1000 in a left justified comparison and XY999 is less than XY1000 in
 a right justified comparison.
+
+***TAFC/TAFJ compatibility note: this code outputs 1  1 under TAFC R13/R19/R22. TAFJ is OK.***
 
 ### INTERNATIONAL MODE
 
@@ -5112,6 +5145,10 @@ JBASE_CRYPT_BASE64 followed by DECRYPT with method JBASE_CRYPT_RC2.
 
 See also: [ENCRYPT](#ENCRYPT)
 
+***TAFJ note: JBASE_CRYPT_XOR11 gives the error "java.security.InvalidKeyException: Wrong key size".***
+
+***TAFJ note 2: JBASE_CRYPT_BLOWFISH_BASE64 gives the result that differs from one in TAFC.***
+
 ### EXAMPLES
 
     INCLUDE JBC.h
@@ -5414,6 +5451,14 @@ Output:
     REC3
      2 Records Listed</pre>
 
+***TAFJ note: attempt to DELETE applied to non-valid file handle - session terminates. Example:***
+
+       not_valid_filevar = ''
+       DELETE not_valid_filevar, 'REC5' SETTING ret_code ON ERROR
+           CRT 'REC5 - DELETE ERROR'
+       END
+       CRT STATUS() : '_' : ret_code   ;*  expected output: -1_32768
+
 ## DELETELIST
 
 <a name="DELETELIST"/>
@@ -5482,6 +5527,8 @@ Has to be put into file *test.b*.
        *
        DELETESEQ '.', 'temp.txt' ELSE NULL
        CRT '<' : DIR('temp.txt')<1> : '>'          ;* <>
+
+***TAFJ note: statements on ELSE clause aren't executed.***
 
 ## DELETEU
 
@@ -6028,6 +6075,8 @@ name.
 
 ### NOTES
 
+***TAFJ note: ENTER statement is not supported.***
+
 The jBC COMMON data area can be passed to another jBC program by
 specifying the option "I" after the program name. Pass the COMMON
 data area only to another jBC program.
@@ -6246,11 +6295,20 @@ only one of each clause may exist.
 
 ***TAFJ note 2: RETURNING clause in EXECUTE 'COUNT' doesn't work.***
 
-***TAFJ note 3: EXECUTE of 2 commands delimited with @FM returns code from the first command, not from the second one.***
+***TAFJ note 3: EXECUTE of 2 commands delimited with @FM returns code from the first command, not from the second one. Example:***
+
+       EXECUTE 'SELECT F.SPF' :@FM: 'SAVE-LIST spf' CAPTURING output RETURNING ret_code
+       CRT CONVERT(@FM:@VM:@SM, '^]\', ret_code)    
+       *  expected output: 241]1]sel_list]Savelist_msg
+       *  output: 404]1]QLNUMSEL 
 
 ***TAFJ note 4: PASSLIST clause in EXECUTE doesn't work.***
 
 ***TAFJ note 5: EXIT() in EXECUTEd program stops the EXECUTing one as well.***
+
+***Final TAFJ note: I couldn't (yet) find a way to execute an OS command or external program.... It executes only another Java class... And if one is missing - like I-DUMP or LIST-ITEM - execution fails:***
+
+<pre>   Cannot find 'I-DUMP' (class : 'com.temenos.t24.I_m_DUMP_cl')</pre>
 
 ### EXAMPLE
 
@@ -6617,6 +6675,8 @@ Sample output from the second example:
     0^0^0^0^100666^107817^1^0^0^70770^24915^24915^34405^16705^25887^16643
     ^39761^16220^0^C:\home\kzm\v-t24\r11\tafc/tmp\jbase_error_trace^SEQ^0
     ^0^0^0^0^C:\home\kzm\v-t24\r11\tafc/tmp\jbase_error_trace^0^0^unknown</pre>
+
+***TAFJ note: for C:\Temenos\TAFJ\bin\DBTools.bat there's "XMLMSSQL" in field 21 (should be "SEQ").***
 
 ## FILELOCK
 
@@ -7050,6 +7110,17 @@ See also: [OCONV](#OCONV) for date/time/numeric masks and [FMTS](#FMTS).
        CRT FMT(X, 'MX')                        ;* 414243444546
        CRT FMT(@FM, 'MX')                      ;* FE
 
+***TAFJ note: examples that work incorrectly:***
+
+       CRT FMT(74952223355, 'R(+# (#3) #3-#2-#2)')
+       * output: (+ 495) 222-33-55, expected +7 (495) 222-33-55
+
+       $INSERT I_F.SPF
+       OPEN 'F.SPF' TO f_spf ELSE CRT 'SPF open error'  ;  RETURN
+       READ r_spf FROM f_spf, 'SYSTEM' ELSE CRT 'SPF read error'  ;  RETURN
+       date_time = r_spf<Spf_DateTime>
+       CRT FMT('20' : date_time, '####-##-##_##:##')  ;* output: 2022-03-24_11:0  (last digit missing)
+
 ## FMTS
 
 <a name="FMTS"/>
@@ -7481,6 +7552,11 @@ See: [PUTENV](#PUTENV)
         CRT "Execution path is not set up"
     END
 
+### EXAMPLE 2 (TAFJ). Get TAFJ configuration parameter
+
+       ret_code = GETENV('temn.tafj.compiler.internal.development', int_devt)
+       CRT int_devt    ;* false or true
+
 ## GETLIST
 
 <a name="GETLIST"/>
@@ -7718,16 +7794,18 @@ of fields to extract as a group.
 Expression2 may evaluate to more than a single character allowing
 fields to be delimited with complex expressions.
 
-### EXAMPLES
+### EXAMPLE
 
-    A = "123:-456:-789:-987:-"
-    CRT GROUP(A, ':-', 2, 2)
+    CRT GROUP('123:-456:-789:-987:-', ':-', 2, 2)
 
 This example displays the following on the terminal (being the second and
-third fields and their delimiter within variable A):
+third fields and their delimiter within this string variable):
 
 <pre>
-    456:-789</pre>
+    Expected result: 456:-789
+    Output in TAFC R19: 456:-789:-987:-
+    Output in TAFJ: -456:-789
+    </pre>
 
 ## GROUPSTORE
 
@@ -7747,6 +7825,8 @@ Insert the variable contents into dynamic array (or replace an element in it).
         CRT FMT(to.var, 'MCP')                          ;* QQQ^rtz^WWW^rtz
         GROUPSTORE from.var IN to.var USING 2, 0, @VM
         CRT FMT(to.var, 'MCP')                          ;* QQQ^rtz^WWW^rtz]rtz
+
+***TAFJ note: GROUPSTORE statement isn't supported.***
 
 ## HEADING
 
@@ -7821,6 +7901,8 @@ for information.
        HUSH ON
        INPUT V.PASSWORD
        HUSH OFF
+
+***TAFJ note: HUSH ON doesn't hide user input. Workaround: use ECHO OFF.***
 
 ## ICONV
 
@@ -8007,6 +8089,8 @@ clause is executed (if present).
 ### NOTES
 
 See also: [INPUT](#INPUT), [INPUTNULL](#INPUTNULL).
+
+***TAFJ note: IN statement doesn't wait for user input, Var returns as empty string.***
 
 ### EXAMPLE
 
@@ -8207,6 +8291,8 @@ characters (i.e. those outside the range x'1F' - x'7F') are
 accepted by INPUT.
 
 See also: [IN](#IN), [INPUTNULL](#INPUTNULL).
+
+***TAFJ note: INPUT .. FOR counts time in seconds and not in 10th of seconds as TAFC does.***
 
 ### EXAMPLE
 
@@ -8492,6 +8578,9 @@ JBC_COMMAND_GETFILENAME command that is supported for all database
 drivers.
 
 *JBC_COMMAND_GETFILENAME COMMAND*
+
+***TAFJ note: not supported.***
+
 Using this command to the IOCTL function, you can determine the exact
 file name that was used to open the file. This is helpful because
 jEDI uses Q pointers, F pointers and the JEDIFILEPATH environment
@@ -8611,6 +8700,8 @@ Read a record from a file, and find out if the last record read was in text form
 <a name="JIOCTL_COMMAND_FILESTATUS"/>
 
 *JIOCTL_COMMAND_FILESTATUS COMMAND*
+
+***TAFJ note: not supported.***
 
 The JIOCTL_COMMAND_FILESTATUS command will return an attribute delimited list of the status of the file to the caller.
 
@@ -8873,6 +8964,16 @@ of each character is determined according to the Unicode Standard.
        V.STRING = @FM : V.STRING
        CRT ISCNTRL(V.STRING)        ;* 1
 
+***TAFJ note: an example that works incorrectly:***
+
+       a_string = CHAR(10) : 'AWERC+' : CHAR(10)
+       IF ISCNTRL(a_string) THEN CRT 'ISCNTRL()'
+       ELSE CRT 'NOT ISCNTRL()'
+
+Expected result: NOT ISCNTRL().
+
+Result: ISCNTRL().
+
 ## ISDIGIT
 
 The ISDIGIT function will check that the expression consists of entirely
@@ -8942,6 +9043,16 @@ any characters, which are not printable.
 
 When the ISPRINT function is used in International Mode the properties of
 each character is determined according to the Unicode Standard.
+
+***TAFJ note: an example that works incorrectly:***
+
+       a_string = 'cawerc' :@FM
+       IF ISPRINT(a_string) THEN CRT 'ISPRINT()'
+       ELSE CRT 'NOT ISPRINT()'
+
+Expected result: NOT ISPRINT().
+
+Result: ISPRINT().
 
 ## ISSPACE
 
@@ -9318,7 +9429,8 @@ where **SubName** is subroutine name; returns 1 or 0.
 
        SubName = 'CDD'
        Result = CALLC JBASESubroutineExist(SubName, SubInfo)
-       CRT Result            ;* 1 in T24 environment
+       CRT Result                 ;* 1 in T24 TAFC environment, 0.0 under TAFJ 
+       CRT SQUOTE(SubInfo)        ;* '' under TAFC, 'Subroutine' under TAFJ
        SubName = 'QWERTY'
        Result = CALLC JBASESubroutineExist(SubName, SubInfo)
        CRT Result            ;* 0
@@ -9614,6 +9726,8 @@ presses q or Q key.
           V.KEY = UPCASE( KEYIN() )
           IF V.KEY EQ 'Q' THEN BREAK    ;* exit if q or Q was pressed
        REPEAT
+
+***TAFJ note: routine with KEYIN() finishes without waiting for input. The routine above won't work also because SYSTEM(14) doesn't work either.***
 
 ## LATIN1
 
@@ -10293,29 +10407,34 @@ match any number of characters of the specified type.
 ### EXAMPLES
 
     * T24 IDs matching
-       transfer_id = 'FT130172HQJ4'
-       CRT transfer_id MATCHES "'FT'5N5X"           ;*  1
-       hist_id = 'FT130172HQJ4;1'
-       CRT hist_id MATCHES "'FT'5N5X"               ;*  0
-       CRT hist_id MATCHES "'FT'5N5X;1N"            ;*  1
+        transfer_id = 'FT130172HQJ4'
+        CRT transfer_id MATCHES "'FT'5N5X"           ;*  1
+        hist_id = 'FT130172HQJ4;1'
+        CRT hist_id MATCHES "'FT'5N5X"               ;*  0
+        CRT hist_id MATCHES "'FT'5N5X;1N"            ;*  1
     * date
-       start_date = '2011-10-25'
-       CRT start_date MATCHES "4N'-'2N'-'2N"        ;*  1
+        start_date = '2011-10-25'
+        CRT start_date MATCHES "4N'-'2N'-'2N"        ;*  1
+    * a fresh example: dash can be used to indicate "from"-"to" pattern:
+        start_date = '2022/08/31'
+        start_date_short = '22/08/31'
+        CRT start_date MATCHES "2-4N'/'2N'/'2N"               ;* 1
+        CRT start_date_short MATCHES "2-4N'/'2N'/'2N"         ;* 1
     * emulations compatibility
-       cust_name = 'JOHN DORY'
-       CRT cust_name MATCH "JOHN..."            ;*  1 under prime, 0 under jbase
-       CRT cust_name MATCH "'JOHN'..."          ;*  1 under prime, 0 under jbase
-       CRT cust_name MATCH "'JOHN'0X"           ;*  1 under both
-       CRT cust_name MATCH "'John'..."          ;*  0 under both
+        cust_name = 'JOHN DORY'
+        CRT cust_name MATCH "JOHN..."            ;*  1 under prime, 0 under jbase
+        CRT cust_name MATCH "'JOHN'..."          ;*  1 under prime, 0 under jbase
+        CRT cust_name MATCH "'JOHN'0X"           ;*  1 under both
+        CRT cust_name MATCH "'John'..."          ;*  0 under both
     * "C" - alphanumeric - isn't supported at all under prime
-       CRT '2HQJ4' MATCHES "5C"                 ;* 1 under jbase emulation
+        CRT '2HQJ4' MATCHES "5C"                 ;* 1 under jbase emulation
     * numbers
-       CRT 9.99 MATCHES "0N'.'2N"               ;* 1
-       CRT '.99' MATCHES "0N'.'2N"              ;* 1
+        CRT 9.99 MATCHES "0N'.'2N"               ;* 1
+        CRT '.99' MATCHES "0N'.'2N"              ;* 1
     * avoid messing up data with patterns (example for prime):
-       cust_address = '3RD FLOOR, 17A ELM STREET'
-       CRT cust_address MATCH "...17A..."   ;* 0 - 17A means 17 alpha characters
-       CRT cust_address MATCH "...'17A'..." ;* 1 - here '17A' is a string to search
+        cust_address = '3RD FLOOR, 17A ELM STREET'
+        CRT cust_address MATCH "...17A..."   ;* 0 - 17A means 17 alpha characters
+        CRT cust_address MATCH "...'17A'..." ;* 1 - here '17A' is a string to search
 
 ## MATCHFIELD
 
@@ -11437,6 +11556,11 @@ User exits:
     * remove duplicate consecutive characters
        CRT OCONV('hhahhahh', "U31AC")        ;* haha
 
+***TAFJ note: user exits "U50BB", "U30E0" and "U51AA" were tested under TAFJ; none of them works.***
+
+***TAFJ note 2: example that returns FE under TAFC and EFA3BE under TAFJ:***
+
+       OCONV(@FM, 'MX')
 
 See also: [FMT](#FMT) function.
 
@@ -12023,6 +12147,11 @@ contents to the screen:
        OSBREAD Data FROM MYFILE AT 0 LENGTH 10000
        CRT Data
 
+***TAFJ note: if we use a variable for LENGTH, routine won't even compile:***
+
+<pre>    expecting "LENGTH", found 'max_len' Probably due to unclosed Block. 
+   Please verify that all 'IF' has a 'END'</pre>
+
 ## OSBWRITE
 
 <a name="OSBWRITE"/>
@@ -12080,6 +12209,8 @@ jBASE uses the ASCII 0 character [CHAR (0)] as a string-end delimiter.
 Therefore, ASCII 0 cannot be used in any string variable within jBASE.
 If jBASE reads a string that contains CHAR(0) characters by using
 OSBREAD, those characters are converted to CHAR(128).
+
+***TAFJ note: OSBWRITE statement isn't supported.***
 
 ### EXAMPLE
 
@@ -12262,6 +12393,8 @@ converts CHAR(0) to CHAR(128) when reading a block of data.
 OSREAD doesn't include the LF character after the last line in the file
 to the resulting variable:
 
+***TAFJ note: OSREAD statement doesn't work - ELSE clause is always triggered.***
+
 ### EXAMPLE
 
        V.DIR.OUT = '.'  ;   V.FILE.OUT = 'report.txt'
@@ -12329,6 +12462,8 @@ For this reason, you cannot use ASCII 0 in any string variable in
 jBASE. If jBASE reads a string with a CHAR(0) character, and then the
 character is converted to CHAR(128), OSWRITE converts CHAR(128) to
 CHAR(0) when writing a block of characters.
+
+***TAFJ note: OSWRITE statement is not supported.***
 
 ### EXAMPLE
 
@@ -13274,6 +13409,8 @@ key or record key will be used.
 Behaviour of READNEXT/READPREV depends on emulation. The following example is
 for *jbase* emulation:
 
+***TAFJ note: READPREV statement isn't supported.***
+
 ### EXAMPLE
 
 Consider the following jBC code
@@ -13408,8 +13545,14 @@ Line ends in this file are shown here (JED, Ctrl-E to go to line end):
           CRT 'ERROR READING FILE'
           STOP
        END
-       CRT LEN(V.LINE)                      ;*  1024
-       CRT V.LINE[-20,20]                   ;*  --1010------1020----
+       CRT LEN(V_LINE) : '_' : V.LINE[-20,20]                   ;*  1024_--1010------1020----
+
+***Quite rare positive TAFJ note: output is:***
+
+<pre>
+    1100_------1090------1100</pre>
+
+So there's no limit of 1024.       
 
 ### Step 3. Read a line from this text file using IOCTL() first:
 
@@ -13917,6 +14060,8 @@ in variable that matches the specified regular expression. If
 a match is not found then the function returns 0. If the regular expression
 was invalid then the function returns -1.
 
+***A positive TAFJ note: REGEXP() function now works under Windows.***
+
 ### EXAMPLES
 
        String = "jBASE Software Inc."    ;* 4 (position of matching pattern -
@@ -13939,6 +14084,8 @@ was invalid then the function returns -1.
        CRT REGEXP('RU', '([A-QS-Z][A-Z]|[R][A-RT-Z])')                       ;* 1
     * negative lookahead assertion isn't supported ("all not containing 'bar'")
        CRT REGEXP('bar', '"^(?!.*?bar).*"')                                 ;* -1
+
+***Another positive TAFJ note: negative lookahead now works.***
 
 ## RELEASE
 
@@ -14286,6 +14433,11 @@ Displays 4000000000000000000000000000007 to the screen
     CRT SADD(4.33333333333333333,1.8)
 
 Displays 6.13333333333333333 to the screen
+
+***TAFJ note: parameters are to be in quotes:***
+
+       CRT SADD('4000000000000000000000000000000', '7')  ;* 4000000000000000000000000000007
+       CRT SADD(4000000000000000000000000000000, 7)      ;* 9223372036854775814
 
 ## SDIV
 
@@ -14699,6 +14851,8 @@ The output of this program is:
 
 <pre>
     84]71 71</pre>
+
+***TAFJ note: SEQS() function isn't supported.***
 
 ## SIN
 
@@ -15283,6 +15437,8 @@ See: [SSELECT](#SSELECT).
 
 See: [SSELECT](#SSELECT).
 
+***TAFJ note: SSELECTV statement isn't supported.***
+
 ## SSUB
 
 SSUB function performs string subtraction of two base 10-string numbers.
@@ -15388,6 +15544,11 @@ by the STATUS function.
        END
        CRT STATUS()           ;*  -1
        CRT ret_code           ;*  32768
+
+***TAFJ note: STATUS() function works incorrectly processing results of erroneous conversions. Example:***
+
+       CRT OCONV('qwerty', 'qwerty') : '_' : STATUS()   ;* expected: _1, output: _2
+       CRT ICONV('20483344', 'D') : '_' : STATUS()      ;* expected: _3, output: _1
 
 ## STATUS statement
 
@@ -16259,6 +16420,13 @@ will display
 <pre>
     A]1]Vendor Name]]]]]L]30</pre>
 
+***TAFJ note: TRANS() function returns record @ID instead of field contents. Example (on Temenos Model Bank):***
+
+       CRT TRANS('F.COMPANY', 'EU0010001', 2, 'X')
+       * expected output: Model Bank - Europe
+       * output: EU0010001
+       * workaround: use XLATE
+
 ## TRANSABORT
 
 <a name="TRANSABORT"/>
@@ -16600,7 +16768,7 @@ See also: [ASSIGNED](#ASSIGNED)
        END
        CRT UNASSIGNED(F.TEMP)        ;* 0
        CLOSE F.TEMP
-       CRT UNASSIGNED(F.TEMP)        ;* 1
+       CRT UNASSIGNED(F.TEMP)        ;* 1 under TAFC, 0 under TAFJ
        CRT UNASSIGNED(V.VAR)         ;* 1
        V.VAR = 5
        CRT UNASSIGNED(V.VAR)         ;* 0
@@ -16707,6 +16875,13 @@ The output of this program is:
     C3 86 (latin capital letter ae)
     C2 BD (vulgar fraction one half)
     C2 BF (inverted question mark)</pre>
+
+***TAFJ note: output is:***
+
+<pre>
+    C6 BD
+    BF 0
+    0 0</pre>
 
 ### NOTE
 
@@ -17696,6 +17871,8 @@ See also: [DTX](#DTX).
 
 Negative result in line 4 is caused by the first bit of binary result
 being set.
+
+***TAFJ note: XTD('1aGHI') results in 0, not 26.***
 
 # Embedded SQL for jBC
 
