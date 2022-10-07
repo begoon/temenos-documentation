@@ -13,6 +13,8 @@ This is unofficial document; use it at your own risk - like TAFC :)) .. no, no j
 
 ### Latest changes
 
+06 Oct 2022. Tests repeated on TAFJ R22. See [System Functions](#System Functions), [EXECUTE](#EXECUTE), [GROUP](#GROUP), [TRANS](#TRANS).
+
 30-31 Aug 2022. Continued with TAFJ compatibility notes. See [@CALLSTACK](#@CALLSTACK), [@DATA](#@DATA), [OSWRITE](#OSWRITE), [FMT](#FMT), [OCONV](#OCONV), [IOCTL](#IOCTL), [@](#@), [ANDS](#ANDS), [CLEARCOMMON](#CLEARCOMMON), [ASSIGNED](#ASSIGNED), [DECRYPT](#DECRYPT), [ENTER](#ENTER), [CacheBucketList](#CacheBucketList), [CacheKeyList](#CacheKeyList), [FILEINFO](#FILEINFO), [@TTY](#@TTY), [@PID](#@PID), [@LEVEL](#@LEVEL), [GROUP](#GROUP), [GROUPSTORE](#GROUPSTORE), [IN](#IN), [READSEQ](#READSEQ), [ISCNTRL](#ISCNTRL), [ISPRINT](#ISPRINT), [GETENV](#GETENV), [JBASESubroutineExist](#JBASESubroutineExist), [KEYIN](#KEYIN), [INPUT](#INPUT), [XTD](#XTD), [OSBWRITE](#OSBWRITE), [OSREAD](#OSREAD), [READPREV](#READPREV), [REGEXP](#REGEXP), [SADD](#SADD), [SEQS](#SEQS), [SSELECTV](#SSELECTV), [STATUS](#STATUS), [DELETE](#DELETE), [TRANS](#TRANS), [UNASSIGNED](#UNASSIGNED), [UTF8](#UTF8), [HUSH](#HUSH), [DELETESEQ](#DELETESEQ), [COMPARE](#COMPARE), [OSBREAD](#OSBREAD). Also - one more note for [EXECUTE](#EXECUTE) and one more example for [MATCHES](#MATCHES).
 
 24-25 Aug 2022. Started inputting TAFJ compatibility notes (tested under TAFJ R19 SP44). See [Note 2](#Note 2), [Comments](#Comments), [COLLECTDATA](#COLLECTDATA), [EXECUTE](#EXECUTE), [MSLEEP](#MSLEEP), [SLEEP](#SLEEP), [System Functions](#System Functions) and [To wrap a long line](#To wrap a long line).
@@ -6306,6 +6308,8 @@ only one of each clause may exist.
 
 ***TAFJ note 5: EXIT() in EXECUTEd program stops the EXECUTing one as well.***
 
+***TAFJ R22 note: EXECUTE 'COMO ON ...' and subsequent CRT statements create COMO file with the printed contents but on subsequent runs file is appended rather than recreated like it is in TAFC (under R19 file wasn't even created).***
+
 ***Final TAFJ note: I couldn't (yet) find a way to execute an OS command or external program.... It executes only another Java class... And if one is missing - like I-DUMP or LIST-ITEM - execution fails:***
 
 <pre>   Cannot find 'I-DUMP' (class : 'com.temenos.t24.I_m_DUMP_cl')</pre>
@@ -7805,6 +7809,7 @@ third fields and their delimiter within this string variable):
     Expected result: 456:-789
     Output in TAFC R19: 456:-789:-987:-
     Output in TAFJ: -456:-789
+    Output in TAFJ R22: as expected.
     </pre>
 
 ## GROUPSTORE
@@ -16147,6 +16152,10 @@ The following system functions are supported by TAFC:
 
 ***TAFJ note 2: SYSTEM(1027) shows only current process.***
 
+***TAFJ R22 note: SYSTEM(1000), SYSTEM(1001), SYSTEM(1018) and SYSTEM(1026) were fixed.***
+
+***TAFJ R22 note 2: SYSTEM(2) and SYSTEM(3) now return 0 (returned 120 and 50 respectively under TAFJ R19).***
+
 ### EXAMPLES
 
        CRT SYSTEM(40)        ;* e.g. test
@@ -16426,6 +16435,8 @@ will display
        * expected output: Model Bank - Europe
        * output: EU0010001
        * workaround: use XLATE
+
+***TAFJ R22 note: fixed.***
 
 ## TRANSABORT
 
