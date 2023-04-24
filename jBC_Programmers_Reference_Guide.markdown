@@ -13,6 +13,8 @@ This is unofficial document; use it at your own risk - like TAFC :)) .. no, no j
 
 ### Latest changes
 
+18 Apr 2023. [EXECUTE](#EXECUTE) - note how to run OS command under TAFJ.
+
 06 Oct 2022. Tests repeated on TAFJ R22. See [System Functions](#System Functions), [EXECUTE](#EXECUTE), [GROUP](#GROUP), [TRANS](#TRANS).
 
 30-31 Aug 2022. Continued with TAFJ compatibility notes. See [@CALLSTACK](#@CALLSTACK), [@DATA](#@DATA), [OSWRITE](#OSWRITE), [FMT](#FMT), [OCONV](#OCONV), [IOCTL](#IOCTL), [@](#@), [ANDS](#ANDS), [CLEARCOMMON](#CLEARCOMMON), [ASSIGNED](#ASSIGNED), [DECRYPT](#DECRYPT), [ENTER](#ENTER), [CacheBucketList](#CacheBucketList), [CacheKeyList](#CacheKeyList), [FILEINFO](#FILEINFO), [@TTY](#@TTY), [@PID](#@PID), [@LEVEL](#@LEVEL), [GROUP](#GROUP), [GROUPSTORE](#GROUPSTORE), [IN](#IN), [READSEQ](#READSEQ), [ISCNTRL](#ISCNTRL), [ISPRINT](#ISPRINT), [GETENV](#GETENV), [JBASESubroutineExist](#JBASESubroutineExist), [KEYIN](#KEYIN), [INPUT](#INPUT), [XTD](#XTD), [OSBWRITE](#OSBWRITE), [OSREAD](#OSREAD), [READPREV](#READPREV), [REGEXP](#REGEXP), [SADD](#SADD), [SEQS](#SEQS), [SSELECTV](#SSELECTV), [STATUS](#STATUS), [DELETE](#DELETE), [TRANS](#TRANS), [UNASSIGNED](#UNASSIGNED), [UTF8](#UTF8), [HUSH](#HUSH), [DELETESEQ](#DELETESEQ), [COMPARE](#COMPARE), [OSBREAD](#OSBREAD). Also - one more note for [EXECUTE](#EXECUTE) and one more example for [MATCHES](#MATCHES).
@@ -6300,9 +6302,9 @@ only one of each clause may exist.
 ***TAFJ note 3: EXECUTE of 2 commands delimited with @FM returns code from the first command, not from the second one. Example:***
 
        EXECUTE 'SELECT F.SPF' :@FM: 'SAVE-LIST spf' CAPTURING output RETURNING ret_code
-       CRT CONVERT(@FM:@VM:@SM, '^]\', ret_code)    
+       CRT CONVERT(@FM:@VM:@SM, '^]\', ret_code)
        *  expected output: 241]1]sel_list]Savelist_msg
-       *  output: 404]1]QLNUMSEL 
+       *  output: 404]1]QLNUMSEL
 
 ***TAFJ note 4: PASSLIST clause in EXECUTE doesn't work.***
 
@@ -6310,9 +6312,13 @@ only one of each clause may exist.
 
 ***TAFJ R22 note: EXECUTE 'COMO ON ...' and subsequent CRT statements create COMO file with the printed contents but on subsequent runs file is appended rather than recreated like it is in TAFC (under R19 file wasn't even created).***
 
-***Final TAFJ note: I couldn't (yet) find a way to execute an OS command or external program.... It executes only another Java class... And if one is missing - like I-DUMP or LIST-ITEM - execution fails:***
+***Final TAFJ R22 note: use "DOS /c" under Windows or "SH -c" under Linux (keeping the case exactly as it is shown) to execute OS command:***
 
-<pre>   Cannot find 'I-DUMP' (class : 'com.temenos.t24.I_m_DUMP_cl')</pre>
+        EXECUTE 'DOS /c C:\temenos\TAFJ\bin\tShow.bat ACCOUNT' CAPTURING output
+        CRT '>>>'
+        CHANGE @FM TO CHAR(10) IN output
+        CRT output
+        INPUT dummy
 
 ### EXAMPLE
 
@@ -9434,7 +9440,7 @@ where **SubName** is subroutine name; returns 1 or 0.
 
        SubName = 'CDD'
        Result = CALLC JBASESubroutineExist(SubName, SubInfo)
-       CRT Result                 ;* 1 in T24 TAFC environment, 0.0 under TAFJ 
+       CRT Result                 ;* 1 in T24 TAFC environment, 0.0 under TAFJ
        CRT SQUOTE(SubInfo)        ;* '' under TAFC, 'Subroutine' under TAFJ
        SubName = 'QWERTY'
        Result = CALLC JBASESubroutineExist(SubName, SubInfo)
@@ -12154,7 +12160,7 @@ contents to the screen:
 
 ***TAFJ note: if we use a variable for LENGTH, routine won't even compile:***
 
-<pre>    expecting "LENGTH", found 'max_len' Probably due to unclosed Block. 
+<pre>    expecting "LENGTH", found 'max_len' Probably due to unclosed Block.
    Please verify that all 'IF' has a 'END'</pre>
 
 ## OSBWRITE
@@ -13557,7 +13563,7 @@ Line ends in this file are shown here (JED, Ctrl-E to go to line end):
 <pre>
     1100_------1090------1100</pre>
 
-So there's no limit of 1024.       
+So there's no limit of 1024.
 
 ### Step 3. Read a line from this text file using IOCTL() first:
 
