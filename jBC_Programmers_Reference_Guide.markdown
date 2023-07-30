@@ -13,6 +13,8 @@ This is unofficial document; use it at your own risk - like TAFC :)) .. no, no j
 
 ### Latest changes
 
+24 Jul 2023. TAFJ R23 notes. See [@](#@), [ECHO](#ECHO), [EXECUTE](#EXECUTE), [System Functions](#System Functions).
+
 18 Apr 2023. [EXECUTE](#EXECUTE) - note how to run OS command under TAFJ.
 
 06 Oct 2022. Tests repeated on TAFJ R22. See [System Functions](#System Functions), [EXECUTE](#EXECUTE), [GROUP](#GROUP), [TRANS](#TRANS).
@@ -1625,6 +1627,8 @@ Use the @ function to position the cursor to a specific point on the
 terminal screen
 
 ***TAFJ note: screen positioning doesn't work.***
+
+***TAFJ R23 note: screen positioning is fixed.***
 
 ### COMMAND SYNTAX
 
@@ -5943,6 +5947,8 @@ FALSE if disabled.
 
 This will disable the character input echoing while typing in a password.
 
+***TAFJ R23 note: user input can be seen after Enter is pressed, even without ECHO ON at the end.***
+
 ## ENCRYPT
 
 <a name="ENCRYPT"/>
@@ -6310,7 +6316,7 @@ only one of each clause may exist.
 
 ***TAFJ note 5: EXIT() in EXECUTEd program stops the EXECUTing one as well.***
 
-***TAFJ R22 note: EXECUTE 'COMO ON ...' and subsequent CRT statements create COMO file with the printed contents but on subsequent runs file is appended rather than recreated like it is in TAFC (under R19 file wasn't even created).***
+***TAFJ R22 note: EXECUTE 'COMO ON ...' and subsequent CRT statements create COMO file with the printed contents but on subsequent runs file is appended rather than recreated like it is in TAFC (under TAFJ R19 file wasn't even created).***
 
 ***Final TAFJ R22 note: use "DOS /c" under Windows or "SH -c" under Linux (keeping the case exactly as it is shown) to execute OS command:***
 
@@ -6319,6 +6325,9 @@ only one of each clause may exist.
         CHANGE @FM TO CHAR(10) IN output
         CRT output
         INPUT dummy
+
+***TAFJ R19/R23 note: EXECUTE doesn't output anything on the screen. Screen output can be taken via CAPTURING clause (works in R23 but not in R19).***
+
 
 ### EXAMPLE
 
@@ -16161,6 +16170,8 @@ The following system functions are supported by TAFC:
 ***TAFJ R22 note: SYSTEM(1000), SYSTEM(1001), SYSTEM(1018) and SYSTEM(1026) were fixed.***
 
 ***TAFJ R22 note 2: SYSTEM(2) and SYSTEM(3) now return 0 (returned 120 and 50 respectively under TAFJ R19).***
+
+***TAFJ R23 note: SYSTEM(1000) and SYSTEM(1001) weren't probably fixed in TAFJ R22 (unable to verify it now) - in TAFJ R23 they return a string, not a dynamic array.***
 
 ### EXAMPLES
 
