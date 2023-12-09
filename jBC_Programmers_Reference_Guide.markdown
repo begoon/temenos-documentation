@@ -13,6 +13,8 @@ This is unofficial document; use it at your own risk - like TAFC :)) .. no, no j
 
 ### Latest changes
 
+07 Dec 2023. More TAFJ R23 notes. See [EREPLACE](#EREPLACE), [IFS](#IFS), [LOCALTIME](#LOCALTIME), [SQRT](#SQRT).
+
 24 Jul 2023. TAFJ R23 notes. See [@](#@), [ECHO](#ECHO), [EXECUTE](#EXECUTE), [System Functions](#System Functions).
 
 18 Apr 2023. [EXECUTE](#EXECUTE) - note how to run OS command under TAFJ.
@@ -6221,7 +6223,8 @@ The output of this program is:
 
 <pre>
     AAAZZZCCCDDDZZZ
-    ZZZAAABBBCCCDDDBBB
+    AAABBBCCCDDDBBB - under TAFC R23 (incorrect)
+    ZZZAAABBBCCCDDDBBB - under TAFJ R23 (correct)
     AAACCCDDD</pre>
 
 ## EXECUTE
@@ -8074,6 +8077,15 @@ element evaluates to false, it returns the corresponding element
 from **false.array**. If there is no corresponding element in the
 correct response array, it returns an empty string for that
 element. If an element is null, that element evaluates to false.
+
+***TAFJ R23 note: always returns "true" array:***
+
+    CRT CONVERT(@FM:@VM:@SM, '^]\', IFS( 1 :@FM: 0 :@VM: 1 :@SM: 0 :@FM: 1,
+             'This' :@FM: 'was' :@VM: 'how' :@SM: 'system' :@FM: 'works',
+             'That' :@FM: 'is' :@VM: 'how' :@SM: 'Globus' :@FM: 'worked' ) )
+
+    * TAFC: This^is]how\Globus^works
+    * TAFJ: This^was]how\system^works
 
 ## IN
 
@@ -10010,6 +10022,21 @@ TimeZone combination.
 The LOCALTIME function uses the specified timestamp and adjusts the
 value by the specified time zone to return the time value in internal
 time format.
+
+Example that works correctly in TAFJ R23 and incorrectly in TAFC R23:
+
+    a_date = ICONV( '20231031', 'DG' )
+    a_time = ICONV( '12:34:56', 'MTS' )
+    t_stamp = MAKETIMESTAMP( a_date, a_time, '' )
+    time_array = 100 : @FM : @FM : @FM : @FM : @FM : @FM : @FM   ;* add 100 years
+    future_ts = CHANGETIMESTAMP( t_stamp, time_array )
+    future_date = OCONV( LOCALDATE( future_ts, '' ), 'D/E')
+    future_time = OCONV( LOCALTIME( future_ts, '' ), 'MTS')
+    CRT future_date, future_time
+
+    * TAFC: 31/10/2123      03:14:08 - wrong
+    * TAFJ: 31/10/2123      12:34:56 - correct
+
 
 ## LOCATE
 
@@ -15282,11 +15309,18 @@ The function calculates the result at the highest precision
 available and then truncates the answer to the required
 PRECISION.
 
+***TAFJ R23 note: incorrect rounding of results.***
+
 ### EXAMPLE
 
-    FOR I = 1 TO 1000000
-        J = SQRT(I)
-    NEXT I
+    PRECISION 6
+    *
+    FOR i = 1 TO 10
+        CRT SQRT(i) : ' | ' :
+    NEXT i
+
+    * TAFC: 1 | 1.414214 | 1.732051 | 2 | 2.236068 | 2.44949 | 2.645751 | 2.828427 | 3 | 3.162278 |
+    * TAFJ: 1 | 1 | 2 | 2 | 2.2 | 2.4 | 2.6 | 2.8 | 3 | 3.2 |
 
 ## SSELECT
 
