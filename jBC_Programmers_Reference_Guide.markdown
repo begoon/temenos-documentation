@@ -13,6 +13,8 @@ This is unofficial document; use it at your own risk - like TAFC :)) .. no, no j
 
 ### Latest changes
 
+19 Jan 2024. More TAFJ R23 notes. See [LOWER](#LOWER), [RAISE](#RAISE), [XTD](#XTD).
+
 07 Dec 2023. More TAFJ R23 notes. See [EREPLACE](#EREPLACE), [IFS](#IFS), [LOCALTIME](#LOCALTIME), [SQRT](#SQRT).
 
 24 Jul 2023. TAFJ R23 notes. See [@](#@), [ECHO](#ECHO), [EXECUTE](#EXECUTE), [System Functions](#System Functions).
@@ -10297,6 +10299,22 @@ follows:
        CRT OCONV(V.ARRAY, 'MCP')                      ;*  1^2^3^4
        CRT OCONV( LOWER(V.ARRAY), 'MCP' )             ;*  1]2]3]4
 
+***TAFJ R23 note: in 3 cases results are wrong.***
+
+       FOR i = 249 TO 255
+           CRT i, SEQ( LOWER( CHAR(i) ) )
+       NEXT i
+
+Output:
+
+    249     249
+    250     250
+    251     63738
+    252     251
+    253     252
+    254     253
+    255     254
+
 ## MAKETIMESTAMP
 
 <a name="MAKETIMESTAMP"/>
@@ -13037,6 +13055,22 @@ which are raised as follows:
        V.ARRAY = 1 :@TM: 2 :@SM: 3 :@VM: 4
        CRT OCONV( V.ARRAY, 'MCP' )                      ;*  1.2\3]4
        CRT OCONV( RAISE(V.ARRAY), 'MCP' )               ;*  1\2]3^4
+
+***TAFJ R23 note: not all characters are processed.***
+
+       FOR i = 248 TO 254
+           CRT i, SEQ( RAISE( CHAR(i) ) )
+       NEXT i
+
+Output under TAFJ:
+
+    248     248
+    249     249
+    250     250
+    251     252
+    252     253
+    253     254
+    254     255
 
 ## READ
 
@@ -17935,6 +17969,8 @@ Negative result in line 4 is caused by the first bit of binary result
 being set.
 
 ***TAFJ note: XTD('1aGHI') results in 0, not 26.***
+
+***TAFJ R23 note: XTD('DEADBEEF') returns 0.***
 
 # Embedded SQL for jBC
 
