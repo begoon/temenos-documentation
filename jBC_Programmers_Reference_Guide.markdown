@@ -13,6 +13,8 @@ This is unofficial document; use it at your own risk - like TAFC :)) .. no, no j
 
 ### Latest changes
 
+02 Feb 2024. Groundhog Day :) TAFJ R23 strikes again; see [SENTENCE](#SENTENCE), [OSBREAD](#OSBREAD).
+
 19 Jan 2024. More TAFJ R23 notes. See [LOWER](#LOWER), [RAISE](#RAISE), [XTD](#XTD).
 
 07 Dec 2023. More TAFJ R23 notes. See [EREPLACE](#EREPLACE), [IFS](#IFS), [LOCALTIME](#LOCALTIME), [SQRT](#SQRT).
@@ -12217,6 +12219,44 @@ contents to the screen:
 <pre>    expecting "LENGTH", found 'max_len' Probably due to unclosed Block.
    Please verify that all 'IF' has a 'END'</pre>
 
+***TAFJ R23 note: if the last CRLF is missing in a file, last data byte is truncated:***
+
+File test.txt (no CRLF in "Line 3"):
+
+    Line 1
+    Line 2
+    Line 3
+
+Test routine:
+
+       OSOPEN 'test.txt' TO f_in ELSE
+           CRT 'Open error'
+           STOP
+       END
+       *
+       OSBREAD data FROM f_in AT 0 LENGTH 100000 ON ERROR
+           ret_stat = STATUS()
+           CRT 'Read error (status = ' : DQUOTE(ret_stat) : ')'
+           STOP
+       END
+       *
+       OSCLOSE f_in
+       CRT DQUOTE(data)
+       STOP
+       END
+
+Output - TAFC:
+
+    "Line 1
+    Line 2
+    Line 3"
+
+Output - TAFJ:
+
+    "Line 1
+    Line 2
+    Line "
+
 ## OSBWRITE
 
 <a name="OSBWRITE"/>
@@ -14854,6 +14894,34 @@ delimited.
           CRT phrase_part:
           EXECUTE this_prog : ' -2 "you firstly need "'
        END
+
+***TAFJ R23 note: results are corrupted after EXECUTE:***
+
+test.b:
+
+       PROGRAM test
+       *
+       CRT SENTENCE(2)
+       EXECUTE 'LIST F.SPF (N' CAPTURING output
+       *
+       CRT SENTENCE(2)
+       *
+       STOP
+       END
+
+TAFC:
+
+    test arg1 arg2
+    >>>
+    arg2
+    arg2
+
+TAFJ:
+
+    trun test arg1 arg2
+    >>>
+    arg2
+    (N
 
 ## SEQ
 
