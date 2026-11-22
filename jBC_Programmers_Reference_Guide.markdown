@@ -7,11 +7,33 @@ jBC is a programming language that is used in jBASE post-relational
 converts the source code to C which in turn is compiled for the target platform
 with the usage of standard C compiler.
 
-**Copyright notice**
+For TAFJ it is converted to Java code rather than to C.
 
-jBASE and the jBASE logo (dove) are registered trademarks of T-jBASE SA, a company of the TEMENOS Group, Copyright © 2012 T-jBASE SA.
+This is unofficial document; use it at your own risk - like TAFC :)) .. no, no joke - read its license agreement carefully.
 
-![jBASE logo](https://raw.github.com/temenos/jbc-language/master/images/jbase-logo.jpg)
+### Latest changes
+
+02 Feb 2024. Groundhog Day :) TAFJ R23 strikes again; see [SENTENCE](#SENTENCE), [OSBREAD](#OSBREAD).
+
+19 Jan 2024. More TAFJ R23 notes. See [LOWER](#LOWER), [RAISE](#RAISE), [XTD](#XTD).
+
+07 Dec 2023. More TAFJ R23 notes. See [EREPLACE](#EREPLACE), [IFS](#IFS), [LOCALTIME](#LOCALTIME), [SQRT](#SQRT).
+
+24 Jul 2023. TAFJ R23 notes. See [@](#@), [ECHO](#ECHO), [EXECUTE](#EXECUTE), [System Functions](#System Functions).
+
+18 Apr 2023. [EXECUTE](#EXECUTE) - note how to run OS command under TAFJ.
+
+06 Oct 2022. Tests repeated on TAFJ R22. See [System Functions](#System Functions), [EXECUTE](#EXECUTE), [GROUP](#GROUP), [TRANS](#TRANS).
+
+30-31 Aug 2022. Continued with TAFJ compatibility notes. See [@CALLSTACK](#@CALLSTACK), [@DATA](#@DATA), [OSWRITE](#OSWRITE), [FMT](#FMT), [OCONV](#OCONV), [IOCTL](#IOCTL), [@](#@), [ANDS](#ANDS), [CLEARCOMMON](#CLEARCOMMON), [ASSIGNED](#ASSIGNED), [DECRYPT](#DECRYPT), [ENTER](#ENTER), [CacheBucketList](#CacheBucketList), [CacheKeyList](#CacheKeyList), [FILEINFO](#FILEINFO), [@TTY](#@TTY), [@PID](#@PID), [@LEVEL](#@LEVEL), [GROUP](#GROUP), [GROUPSTORE](#GROUPSTORE), [IN](#IN), [READSEQ](#READSEQ), [ISCNTRL](#ISCNTRL), [ISPRINT](#ISPRINT), [GETENV](#GETENV), [JBASESubroutineExist](#JBASESubroutineExist), [KEYIN](#KEYIN), [INPUT](#INPUT), [XTD](#XTD), [OSBWRITE](#OSBWRITE), [OSREAD](#OSREAD), [READPREV](#READPREV), [REGEXP](#REGEXP), [SADD](#SADD), [SEQS](#SEQS), [SSELECTV](#SSELECTV), [STATUS](#STATUS), [DELETE](#DELETE), [TRANS](#TRANS), [UNASSIGNED](#UNASSIGNED), [UTF8](#UTF8), [HUSH](#HUSH), [DELETESEQ](#DELETESEQ), [COMPARE](#COMPARE), [OSBREAD](#OSBREAD). Also - one more note for [EXECUTE](#EXECUTE) and one more example for [MATCHES](#MATCHES).
+
+24-25 Aug 2022. Started inputting TAFJ compatibility notes (tested under TAFJ R19 SP44). See [Note 2](#Note 2), [Comments](#Comments), [COLLECTDATA](#COLLECTDATA), [EXECUTE](#EXECUTE), [MSLEEP](#MSLEEP), [SLEEP](#SLEEP), [System Functions](#System Functions) and [To wrap a long line](#To wrap a long line).
+
+Monday, 18 Jul 2022. Another example for [COUNT](#COUNT) function, note corrected.
+
+Saturday, 16 Jul 2022. Made available via github.io.
+
+Tuesday, 30 Sep 2014. Another example for [@](#@) function.
 
 ## What is TAFC
 
@@ -23,29 +45,12 @@ T24-based ones.
 ## TAFC releases
 
 TAFC release number normally reflects T24 release for which it is intended to
-be used, e.g. R10 or R11.
+be used, e.g. R10 or R22.
 
 ## What is T24
 
 T24 is the core banking system developed by Temenos company. The system
 extensions can be developed in (but not limited to) jBC.
-
-## Supported platforms
-
-| Platform                  | Compiler version                     | Releases |
-|---------------------------|--------------------------------------|----------|
-| AIX v5.3                  | IBM XL C/C++ v8.0.0.20               | R11, R12 |
-| AIX v6.1                  | IBM XL C/C++ v9.0.0.15               | R11, R12 |
-| AIX v7.1                  | IBM XL C/C++ v11.1.0.2               | R12      |
-| Windows Server 2008       | Microsoft Visual Studio 2010         | R11, R12 |
-| Redhat Enterprise Linux 5 | gcc 4.1.2 20080704 (Red Hat 4.1.2-50)| R11, R12 |
-| Redhat Enterprise Linux 6 | gcc 4.4.5 20110214 (Red Hat 4.4.5-6) | R12      |
-| HP Itanium2 11.31 V3      | HP C/aCC++ B3910B A.06.22            | R11, R12 |
-| Solaris 10 SPARC          | Sun Studio 11                        | R11      |
-| Solaris 10 SPARC          | Solaris Studio 12.3                  | R12      |
-| Solaris 10 x86-64         | Sun Studio 12.1                      | R11, R12 |
-| Solaris 11 SPARC          | Solaris Studio 12.3                  | R12      |
-| Solaris 11 x86-64         | Solaris Studio 12.3                  | R12      |
 
 ## jBC/jBASE features
 
@@ -61,7 +66,7 @@ extensions can be developed in (but not limited to) jBC.
 - Dimensioned and dynamic arrays.
 - String, number, and date data conversion.
 - Patterns matching.
-- Unary operators suport.
+- Unary operators support.
 - Single- and multi-byte character sets support.
 - Bitwise operations.
 - Standard industry encryption algorithms support.
@@ -99,6 +104,8 @@ to convert FM, VM and SM delimiters to a printable form, e.g.:
 
 Where possible, the output is shown in a comment (as it is in the example above).
 
+***TAFJ note: 'MCP' option doesn't work neither for OCONV() nor for FMT(). The former keeps delimiters as they are, the latter returns just 'CP'. Workaround: use CONVERT(@FM:@VM:@SM, '^]\', V.ARRAY)***
+
 ## Variables visibility and lifetime
 
 Variable is visible throughout the program or its subroutine (i.e. in
@@ -117,6 +124,8 @@ Use a backslash:
        V.LINE = 'The report for the year ' :@FM: V.YEAR : ', prepared at ' \
             : TIMEDATE()
 
+***TAFJ note: routine with such line extension won't even compile.***
+
 Or - if line ends with a comma - that's not necessary:
 
        V.STAT = IOCTL(F.TEST.FILE,
@@ -124,11 +133,20 @@ Or - if line ends with a comma - that's not necessary:
 
 ## Several statements on the same line
 
-Use semicolon:
+Use semicolon to delimit several statements on the same line; don't forget about
+code readability. You can combine statements with comments (though as soon as
+you have a comment, the following statements turn to comments as well):
 
-       V.VAR = 1  ;  V.VAR++  ;  CRT V.VAR
-       V.VAR-- ;* comment goes to the end of line so no "1" in the output ; CRT V.VAR
-       V.VAR-- ; CRT V.VAR  ;* 0 will be displayed
+    V.VAR = 1  ;  V.VAR++  ;  CRT V.VAR
+    V.VAR-- ;* comment starts here so no "1" in the output ; CRT V.VAR
+    V.VAR-- ; CRT V.VAR  ;* 0 will be displayed
+
+Conditional statements are also supported (though code readability suffers in
+the following example):
+
+    var_1 = 1 ; var_2 = 2 ; IF var_1 + var_2 EQ 3 THEN
+       CRT var_1, '+', var_2, '= 3'
+    END
 
 ## Comments
 
@@ -142,6 +160,8 @@ Comments can be defined in different ways:
        CRT '2'    // yet another way to define a comment
        CRT '3'
 
+***TAFJ note: double slash as a comment indicator isn't supported.***
+
 ## String variables
 
 Strings can be delimited with single quotes, double quotes or backslashes:
@@ -150,39 +170,74 @@ Strings can be delimited with single quotes, double quotes or backslashes:
        CRT "QWERTZ"    ;* this is also a string
        CRT 'QWE"RTZ'   ;* and even this is a string
        CRT \QWERTZ\    ;* still this is a string
-    * and here a backslash means line continuation
+       * and here a backslash means line continuation
        CRT 'QWE'  \
           : 'RTZ'
 
 To concatenate strings (you could see it in one of examples above), use a
 colon:
 
-       V.LINE = 'QWE' : 'RTY'
-       CRT V.LINE                   ;*  QWERTY
+       a_line = 'QWE' : 'RT'
+       CRT a_line                               ;*  QWERT
+       * unary concatenation
+       a_line := 'Y'
+       CRT a_line                               ;*  QWERTY
+
+String can be concatenated with a number without explicit conversion:
+
+       a_line = 'QWERTY'
+       a_line := 123
+       CRT a_line                               ;*  QWERTY123
 
 To extract a substring from a string use square brackets:
 
-       V.LINE = 'QWERTY'
-       CRT V.LINE[1,2]              ;*  QW
-       CRT V.LINE[2]                ;*  TY
-       CRT V.LINE[-4,2]             ;*  ER
-       CRT SQUOTE(V.LINE[4,999])    ;*  'RTY'
+       a_line = 'QWERTY'
+       CRT a_line[1,2]                          ;*  QW
+       CRT a_line[2]                            ;*  TY
+       CRT a_line[-4,2]                         ;*  ER
 
 It's possible to reassign parts of a string using that notation:
 
-       V.STRING = 'ABC'
-       V.STRING[2,1] = 'Q'
-       CRT V.STRING                 ;* AQC
-       V.STRING[2,1] = 'WER'
-       CRT V.STRING                 ;* AWERC
+       a_string = 'ABC'
+       a_string[2,1] = 'Q'
+       CRT a_string                             ;* AQC
+       a_string[2,1] = 'WER'
+       CRT a_string                             ;* AWERC
 
 Strings comparison is done from left to right:
 
-       V.STRING = 'ABC'
-       V.CHAR.A = 'A'
-       V.CHAR.B = 'B'
-       CRT V.STRING GT V.CHAR.A       ;* 1
-       CRT V.STRING GT V.CHAR.B       ;* 0
+       a_string = 'ABC'
+       char_a = 'A'
+       char_b = 'B'
+       CRT a_string GT char_a       ;* 1
+       CRT a_string GT char_b       ;* 0
+
+Other common string operations:
+
+       a_line = 'QWERTY'
+       * add quotes around a string
+       CRT SQUOTE(a_line[4,999])                ;*  'RTY'
+       CRT QUOTE(a_line)                        ;*  "QWERTY"
+       * change case
+       CRT DOWNCASE(a_line)                     ;*  qwerty
+       CRT UPCASE('do it now!')                 ;*  DO IT NOW!
+       * get length of a string
+       CRT LEN(a_line)                          ;*  6
+       * get length of i18n string - number of characters and number of bytes
+       a_line := CHAR(353)
+       CRT LEN(a_line)                          ;*  7
+       CRT BYTELEN(a_line)                      ;*  8
+       * repeat string several times
+       CRT STR('QWE', 5)                        ;*  QWEQWEQWEQWEQWE
+       * dynamic array is also a string
+       dyn_array = 'qwe' : @FM : "rty" : @VM : \xYZ\
+       CRT LEN(dyn_array)                       ;*  11
+       CRT FMT( UPCASE(dyn_array), 'MCP' )      ;*  QWE^RTY]XYZ
+       * pad a string
+       a_string = 'AWERC'
+       CRT '/' : FMT(a_string, '25R') : '/'     ;* /                    AWERC/
+       * get ASCII value of a character
+       CRT SEQ(a_string[1,1])                   ;* 65 (ASCII code of "A")
 
 ## Numeric variables
 
@@ -207,18 +262,22 @@ Strings comparison is done from left to right:
     * precedence is quite expected
        CRT 7 / 2 + 3                                ;* 6.5
        CRT 7 / (2 + 3)                              ;* 1.4
+    * Dot, plus, minus are considered non-numeric - in all emulations
+    * dot_not_numeric = true:
+       CRT ISDIGIT(-1)                         ;* 0
+       CRT ISDIGIT(1.234)                      ;* 0
 
 ## Boolean variables
 
-Boolean variables as such don’t exist in jBC; the result of a statement like IF (VAR) THEN...
+Boolean variables as such don't exist in jBC; the result of a statement like IF (VAR) THEN...
 depends on that variable contents:
 
-       IF NOT(V.UNASSIGNED) THEN CRT 'Unassigned var is false'
-       V.TRUE.VAR = 1  ;  V.FALSE.VAR = 0
-       IF V.TRUE.VAR THEN CRT '1 is true'
-       IF NOT(V.FALSE.VAR) THEN CRT '0 is false'
-       V.STRING = 'YES'
-       IF V.STRING THEN CRT 'Non-empty string is true'
+       IF NOT(unassigned_var) THEN CRT 'Unassigned var is false'
+       true_var = 1  ;  false_var = 0
+       IF true_var THEN CRT '1 is true'
+       IF NOT(false_var) THEN CRT '0 is false'
+       a_string = 'YES'
+       IF a_string THEN CRT 'Non-empty string is true'
        IF NOT('0.00') THEN CRT '0.00 is false'
        IF NOT('-0.00') THEN CRT '"-0.00" is still false - treated as numeric'
     * and this test depends on PRECISION
@@ -228,13 +287,22 @@ depends on that variable contents:
        PRECISION 17
        IF NOT('0.00000000000001') THEN CRT '0.00000000000001 is false' \
              ELSE CRT '0.00000000000001 is true with PRECISION 17'
+       *------------------------------------------------------------------------
+    ANOTHER.METHOD:
+    *
+      CRT @TRUE
+      CRT @FALSE
 
-Output:
+Compiler warning:
+
+<pre>
+    Warning: Variable unassigned_var is never assigned!</pre>
+
+Runtime:
 
 <pre>
     Non-numeric value -- ZERO USED ,
-    Variable 'V.UNASSIGNED' , Line
-    1 , Source test2.b
+    Variable 'unassigned_var' , Line 1 , Source test.b
     Unassigned var is false
     1 is true
     0 is false
@@ -242,7 +310,9 @@ Output:
     0.00 is false
     "-0.00" is still false - treated as numeric
     0.00000000000001 is false
-    0.00000000000001 is true with PRECISION 17</pre>
+    0.00000000000001 is true with PRECISION 17
+    1
+    0</pre>
 
 ## Dynamic arrays
 
@@ -281,18 +351,245 @@ though it's possible to use "EQ" in the latter case:
        IF V.STRING = 'ABC' THEN CRT 'YES'
        IF V.STRING EQ 'ABC' THEN CRT 'YES AGAIN'
 
-"Non-equal" can either be "#", "!" or "NE":
+"Non-equal" can either be "#", "!", "<>" or "NE":
 
-       V.STRING = 'ABC'
-       IF V.STRING #  'A' THEN CRT 'Not an A'
-       IF V.STRING NE 'B' THEN CRT 'Not a B'
-       IF V.STRING ! 'C' THEN CRT 'Not even a C'
+       a_string = 'ABC'
+       IF a_string #  'A' THEN CRT 'Not an "A"'
+       IF a_string NE 'B' THEN CRT 'Not a "B"'
+       IF a_string ! 'C' THEN CRT 'Not even a "C"'
+       IF a_string <> 'D' THEN CRT 'Surprisingly, but neither a "D"'
 
 IF...ELSE construct can be used without THEN:
 
        V.STRING = 'ABC'
        IF V.STRING NE 'ABC' ELSE CRT 'YES'
 
+### Differences between emulations
+
+For T24 emulation should always be **prime**, however for porting the code it's
+crucial to understand the differences.
+
+See several examples below.
+
+The following
+code will run successfully under **prime** emulation and will fail under **ros**:
+
+       ret_code = GETENV('JBCEMULATE', jbc_emu)   ;   CRT jbc_emu
+       dyn_array = 3 :@AM: 7
+       dyn_array += 4
+       CRT FMT(dyn_array, 'MCP')
+
+Runtime:
+
+<pre>
+    prime
+    7^7</pre>
+
+<pre>
+    ros
+    Non-numeric value -- ZERO USED ,
+    Variable 'dyn_array' , Line     3 , Source test.b
+    Trap from an error message, error message name = NON_NUMERIC</pre>
+
+*Setting in Config_EMULATE: ***no_value_maths = false|true**
+
+Next program outputs *<>* under **prime** and *<0>* under **seq**
+emulation. In the latter case there will be zero-sized file *report.txt* after
+program termination. So if, for example, nothing was written to a report
+under **prime** emulation (or, in fact, any other except **seq**),
+there will be no output file left after that.
+
+Source code:
+
+       dir_name = '.'
+       file_name = 'report.txt'
+       DELETESEQ dir_name, file_name ELSE NULL
+       *
+       OPENSEQ dir_name, file_name TO f_report THEN NULL
+       CRT '<' : DIR(file_name)<1> : '>'
+
+*Setting in Config_EMULATE: ***openseq_creates = false|true**
+
+The following program outputs *1* under **prime** emulation and *0*
+under **r83**, thus showing that common variables can be assigned or
+unassigned upon declaration of COMMON area:
+
+       COMMON /MY.COMM/ var_1, var_2
+       *
+       CRT ASSIGNED(var_1)
+
+*Setting in Config_EMULATE: ***named_common = unassigned|null|zero**
+
+The next program outputs *A^1^2^3^4^5* under **seq** or **r83**
+emulations; under others (that do add additional
+delimiter even if one exists at the end of an array in question) the output
+will be: *A^^1^2^3^4^5*.
+
+Source code:
+
+       dyn_array = 'A' : @FM
+       FOR i = 1 TO 5
+          dyn_array<-1> = i
+       NEXT i
+       CRT OCONV(dyn_array, 'MCP')
+
+*Setting in Config_EMULATE: ***no_extra_delimiter = false|true**
+
+The following *READV* example outputs *REC1* (i.e. record key) when is
+run under **jbase** emulation and *3* (i.e. fields count) under, e.g.,
+**ap** or **r83**:
+
+       OPEN 'F.TEMP' TO f_temp THEN
+          ret_error = ''
+          CLEARFILE f_temp SETTING ret_error
+          IF ret_error NE '' THEN
+             CRT 'ERROR ' : ret_error
+             STOP
+          END
+       END ELSE
+          EXECUTE 'CREATE-FILE DATA F.TEMP 1 101 TYPE=J4'
+          OPEN 'F.TEMP' TO f_temp ELSE ABORT 201, 'F.TEMP'
+       END
+       *
+       out_record = 'LINE 1' :@FM: 'LINE 2' :@FM: 'LINE 3'
+       WRITE out_record TO f_temp, 'REC1'
+       *
+       READV in_record FROM f_temp, 'REC1', 0 ELSE
+          CRT 'Read error'
+          STOP
+       END
+       *
+       CRT in_record
+
+*Setting in Config_EMULATE: ***readv0 = key|dcount|binary**
+
+Some settings are effective at runtime, others apply during compilation.
+For example, the following program compiles successfully under **prime**
+emulation and runs successfully after that under all emulations.
+However, it's not possible to compile it under, say, **jbase** emulation.
+Reason of error - redimensioning of an array.
+
+Code:
+
+       DIMENSION dyn_array(10)
+       MAT dyn_array = '!'
+       dyn_array(5) = '?'
+       FOR i = 1 TO 10
+          CRT dyn_array(i):          ;* !!!!?!!!!!
+       NEXT i
+       DIM dyn_array(15)
+       dyn_array(15) = '...'
+       CRT dyn_array(15)
+
+Compilation under **jbase** emulation:
+
+<pre>
+    [error 1        (32)] "test.b", 7 (offset 18)  near ")":
+    Array dyn_array has already been DIMensioned
+    &nbsp;
+    1 error was found</pre>
+
+*Setting in Config_EMULATE: ***resize_array = false|true**
+
+Another example:
+
+    * number of seconds past midnight
+       CRT SYSTEM(12)   ;* e.g. 30938703.4097 under prime, 309387 under ros
+
+For more settings see *Config_EMULATE* and *Config_EMULATE.txt*
+files in your TAFC/config folder.
+
+# Guidelines for writing the source code
+
+## Recommendations (not rules)
+
+*Note: some examples in this documentation don't fully follow these rules - they were taken from other sources or it's done intentionally to illustrate some language features.*
+
+- All variables are to be in lower case and in the lower_case_and_underscore_naming style.
+
+- Use only one style of quotes for strings, e.g.: "QWERT" (double quotes, preferable) or 'QWERT' (single quotes). Mix them only if it's really required, e.g.:
+
+       CRT '"Yes Minister", ' : "that's what I said."
+
+- Always use one space after the comma and never before the comma.
+
+- Never use space after '(' and before ')' (exception is when code is more readable with it).
+
+- Never put multiple commands on a single line and separate them by ";", except for short similar statements, like:
+
+       var_1 = 1  ;  var_2 = 2  ;  var_3 = 3
+
+- Don't put trailing ';' at the end of the lines.
+
+- Never convert ints to boolean implicitly:
+
+Instead of:
+
+       IF INDEX(...) THEN
+
+always write:
+
+       IF INDEX(...) NE 0 THEN
+
+Same goes for strings. Instead of:
+
+       var = 'ABC'
+       IF var THEN  ;* code continues here
+
+Use:
+
+       IF var NE '' THEN  ;* code continues here
+
+- Never hardcode program or subroutine name in error messages etc. Use SYSTEM(40) instead.
+
+- Always supply meaningful error messages with sufficient additional information.
+
+- Don't comment what you do; comment why.
+
+- Don't mix tabs with spaces, use either former or latter.
+
+- Don't use characters with ASCII code above 126 in the source. To form strings with such characters use CHAR() or load them from external file or table.
+
+- Use CR (ASCII 10) for line ends rather than CR+LF.
+
+- For statements like INCLUDE, $INSERT use zero indent; for all other code - 3 spaces of initial indent and 3 spaces to indent each FOR...NEXT, LOOP...REPEAT contents etc.
+
+- Wrap lines that are longer than 80 characters (use a backslash or comma at the end where the latter is applicable). It's a good idea to move line continuation(s) even more than 3 positions to the right, e.g.:
+
+       current_date = DATE()
+       current_day = OCONV(current_date, 'DD')
+       current_month = OCONV(current_date, 'DM')
+       ansi_date =  OCONV(current_date, 'DY') : '-'    \
+             : FMT(current_month, 'R0%2' )   : '-'     \
+             : FMT(current_day, 'R0%2' )
+       CRT ansi_date                             ;* e.g. 2013-03-08
+
+- Use spaces around "=":  not "var=1" but "var = 1".
+
+- Use "=" for assignment only; for comparisons use "EQ".
+
+- Don't use IF..ELSE without THEN.
+
+- Avoid GOTO, RETURN TO as much as possible.
+
+- Use named COMMON rather than unnamed.
+
+- Don't use numeric line labels like:
+
+       001 A = 0
+       002 A += 1
+       003 IF A LT 5 THEN GOTO 002 ELSE CRT A
+
+- Avoid ambiguity with IF...AND...OR, use parentheses. In the following example code lines 2, 3 and 4 are the same (except parentheses); only second IF is true:
+
+       var_1 = 1  ; var_2 = 2  ; var_3 = 3 ; var_4 = 4
+       IF var_1 EQ 1 OR var_2 EQ 20 AND var_3 EQ 30 OR var_4 EQ 40 THEN CRT 1
+       IF var_1 EQ 1 OR (var_2 EQ 20 AND var_3 EQ 30 OR var_4 EQ 40) THEN CRT 2
+       IF (var_1 EQ 1 OR var_2 EQ 20) AND (var_3 EQ 30 OR var_4 EQ 40) THEN CRT 3
+
+- Use only one method of writing "not equal" (preferably "NE").
+
+(See the second example in chapter ["Other notes"](#Other_notes).)
 
 # Environment variables relevant to jBC programming
 
@@ -709,7 +1006,7 @@ Use field name in a query:
     &nbsp;
      No Records Listed</pre>
 
-In default view we still don’t have it:
+In default view we still dont have it:
 
 <pre>
     LIST F.SAMPLE
@@ -757,7 +1054,7 @@ See file statistics:
 
 ### NOTE
 
-101 – number of groups – was defined when file was created.
+101 - number of groups - was defined when file was created.
 
 Add more records:
 
@@ -872,7 +1169,7 @@ between having several data sections and a distributed file.
 
 ## UD type
 
-Folders are also treated like data files (type UD); flat files in them –
+Folders are also treated like data files (type UD); flat files in them -
 like records. This allows, for example, use JED to edit source code.
 Data can be copied transparently between hashed
 files and folders. Some examples:
@@ -951,6 +1248,8 @@ Attribute (field) mark (ASCII 254), value mark (ASCII 253), subvalue mark
 
 ## @CALLSTACK
 
+***TAFJ note: not supported.***
+
 Intended to return current call stack information; isn't yet
 implemented. SYSTEM(1029) could be used to obtain call stack information, e.g:
 
@@ -958,9 +1257,11 @@ Main program (test.b):
 
        GOSUB SECTION1
        STOP
+       *-------------
     SECTION1:
        GOSUB SECTION2
        RETURN
+       *-------------
     SECTION2:
        CRT OCONV( SYSTEM(1029), 'MCP' )
        CALL TEST.SUB
@@ -970,8 +1271,10 @@ Main program (test.b):
 Subroutine:
 
        SUBROUTINE TEST.SUB
+    *
        GOSUB SECTION3
        RETURN
+       *-------------
     SECTION3:
        CRT OCONV( SYSTEM(1029), 'MCP' )
        RETURN
@@ -990,6 +1293,8 @@ Returns current codepage setting:
        CRT @CODEPAGE      ;* e.g. utf8
 
 ## @DATA
+
+***TAFJ note: not supported.***
 
 Data statements used in conjunction with INPUT statements are
 stored in data stack or input queue. This stack is accessible
@@ -1056,7 +1361,9 @@ statement:
 
 ## @LEVEL
 
-The nesting level of execution statements – non stacked
+The nesting level of execution statements - non stacked.
+
+***TAFJ note: variable @LEVEL isn't supported.***
 
 ## @LOCALE
 
@@ -1081,7 +1388,9 @@ Pathname of the current account
 
 ## @PID
 
-Returns current process ID
+Returns current process ID.
+
+***TAFJ note: contains wrong data, e.g. for PID 3892 it returned 1252655163.***
 
 ## @RECORD
 
@@ -1089,7 +1398,18 @@ Entire current record
 
 ## @SELECTED
 
-Number of elements from the last select list – Non stacked
+Number of elements from the last select list - Non stacked.
+
+### EXAMPLE
+
+       proc_fname = SYSTEM(1027)
+       OPEN proc_fname TO proc_file ELSE STOP 201, "PROC"
+       SELECT proc_file TO proc_list
+       CRT @SELECTED                                 ;* 0 - this is BASIC select
+       EXECUTE 'SELECT ' : proc_fname : ' TO 9'
+       CRT @SELECTED                                 ;* 0 - that's not default list
+       EXECUTE 'SELECT ' : proc_fname
+       CRT @SELECTED                                 ;* number of active sessions
 
 ## @TERMTYPE
 
@@ -1097,9 +1417,14 @@ The Terminal type
 
 ## @TIME
 
-Returns the internal time – on some systems, this differs from the
+Returns the internal time - on some systems, this differs from the
 TIME function in that the variable is set when program execution
-starts, whereas the function reflects the current time
+starts, whereas the function reflects the current time.
+
+### EXAMPLE
+
+       MSLEEP 3000
+       CRT @TIME, TIME()     ;*  e.g. 26359   26362
 
 ## @TIMEZONE
 
@@ -1108,6 +1433,8 @@ As per jBASE Timezone
 ## @TTY
 
 Returns the terminal port name.
+
+***TAFJ note: contains "0".***
 
 ## @UID
 
@@ -1235,9 +1562,9 @@ real-time , only updated every 15 seconds
 
 &lt;17&gt; License counters
 
-&lt;18&gt; Number of OPEN’s performed.
+&lt;18&gt; Number of OPENs performed.
 
-&lt;19&gt; Number of READ’s performed.
+&lt;19&gt; Number of READs performed.
 
 &lt;20&gt; Number of WRITE's performed.
 
@@ -1305,9 +1632,13 @@ have spawned.
 Use the @ function to position the cursor to a specific point on the
 terminal screen
 
+***TAFJ note: screen positioning doesn't work.***
+
+***TAFJ R23 note: screen positioning is fixed.***
+
 ### COMMAND SYNTAX
 
-@ (col{,row})
+    @ (col{,row})
 
 ### SYNTAX ELEMENTS
 
@@ -1343,6 +1674,47 @@ this by accessing the terminfo database through the SYSTEM () function.
        Home = @(0,0) ;* Remember the cursor home position
        CRT Home: "Hi honey, I'm HOME!" :
 
+### EXAMPLE 2
+
+Here the screen will be drawn, parts of it redrawn and then cleared:
+
+       size_x = SYSTEM(2) - 5 ; size_y = SYSTEM(3) - 5
+       info_x = 1  ;  info_y = size_y + 1
+       DIM the_screen(size_x, size_y)
+       CRT @(-1)
+       MAT the_screen = '*'
+       left_offset = 1
+       GOSUB DRAW.SCREEN
+       MAT the_screen = '#'
+       left_offset = INT(size_x / 2)
+       GOSUB DRAW.SCREEN
+       hole_x = 5  ;  hole_y = 5  ;  hole_len = 5
+       GOSUB MAKE.HOLE
+       hole_x = left_offset - 5  ;  hole_y = 10  ;  hole_len = 20
+       GOSUB MAKE.HOLE
+       CRT @(info_x, info_y) : "That's all folks!" : @(-3)
+                      ;* -3 clears all to the end of line
+       *
+       STOP
+       *
+       DRAW.SCREEN:
+          CRT @(info_x, info_y) : 'Drawing ' : the_screen(1, 1) : "'s..."
+          FOR i = left_offset TO size_x
+             FOR j = 1 TO size_y
+                CRT @(i, j) : the_screen(i, j):
+             NEXT j
+          MSLEEP(100) ;* 0.1 sec
+          NEXT i
+          MSLEEP(2000)
+          RETURN
+       *
+       MAKE.HOLE:
+          CRT @(info_x, info_y) : 'Making a hole at ' : hole_x : '/' : hole_y
+          CRT @(hole_x, hole_y) : STR(' ', hole_len)
+          MSLEEP(2000)
+          RETURN
+       END
+
 ## @ (SCREENCODE)
 
 Use @(SCREENCODE) to output control sequences according to the
@@ -1350,7 +1722,7 @@ capabilities of the terminal
 
 ### COMMAND SYNTAX
 
-@ (ScreenCode)
+    @ (ScreenCode)
 
 ### SYNTAX ELEMENTS
 
@@ -1609,6 +1981,12 @@ is zero or an empty string, it returns false for those elements.
         B = 1 :@SM: 1 - 1 :@VM: 2
         PRINT OCONV( ANDS(A, B), 'MCP' )    ;*  1\0]1\0
 
+***TAFJ note: in the following example output is 1^1]0]1\ (trailing 0 is missing):***
+
+       dyn_arr_one = 1 :@FM: 1 :@VM: 0 :@VM: 1 :@SM: 1
+       dyn_arr_two = 1 :@FM: 1 :@VM: 1 :@VM: 1
+       CRT ANDS(dyn_arr_one, dyn_arr_two)
+
 ## ASCII
 
 <a name="ASCII"/>
@@ -1628,10 +2006,22 @@ set and translate them using a character map. The original expression
 is unchanged while the returned result of the function is now the ASCII
 equivalent.
 
-### EXAMPLES
+### EXAMPLE
 
-        READT EbcdicBlock ELSE CRT "Tape failed!" ; STOP
-        AsciiBlock = ASCII(EbcdicBlock) ;* convert to ASCII
+Create the file test.txt in hex editor containing the following characters (in hex):
+
+<pre>
+    C8 85 93 93 96 40 91 C2 C3</pre>
+
+Run the following program:
+
+       OSREAD the_line FROM 'test.txt' ELSE NULL
+       CRT ASCII(the_line)
+
+Output:
+
+<pre>
+    Hello jBC</pre>
 
 ## ASSIGNED
 
@@ -1650,12 +2040,6 @@ ASSIGNED returns 1 if the variable has an assigned value
 before the execution of this statement. If the variable has no
 assigned value then the function returns 0.
 
-### NOTES
-
-Provision of this function is due to its implementation in older
-versions of the language. You are advised to program in such a way,
-to avoid using this statement.
-
 See also: [UNASSIGNED](#UNASSIGNED)
 
 ### EXAMPLE
@@ -1667,6 +2051,17 @@ See also: [UNASSIGNED](#UNASSIGNED)
        CRT ASSIGNED(V.VAR2)   ;* 0
        V.VAR1 = 'YES'
        V.VAR2 = 'NO'
+
+### EXAMPLE 2
+
+       EXECUTE 'DELETE-FILE DATA F.TEMP'
+       EXECUTE 'CREATE-FILE DATA F.TEMP TYPE=MSSQL'
+       OPEN 'F.TEMP' TO f_temp ELSE ABORT 201, 'F.TEMP'
+       CRT ASSIGNED(f_temp)   ;* 1
+       CLOSE f_temp
+       CRT ASSIGNED(f_temp)   ;* 0
+
+***TAFJ note: outputs 1 and 1 instead of 1 and 0.***
 
 ## BITAND
 
@@ -1838,20 +2233,11 @@ specified by any numeric expression.
 
 ### COMMAND SYNTAX
 
-    BITNOT(expression ?,bit#?)
+    BITNOT(expression)
 
-DESCRIPTION
+### DESCRIPTION
 
-**bit#** is an expression that evaluates to the number of the bit to
-invert. If bit# is unspecified, BITNOT inverts each bit. It changes
-each bit of 1 to a bit of 0 and each
-
-bit of 0 to a bit of 1. This is equivalent to returning a value equal
-to the following: (?expression)?1
-
-If expression evaluates to the null value, null is returned. If bit#
-evaluates to the null value, the BITNOT function fails and the program
-terminates with a run-time error message.
+If expression evaluates to the null value, null is returned.
 
 Non integer values are truncated before the operation is performed.
 The BITNOT operation is performed on a 32-bit twos-complement word.
@@ -1861,12 +2247,14 @@ high-order bit non portable.
 
 ### EXAMPLE
 
-    PRINT BITNOT(6), BITNOT(15,0), BITNOT(15,1), BITNOT(15,2)
+    CRT BITNOT(6)     ;*  4294967289
 
-This is the program output:
+Explanation of this example:
 
 <pre>
-    7 14 13 11</pre>
+    6 (decimal) = 110 (binary)
+    Invert every bit (32-bit representation): 11111111111111111111111111111001
+    Convert to decimal: 4294967289</pre>
 
 ## BITOR
 
@@ -1929,7 +2317,7 @@ For each process, it maintains a unique table of 128 bits (numbered 1
 to 128) and treats each bit in the table as a two-state flag - the
 value returned will always be zero or one.
 
-BITRESET returns the previous value of the bit – you can reset and
+BITRESET returns the previous value of the bit - you can reset and
 check a flag in one step.
 
 BITRESET also provides some special functions if you use one of the
@@ -2008,27 +2396,9 @@ specified by expression.
 
     BITTEST(expression, bit#)
 
-### DESCRIPTION
+### NOTE
 
-The function returns 1 if the bit is set; it returns 0 if it is not;
-Bits are counted from right to left. The number of the rightmost bit
-is 0.
-
-If expression evaluates to the null value, null is returned. If bit#
-evaluates to null, the BITTEST function fails and the program
-terminates with a run-time error message.
-
-Non integer values are truncated before the operation is performed.
-
-### EXAMPLE
-
-        PRINT BITTEST(11,0), BITTEST(11,1), BITTEST(11,2), BITTEST(11,3)
-     * The binary value of 11 = 1011
-
-This is the program output:
-
-<pre>
-    1 1 0 1</pre>
+This function is reserved for future use and hadn't yet been implemented.
 
 ## BITXOR
 
@@ -2207,6 +2577,8 @@ The output is:
 
 This function does not affect the bucket statistics.
 
+***TAFJ note: list isn't sorted by bucket name like it is in TAFC.***
+
 ## CacheClear
 
 <a name="CacheClear"/>
@@ -2317,8 +2689,8 @@ This function does not affect statistics of the bucket.
 
 <a name="CacheExists"/>
 
-The CacheExists function will return “1” if a item exists in the
-bucket or “0” otherwise.
+The CacheExists function will return "1" if a item exists in the
+bucket or "0" otherwise.
 
 ### COMMAND SYNTAX
 
@@ -2341,7 +2713,7 @@ The output is:
 
 ### NOTES
 
-The CacheExists() function also returns “0” if the bucket itself
+The CacheExists() function also returns "0" if the bucket itself
 does not exist in the cache. Also this function does not affect
 statistics of the bucket.
 
@@ -2407,7 +2779,7 @@ The output is:
 
 The bucket should exists otherwise this function returns zeros.
 
-The “option” parameter may have following values:
+The "option" parameter may have following values:
 
 **CACHE_MAX_SIZE**: Bucket maximum size in bytes. By default, the
 bucket size is 1048576. If the size reaches this value, the most
@@ -2451,6 +2823,8 @@ The output is:
 ### NOTES
 
 This function does not affect statistics of the bucket.
+
+***TAFJ note: list isn't sorted by item name like it is in TAFC.***
 
 ## CachePut
 
@@ -2499,7 +2873,7 @@ The CacheSetOption function will set an option of the bucket.
 If the bucket does not exist an empty bucket is created and the option
 is applied to it.
 
-The “option” parameter may have following values:
+The "option" parameter may have following values:
 
 **CACHE_MAX_SIZE**: Bucket maximum size in bytes. By default, the
 bucket size is 1048576. If the size reaches this value, the most
@@ -2548,7 +2922,7 @@ The output is:
 
 ### NOTES
 
-The “counter_id” parameter may have following values:
+The "counter_id" parameter may have following values:
 
 **CACHE_HITS**: Number of successful hits to the bucket.
 This counter is incremented by CacheGet function if a requested
@@ -2732,7 +3106,7 @@ useful when using third party applications.
 
 ### COMMAND SYNTAX
 
-    CALLdotNET NameSpaceAndClassName, methodName, param SETTING ret ¨\
+    CALLdotNET NameSpaceAndClassName, methodName, param SETTING ret \
                [ON ERROR errStatment]
 
 In order to use CALLdotNET, you need:
@@ -2744,14 +3118,14 @@ In order to use CALLdotNET, you need:
 
 The dotNETWrapper is loaded dynamically at runtime; therefore, a
 compiled basic application has no dependencies on the .NET Framework.
-Loading the framework takes between (~5 –7 sec.). However, this only
+Loading the framework takes between 5 and 7 seconds. However, this only
 occurs when calling the .NET method for the first time.
 
 ### SYNTAX ELEMENTS
 
-NameSpaceAndClassName The “full” NameSpace (e.g., myNameSpace.myClass)
+NameSpaceAndClassName The "full" NameSpace (e.g., myNameSpace.myClass)
 
-methodName The name of the .NET in this class (e.g., “myMethod”)
+methodName The name of the .NET in this class (e.g., "myMethod")
 
 Param Any parameter (eg DynArray)
 
@@ -2768,7 +3142,7 @@ In C#:
 	    {
 		    public string sayHello(string str)
 		    {
-			    return “Thank you, I received : “ + str;
+			    return "Thank you, I received : " + str;
 		    }
 		    public Class1(){}
 	    }
@@ -2787,28 +3161,29 @@ In VB.NET:
       End Class
     End Namespace</pre>
 
-Note: Create the .NET project as a ‘Class Library’.
+Note: Create the .NET project as a 'Class Library'.
 
 If using the visual studio IDE, this option is on selected when
 creating a new project:
 
-![.Net Project Creation](https://raw.github.com/temenos/jbc-language/master/images/dotnet-project-creation.png)
+![.Net Project Creation](data:image/png;base64,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)
 
 If using .NET SDK (instead of the IDE) to compile class libraries
-into a ‘DLL’ file, the  ‘csc’ (C# Compiler) or ‘vbc’ (Visual Basic
+into a 'DLL' file, the  'csc' (C# Compiler) or 'vbc' (Visual Basic
 .NET compiler) command can be used from the command line:
 
-    csc /out:myNameSpace.dll /target:library sourcefile.cs
+<pre>
+    csc /out:myNameSpace.dll /target:library sourcefile.cs</pre>
 
-The name of the ‘.DLL’ created must be the same as the ‘namespace’
-as used in the class library t locate the ‘dotNetWrapper.dll’ library:
+The name of the '.DLL' created must be the same as the 'namespace'
+as used in the class library t locate the 'dotNetWrapper.dll' library:
 
 After creating the library, place it in the same private directory as
 the application. (i.e. the same directory as the jBC executable that
 will call the class) This is a requirement of the .NET paradigm and
 not TAFC. The directory should also be in the PATH environment variable.
 
-![DLL Creation](https://raw.github.com/temenos/jbc-language/master/images/dotnet-dll-creation.png)
+![DLL Creation](data:image/png;base64,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)
 
 *To call these methods from Basic*:
 
@@ -2914,11 +3289,11 @@ be used.
 
 ### SYNTAX ELEMENTS
 
-**packageAndClassName** The “full” class name
+**packageAndClassName** The "full" class name
 (e.g., com.jbase.util.utilClass)
 
 **methodName** The name of the Java method in this class
-(e.g., “myMethod”)
+(e.g., "myMethod")
 
 NOTE: If the method is static, you must append a dollay symbol ( $ ) before the name.
 It will be removed from the method name before calling it.
@@ -3035,7 +3410,7 @@ Linux
 
 .profile:
 
-Add “/opt/java6/jrelib:/opt/java6/jvmlib” to the LD_LIBRARY_PATH
+Add "/opt/java6/jrelib:/opt/java6/jvmlib" to the LD_LIBRARY_PATH
 
 HP-UX
 
@@ -3045,7 +3420,7 @@ HP-UX
 
 	 .profile:
 
-Add “/opt/java6/jrelib:/opt/java6/jvmlib” to the SHLIB_PATH
+Add "/opt/java6/jrelib:/opt/java6/jvmlib" to the SHLIB_PATH
 
 AIX (IBM JDK)
 
@@ -3055,7 +3430,7 @@ AIX (IBM JDK)
 
 	 .profile:
 
-Add “/opt/java6/jrelib:/opt/java6/jvmlib” to the LIBPATH
+Add "/opt/java6/jrelib:/opt/java6/jvmlib" to the LIBPATH
 
 Solaris SPARC
 
@@ -3065,7 +3440,7 @@ Solaris SPARC
 
 	 .profile:
 
-Add “opt/java6/jrelib:/opt/java6/jvmlib” to the LD_LIBRARY_PATH
+Add "opt/java6/jrelib:/opt/java6/jvmlib" to the LD_LIBRARY_PATH
 
 Solaris AMD64
 
@@ -3075,7 +3450,7 @@ Solaris AMD64
 
 	 .profile:
 
-Add “opt/java6/jrelib:/opt/java6/jvmlib” to the LD_LIBRARY_PATH
+Add "opt/java6/jrelib:/opt/java6/jvmlib" to the LD_LIBRARY_PATH
 
 ### EXAMPLES using JVM WITHOUT symbolic links as above:
 
@@ -3200,7 +3575,7 @@ The symptom looks like this:
 If the program is built with the required link as below then it works.
 
 <pre>
-    jbc –Jo callj.b -ljvm -L/opt/java6/jre/lib/IA64W/server</pre>
+    jbc -Jo callj.b -ljvm -L/opt/java6/jre/lib/IA64W/server</pre>
 
 If the CALLJ statement is inside a subroutine, then the program that
 calls the subroutine must be built as above.
@@ -3380,7 +3755,8 @@ executables and directories.
 
 The format of the CATALOG command is as follows.
 
-    CATALOG SourceFilename Itemlist
+<pre>
+    CATALOG SourceFilename Itemlist</pre>
 
 When first invoked the CATALOG command will create a $HOME/bin directory
 into which the UNIX executables will be placed. A $HOME/lib directory
@@ -3488,20 +3864,20 @@ of the CATS function is the non-null dynamic array.
 
 ### EXAMPLES
 
-    X  = "a" : @VM : "b" : @VM : "c"
-    B = 1 : @VM : 2 : @VM : 3
-    Z = CATS(X, Y)
-
-The assigned value to variable Z is:
-
-    a1 : @VM : b2 : @VM : c3
-    A = "a" : @SM : "b" : @VM : "c": @VM : "d"
-    B = "x" : @VM : "y" : @SM : "z"
-    C = CATS(A, B)
-
-The assigned value to variable C is:
-
-    ax : @SM : b : @VM : cy : @SM : z : @VM : d
+    * Same array structure -------------
+       an_array =   "a" : @VM : "b" : @VM : "c"
+       another_array = 1 : @VM : 2 : @VM : 3
+       GOSUB DO.PROCEED                                     ;*   a1]b2]c3
+    * Different array structure -------------
+       an_array =      "a" : @SM : "b" : @VM : "c" : @VM : "d"
+       another_array = "x" : @VM : "y" : @SM : "z"
+       GOSUB DO.PROCEED                                     ;*   ax\b]cy\z]d
+       STOP
+    *-------------
+    DO.PROCEED:
+       the_result = CATS(an_array, another_array)
+       CRT OCONV(the_result, 'MCP')
+       RETURN
 
 ## CHAIN
 
@@ -3623,6 +3999,19 @@ The format of the adjustment array is as follows:
 <pre>
     Years^Months^Weeks^Days^Hours^Minutes^Seconds^Milliseconds</pre>
 
+### EXAMPLE
+
+       curr_time = MAKETIMESTAMP(DATE(), TIME(), '')
+       CRT curr_time                                    ;*   e.g. 1358247401.205
+    * Years^Months^Weeks^Days^Hours^Minutes^Seconds^Milliseconds
+    * Add 100 milliseconds
+       adj_array = ''
+       adj_array<8> = 100
+       CRT CHANGETIMESTAMP(curr_time, adj_array) ;* 1358247401.305 for example above
+       adj_array<8> = ''
+       adj_array<1> = 100   ;* 100 years
+       CRT CHANGETIMESTAMP(curr_time, adj_array)   ;* 4513921001.205
+
 ## CHAR
 
 <a name="CHAR"/>
@@ -3644,13 +4033,13 @@ which is the entire ASCII character set.
 The CHAR function will return Unicode values encoded as UTF-8 byte
 sequences as follows:
 
-Expression values 0 – 127 return UTF-8 single byte characters
+Expression values 0 - 127 return UTF-8 single byte characters
 equivalent to ASCII.
 
-Expression values 127 – 248 return UTF-8 double byte character
+Expression values 127 - 248 return UTF-8 double byte character
 sequences.
 
-Expression values 249 – 255 return system delimiters 0xf8 – 0xff
+Expression values 249 - 255 return system delimiters 0xf8 - 0xff
 
 Expression values > 255 return UTF-8 multi byte character
 sequences
@@ -3725,18 +4114,15 @@ The expression should evaluate to a valid path name within the file
 system. The function returns a Boolean TRUE result if the CHDIR
 succeeded and a Boolean FALSE result if it failed.
 
-### EXAMPLES
+### EXAMPLE
 
-    IF CHDIR('/usr/jBC/src') THEN
-        CRT "jBASE development system INSTALLED"
-    END
-
-    IF GETENV('JBCGLOBALDIR', jgdir) THEN
-        IF CHDIR (jgdir:'\config') ELSE
-            CRT "jBASE configuration cannot be found."
-            ABORT
-        END
-    END
+    INCLUDE JBC.h
+       IF GETENV('TAFC_HOME', tafc_home) THEN
+          IF CHDIR(tafc_home : DIR_DELIM_CH : 'config') ELSE
+             CRT "TAFC configuration cannot be found"
+             ABORT
+          END
+       END ELSE CRT 'TAFC home can not be found'
 
 ## CHECKSUM
 
@@ -3752,28 +4138,22 @@ string.
 ### SYNTAX ELEMENTS
 
 The expression may evaluate to any result but will usually be a string.
-The function then scans every character in the string and returns a
-numeric addition of the characters within the string.
+The function then scans every character in the string and sums up
+the multiplication of character position by its ASCII value.
+This algorithm doesn't really supply reliable result - see the example below.
 
-### NOTES
+### EXAMPLE
 
-The function calculates the checksum by summing the product of the
-ASCII value of each character and its position within the string.
-
-### EXAMPLES
-
-    INPUT DataBlock,128:
-    IF CHECKSUM(DataBlock) = ExpectedChk THEN
-        CRT AckChar:
-    END
-    ELSE
-    ......
+       CRT CHECKSUM('A')                ;* 65
+       CRT CHECKSUM('AA')               ;* 65*1 + 65*2 = 195
+       CRT CHECKSUM('B')                ;* 66
+       CRT CHECKSUM( CHAR(0): '!' )     ;* 0*1 + 33*2 = 66
 
 ## CLEAR
 
 <a name="CLEAR"/>
 
-The CLEAR statement will initialize all the variables to numeric 0.
+The CLEAR statement will initialize all local variables to numeric 0.
 
 ### COMMAND SYNTAX
 
@@ -3785,10 +4165,14 @@ Use CLEAR at any time during the execution of the program.
 
 ### EXAMPLE
 
-       V.VAR = 5            ;   CRT V.VAR           ;* 5
-       V.VAR ++             ;   CRT V.VAR           ;* 6
+       COMMON /MY.COMM/ global_var
+       global_var = 1000
+       var = 5            ;   CRT var           ;* 5
+       var ++             ;   CRT var           ;* 6
        CLEAR
-       CRT V.VAR                                    ;* 0
+    * only regular variables will be cleared
+       CRT var                                  ;* 0
+       CRT global_var                           ;* 1000
 
 ## CLEARCOMMON
 
@@ -3803,20 +4187,16 @@ a value of zero.
 
 ### EXAMPLE
 
-Subroutine:
-
-       SUBROUTINE TEST.SUB
-       COMMON V.VAR1, V.VAR2
+       COMMON /MY.COMM/ global_var
+       COMMON gl_unnamed
+       global_var = 1000
+       gl_unnamed = 1001
        CLEARCOMMON
-       RETURN
-    END
+    * only unnamed common will be cleared
+       CRT global_var                           ;* 1000
+       CRT gl_unnamed                           ;* 0
 
-Calling program:
-
-       COMMON V.VAR.ONE, V.VAR.TWO
-       V.VAR.ONE = 1  ;  V.VAR.TWO = 2
-       CALL TEST.SUB
-       CRT V.VAR.ONE, V.VAR.TWO          ;* 0  0
+***TAFJ note: Variables in named COMMON area ARE cleared by CLEARCOMMON.***
 
 ## CLEARDATA
 
@@ -3834,13 +4214,13 @@ None
 
 ### EXAMPLE
 
+    * SYSTEM(14) returns the number of characters available in input buffer
        CRT SYSTEM(14)        ;*  0
        DATA '123'
        DATA '456'
-       CRT SYSTEM(14)        ;*  8
+       CRT SYSTEM(14)        ;*  8 (including 2 line end characters)
        CLEARDATA
        CRT SYSTEM(14)        ;*  0
-
 
 ## CLEARFILE
 
@@ -3949,7 +4329,8 @@ are specified then it clears the default list (0).
 
 This program displays:
 
-    good night
+<pre>
+    good night</pre>
 
 ## CLOSE
 
@@ -4061,21 +4442,26 @@ to retrieve the passed data.
 If a PASSDATA clause is not in effect, variable will be assigned a
 value of null.
 
+***TAFJ note: COLLECTDATA statement is not supported.***
+
 ### EXAMPLE
 
-Program 1:
+Program test.b:
 
-    001 EXECUTE "RUN JBASIC_PROGS SECOND" PASSDATA "Handover"
+       EXECUTE './test2' PASSDATA SYSTEM(40)
 
-Program 2:
+Program test2.b:
 
-    001 COLLECTDATA PassedMessage
-    002 CRT PassedMessage
+       COLLECTDATA the_parent
+       CRT 'Executed from ' : the_parent
 
-In the above example, program 1 will EXECUTE program 2 and
-will pass the string "Handover" in the PASSDATA clause. Program 2
-retrieves the string to a variable PassedMessage and prints the string
-on the Terminal screen.
+Program test2 executed by itself outputs "Executed from "; execution of program test
+will output "Executed from test".
+
+### NOTE
+
+Compile both programs without "-E" switch so shared libraries will be created,
+otherwise the data wouldn't be passed between programs.
 
 ## COMMON
 
@@ -4109,8 +4495,7 @@ common is controlled in the Config_EMULATE file.
 Variables declared without naming the common area may only be shared
 between the program and its subroutines (unless CHAIN is used).
 Variables declared in a named common area may be shared across program
-boundaries. When any common area is shared, all programs using it should
-have declared the same number of variables within it.
+boundaries.
 
 Dimensioned arrays are declared and dimensioned within the COMMON
 statement.
@@ -4124,6 +4509,70 @@ statement.
        CRT ASSIGNED(V.VAR2)   ;* 0
        V.VAR1 = 'YES'
        V.VAR2 = 'NO'
+
+### NOTE
+
+When a COMMON area is used in different programs or subroutines, it has to be
+declared in each of them. Variable names can be different but their number has to be the same.
+
+### EXAMPLE
+
+Program test.b:
+
+       COMMON /MY.AREA/ global_var, global_dyn_array
+       global_var = 42
+       EXECUTE 'test2'
+
+Program test2.b:
+
+       COMMON /MY.AREA/ my_var, my_dyn_array
+       CRT my_var
+
+Run program test:
+
+<pre>
+    42</pre>
+
+### NOTE
+
+It's a good idea to put COMMON areas declaration for particular task to an insert file and include it
+into every relevant source file.
+
+### EXAMPLE
+
+File I_MYTASK.COMMON:
+
+       COMMON /MY.AREA/ global_var, global_dyn_array
+
+Program test.b:
+
+       $INSERT I_MYTASK.COMMON
+       &nbsp;
+       global_var = 42
+       EXECUTE 'test2'
+
+Program test2.b:
+
+       $INSERT I_MYTASK.COMMON
+       &nbsp;
+       CRT global_var
+       CRT ASSIGNED(global_dyn_array)
+
+Run program test (**prime** emulation):
+
+<pre>
+    42
+    1</pre>
+
+**r83** emulation:
+
+<pre>
+    42
+    0</pre>
+
+### NOTE
+
+If number of variables in COMMON area changes, all relevant source files are to be recompiled.
 
 ## COMPARE
 
@@ -4162,9 +4611,11 @@ The function returns one of the following values:
     R2 = COMPARE(A, B, 'R')
     CRT R1, R2
 
-The code above displays 1 -1, which indicates that XY999 is greater than
+The code above should display 1 -1, which indicates that XY999 is greater than
 XY1000 in a left justified comparison and XY999 is less than XY1000 in
 a right justified comparison.
+
+***TAFC/TAFJ compatibility note: this code outputs 1  1 under TAFC R13/R19/R22. TAFJ is OK.***
 
 ### INTERNATIONAL MODE
 
@@ -4181,6 +4632,8 @@ without arguments.
 
 ### COMMAND SYNTAX
 
+    CONTINUE
+
 Use the statement within a loop to skip the remaining code in the current
 iteration and proceed directly on to the next iteration.
 
@@ -4190,16 +4643,14 @@ See also: [BREAK](#BREAK), [EXIT](#EXIT)
 The compiler will issue a warning message and ignore the statement if it is
 found outside an iterative loop such as FOR...NEXT, LOOP...REPEAT.
 
-### EXAMPLES
+### EXAMPLE
 
-    FOR I = 1 TO 30
-        IF Pattern(I) MATCHES "0N" THEN CONTINUE
-        GOSUB ProcessText
-    NEXT I
-
-The above example will execute the loop 30 times but will only call the
-subroutine ProcessText when the current array element of Pattern is not
-a numeric value or null.
+       num_array = ''
+       FOR i = 1 TO 10
+          IF i EQ 3 THEN CONTINUE
+          num_array<-1> = i
+       NEXT i
+       CRT FMT(num_array, 'MCP')    ;* 1^2^4^5^6^7^8^9^10
 
 ## CONVERT
 
@@ -4231,12 +4682,24 @@ expression1.
 
 **expression3** is the string to which the conversion will apply.
 
-See also: [CONVERT STATEMENT](#CONVERTSTATEMENT)
+See also: [CONVERT (STATEMENT)](#CONVERT_(STATEMENT))
 
-### EXAMPLE (prime emulation)
+### EXAMPLE
 
-       CRT CONVERT('axbxcx', 'abc', 'ABC')   ;* ABC - incorrect for PRIME emulation
-       CRT CONVERT('abc', 'ABC', 'axbxcx')   ;* AxBxCx - correct
+    * compile this program under same emulation that you're testing
+       IF NOT( GETENV('JBCEMULATE', jbc_emu) ) THEN
+          CRT 'Emulation setting not found'
+          STOP
+       END
+       *
+       the_string = 'ABCCCDEFCDYZ'
+       IF jbc_emu = 'prime' THEN
+          the_result = CONVERT('CEY', '+-*', the_string)
+       END ELSE
+          the_result = CONVERT(the_string, 'CEY', '+-*')
+       END
+       *
+       CRT jbc_emu, the_result                ;* e.g. prime AB+++D-F+D*Z
 
 ## CONVERT (STATEMENT)
 
@@ -4275,8 +4738,9 @@ See also: [CONVERT](#CONVERT)
 
 Output:
 
+<pre>
     Original:   ABCDEFGHIJ
-    Converted: A^CD!FGHI+
+    Converted: A^CD!FGHI+</pre>
 
 ## COS
 
@@ -4301,9 +4765,12 @@ Assumes the value returned by expression is in degrees.
 
 ### EXAMPLES
 
-    FOR I = 1 TO 360
-         CRT COS(I) ;* print cos i for 1 to 360 degrees
-    NEXT I
+       * print cos i for 1 to 360 degrees
+       FOR I = 1 TO 360
+          cos_i = COS(I)
+          CRT cos_i
+          IF ABS(cos_i) GT 1 THEN CRT "It's wartime"
+       NEXT I
 
 ## COUNT
 
@@ -4323,9 +4790,11 @@ logically they will evaluate to character strings.
 
 ### NOTES
 
-The count is made on overlapping occurrences as a pattern match from
+Quote from older documentation: "The count is made on overlapping occurrences as a pattern match from
 each character in expression1. This means that the string jjj occurs
-3 times in the string jjjjj.
+3 times in the string jjjjj".
+
+This is no more the case (TAFC R19), see example 2 below.
 
 See also: [DCOUNT](#DCOUNT)
 
@@ -4333,6 +4802,8 @@ See also: [DCOUNT](#DCOUNT)
 
     Calc = "56 * 23 / 45 * 12"
     CRT "There are " : COUNT(Calc, '*') : " multiplications"
+
+    CRT COUNT('jjjjj', 'jjj')     ;* 1
 
 ## COUNTS
 
@@ -4404,10 +4875,21 @@ When [OPENSEQ](#OPENSEQ) fails to open RECORD to the file variable FILE,
 the CREATE statement creates RECORD in the type 1 file DIRFILE and opens
 it to the file variable FILE.
 
-    OPENSEQ 'DIRFILE', 'RECORD' TO FILE
-    ELSE CREATE FILE ELSE ABORT
-    WEOFSEQ FILE
-    WRITESEQ 'SOME DATA' TO FILE ELSE STOP
+    INCLUDE JBC.h
+       out_dir = '.'  ;  out_file = 'report.txt'
+       OPENSEQ out_dir, out_file TO f_out THEN
+          WEOFSEQ f_out
+       END ELSE
+          CREATE f_out ELSE CRT 'File create error'  ;  STOP
+          CRT 'File created'
+       END
+       WRITESEQ 'ABCDEFabcdef' TO f_out ELSE
+          CRT 'Write error'
+          STOP
+       END
+       CLOSESEQ f_out
+       OSREAD the_content FROM out_dir : DIR_DELIM_CH : out_file ELSE NULL
+       CRT the_content        ;* ABCDEFabcdef
 
 ## CRT
 
@@ -4428,7 +4910,7 @@ separated by commas will be sent to the screen separated by a
 tab character.
 
 The CRT statement will append a newline sequence to the final
-expression unless it is terminated with a colon ":" character.
+expression unless it is terminated with a colon (":") character.
 
 ### NOTES
 
@@ -4468,7 +4950,7 @@ For compatibility, use DISPLAY in place of CRT.
        V.STRING = 'In the year of'
        CRT V.STRING V.LINE             ;* same as FMT(V.STRING, '39R')
        V.VAR = 5
-       CRT V.VAR > 1           ;* Rssult of an expression (1 in this case)
+       CRT V.VAR > 1           ;* Result of an expression (1 in this case)
        CRT @SYS.BELL           ;* rings the bell
 
 ## DATA
@@ -4543,11 +5025,10 @@ See also: [TIMEDATE](#TIMEDATE)
 
 ### EXAMPLES
 
-       CRT OCONV( DATE(), 'D' )  ;* e.g. 17 OCT 2012
-       CRT DATE()                ;* number of days (e.g. 16362) since day 1...
-       CRT OCONV(1, 'D')         ;*  ...which is:  01 JAN 1968
-
-Displays today's date in the form: 14 JUL 64
+       curr_date = DATE()
+       CRT curr_date                  ;* number of days (e.g. 16454) since day 1...
+       CRT OCONV(1, 'D')              ;*  ...which is:  01 JAN 1968
+       CRT OCONV(curr_date, 'D4/')    ;* e.g. 01/17/2013
 
 ## DCOUNT
 
@@ -4581,10 +5062,13 @@ See also: [COUNT](#COUNT)
 
 ### EXAMPLES
 
-    A = "A:B:C:D"
-    CRT DCOUNT(A, ':')
-
-Displays the value 4
+       search_string = "A:B:C:D"
+       CRT DCOUNT(search_string, ':')             ;* 4
+       CRT COUNT(search_string, ':')              ;* 3 - COUNT returned
+                                                  ;* number of ":" symbols
+       CHANGE ':' TO '->' IN search_string
+       CRT search_string                          ;* A->B->C->D
+       CRT DCOUNT(search_string, '->')            ;* 4
 
 ## DEBUG
 
@@ -4612,11 +5096,9 @@ run-time versions of  cataloged jBC programs.
 
 ### COMMAND SYNTAX
 
-<pre>
-    DECATALOG SourceFilename ProgramName</pre>
+    DECATALOG SourceFilename ProgramName
 
-<pre>
-    DECATALOG ProgramName</pre>
+    DECATALOG ProgramName
 
 ## DECRYPT##
 
@@ -4676,6 +5158,10 @@ JBASE_CRYPT_BASE64 followed by DECRYPT with method JBASE_CRYPT_RC2.
 ### NOTES
 
 See also: [ENCRYPT](#ENCRYPT)
+
+***TAFJ note: JBASE_CRYPT_XOR11 gives the error "java.security.InvalidKeyException: Wrong key size".***
+
+***TAFJ note 2: JBASE_CRYPT_BLOWFISH_BASE64 gives the result that differs from one in TAFC.***
 
 ### EXAMPLES
 
@@ -4786,7 +5272,7 @@ type conversion.
 
 With TAFC the DEFCE statement should be used, rather than the
 [DEFC](#DEFC) statement, for calling external C programs, which are
-pure ‘C’ code and do not use the TAFC library macro’s and functions.
+pure 'C' code and do not use the TAFC library macro's and functions.
 
 ### EXAMPLE 1
 
@@ -4979,6 +5465,14 @@ Output:
     REC3
      2 Records Listed</pre>
 
+***TAFJ note: attempt to DELETE applied to non-valid file handle - session terminates. Example:***
+
+       not_valid_filevar = ''
+       DELETE not_valid_filevar, 'REC5' SETTING ret_code ON ERROR
+           CRT 'REC5 - DELETE ERROR'
+       END
+       CRT STATUS() : '_' : ret_code   ;*  expected output: -1_32768
+
 ## DELETELIST
 
 <a name="DELETELIST"/>
@@ -5014,23 +5508,41 @@ DELETESEQ deletes a sequential file.
 
 ### COMMAND SYNTAX
 
-    DELETESEQ Expression { SETTING setvar } { ON ERROR statements } \
-    { LOCKED statements } THEN | ELSE statements
-
-Or
-
     DELETESEQ Expression, Filename { SETTING setvar } { ON ERROR statements } \
     { LOCKED statements } THEN | ELSE statements
 
 ### SYNTAX ELEMENTS
 
-**Expression** specifies the variable to contain next record from
-sequential file.
+**Expression** specifies the location of sequential file.
 
-**FileVar** specifies the file descriptor of the file opened for
- sequential access.
+**Filename** specifies the sequential file name.
 
 **Statements** conditional jBC statements
+
+### EXAMPLE
+
+Has to be put into file *test.b*.
+
+       EXECUTE 'COPY FROM . test.b,temp.txt OVERWRITING'
+       *
+       OPENSEQ '.', 'temp.txt' TO temp_file ELSE
+          CRT 'Failed to open temporary file'
+          STOP
+       END
+       *
+       READSEQ first_line FROM temp_file ELSE
+          CRT 'Failed to read temporary file'
+          STOP
+       END
+       *
+       CRT first_line        ;* EXECUTE 'COPY FROM . test.b,temp.txt OVERWRITING'
+       CLOSESEQ temp_file
+       CRT DIR('temp.txt')<1>           ;* e.g. 540 - size of file
+       *
+       DELETESEQ '.', 'temp.txt' ELSE NULL
+       CRT '<' : DIR('temp.txt')<1> : '>'          ;* <>
+
+***TAFJ note: statements on ELSE clause aren't executed.***
 
 ## DELETEU
 
@@ -5146,14 +5658,17 @@ division of the dividend by the divisor.
 The dividend and divisor expressions can evaluate to any numeric
 value. The only exception is that the divisor cannot be zero. If
 either dividend or divisor evaluates to null, it returns null.
+DIV is PRECISION-dependent.
 
 ### EXAMPLE
 
-    I=400 ;  K=200
-    J = DIV(I, K)
-    PRINT J
-
-"2" is the output of this program.
+       CRT DIV(400, 200)                     ;* 2
+       CRT DIV(200, 400)                     ;* 0.5
+       CRT DIV(200, -400)                    ;* -0.5
+       PRECISION 9
+       CRT DIV(1, 10000000000)               ;* 0
+       PRECISION 17
+       CRT DIV(1, 10000000000)               ;* 0.0000000001
 
 ## DIVS
 
@@ -5438,6 +5953,8 @@ FALSE if disabled.
 
 This will disable the character input echoing while typing in a password.
 
+***TAFJ R23 note: user input can be seen after Enter is pressed, even without ECHO ON at the end.***
+
 ## ENCRYPT
 
 <a name="ENCRYPT"/>
@@ -5574,6 +6091,8 @@ name.
 
 ### NOTES
 
+***TAFJ note: ENTER statement is not supported.***
+
 The jBC COMMON data area can be passed to another jBC program by
 specifying the option "I" after the program name. Pass the COMMON
 data area only to another jBC program.
@@ -5665,12 +6184,13 @@ to change one line in your program.
        EQUATE PRICE TO NV_LINE(7), TAX TO 0.175
        EQUATE DASHES TO "-------"
        IF NO_CHARGE = TRUE THEN PRICE = 0
-       CRT "Tax =":PRICE * TAX:CR:DASHES
+       CRT "Tax = ":PRICE * TAX:CR:DASHES
 
 Output:
 
-    Tax =17.5
-    -------
+<pre>
+    Tax = 17.5
+    -------</pre>
 
 ## EREPLACE
 
@@ -5707,7 +6227,8 @@ The output of this program is:
 
 <pre>
     AAAZZZCCCDDDZZZ
-    ZZZAAABBBCCCDDDBBB
+    AAABBBCCCDDDBBB - under TAFC R23 (incorrect)
+    ZZZAAABBBCCCDDDBBB - under TAFJ R23 (correct)
     AAACCCDDD</pre>
 
 ## EXECUTE
@@ -5786,6 +6307,34 @@ use the RTNDATA statement to pass data back to the calling program.
 
 The clauses may be specified in any order within the statement but
 only one of each clause may exist.
+
+***TAFJ note 1: RTNLIST clause in EXECUTE 'SELECT' doesn't work.***
+
+***TAFJ note 2: RETURNING clause in EXECUTE 'COUNT' doesn't work.***
+
+***TAFJ note 3: EXECUTE of 2 commands delimited with @FM returns code from the first command, not from the second one. Example:***
+
+       EXECUTE 'SELECT F.SPF' :@FM: 'SAVE-LIST spf' CAPTURING output RETURNING ret_code
+       CRT CONVERT(@FM:@VM:@SM, '^]\', ret_code)
+       *  expected output: 241]1]sel_list]Savelist_msg
+       *  output: 404]1]QLNUMSEL
+
+***TAFJ note 4: PASSLIST clause in EXECUTE doesn't work.***
+
+***TAFJ note 5: EXIT() in EXECUTEd program stops the EXECUTing one as well.***
+
+***TAFJ R22 note: EXECUTE 'COMO ON ...' and subsequent CRT statements create COMO file with the printed contents but on subsequent runs file is appended rather than recreated like it is in TAFC (under TAFJ R19 file wasn't even created).***
+
+***Final TAFJ R22 note: use "DOS /c" under Windows or "SH -c" under Linux (keeping the case exactly as it is shown) to execute OS command:***
+
+        EXECUTE 'DOS /c C:\temenos\TAFJ\bin\tShow.bat ACCOUNT' CAPTURING output
+        CRT '>>>'
+        CHANGE @FM TO CHAR(10) IN output
+        CRT output
+        INPUT dummy
+
+***TAFJ R19/R23 note: EXECUTE doesn't output anything on the screen. Screen output can be taken via CAPTURING clause (works in R23 but not in R19).***
+
 
 ### EXAMPLE
 
@@ -5915,15 +6464,29 @@ normally be a previously assigned variable.
 The expressions 2 through 4 should all return a numeric value or a
 runtime error will occur and the program will enter the debugger.
 
-**expression2** specifies the field to extract, expression3 the
-value to extract and expression4 the sub-value to extract.
+**expression2** specifies the field to extract, **expression3** the
+value to extract and **expression4** the sub-value to extract.
 
 ### EXAMPLES
 
-    A = "0" ; A<2> = "1" ; A<3> = "2"
-    CRT EXTRACT(A, 2)
+    array = "0"    ;    array<2> = "1"    ;    array<3> = "2"    ;    array<2,2> = 'Text'
+    CRT DQUOTE( OCONV( EXTRACT(array, 2), 'MCP' ) )    ;*    "1]Text"
+    CRT DQUOTE( EXTRACT(array, 2, 2) )                 ;*    "Text"
+    CRT DQUOTE( EXTRACT(array, -1) )                   ;*    ""
 
-Will display the value "1".
+This finction is useful when you need to take a part of a dynamic array in EVAL clause of
+jQL statement (angle brackets notation won't work), e.g.:
+
+<pre>
+    LIST . SAMPLE 1 EVAL "(-12:@FM:5:@FM:-7)<2>" ID.SUPP
+    &nbsp;
+    Error in Statement "LIST . SAMPLE 1 EVAL "(-12:@FM:5:@FM:-7)<2>""
+    Error in attribute definition item (-12:@FM:5:@FM:-7)<2>
+    Error in Itype: expecting EOF, found '>'
+    &nbsp;
+    LIST . SAMPLE 1 EVAL "EXTRACT(-12:@FM:5:@FM:-7, 2)" ID.SUPP
+    &nbsp;
+    5</pre>
 
 # jBC Functions and Statements (F - J)
 
@@ -5960,11 +6523,12 @@ displays 24.2334002
 <a name="FDIV"/>
 
 The FDIV function performs floating point division on two numeric
-values.
+values. (Similarly, FMUL does the multiplication.)
 
 ### COMMAND SYNTAX
 
     FDIV(expression1, expression2)
+    FMUL(expression1, expression2)
 
 ### SYNTAX ELEMENTS
 
@@ -5983,9 +6547,8 @@ The calculation is not subject to the PRECISION setting.
 
 ### EXAMPLE
 
-        CRT FDIV(1,7)
-
-displays 0.1428571429
+        CRT FDIV(1, 7)                   ;* 0.1428571429
+        CRT FMUL(2.54, 5.703358)         ;* 14.48652932
 
 ## FIELD
 
@@ -6107,12 +6670,10 @@ variable.
 
     FILEINFO(file.variable, key)
 
-This function is currently limited to return values to determine if the
-file variable is a valid file descriptor variable (so key could only be 0).
+If **key** is 0, this function returns 1 if file.variable is a valid file variable, zero otherwise.
+If **key** is 1, this function returns file status information.
 
-Returns 1 if file.variable is a valid file variable, zero otherwise.
-
-### EXAMPLE
+### EXAMPLES
 
        IF NOT( GETENV('JEDIFILENAME_SYSTEM', FN.SYSTEM) ) THEN ABORT
        OPEN FN.SYSTEM TO F.SYSTEM ELSE NULL
@@ -6120,6 +6681,28 @@ Returns 1 if file.variable is a valid file variable, zero otherwise.
        CRT FILEINFO(F.SYSTEM, 0)        ;* 1
        CRT FILEINFO(F.SOMEFILE, 0)      ;* 0
 
+       IF NOT( GETENV('TAFC_HOME', tafc_home) ) THEN
+          CRT 'TAFC_HOME not defined'
+          STOP
+       END
+       //
+       log_dir = tafc_home : '/tmp'
+       log_file = 'jbase_error_trace'
+       //
+       OPENSEQ log_dir, log_file READONLY TO f_log THEN
+          CRT FMT( FILEINFO(f_log, 1), 'MCP' )
+       END ELSE
+          CRT 'jbase_error_trace not found'
+       END
+
+Sample output from the second example:
+
+<pre>
+    0^0^0^0^100666^107817^1^0^0^70770^24915^24915^34405^16705^25887^16643
+    ^39761^16220^0^C:\home\kzm\v-t24\r11\tafc/tmp\jbase_error_trace^SEQ^0
+    ^0^0^0^0^C:\home\kzm\v-t24\r11\tafc/tmp\jbase_error_trace^0^0^unknown</pre>
+
+***TAFJ note: for C:\Temenos\TAFJ\bin\DBTools.bat there's "XMLMSSQL" in field 21 (should be "SEQ").***
 
 ## FILELOCK
 
@@ -6401,19 +6984,38 @@ statements.
 
 ### EXAMPLE
 
-    OPENSEQ 'DIRFILE', 'RECORD' TO FILE THEN
-    PRINT "'DIRFILE' OPENED FOR SEQUENTIAL PROCESSING"
-    END ELSE STOP
-    WEOFSEQ FILE
-    *
-    WRITESEQ 'NEW LINE' ON FILE THEN
-    FLUSH FILE THEN
-    PRINT "BUFFER FLUSHED"
-    END ELSE PRINT "NOT FLUSHED"
-    ELSE ABORT
-    *
-    CLOSESEQ FILE
-    END
+       dir_name = '.'
+       file_name = 'report.txt'
+       DELETESEQ dir_name, file_name ELSE NULL
+       *
+       OPENSEQ dir_name, file_name TO f_report ELSE NULL
+       WRITESEQ 'New data' TO f_report ELSE NULL
+       *
+       FLUSH f_report ELSE NULL
+       CRT '<' : DIR(file_name)<1> : '>'     ;* 9
+
+### NOTE
+
+For **prime** emulation FLUSH in this example will fail if there were still no
+WRITESEQs since file isn't created immediately on OPENSEQ:
+
+       dir_name = '.'
+       file_name = 'report.txt'
+       DELETESEQ dir_name, file_name ELSE NULL
+       *
+       OPENSEQ dir_name, file_name TO f_report ELSE NULL
+       *
+       FLUSH f_report ELSE NULL
+       CRT '<' : DIR(file_name)<1> : '>'     ;* 0
+
+This program will crash with the following message:
+
+<pre>
+    &lowast;&lowast; Error [ NOT_FILE_VAR ] &lowast;&lowast;
+    Variable is not an opened file descriptor , Line     7 , Source test.b
+    Trap from an error message, error message name = NOT_FILE_VAR</pre>
+
+Under **seq** emulation program will not crash.
 
 ## FMT
 
@@ -6423,7 +7025,7 @@ Format data according to mask definition.
 
 ### INTERNATIONAL MODE
 
-When using the FMT function in International Mode the “Width” fields
+When using the FMT function in International Mode the "Width" fields
 refer to character display widths, such that a character may take up
 more than a single display position. This is typical of the Japanese,
 Chinese, and characters whereby the character display requires
@@ -6533,6 +7135,17 @@ See also: [OCONV](#OCONV) for date/time/numeric masks and [FMTS](#FMTS).
        X = 'ABCDEF'
        CRT FMT(X, 'MX')                        ;* 414243444546
        CRT FMT(@FM, 'MX')                      ;* FE
+
+***TAFJ note: examples that work incorrectly:***
+
+       CRT FMT(74952223355, 'R(+# (#3) #3-#2-#2)')
+       * output: (+ 495) 222-33-55, expected +7 (495) 222-33-55
+
+       $INSERT I_F.SPF
+       OPEN 'F.SPF' TO f_spf ELSE CRT 'SPF open error'  ;  RETURN
+       READ r_spf FROM f_spf, 'SYSTEM' ELSE CRT 'SPF read error'  ;  RETURN
+       date_time = r_spf<Spf_DateTime>
+       CRT FMT('20' : date_time, '####-##-##_##:##')  ;* output: 2022-03-24_11:0  (last digit missing)
 
 ## FMTS
 
@@ -6735,14 +7348,14 @@ where complex expressions are in use.
 
 See also: [BREAK](#BREAK), [CONTINUE](#CONTINUE).
 
-### EXAMPLES
+### EXAMPLE
 
        V.ARRAY = ''
        FOR V.I = 1 TO 10
           V.ARRAY<-1> = 'Element #' : V.I
        NEXT V.I
        CRT V.ARRAY<6>                          ;* Element #6
-
+       //
        FOR V.I = 10 TO 1 STEP -2 WHILE V.I GT 3
           DEL V.ARRAY<V.I>
        NEXT V.I
@@ -6908,7 +7521,7 @@ See: [GETX](#GETX)
 
 The GETCWD function allows a jBC program to determine the current working
 directory of the program, which is normally be the directory in which
-execution of the program occurred but possibly changed using the CHDIR_
+execution of the program occurred but possibly changed using the CHDIR()
 function.
 
 ### COMMAND SYNTAX
@@ -6964,6 +7577,11 @@ See: [PUTENV](#PUTENV)
     END ELSE
         CRT "Execution path is not set up"
     END
+
+### EXAMPLE 2 (TAFJ). Get TAFJ configuration parameter
+
+       ret_code = GETENV('temn.tafj.compiler.internal.development', int_devt)
+       CRT int_devt    ;* false or true
 
 ## GETLIST
 
@@ -7115,16 +7733,28 @@ code, which identifies the start of a local subroutine.
 
 ### EXAMPLE
 
-       V.IN = NEGS(1:@FM:2:@FM:3)
-       GOSUB SCROUTP                               ;* -1^-2^-3
-       V.IN = NEGS(-1:@FM:-2:@FM:-3)
-       GOSUB SCROUTP                               ;*  1^2^3
-       V.IN = NEGS(1:@FM:-2:@FM:3)
-       GOSUB SCROUTP                               ;*  -1^2^-3
+       var_1 = 1  ; var_2 = 2  ; var_3 = 3
+       GOSUB MAKE.ARRAY
+       GOSUB OUTPUT                               ;* -1^-2^-3
+       var_1 = -1  ; var_2 = -2 ; var_3 = -3
+       GOSUB MAKE.ARRAY
+       GOSUB OUTPUT                               ;* 1^2^3
+       var_1 = 1  ; var_2 = -2 ; var_3 = 3
+       GOSUB MAKE.ARRAY
+       GOSUB OUTPUT                               ;* -1^2^-3
        STOP
-    SCROUTP:
-       CRT FMT(V.IN, 'MCP')
+    *------------------------Subroutines------------------------------------
+    MAKE.ARRAY:
+       dyn_array = NEGS(var_1 :@FM: var_2 :@FM: var_3)
        RETURN
+    *------------
+    OUTPUT:
+       CRT FMT(dyn_array, 'MCP')
+       RETURN
+
+If you, for example, forget a RETURN in MAKE.ARRAY section the execution will
+continue till the next RETURN, i.e. section OUTPUT will be executed 6 times
+instead of 3.
 
 ## GOTO
 
@@ -7190,16 +7820,19 @@ of fields to extract as a group.
 Expression2 may evaluate to more than a single character allowing
 fields to be delimited with complex expressions.
 
-### EXAMPLES
+### EXAMPLE
 
-    A = "123:-456:-789:-987:-"
-    CRT GROUP(A, ':-', 2, 2)
+    CRT GROUP('123:-456:-789:-987:-', ':-', 2, 2)
 
 This example displays the following on the terminal (being the second and
-third fields and their delimiter within variable A):
+third fields and their delimiter within this string variable):
 
 <pre>
-    456:-789</pre>
+    Expected result: 456:-789
+    Output in TAFC R19: 456:-789:-987:-
+    Output in TAFJ: -456:-789
+    Output in TAFJ R22: as expected.
+    </pre>
 
 ## GROUPSTORE
 
@@ -7214,11 +7847,13 @@ Insert the variable contents into dynamic array (or replace an element in it).
         to.var = 'QQQ' :@FM: 'WWW' :@FM: 'EEE'
         from.var = 'rtz'
         GROUPSTORE from.var IN to.var USING 2, 0, @FM   ;* start,replace,delim
-        CRT FMT(to.var, 'MCP')                          ;* QQQ^rtz^WWWEEE
+        CRT FMT(to.var, 'MCP')                          ;* QQQ^rtz^WWW^EEE
         GROUPSTORE from.var IN to.var USING 4, 1
         CRT FMT(to.var, 'MCP')                          ;* QQQ^rtz^WWW^rtz
         GROUPSTORE from.var IN to.var USING 2, 0, @VM
         CRT FMT(to.var, 'MCP')                          ;* QQQ^rtz^WWW^rtz]rtz
+
+***TAFJ note: GROUPSTORE statement isn't supported.***
 
 ## HEADING
 
@@ -7257,7 +7892,7 @@ characters have special meaning within the string:
 
 If output is to the printer, a PRINTER ON statement is in use, and does
 not page output sent to the terminal with the CRT statement. Unless you
-specify the “N” option, all output sent to the terminal is paged.
+specify the "N" option, all output sent to the terminal is paged.
 
 ### EXAMPLES
 
@@ -7294,6 +7929,8 @@ for information.
        INPUT V.PASSWORD
        HUSH OFF
 
+***TAFJ note: HUSH ON doesn't hide user input. Workaround: use ECHO OFF.***
+
 ## ICONV
 
 The ICONV function converts data in external form such as dates to
@@ -7326,6 +7963,9 @@ unless the emulation option iconv_nonnumeric_return_null is set.
     * check if a year is a leap one
        CRT OCONV( ICONV('20111231', 'D4'), 'DJ' )    ;*  365
        CRT OCONV( ICONV('20121231', 'D4'), 'DJ' )    ;*  366
+
+       CRT ICONV('00:01:02', 'MTS')        ;* 62
+       CRT ICONV('4020412042', 'MX')       ;* @ A B
 
 ## ICONVS
 
@@ -7442,6 +8082,15 @@ from **false.array**. If there is no corresponding element in the
 correct response array, it returns an empty string for that
 element. If an element is null, that element evaluates to false.
 
+***TAFJ R23 note: always returns "true" array:***
+
+    CRT CONVERT(@FM:@VM:@SM, '^]\', IFS( 1 :@FM: 0 :@VM: 1 :@SM: 0 :@FM: 1,
+             'This' :@FM: 'was' :@VM: 'how' :@SM: 'system' :@FM: 'works',
+             'That' :@FM: 'is' :@VM: 'how' :@SM: 'Globus' :@FM: 'worked' ) )
+
+    * TAFC: This^is]how\Globus^works
+    * TAFJ: This^was]how\system^works
+
 ## IN
 
 <a name="IN"/>
@@ -7477,16 +8126,30 @@ clause is executed (if present).
 
 See also: [INPUT](#INPUT), [INPUTNULL](#INPUTNULL).
 
-### EXAMPLES
+***TAFJ note: IN statement doesn't wait for user input, Var returns as empty string.***
 
-    Char2 = "
-    IN Char
-    IF Char = 27 THEN ;* ESC seen
-        IN Char2 FOR 20 THEN ;* Function Key?
-            Char2 = CHAR(Char2) ;* ASCII value
-        END
-    END
-    Char = CHAR(Char):Char2 ;* Return key sequence
+### EXAMPLE
+
+       LOOP
+          IN in_key
+          IF in_key EQ 27 THEN ;* ESC seen
+             IN in_key_2 FOR 2 THEN ;* Function Key?
+                IN in_key_3 FOR 2 THEN
+                   CRT ''
+                   BEGIN CASE
+                   CASE in_key_2 EQ 79 AND in_key_3 EQ 80
+                      CRT 'F1 detected'
+                   CASE in_key_2 EQ 79 AND in_key_3 EQ 81
+                      CRT 'F2 detected'
+                   END CASE
+                END
+             END ELSE
+                CRT ''
+                CRT 'ESC pressed, exiting'
+                STOP
+             END
+          END
+       REPEAT
 
 ## INDEX
 
@@ -7541,7 +8204,7 @@ Using the INMAT() function, without the 'array' argument, returns the
 number of dimensioned array elements from the most recent
 [MATREAD](#MATREAD), [MATREADU](#MATREADU), [MATREADL](#MATREADL) or
 [MATPARSE](#MATPARSE) statement. If the number of array elements exceeds
-the number of elements specified in the corresponding [DIM](#DIM)
+the number of elements specified in the corresponding [DIMENSION](#DIMENSION)
 statement, the INMAT() function will return zero.
 
 Using the INMAT(), function with the 'array' argument, returns the
@@ -7555,17 +8218,36 @@ inconsistent with its primary purpose and not implemented in jBASE. To
 achieve this functionality use the [IOCTL](#IOCTL) function with the
 JIOCTL_COMMAND_FILESTATUS command.
 
-### EXAMPLE
+### EXAMPLES
 
-    OPEN "CUSTOMERS" TO CUSTOMERS ELSE STOP 201, "CUSTOMERS"
-    DIM CUSTREC(99)
-    ELEMENTS = INMAT(CUSTREC) ; * Returns the value "99" to the variable ELEMENTS
-    ID = "149"
-    MATREAD CUSTREC FROM CUSTOMERS, ID THEN
-        CUSTREC.ELEMENTS = INMAT() ; * Returns the number of
-                                   ; * elements in the CUSTRECarray
-                                   ; * to the variable CUSTREC.ELEMENTS
-    END
+       DIM cust_rec(99)
+       MAT cust_rec = ''
+       CRT INMAT(cust_rec)                  ;* 99
+       DIM cust_rec(299)
+       cust_rec(150) = 'Y'
+       CRT INMAT(cust_rec)                  ;* 299
+       CRT INMAT()                          ;* 0
+       *
+       EXECUTE 'DELETE-FILE DATA F.TEMP'
+       EXECUTE 'CREATE-FILE DATA F.TEMP 1 101 TYPE=J4'
+       OPEN 'F.TEMP' TO f_temp ELSE ABORT 201, 'F.TEMP'
+       new_rec = 'LINE 1' :@FM: 'LINE 2' :@FM: 'LINE 3'
+       WRITE new_rec TO f_temp, 'REC1'
+       *
+       MAT cust_rec = ''
+       MATREAD cust_rec FROM f_temp, 'REC1' ELSE
+          CRT 'Read error'
+          STOP
+       END
+       CRT INMAT(cust_rec)                  ;* 299 - current size
+       CRT INMAT()                          ;* 3
+       *
+       dyn_array = 1 :@FM: 2 :@VM: 3 :@SM: 4: @FM: 5 :@FM: 6
+       MATPARSE cust_rec FROM dyn_array
+       CRT INMAT()                          ;* 4 (only FMs count)
+       CRT FMT(cust_rec(2), 'MCP')          ;* 2]3\4
+       DIM cust_rec(100,2)
+       CRT FMT( INMAT(cust_rec), 'MCP' )      ;* 100]2
 
 ## INPUT
 
@@ -7646,6 +8328,8 @@ accepted by INPUT.
 
 See also: [IN](#IN), [INPUTNULL](#INPUTNULL).
 
+***TAFJ note: INPUT .. FOR counts time in seconds and not in 10th of seconds as TAFC does.***
+
 ### EXAMPLE
 
 Ask user for an input; time limit is 60 seconds; every 3 seconds the
@@ -7669,10 +8353,22 @@ remaining time is updated on user screen.
        CRT @(0):'Seconds left: ': FMT(V.TIMEOUT, '2R') : '. Your choice':
        RETURN
 
-The above example attempts to read a single character from the input
-device for 10 deci-seconds (1 second). The LOOP will exit when a
-character has been input otherwise every second it will call the
-local subroutine UpdateClock.
+
+### EXAMPLE 2
+
+Pad the input field.
+
+Code:
+
+       CRT @(-1)
+       INPUT @(17,2):the_input,50,'_..':_
+
+User screen:
+
+                        ? _________________________________________________
+
+
+See also: [PROMPT](#PROMPT).
 
 ## INPUTCLEAR
 
@@ -7727,12 +8423,13 @@ character of _ is used to define a NULL input sequence.
 
 The INPUT statement does not default to accepting the _ character
 as a NULL input, the programmer must explicitly allow this with
-the statement: INPUTNULL "
+the statement: INPUTNULL ''. In the example below an ampersand can be used
+to input the empty value.
 
-### EXAMPLES
+### EXAMPLE
 
     INPUTNULL "&"
-    INPUT @ (10,10):Answer,1
+    INPUT @(10,10):Answer,1
     IF Answer = '' THEN
        CRT "A NULL input was received"
     END
@@ -7917,6 +8614,9 @@ JBC_COMMAND_GETFILENAME command that is supported for all database
 drivers.
 
 *JBC_COMMAND_GETFILENAME COMMAND*
+
+***TAFJ note: not supported.***
+
 Using this command to the IOCTL function, you can determine the exact
 file name that was used to open the file. This is helpful because
 jEDI uses Q pointers, F pointers and the JEDIFILEPATH environment
@@ -8036,6 +8736,8 @@ Read a record from a file, and find out if the last record read was in text form
 <a name="JIOCTL_COMMAND_FILESTATUS"/>
 
 *JIOCTL_COMMAND_FILESTATUS COMMAND*
+
+***TAFJ note: not supported.***
 
 The JIOCTL_COMMAND_FILESTATUS command will return an attribute delimited list of the status of the file to the caller.
 
@@ -8258,7 +8960,7 @@ of each character is determined according to the Unicode Standard.
 
 ### EXAMPLE
 
-Extending the example for [ISALPHA](#ISALPHA):
+Extending the example for [ALPHA](#ALPHA):
 
        V.STRING = 'AWERC'
     * check if there are only alphabetic characters
@@ -8298,7 +9000,17 @@ of each character is determined according to the Unicode Standard.
        V.STRING = @FM : V.STRING
        CRT ISCNTRL(V.STRING)        ;* 1
 
-## ISDIGIT##
+***TAFJ note: an example that works incorrectly:***
+
+       a_string = CHAR(10) : 'AWERC+' : CHAR(10)
+       IF ISCNTRL(a_string) THEN CRT 'ISCNTRL()'
+       ELSE CRT 'NOT ISCNTRL()'
+
+Expected result: NOT ISCNTRL().
+
+Result: ISCNTRL().
+
+## ISDIGIT
 
 The ISDIGIT function will check that the expression consists of entirely
 numeric characters.
@@ -8323,7 +9035,7 @@ of each character is determined according to the Unicode Standard.
 
        V.VAR = 5
        CRT ISDIGIT(V.VAR)                 ;* 1
-       V.VAR =- 1
+       V.VAR = -1
        CRT ISDIGIT(V.VAR)                 ;* 0 (we have minus now)
 
 ## ISLOWER
@@ -8368,6 +9080,16 @@ any characters, which are not printable.
 When the ISPRINT function is used in International Mode the properties of
 each character is determined according to the Unicode Standard.
 
+***TAFJ note: an example that works incorrectly:***
+
+       a_string = 'cawerc' :@FM
+       IF ISPRINT(a_string) THEN CRT 'ISPRINT()'
+       ELSE CRT 'NOT ISPRINT()'
+
+Expected result: NOT ISPRINT().
+
+Result: ISPRINT().
+
 ## ISSPACE
 
 The ISSPACE function will check that the expression consists of entirely
@@ -8388,6 +9110,23 @@ any characters, which are not space characters.
 
 When the ISSPACE function is used in International Mode the properties of
 each character is determined according to the Unicode Standard.
+
+### EXAMPLE
+
+       a_string = ''             ;  GOSUB CHK.IT    ;*  0
+       a_string := ' '           ;  GOSUB CHK.IT    ;*  1
+       a_string := CHAR(9)       ;  GOSUB CHK.IT    ;*  1 (TAB)
+       a_string := CHAR(10)      ;  GOSUB CHK.IT    ;*  1 (CR)
+       a_string := CHAR(11)      ;  GOSUB CHK.IT    ;*  1 (Vertical Tab)
+       a_string := CHAR(12)      ;  GOSUB CHK.IT    ;*  1 (Form feed)
+       a_string := CHAR(13)      ;  GOSUB CHK.IT    ;*  1 (LF)
+    *
+       STOP
+    *
+    CHK.IT:
+       CRT ISSPACE(a_string)
+       RETURN
+    END
 
 ## ISUPPER
 
@@ -8443,46 +9182,62 @@ NOTE: Set the @FILENAME to the name of the file before ITYPE execution.
 
 ### EXAMPLE
 
-This is the SLIPPER file content:
-
-|JIM   |   GREG   |  ALAN  |
-|------|----------|--------|
-|001 8 |  001 10  |  001 5 |
-
-This is the DICT SLIPPER content:
-
-<pre>
-    &lowast;&lowast;SIZE&lowast;&lowast;
-    001 D
-    002 1
-    003
-    004
-    005 10L
-    006 L</pre>
-
-This is the program source code:
-
-    OPEN 'SLIPPERS' TO FILE ELSE STOP
-    OPEN 'DICT','SLIPPERS' TO D.FILE ELSE STOP
-    READ ITYPEDESC FROM D.FILE, 'SIZE' ELSE STOP
+    * Data preparation
     *
-    EXECUTE 'SELECT SLIPPERS'
-    @FILENAME = 'SLIPPERS'
-    LOOP
-       READNEXT @ID DO
+       V.FILE = 'F.TEMP'
+       EXECUTE 'DELETE-FILE ' : V.FILE
+       EXECUTE 'CREATE-FILE ' : V.FILE : ' 1 101 TYPE=J4'
+       OPEN V.FILE TO F.TEMP ELSE ABORT 201, 'F.TEMP'
+       OPEN 'DICT', V.FILE TO F.TEMP.DICT ELSE ABORT 201, 'F.TEMP]D'
+    * Field 1 dictionary entry
+       R.DICT.D1 = ''
+       R.DICT.D1<1> = 'D'
+       R.DICT.D1<2> = '1'
+       R.DICT.D1<5> = '25L'
+       R.DICT.D1<6> = 'S'
+       WRITE R.DICT.D1 TO F.TEMP.DICT, 'FOOTWEAR'
     *
-       READ @RECORD FROM FILE, @ID THEN
-       PRINT @ID: " WEARS SLIPPERS SIZE " : ITYPE(ITYPEDESC)
-       END
-    REPEAT
+    * I-descriptor
+       V.DESCR = 'SIZE'
+       R.DICT.I = ''
+       R.DICT.I<1> = 'I'
+       R.DICT.I<2> = 'FOOTWEAR[":", 2, 1]'
+       R.DICT.I<4> = V.DESCR
+       R.DICT.I<5> = '3R'
+       R.DICT.I<6> = 'S'
+       WRITE R.DICT.I TO F.TEMP.DICT, V.DESCR
+    *
+    * Data records
+       R.DATA = ''
+       R.DATA<1> = 'SLIPPERS:8'
+       WRITE R.DATA TO F.TEMP, 'JIM'
+       R.DATA = ''
+       R.DATA<1> = 'BOOTS:10'
+       WRITE R.DATA TO F.TEMP, 'GREG'
+       R.DATA = ''
+       R.DATA<1> = 'SLIPPERS:5'
+       WRITE R.DATA TO F.TEMP, 'ALAN'
+    *
+    * Data is prepared; now proceed it
+    *
+       @FILENAME = V.FILE
+       READ V.ITYPE FROM F.TEMP.DICT, V.DESCR ELSE ABORT
+    *
+       SSELECT F.TEMP TO V.PEOPLE.L
+       LOOP
+          READNEXT V.ID FROM V.PEOPLE.L ELSE BREAK
+          @ID = V.ID
+          READ @RECORD FROM F.TEMP, @ID ELSE ABORT
+          V.RET = ITYPE(V.ITYPE)
+          CRT @ID : "'S FOOTWEAR HAS SIZE " : V.RET
+       REPEAT
 
 The output of this program is:
 
 <pre>
-    3 records selected
-    JIM WEARS SLIPPERS SIZE 8
-    GREG WEARS SLIPPERS SIZE 10
-    ALAN WEARS SLIPPERS SIZE 5</pre>
+    ALAN'S FOOTWEAR HAS SIZE 5
+    GREG'S FOOTWEAR HAS SIZE 10
+    JIM'S FOOTWEAR HAS SIZE 8</pre>
 
 ## JBASECOREDUMP
 
@@ -8565,8 +9320,8 @@ If JBASECOREDUMP is called from a process started via EXECUTE/PERFORM from a
 jbc program, use RETURNING/SETTING to capture the output associated with any
 error messages the executing program issues.
 
-    EXECUTE “MYPROGRAM” CAPTURING junk SETTING rc
-         * rc<1,1> holds the error code “JBASECOREDUMP”.
+    EXECUTE "MYPROGRAM" CAPTURING junk SETTING rc
+         * rc<1,1> holds the error code "JBASECOREDUMP".
          * rc<1,2> holds the UUID for the core dump.
 
 Because all JBASECOREDUMP's are logged you can use this UUID to check the log files.
@@ -8710,7 +9465,8 @@ where **SubName** is subroutine name; returns 1 or 0.
 
        SubName = 'CDD'
        Result = CALLC JBASESubroutineExist(SubName, SubInfo)
-       CRT Result            ;* 1 in T24 environment
+       CRT Result                 ;* 1 in T24 TAFC environment, 0.0 under TAFJ
+       CRT SQUOTE(SubInfo)        ;* '' under TAFC, 'Subroutine' under TAFJ
        SubName = 'QWERTY'
        Result = CALLC JBASESubroutineExist(SubName, SubInfo)
        CRT Result            ;* 0
@@ -8731,14 +9487,14 @@ JBASETHREADCreate command is used to start a new thread.
 
 **User** specifies the name of the user in format
 "user{,account{,password}}" or "" to configure as calling user id.
- 
+
 ## JBASETHREADStatus
 
 JBASETHREADStatus command shows the status of all running threads.
 
 ### COMMAND SYNTAX
 
-JBASETHREADStatus(ThreadList)
+    JBASETHREADStatus(ThreadList)
 
 ### SYNTAX ELEMENTS
 
@@ -8777,7 +9533,7 @@ word was replaced with RETRIEVE.
 
 **Option:** You must specify JQLOPT_USE_SELECT to supply a select list
 to the JQLEXECUTE function; the compile builds a different execution
-plan if using select lists.  
+plan if using select lists.
 
 **Messages:** If the statement fails to compile, this dynamic array
 is in the STOP format, therefore STOP messages can be programmed and
@@ -8796,7 +9552,7 @@ JQLEXECUTE starts executing a compiled jQL statement.
 ### SYNTAX ELEMENTS
 
 **Statement** is the valid result of a call to a
-JQLCOMPILE (Statement, …)
+JQLCOMPILE (Statement, ...)
 
 **SelectVar** is a valid select list used to limit the statement to a
 predefined set of items. For example - how it's used in jQL (note the "&gt;") prompt:
@@ -8829,12 +9585,12 @@ JQLFETCH is used to fetch the next result in a compiled jQL statement.
 **Statement** is the result of a valid call to JQLCOMPILE(), followed
 by a valid call to JQLEXECUTE().
 
-**ControlVar** will receive the ‘control break’ elements of any query.
+**ControlVar** will receive the 'control break' elements of any query.
 For example, if there are BREAK values in the statement, described here
 is the the format of ControlVar is:
 
 <pre>
-    Attr 1  Level: 0 means detail line 1 – 25 for the control breaks, the same as the
+    Attr 1  Level: 0 means detail line 1 - 25 for the control breaks, the same as the
             A correlative NB.
     Attr 2  Item ID
     Attr 3  Break control Value is 1 if a blank line should be output first.
@@ -8868,19 +9624,19 @@ JQLGETPROPERTY is used to get the property of a compiled jQL statement
 ### SYNTAX ELEMENTS
 
 **PropertyValue** receives the requested property value from the system
-or “” if the property is not set.
+or "" if the property is not set.
 
 **Statement** is the result of a valid JQLCOMPILE(Statement).
 
 **Column** specifies the column number for which the property value was
 requested (otherwise 0 for the whole statement).
 
-**PropertyName** are EQUATED values defined by INCLUDE’ing the file
+**PropertyName** are EQUATED values defined by INCLUDEing the file
 JQLINTERFACE.h.
 
 This function returns -1 if there is a problem with the parameters or
-the programmer. These properties answer questions such as “Was LPTR
-mode asked for,” and “How many columns are there?”
+the programmer. These properties answer questions such as "Was LPTR
+mode asked for" and "How many columns are there?"
 
 ### NOTES
 
@@ -8900,14 +9656,14 @@ JQLPUTPROPERTY sets a property in a compiled jQL statement.
 ### SYNTAX ELEMENTS
 
 **PropertyValue** specifies the value to be set for the specified
-property, such as one or “BLAH”.
+property, such as one or "BLAH".
 
 **Statement** is the result of a valid JQLCOMPILE() function.
 
 **Column** holds 0 for a general property of the statement, or a
 column number if the property is set for a specific column.
 
-**PropertyName** are EQUATED values defined by INCLUDE’ing the file
+**PropertyName** are EQUATED values defined by INCLUDEing the file
 JQLINTERFACE.h. There are lots of these and someone is going to have
 to document each one.
 
@@ -9007,7 +9763,11 @@ presses q or Q key.
           IF V.KEY EQ 'Q' THEN BREAK    ;* exit if q or Q was pressed
        REPEAT
 
+***TAFJ note: routine with KEYIN() finishes without waiting for input. The routine above won't work also because SYSTEM(14) doesn't work either.***
+
 ## LATIN1
+
+<a name="LATIN1"/>
 
 LATIN1 function converts a UTF-8 byte sequence into the binary or latin1
 equivalent.
@@ -9021,10 +9781,27 @@ equivalent.
 The expression is to be a UTF-8 encoded byte sequence, which is the
 default format when executing in International Mode.
 
-### NOTES
+### EXAMPLE
 
-This function is used to convert UTF-8 data into binary or the latin1
-code page for external devices like Tape devices.
+       utf_line = CHAR( XTD('C3') )   \
+             : CHAR( XTD('9F') )      \    ;* c3 9f: LATIN SMALL LETTER SHARP S
+             : CHAR( XTD('C3') )      \
+             : CHAR( XTD('9D') )    ;* c3 9d: LATIN CAPITAL LETTER Y WITH ACUTE
+       lat_line = LATIN1(utf_line)
+       CRT lat_line, SEQ(lat_line[1,1]), SEQ(lat_line[2,1])
+
+The output of this program is:
+
+<pre>
+    &#223;&#221;    223     221</pre>
+
+### NOTE
+
+To run this example the following environment variables are to be set:
+
+<pre>
+    JBASE_I18N=1
+    JBASE_CODEPAGE=utf8</pre>
 
 ## LEFT
 
@@ -9084,9 +9861,9 @@ it to a string automatically.
 The LEN function will return the number of characters in the specified
 expression rather than the number of bytes, in International Mode. If
 the expression consists of entirely of UTF-8 characters in the ASCII
-range 0 – 127 then the character length of the expression will equate
+range 0 - 127 then the character length of the expression will equate
 to the byte length. However, when the expression contains characters
-outside the ASCII range 0 – 127 then byte length and character length
+outside the ASCII range 0 - 127 then byte length and character length
 will differ. If the byte is specifically required then use the
 [BYTELEN](#BYTELEN) function in place of the LEN function.
 
@@ -9158,9 +9935,9 @@ any element of dynamic.array is null, returns zero (0) for that element.
 The LENS function will return the number of characters in the specified
 expression rather than the number of bytes, in International Mode. If
 the expression consists of entirely of UTF-8 characters in the ASCII
-range 0 – 127 then the character length of the expression will equate
+range 0 - 127 then the character length of the expression will equate
 to the byte length. However, when the expression contains characters
-outside the ASCII range 0 – 127 then byte length and character length
+outside the ASCII range 0 - 127 then byte length and character length
 will differ. See
 [BYTELEN](#BYTELEN) function for more information.
 
@@ -9207,7 +9984,7 @@ then return the natural logarithm of that value.
 ### NOTES
 
 The calculation of the natural logarithm is by using the mathematical
-constant ‘e’ as a number base.
+constant 'e' as a number base.
 
 ### EXAMPLE
 
@@ -9228,6 +10005,13 @@ The LOCALDATE function uses the specified timestamp and adjusts the
 value by the specified time zone to return the date value in internal
 date format.
 
+### EXAMPLE
+
+    start_time = MAKETIMESTAMP(DATE(), TIME(), '')
+    time_shift = 100  ;  time_shift<8> = ''    ;* add 100 years to current date
+    end_time = CHANGETIMESTAMP(start_time, time_shift)
+    CRT OCONV(LOCALDATE(end_time, ''), 'D')               ;* e.g. 20 JUN 2113
+
 ## LOCALTIME
 
 LOCALTIME returns an internal time using the specified Timestamp and
@@ -9243,6 +10027,21 @@ The LOCALTIME function uses the specified timestamp and adjusts the
 value by the specified time zone to return the time value in internal
 time format.
 
+Example that works correctly in TAFJ R23 and incorrectly in TAFC R23:
+
+    a_date = ICONV( '20231031', 'DG' )
+    a_time = ICONV( '12:34:56', 'MTS' )
+    t_stamp = MAKETIMESTAMP( a_date, a_time, '' )
+    time_array = 100 : @FM : @FM : @FM : @FM : @FM : @FM : @FM   ;* add 100 years
+    future_ts = CHANGETIMESTAMP( t_stamp, time_array )
+    future_date = OCONV( LOCALDATE( future_ts, '' ), 'D/E')
+    future_time = OCONV( LOCALTIME( future_ts, '' ), 'MTS')
+    CRT future_date, future_time
+
+    * TAFC: 31/10/2123      03:14:08 - wrong
+    * TAFJ: 31/10/2123      12:34:56 - correct
+
+
 ## LOCATE
 
 <a name="LOCATE"/>
@@ -9252,7 +10051,7 @@ dimension of a dynamic array.
 
 ### COMMAND SYNTAX
 
-    LOCATE expression1 IN expression2{<expression3{,expression4}>}, {, expression5}  \
+    LOCATE expression1 IN expression2{<expression3{,expression4}>},{, expression5} \
            { BY expression6 } SETTING Var THEN | ELSE statement(s)
 
 ### SYNTAX ELEMENTS
@@ -9502,6 +10301,22 @@ follows:
        CRT OCONV(V.ARRAY, 'MCP')                      ;*  1^2^3^4
        CRT OCONV( LOWER(V.ARRAY), 'MCP' )             ;*  1]2]3]4
 
+***TAFJ R23 note: in 3 cases results are wrong.***
+
+       FOR i = 249 TO 255
+           CRT i, SEQ( LOWER( CHAR(i) ) )
+       NEXT i
+
+Output:
+
+    249     249
+    250     250
+    251     63738
+    252     251
+    253     252
+    254     253
+    255     254
+
 ## MAKETIMESTAMP
 
 <a name="MAKETIMESTAMP"/>
@@ -9653,35 +10468,40 @@ strings (n refers to any integer number).
 Applies the pattern to all characters in expression1 and it must match
 all characters in the expression to evaluate as Boolean TRUE.
 
-Specify the integer value ‘n’ as ‘0’. This will cause the pattern to
+Specify the integer value 'n' as '0'. This will cause the pattern to
 match any number of characters of the specified type.
 
 ### EXAMPLES
 
-    * Matches if all characters in a variable are numeric or it's a null string:
-       Var = '42'
-       Var2 = ''
-       IF Var MATCHES "0N" THEN CRT "A match!"
-       IF Var2 MATCHES "0N" THEN CRT "Another match!"
-    * Matches if Var contains any number of numerics followed by the
-    * "." character followed by 2 numeric characters:
-       CRT 345.65 MATCHES "0N'.'2N..."      ;* 1
-       CRT 9.99 MATCHES "0N'.'2N..."        ;* 1
-    * Matches if the variable Serno consists of a string of 4 arbitrary
-    * characters followed by the ":" character then 6 numerics then
-    * the ";" character and then 2 alphabetic characters
-       Pattern = "4X':'6N';'2A"
-       Serno = '1.2.:123456;AB'
-       CRT Serno MATCHES Pattern            ;* 1
-       Serno = '17st:456789;FB'
-       CRT Serno MATCHES Pattern            ;* 1
-    * More examples:
-       V.DATE = '2012-10-25'
-       CRT V.DATE MATCHES "4N'-'2N'-'2N"    ;*  1
-       V.ADDR = '3RD FLOOR, 17A ELM STREET'
-       CRT V.ADDR MATCHES "...17A..."       ;*  0 - 17A means 17 alpha characters
-       CRT V.ADDR MATCHES "...'17A'..."     ;*  1 - here '17A' is a string to search
-       CRT '2HQJ4' MATCHES "5C"             ;*  0 under prime emulation
+    * T24 IDs matching
+        transfer_id = 'FT130172HQJ4'
+        CRT transfer_id MATCHES "'FT'5N5X"           ;*  1
+        hist_id = 'FT130172HQJ4;1'
+        CRT hist_id MATCHES "'FT'5N5X"               ;*  0
+        CRT hist_id MATCHES "'FT'5N5X;1N"            ;*  1
+    * date
+        start_date = '2011-10-25'
+        CRT start_date MATCHES "4N'-'2N'-'2N"        ;*  1
+    * a fresh example: dash can be used to indicate "from"-"to" pattern:
+        start_date = '2022/08/31'
+        start_date_short = '22/08/31'
+        CRT start_date MATCHES "2-4N'/'2N'/'2N"               ;* 1
+        CRT start_date_short MATCHES "2-4N'/'2N'/'2N"         ;* 1
+    * emulations compatibility
+        cust_name = 'JOHN DORY'
+        CRT cust_name MATCH "JOHN..."            ;*  1 under prime, 0 under jbase
+        CRT cust_name MATCH "'JOHN'..."          ;*  1 under prime, 0 under jbase
+        CRT cust_name MATCH "'JOHN'0X"           ;*  1 under both
+        CRT cust_name MATCH "'John'..."          ;*  0 under both
+    * "C" - alphanumeric - isn't supported at all under prime
+        CRT '2HQJ4' MATCHES "5C"                 ;* 1 under jbase emulation
+    * numbers
+        CRT 9.99 MATCHES "0N'.'2N"               ;* 1
+        CRT '.99' MATCHES "0N'.'2N"              ;* 1
+    * avoid messing up data with patterns (example for prime):
+        cust_address = '3RD FLOOR, 17A ELM STREET'
+        CRT cust_address MATCH "...17A..."   ;* 0 - 17A means 17 alpha characters
+        CRT cust_address MATCH "...'17A'..." ;* 1 - here '17A' is a string to search
 
 ## MATCHFIELD
 
@@ -9785,42 +10605,48 @@ section for detailed instructions on calculating element numbers.
 
 ### EXAMPLES
 
-       DIM V.DIM.ARRAY(100)
-       V.DYN.ARRAY = ''
-       FOR V.I = 1 TO 100
-          V.DYN.ARRAY<-1> = V.I
-       NEXT V.I
+       DIM dim_array(100)
+       dyn_array = ''   ;     delim_array = ''
+       FOR i = 1 TO 100
+          dyn_array<-1> = i
+          delim_array := i*2 : '-'
+       NEXT i
     * Full copy
-       MATPARSE V.DIM.ARRAY FROM V.DYN.ARRAY
-       CRT V.DIM.ARRAY(1)                 ;* 1
-       CRT V.DIM.ARRAY(100)               ;* 100
+       MATPARSE dim_array FROM dyn_array
+       CRT dim_array(1)                 ;* 1
+       CRT dim_array(100)               ;* 100
+    * Using different array delimiter
+       MAT dim_array = 'Default'
+       MATPARSE dim_array FROM delim_array USING '-'
+       CRT dim_array(1)                 ;* 2
+       CRT dim_array(100)               ;* 200
     * Partial copy
-       MAT V.DIM.ARRAY = 'Default'
-       MATPARSE V.DIM.ARRAY, 3, 7 FROM V.DYN.ARRAY
-       CRT V.DIM.ARRAY(1)                 ;* Default
-       CRT V.DIM.ARRAY(3)                 ;* 1
-       CRT V.DIM.ARRAY(5)                 ;* 3
-       CRT V.DIM.ARRAY(100)               ;* Default
+       MAT dim_array = 'Default'
+       MATPARSE dim_array, 3, 7 FROM dyn_array
+       CRT dim_array(1)                 ;* Default
+       CRT dim_array(3)                 ;* 1
+       CRT dim_array(5)                 ;* 3
+       CRT dim_array(100)               ;* Default
     * "Over-copy"
-       FOR V.I = 101 TO 103               ;* add 3 elements to dynamic array
-          V.DYN.ARRAY<-1> = V.I
-       NEXT V.I
-       MAT V.DIM.ARRAY = 'Default'
-       MATPARSE V.DIM.ARRAY FROM V.DYN.ARRAY
-       CRT V.DIM.ARRAY(1)                 ;* 1
-       CRT V.DIM.ARRAY(100)               ;* 100
-       V.ADDON = V.DIM.ARRAY(0)           ;* all excess elements are here
-       CHANGE @FM TO '>>>' IN V.ADDON
-       CRT V.ADDON                        ;* 101>>>102>>>103
+       FOR i = 101 TO 103               ;* add 3 elements to dynamic array
+          dyn_array<-1> = i
+       NEXT i
+       MAT dim_array = 'Default'
+       MATPARSE dim_array FROM dyn_array
+       CRT dim_array(1)                 ;* 1
+       CRT dim_array(100)               ;* 100
+       the_extra = dim_array(0)           ;* all excess elements are here
+       CHANGE @FM TO '>>>' IN the_extra
+       CRT the_extra                        ;* 101>>>102>>>103
     * 2-dimensioned array population: "left-to-right":
-       DIM V.TWODIM.ARRAY(100,2)
-       MATPARSE V.TWODIM.ARRAY FROM V.DYN.ARRAY
-       CRT V.TWODIM.ARRAY(1,1)                 ;* 1
-       CRT V.TWODIM.ARRAY(1,2)                 ;* 2
-       CRT V.TWODIM.ARRAY(2,1)                 ;* 3
-       CRT V.TWODIM.ARRAY(2,2)                 ;* 4
-       CRT V.TWODIM.ARRAY(50,2)                ;* 100
-       CRT DQUOTE(V.TWODIM.ARRAY(100,1))       ;* ""
+       DIM two_dim_array(100,2)
+       MATPARSE two_dim_array FROM dyn_array
+       CRT two_dim_array(1,1)                 ;* 1
+       CRT two_dim_array(1,2)                 ;* 2
+       CRT two_dim_array(2,1)                 ;* 3
+       CRT two_dim_array(2,2)                 ;* 4
+       CRT two_dim_array(50,2)                ;* 100
+       CRT DQUOTE(two_dim_array(100,1))       ;* ""
 
 ## MATREAD
 
@@ -10144,18 +10970,18 @@ Non-numeric dynamic array elements are ignored.
 
 See also: [MINIMUM](#MINIMUM)
 
-### EXAMPLE
+### EXAMPLES
 
-If EResults is a variable containing the dynamic array:
-
-    1.45032:@AM:-3.60441:@VM:4.29445:@AM:2.00042:@SM:-3.90228
-
-the code:
-
-    PRECISION 5
-    CRT MAXIMUM(EResults)
-
-displays 4.29445
+       PRECISION 5
+       dyn_array = 4.29442 :@AM: -3.60441 :@VM :4.29445 :@AM: 2.00042   \
+             :@SM: -33.90228
+       CRT MAXIMUM(dyn_array)           ;* 4.29445
+    * non-numeric elements are ignored
+       dyn_array<2,1> = '9000,00'
+       CRT MAXIMUM(dyn_array)           ;* still 4.29445
+    * PRECISION matters
+       PRECISION 2
+       CRT MAXIMUM(dyn_array)           ;* now 4.29442
 
 ## MINIMUM
 
@@ -10282,14 +11108,25 @@ after the MSLEEP.
 See also: [SLEEP](#SLEEP) to sleep for a specified number of seconds or
 until a specified time.
 
+***TAFJ note: MSLEEP() function isn't supported***
+
 ### EXAMPLES
 
-Sleep for 1/10th of a second...
-
-    MSLEEP 100
-    *
-    * 40 winks...
-    MSLEEP 40000
+       CRT MAKETIMESTAMP( DATE(), TIME(), '' )           ;*  e.g. 1353068005.934
+       MSLEEP(100)      ;* 0.1 sec
+       CRT MAKETIMESTAMP( DATE(), TIME(), '' )           ;*  e.g. 1353068006.044
+       MSLEEP(3000)      ;* 3 sec
+       CRT MAKETIMESTAMP( DATE(), TIME(), '' )           ;*  e.g. 1353068009.039
+       MSLEEP 3000       ;* this syntax also works
+       CRT MAKETIMESTAMP( DATE(), TIME(), '' )           ;*  e.g. 1353068012.035
+    * Sleep until the beginning of the next hour
+       time = OCONV( TIME(), 'MT' )
+       sleep_until = time[1, 2] + 1
+       IF sleep_until EQ 24 THEN sleep_until = '00'
+       sleep_until := ':00'
+       CRT "I'll be back at " : sleep_until   ;*  e.g. I'll be back at 13:00
+       SLEEP sleep_until
+       CRT OCONV( TIME(), 'MTS' ), ',', "I'm back as promised"
 
 ## MULS##
 
@@ -10316,7 +11153,8 @@ for that element.
 ## NEGS
 
 NEGS function returns the negative values for all the elements in a
-dynamic array.
+dynamic array. NEG() function returns the negative value for a variable
+or an expression.
 
 ### COMMAND SYNTAX
 
@@ -10328,16 +11166,29 @@ is null, null is returned for that element.
 
 ### EXAMPLE
 
-       V.IN = NEGS(1:@FM:2:@FM:3)
-       GOSUB SCROUTP                               ;* -1^-2^-3
-       V.IN = NEGS(-1:@FM:-2:@FM:-3)
-       GOSUB SCROUTP                               ;*  1^2^3
-       V.IN = NEGS(1:@FM:-2:@FM:3)
-       GOSUB SCROUTP                               ;*  -1^2^-3
+       dyn_array = 1 :@FM: 2 :@VM :3
+       GOSUB PROC.IT                              ;* -1^-2]-3
+       dyn_array = 1 :@FM: '' :@VM :3
+       GOSUB PROC.IT                              ;* -1^0]-3
+       dyn_array = -1 :@FM: -2 :@VM: -3
+       GOSUB PROC.IT                              ;*  1^2]3
+       dyn_array = 1 :@SM: -2 :@FM: 3
+       GOSUB PROC.IT                              ;*  -1\2^-3
+       dyn_array<-1> = 'A text'
+       GOSUB PROC.IT                            ;* Non-numeric value -- ZERO USED
+                                                ;* -1\2^-3^0
+       CRT NEG(0)                               ;* 0
+       CRT NEG(100)                             ;* -100
+       CRT NEG(dyn_array<1> LT dyn_array<2>)    ;* -1 (negative of "true")
+       CRT NEG(-1000)                           ;* 1000
+       CRT NEG('qwert')                         ;* Non-numeric value -- ZERO USED
+                                                ;* 0
        STOP
-    SCROUTP:
-       CRT FMT(V.IN, 'MCP')
+       &nbsp;
+    PROC.IT:
+       CRT FMT( NEGS(dyn_array), 'MCP' )
        RETURN
+    END
 
 ## NES
 
@@ -10487,7 +11338,7 @@ NUM function is used to test arguments for numeric values.
 
 ### NOTES
 
-Not exactly it checks that every character in expression is a numeric –
+Not exactly it checks that every character in expression is a numeric -
 rather if an expression can be considered as a number.
 
 To execute user code migration from older systems correctly, the
@@ -10617,7 +11468,7 @@ expression2. Shown below are valid conversion codes:
 |D{n{c}}      |   Converts an internal date to an external date format.  |
 |             |   The numeric argument n specifies the field width       |
 |             |   allowed for the year and can be 0 to 4 (default 4).    |
-|             |   The character ‘c’ causes the date to be return in the  |
+|             |   The character 'c' causes the date to be return in the  |
 |             |   form ddcmmcyyyy. If it is not specified then the month |
 |             |   name is returned in abbreviated form.                  |
 |DI           |   Allows the conversion of an external date to the       |
@@ -10679,17 +11530,107 @@ expression2. Shown below are valid conversion codes:
 |T            |   Performs file translations given a cross-reference     |
 |             |   table in a record in a file.                           |
 
-### EXAMPLE
+### EXAMPLES
 
-    * See examples in FMT() section - most samples form there work both ways -
-    * e.g., the following 2 lines produce equal results:
-       CRT FMT( DATE(), 'D4/' )
-       CRT OCONV( DATE(), 'D4/' )                          ;*  e.g. 11/05/2012
-    * it's not the same for next 2 lines though...
-       CRT DQUOTE( FMT(123456.78, 'R2,$#15') )             ;*  "    $123,456.78"
-       CRT DQUOTE( OCONV(123456.78, 'R2,$#15') )           ;*  Error in Range Test
-    * Example of a "user exit":
-       CRT OCONV('', 'U50BB')        ;* port number and user name
+Date and time:
+
+       CRT OCONV(1, 'D')         ;* 01 JAN 1968
+       CRT OCONV( DATE(), 'D' )    ;* here and below output for 30 MAY 2013
+       CRT OCONV( DATE(), 'D2' )   ;* 30 MAY 13
+       CRT OCONV( DATE(), 'D4/' )  ;* 05/30/2013
+       CRT OCONV( DATE(), 'DY' )   ;* 2013
+       CRT OCONV( DATE(), 'DY2' )  ;* 13
+       CRT OCONV( DATE(), 'DQ' )   ;* 2 (quarter)
+       CRT OCONV( DATE(), 'DM' )   ;* 5 (month number)
+       CRT OCONV( DATE(), 'DMA' )  ;* MAY
+       CRT OCONV( DATE(), 'DD' )   ;* 30
+       CRT OCONV( DATE(), 'DJ' )   ;* 150 (number of a day in the year)
+       CRT OCONV( DATE(), 'DW' )   ;* 4 (day number in a week, starting from Monday)
+       CRT OCONV( DATE(), 'DWA' )  ;* THURSDAY
+       CRT OCONV( TIME(), 'MT' )   ;* 20:04
+       CRT OCONV( TIME(), 'MTS' )  ;* 20:04:08
+       CRT OCONV(1, 'MTS')       ;* 00:00:01
+    * difference of 2 dates (in days)
+       CRT ICONV('20121231', 'D') - ICONV('20111231', 'D')   ;* 366
+    * Check if a year is a leap one
+       CRT OCONV( ICONV('20131231', 'D4'), 'DJ' )    ;*  365
+       CRT OCONV( ICONV('20161231', 'D4'), 'DJ' )    ;*  366
+
+Strings:
+
+    * split a string
+       the_string = 'LONG STRING TO BE SPLIT'
+       the_split = FMT(the_string, '10L')
+       CRT OCONV(the_split, 'MCP')         ;* LONG STRIN.G TO BE SP.LIT
+    * hexadecimal output
+       CRT OCONV(the_split, 'MX')
+    * Output:
+    * 4C4F4E4720535452494EFB4720544F204245205350FB4C495420202020202020
+    *
+    * Remove non-alphabetic symbols:
+       CRT OCONV(the_split, 'MCA')     ;* LONGSTRINGTOBESPLIT
+    * Remove all alphabetic symbols:
+       CRT OCONV( OCONV(the_split, 'MC/A'), 'MX' )  ;* 20FB202020FB20202020202020
+    * Note FB symbols in the output above.. see what's that
+       CRT OCONV('FB', 'MCXD')    ;* 251 a.k.a. @TM
+       CHANGE @TM TO '->' IN the_split ; CRT the_split ;* LONG STRIN->G TO BE SP->LIT
+    * Remove non-numeric symbols:
+       CRT OCONV('another 1 bites the dust', 'MCN')    ;* 1
+    * Remove all numeric symbols:
+       CRT OCONV('another 1 bites the dust', 'MC/N')   ;* another  bites the dust
+    * formatting
+       CRT SQUOTE( FMT(the_string, '30L') )    ;* 'LONG STRING TO BE SPLIT       '
+       CRT SQUOTE( FMT(the_string, '30R') )    ;* '       LONG STRING TO BE SPLIT'
+    * replace some data
+       CRT OCONV(the_string, 'MCC;STRING;DATA')  ;* LONG DATA TO BE SPLIT
+    * change case
+       CRT OCONV(the_string, 'MCL')  ;* long string to be split
+       CRT OCONV('do it', 'MCU')     ;* DO IT
+       CRT OCONV(the_string, 'MCT')  ;* Long String To Be Split
+    * extract delimited fields: skip 1 space-delimited word, take 3 from that point
+       CRT OCONV(the_string, 'G1 3')  ;* STRING TO BE
+
+Numbers:
+
+    * amounts
+       amount_fcy = 1234
+       CRT FMT(amount_fcy, 'R%7')   ;*       0001234
+       amount_fcy += 0.56
+       CRT FMT(amount_fcy, 'R2*19')              ;*  ************1234.56
+       CRT SQUOTE( FMT(amount_fcy, 'L2,#19') )     ;*  '1,234.56           '
+       CRT FMT(-amount_fcy, 'R2,C&*$#15')        ;*           $1,234.56CR
+       CRT FMT(amount_fcy,'L0')                  ;* 1235
+    * phone numbers
+       CRT FMT(1234567890, 'R((###) ###-###)')       ;* (234) 567-890
+       CRT FMT(74952223355, 'R(+# (#3) #3-#2-#2)')   ;* +7 (495) 222-33-55
+    * FMT() and OCONV() are often interchangeable;
+    * though it's not the case for next 2 lines...
+       CRT DQUOTE( FMT(123456.78, 'R2,$#15') )           ;*  "    $123,456.78"
+       CRT DQUOTE( OCONV(123456.78, 'R2,$#15') )         ;*  Error in Range Test
+
+User exits:
+
+       CRT OCONV("", "U50BB")        ;* port number and user name
+       HUSH ON
+       EXECUTE 'SELECT .'
+       HUSH OFF
+       CRT OCONV("", "U30E0")        ;* number of items in active SELECT list
+    * sleep
+       start_time = TIME()  ;  dummy = OCONV(3, "U307A")
+       CRT TIME() - start_time        ;* 3
+    * reverse a string
+       CRT OCONV('desrever saw gnirtS', "U51AA")
+    * remove duplicate consecutive characters
+       CRT OCONV('hhahhahh', "U31AC")        ;* haha
+
+***TAFJ note: user exits "U50BB", "U30E0" and "U51AA" were tested under TAFJ; none of them works.***
+
+***TAFJ note 2: example that returns FE under TAFC and EFA3BE under TAFJ:***
+
+       OCONV(@FM, 'MX')
+
+See also: [FMT](#FMT) function.
+
 
 ## OCONVS
 
@@ -10781,10 +11722,38 @@ assumed to be 1 and a warning message is issued. If the index is found
 to be too big, then the last label in the list will be used to transfer
 execution and a warning message will be issued.
 
-### EXAMPLES
+### EXAMPLE
 
-    INPUT Ans,1_
-    ON SEQ(Ans) - SEQ(A) + 1 GOSUB RoutineA, RoutineB...
+       cntrl_var = 1
+    *
+       ON cntrl_var GOSUB BIGGER
+       ON cntrl_var GOSUB EXCEPT, SMALLER
+       ON cntrl_var GOSUB SMALLER
+    *
+       STOP
+    *
+    BIGGER:
+       cntrl_var ++
+       CRT cntrl_var
+       RETURN
+    *
+    SMALLER:
+       cntrl_var --
+       CRT cntrl_var
+       RETURN
+    *
+    EXCEPT:
+       CRT 'Error occured'
+       RETURN
+    *
+    END
+
+Output of this program:
+
+<pre>
+    2
+    1
+    0</pre>
 
 ## OPEN
 
@@ -10912,7 +11881,8 @@ the SELECT statement.
 
 ### COMMAND SYNTAX
 
-    OPENINDEX filename,indexname TO indexvar { SETTING setvar } THEN | ELSE statements
+    OPENINDEX filename,indexname TO indexvar { SETTING setvar } THEN  \
+      | ELSE statements
 
 ### SYNTAX ELEMENTS
 
@@ -11054,7 +12024,7 @@ first line of sequential data.
 
 ### EXAMPLE 1
 
-Create a flat file and write to it. If file already exists – append data to it:
+Create a flat file and write to it. If file already exists - append data to it:
 
        V.DIR.OUT = '.'
        V.FILE.OUT = 'report.txt'
@@ -11244,6 +12214,49 @@ contents to the screen:
        OSBREAD Data FROM MYFILE AT 0 LENGTH 10000
        CRT Data
 
+***TAFJ note: if we use a variable for LENGTH, routine won't even compile:***
+
+<pre>    expecting "LENGTH", found 'max_len' Probably due to unclosed Block.
+   Please verify that all 'IF' has a 'END'</pre>
+
+***TAFJ R23 note: if the last CRLF is missing in a file, last data byte is truncated:***
+
+File test.txt (no CRLF in "Line 3"):
+
+    Line 1
+    Line 2
+    Line 3
+
+Test routine:
+
+       OSOPEN 'test.txt' TO f_in ELSE
+           CRT 'Open error'
+           STOP
+       END
+       *
+       OSBREAD data FROM f_in AT 0 LENGTH 100000 ON ERROR
+           ret_stat = STATUS()
+           CRT 'Read error (status = ' : DQUOTE(ret_stat) : ')'
+           STOP
+       END
+       *
+       OSCLOSE f_in
+       CRT DQUOTE(data)
+       STOP
+       END
+
+Output - TAFC:
+
+    "Line 1
+    Line 2
+    Line 3"
+
+Output - TAFJ:
+
+    "Line 1
+    Line 2
+    Line "
+
 ## OSBWRITE
 
 <a name="OSBWRITE"/>
@@ -11301,6 +12314,8 @@ jBASE uses the ASCII 0 character [CHAR (0)] as a string-end delimiter.
 Therefore, ASCII 0 cannot be used in any string variable within jBASE.
 If jBASE reads a string that contains CHAR(0) characters by using
 OSBREAD, those characters are converted to CHAR(128).
+
+***TAFJ note: OSBWRITE statement isn't supported.***
 
 ### EXAMPLE
 
@@ -11384,7 +12399,7 @@ a failure code.
 ### EXAMPLES
 
 In the following example, the program statement deletes the file
-‘MYPIPE’ in the current directory:
+'MYPIPE' in the current directory:
 
     OSDELETE "MYPIPE"
 
@@ -11433,7 +12448,7 @@ commands that use CHAR (10) as the line delimiter.)
 ### EXAMPLE
 
 In the following example, the program statement opens the file
-‘MYSLIPPERS’ as SLIPPERS.
+'MYSLIPPERS' as SLIPPERS.
 
     OSOPEN 'MYSLIPPERS' TO SLIPPERS ELSE STOP
 
@@ -11482,6 +12497,8 @@ converts CHAR(0) to CHAR(128) when reading a block of data.
 
 OSREAD doesn't include the LF character after the last line in the file
 to the resulting variable:
+
+***TAFJ note: OSREAD statement doesn't work - ELSE clause is always triggered.***
 
 ### EXAMPLE
 
@@ -11551,11 +12568,13 @@ jBASE. If jBASE reads a string with a CHAR(0) character, and then the
 character is converted to CHAR(128), OSWRITE converts CHAR(128) to
 CHAR(0) when writing a block of characters.
 
+***TAFJ note: OSWRITE statement is not supported.***
+
 ### EXAMPLE
 
 In the following example, the program segment writes the contents of
 FOOTWEAR variable to the file called "PINK" in the
-directory ‘/usr/local/myslippers’
+directory '/usr/local/myslippers'.
 
     OSWRITE FOOTWEAR ON "/usr/local/myslippers/PINK"
 
@@ -11635,6 +12654,35 @@ If a [WAKE](#WAKE) statement is executed before a PAUSE statement, then
 the PAUSE will be ignored and processing will continue until a subsequent
 PAUSE statement.
 
+### EXAMPLE
+
+Pausing program:
+
+       @USER.ROOT = 'Sleeping beauty'
+       start_time = TIME()
+       CRT 'Pausing...'
+       PAUSE 20
+       IF TIME() - start_time LT 20 THEN CRT "Who's there?"
+       ELSE CRT 'Resuming...'
+
+Waking program:
+
+    INCLUDE JBC.h
+       OPEN SYSTEM(1027) TO PROC ELSE STOP 201, SYSTEM(1027)
+       SELECT PROC
+       *
+       LOOP WHILE READNEXT key DO
+          READ rec FROM PROC, key THEN
+             IF rec<USER_PROC_USER_ROOT> EQ 'Sleeping beauty' THEN
+                CRT 'Found...' :
+                WAKE rec<USER_PROC_PORT_NUMBER>
+                CRT 'and awoken'
+                STOP
+             END
+          END
+       REPEAT
+       CRT 'Nobody sleeps'
+
 ## PERFORM
 
 <a name="PERFORM"/>
@@ -11651,10 +12699,6 @@ the decimal point.
 ### COMMAND SYNTAX
 
     PRECISION integer
-
-### SYNTAX ELEMENTS
-
-**integer** should be in the range 0 to 9.
 
 ### NOTES
 
@@ -11678,16 +12722,16 @@ will print the value 0.666666 (note: truncation not rounding!).
 
 ### EXAMPLE 2
 
-       V.1 = '0.123456789012345678901234567890123456789012345678901234567890'
-       V.2 = '0.1234567890123456789012345678901234567890123456789012345678901'
+       var_1 = '0.123456789012345678901234567890123456789012345678901234567890'
+       var_2 = '0.1234567890123456789012345678901234567890123456789012345678901'
        PRECISION 13
        GOSUB TEST                ;* 1
        PRECISION 17
        GOSUB TEST                ;* 0
        STOP
     TEST:
-       V.3 = (V.1 = V.2)
-       CRT V.3
+       var_3 = (var_1 = var_2)
+       CRT var_3
        RETURN
     END
 
@@ -11775,15 +12819,15 @@ as subsequent fields of the expression.
 ### INTERNATIONAL MODE
 
 When the PRINTERR statement is used in International Mode, the error
-message file to be used, i.e. the default “jBASICmessages” or other as
+message file to be used, i.e. the default "jBASICmessages" or other as
 configured via the error message environment variable, will be suffixed
 with the current locale. For example, if the currently configured
-locale is “fr_FR” then the statement will attempt to find the specified
-error message record id in the “jBASICmessages_fr_FR” error message
+locale is "fr_FR" then the statement will attempt to find the specified
+error message record id in the "jBASICmessages_fr_FR" error message
 file. If the file cannot be found then the country code will be discarded
-and just the language code used. i.e. the file “jBASICmessages_fr” will
+and just the language code used. i.e. the file "jBASICmessages_fr" will
 be used. If this file is also not found then the error message file
-“jBASICmessages” will be used.
+"jBASICmessages" will be used.
 
 ### NOTES
 
@@ -11987,7 +13031,7 @@ the host machine and truncated to the compiled precision on completion.
 
           A = 2
           B = 31
-          CRT "2 GB is " : A^B                     ;* 2 GB is 2147483648
+          CRT "2 GB is " : A ^ B                   ;* 2 GB is 2147483648
           CRT "2 GB is definitely " : PWR(A, B)    ;* 2 GB is definitely 2147483648
           CRT "-2 GB is " : NEG(A)^B               ;* -2 GB is -2147483648
           CRT "2 to the power of 31.5 is " : PWR(A, B+0.5)
@@ -12018,6 +13062,10 @@ The QUOTE and DQUOTE functions will enclose the value in double
 quotation marks. The SQUOTE function will enclose the value in
 single quotation marks.
 
+### EXAMPLES
+
+See ["String variables"](#String_variables).
+
 ## RAISE
 
 RAISE function raises system delimiters in a string to the next
@@ -12047,6 +13095,22 @@ which are raised as follows:
        V.ARRAY = 1 :@TM: 2 :@SM: 3 :@VM: 4
        CRT OCONV( V.ARRAY, 'MCP' )                      ;*  1.2\3]4
        CRT OCONV( RAISE(V.ARRAY), 'MCP' )               ;*  1\2]3^4
+
+***TAFJ R23 note: not all characters are processed.***
+
+       FOR i = 248 TO 254
+           CRT i, SEQ( RAISE( CHAR(i) ) )
+       NEXT i
+
+Output under TAFJ:
+
+    248     248
+    249     249
+    250     250
+    251     252
+    252     253
+    253     254
+    254     255
 
 ## READ
 
@@ -12144,13 +13208,13 @@ the READBLK statement fails and the program enters the debugger.
 When using the READBLK statement in International Mode, care must
 be taken to ensure that the input variable is handled properly
 subsequent to the READBLK statement. The READBLK statement requires
-that a “bytecount” be specified, however when manipulating variables
+that a "bytecount" be specified, however when manipulating variables
 in International Mode character length rather than byte lengths are
 usually used and hence possible confusion or program malfunction can
 occur.
 
 If requiring character data convert the input variable from
-‘binary/latin1’ to UTF-8 byte sequence via the [UTF8](#UTF8)
+'binary/latin1' to UTF-8 byte sequence via the [UTF8](#UTF8)
 function.
 
 It is recommended that the [READBLK](#READBLK)/[WRITEBLK](#WRITEBLK)
@@ -12304,6 +13368,23 @@ that file are released, including locks taken in a calling program.
 Files that are opened to [COMMON](#COMMON) variables are not closed
 so the locks remain intact.
 
+### EXAMPLE
+
+       OPEN 'F.TEMP' TO f_temp ELSE
+          EXECUTE 'CREATE-FILE DATA F.TEMP 1 101 TYPE=J4'
+          OPEN 'F.TEMP' TO f_temp ELSE
+             CRT 'OPEN FAILED'
+             STOP
+          END
+       END
+       rec_id = 'REC1'
+       READL record FROM f_temp, rec_id LOCKED
+          CRT 'Lock failure'
+          STOP
+       END ELSE NULL
+       CRT RECORDLOCKED(f_temp, rec_id)  ;* 2 under Windows, 1 under Unix
+
+
 See also: [WRITE](#WRITE), [WRITEU](#WRITEU), [MATWRITE](#MATWRITE),
 [MATWRITEU](#MATWRITEU), [RELEASE](#RELEASE), and [DELETE](#DELETE)
 
@@ -12449,6 +13530,8 @@ key or record key will be used.
 Behaviour of READNEXT/READPREV depends on emulation. The following example is
 for *jbase* emulation:
 
+***TAFJ note: READPREV statement isn't supported.***
+
 ### EXAMPLE
 
 Consider the following jBC code
@@ -12583,8 +13666,14 @@ Line ends in this file are shown here (JED, Ctrl-E to go to line end):
           CRT 'ERROR READING FILE'
           STOP
        END
-       CRT LEN(V.LINE)                      ;*  1024
-       CRT V.LINE[-20,20]                   ;*  --1010------1020----
+       CRT LEN(V_LINE) : '_' : V.LINE[-20,20]                   ;*  1024_--1010------1020----
+
+***Quite rare positive TAFJ note: output is:***
+
+<pre>
+    1100_------1090------1100</pre>
+
+So there's no limit of 1024.
 
 ### Step 3. Read a line from this text file using IOCTL() first:
 
@@ -12724,7 +13813,7 @@ will be set to one of the following values:
 |32768  |    Physical I/O error or unknown error|
 
 If WAIT clause is specified and the record stated in Variable1 is
-already locked, READU waits ‘timeout’ milliseconds before executing
+already locked, READU waits 'timeout' milliseconds before executing
 LOCKED statement. If LOCKED clause is not specified WAIT clause does
 not effect to the READU behaviour. Without LOCKED clause READU is
 blocked until the lock is released regardless to the WAIT clause
@@ -12843,17 +13932,27 @@ shared lock on the field, use [READVL](#READVL).
 
 ### EXAMPLE
 
-    OPEN "Customers" ELSE ABORT 201, "Customers"
-    OPEN "DICT Customers" TO DCusts ELSE
-    	    ABORT 201, "DICT Customers"
-    END
-    READV Rec FROM DCusts, "Xref",7 THEN
-       READ DataRec FROM Rec<7> ELSE
-            ABORT 202, Rec<7>
-        END
-    END ELSE
-    	    ABORT 202, "Xref"
-    END
+       OPEN 'F.TEMP' TO f_temp THEN
+          ret_error = ''
+          CLEARFILE f_temp SETTING ret_error
+          IF ret_error NE '' THEN
+             CRT 'ERROR ' : ret_error
+             STOP
+          END
+       END ELSE
+          EXECUTE 'CREATE-FILE DATA F.TEMP 1 101 TYPE=J4'
+          OPEN 'F.TEMP' TO f_temp ELSE ABORT 201, 'F.TEMP'
+       END
+       *
+       out_record = 'Field 1' :@FM: 'Field 2' :@FM: 'Field 3'
+       WRITE out_record TO f_temp, 'REC1'
+       *
+       READV second_field FROM f_temp, 'REC1', 2 ELSE
+          CRT 'Read error'
+          STOP
+       END
+       *
+       CRT second_field           ;*  Field 2
 
 ## READVL
 
@@ -13082,10 +14181,12 @@ in variable that matches the specified regular expression. If
 a match is not found then the function returns 0. If the regular expression
 was invalid then the function returns -1.
 
+***A positive TAFJ note: REGEXP() function now works under Windows.***
+
 ### EXAMPLES
 
-       String = "jBASE Software Inc."          ;* position of the character "t"
-       CRT REGEXP(String, 'S[^t]*')            ;* in "Software" = 4
+       String = "jBASE Software Inc."    ;* 4 (position of matching pattern -
+       CRT REGEXP(String, 'S[^t]*')      ;*   "S" followed by "t" later on)
     * find an exact value in a list
        CRT REGEXP('051', '^(050|5001|051|053|265|4007|5007|037|060|098)$')   ;* 1
        CRT REGEXP('05123', '^(050|5001|051|053|265|4007|5007|037|060|098)$') ;* 0
@@ -13104,6 +14205,8 @@ was invalid then the function returns -1.
        CRT REGEXP('RU', '([A-QS-Z][A-Z]|[R][A-RT-Z])')                       ;* 1
     * negative lookahead assertion isn't supported ("all not containing 'bar'")
        CRT REGEXP('bar', '"^(?!.*?bar).*"')                                 ;* -1
+
+***Another positive TAFJ note: negative lookahead now works.***
 
 ## RELEASE
 
@@ -13139,7 +14242,7 @@ in subroutines.
 ### EXAMPLE
 
 This program optionally creates file F.TEMP and writes to it a record REC1, on the following
-runs it updates that record – puts a new field in it, but only if there’s less than 7 fields:
+runs it updates that record - puts a new field in it, but only if theres less than 7 fields:
 
        OPEN 'F.TEMP' TO F.TEMP ELSE
           EXECUTE 'CREATE-FILE DATA F.TEMP 1 101 TYPE=J4'
@@ -13451,6 +14554,11 @@ Displays 4000000000000000000000000000007 to the screen
     CRT SADD(4.33333333333333333,1.8)
 
 Displays 6.13333333333333333 to the screen
+
+***TAFJ note: parameters are to be in quotes:***
+
+       CRT SADD('4000000000000000000000000000000', '7')  ;* 4000000000000000000000000000007
+       CRT SADD(4000000000000000000000000000000, 7)      ;* 9223372036854775814
 
 ## SDIV
 
@@ -13771,11 +14879,49 @@ delimited.
 
 ### EXAMPLES
 
-    DIM Parm(4)
-    ProgName = SENTENCE(0) ;* program is?
-    FOR I = 1 TO 4
-       Parm(I) = SENTENCE(I) ;* get parameters
-    NEXT I
+       DIM Parm(4)
+       ProgName = SENTENCE(0) ;* program is?
+       FOR I = 1 TO 4
+          Parm(I) = SENTENCE(I) ;* get parameters
+       NEXT I
+
+       this_prog = SENTENCE(0)    ;* name of this program
+       phrase_part = 'to understand recursion '
+       IF SENTENCE(1) EQ '-2' THEN              ;* first parameter
+          CRT TRIM( SENTENCE(2), '"', 'B' ):    ;* 2nd parameter
+          CRT phrase_part
+       END ELSE
+          CRT phrase_part:
+          EXECUTE this_prog : ' -2 "you firstly need "'
+       END
+
+***TAFJ R23 note: results are corrupted after EXECUTE:***
+
+test.b:
+
+       PROGRAM test
+       *
+       CRT SENTENCE(2)
+       EXECUTE 'LIST F.SPF (N' CAPTURING output
+       *
+       CRT SENTENCE(2)
+       *
+       STOP
+       END
+
+TAFC:
+
+    test arg1 arg2
+    >>>
+    arg2
+    arg2
+
+TAFJ:
+
+    trun test arg1 arg2
+    >>>
+    arg2
+    (N
 
 ## SEQ
 
@@ -13855,6 +15001,8 @@ The output of this program is:
 <pre>
     84]71 71</pre>
 
+***TAFJ note: SEQS() function isn't supported.***
+
 ## SIN
 
 SIN function returns the mathematical sine value of a numeric
@@ -13912,6 +15060,8 @@ Sleeping until a specified time works by calculating the time between
 the current time and the time supplied and sleeping for that many
 seconds. If in the meantime the host clock is changed the program
 will not wake up at the desired time;
+
+***TAFJ note: sleeping until a specified time doesn't work.***
 
 If invoking the debugger while a program is sleeping and the execution
 continued, the user will be prompted:
@@ -14261,11 +15411,18 @@ The function calculates the result at the highest precision
 available and then truncates the answer to the required
 PRECISION.
 
+***TAFJ R23 note: incorrect rounding of results.***
+
 ### EXAMPLE
 
-    FOR I = 1 TO 1000000
-        J = SQRT(I)
-    NEXT I
+    PRECISION 6
+    *
+    FOR i = 1 TO 10
+        CRT SQRT(i) : ' | ' :
+    NEXT i
+
+    * TAFC: 1 | 1.414214 | 1.732051 | 2 | 2.236068 | 2.44949 | 2.645751 | 2.828427 | 3 | 3.162278 |
+    * TAFJ: 1 | 1 | 2 | 2 | 2.2 | 2.4 | 2.6 | 2.8 | 3 | 3.2 |
 
 ## SSELECT
 
@@ -14371,6 +15528,63 @@ Or:
 <pre>
     Got strings from AAGPKJJP to ZZTMYNNX</pre>
 
+### EXAMPLE 3
+
+Don't try to sort an array with **SSELECTV** if this array has values or subvalues (they all will be lost -
+after all, it's intended to sort just select lists). The correct way to do that is also shown below:
+
+    *
+    init_array = 3 : @VM : 'Third row'
+    init_array<-1> = 2 : @VM : 'Second row'
+    init_array<-1> = 4 : @VM : 'Fourth row'
+    init_array<-1> = 1 : @VM : 'First row'
+    &nbsp;
+    the_len = DCOUNT(init_array, @FM)
+    &nbsp;
+    SSELECTV init_array TO sorted_array
+    GOSUB SHOW.RESULT
+    * Output:
+    * 1
+    * 2
+    * 3
+    * 4
+    &nbsp;
+    elem_to_sort = 1     ;* sort by 1st value
+    GOSUB MAKE.SORT
+    GOSUB SHOW.RESULT
+    * Output:
+    * 1]First row
+    * 2]Second row
+    * 3]Third row
+    * 4]Fourth row
+    &nbsp;
+    elem_to_sort = 2     ;* sort by 2nd value
+    GOSUB MAKE.SORT
+    GOSUB SHOW.RESULT
+    * Output:
+    * 1]First row
+    * 4]Fourth row
+    * 2]Second row
+    * 3]Third row
+    &nbsp;
+    RETURN
+    &nbsp;
+    MAKE.SORT:
+       seek_array = ''
+       sorted_array = ''
+       FOR i = 1 TO the_len
+          LOCATE init_array<i,elem_to_sort> IN seek_array BY 'AN' SETTING ins_posn ELSE NULL
+          INS init_array<i,elem_to_sort> BEFORE seek_array<ins_posn>
+          INS init_array<i> BEFORE sorted_array<ins_posn>
+       NEXT i
+       RETURN
+    &nbsp;
+    SHOW.RESULT:
+       FOR i = 1 TO the_len
+          CRT OCONV(sorted_array<i>, 'MCP')
+       NEXT i
+       RETURN
+
 ## SSELECTN
 
 See: [SSELECT](#SSELECT).
@@ -14378,6 +15592,8 @@ See: [SSELECT](#SSELECT).
 ## SSELECTV
 
 See: [SSELECT](#SSELECT).
+
+***TAFJ note: SSELECTV statement isn't supported.***
 
 ## SSUB
 
@@ -14426,7 +15642,7 @@ Value = 0 if successful
 
 Value = Operating System error code if previous command failed
 
-13 – permission denied on UNIX systems
+13 - permission denied on UNIX systems
 
 *OCONV Conversions*
 
@@ -14476,6 +15692,19 @@ characteristics of the specific tape drive unit).
 Consult the documentation that accompanied your tape drive
 unit for information about interpreting the values returned
 by the STATUS function.
+
+### EXAMPLE
+
+       DELETE not_valid_filevar, 'REC5' SETTING ret_code ON ERROR
+          CRT 'REC5 - DELETE ERROR'
+       END
+       CRT STATUS()           ;*  -1
+       CRT ret_code           ;*  32768
+
+***TAFJ note: STATUS() function works incorrectly processing results of erroneous conversions. Example:***
+
+       CRT OCONV('qwerty', 'qwerty') : '_' : STATUS()   ;* expected: _1, output: _2
+       CRT ICONV('20483344', 'D') : '_' : STATUS()      ;* expected: _3, output: _1
 
 ## STATUS statement
 
@@ -14659,7 +15888,7 @@ no outstanding [GOSUB](#GOSUB) statement.
 The control will not be returned to the calling program
 if a [STOP](#STOP) or [ABORT](#ABORT) statement is executed.
 
-See also: [CALL](#CALL), [CATALOG](#CATALOG), [COMMON](#COMMON),
+See also: [CALL](#CALL), [CATALOG Command](#CATALOG_Command), [COMMON](#COMMON),
 [RETURN](#RETURN).
 
 ### EXAMPLES
@@ -14724,7 +15953,7 @@ the Start position are extracted.
 ### INTERNATIONAL MODE
 
 When using the SUBSTRINGS function in International Mode, the function
-will use the ‘start’ and length’ parameters to the function as character
+will use the 'start' and 'length' parameters to the function as character
 count values, rather than bytecount
 
 ### EXAMPLES
@@ -15006,8 +16235,8 @@ The following system functions are supported by TAFC:
 |              |           thread_type_string = "jdp" = 6                                 |
 |              |           thread_type_string = "Listen" = 7                              |
 |              |           thread_type_string = "Daemon"= 8                               |
-|              |           thread_type_string = “Admin”                                   |
-|              |           thread_type_string = “jrla”                                    |
+|              |           thread_type_string = "Admin"                                   |
+|              |           thread_type_string = "jrla"                                    |
 |              |                                                                          |
 |              |<17> Number of instructions executed and licenses allocated to work       |
 |              |                                                                          |
@@ -15066,9 +16295,19 @@ The following system functions are supported by TAFC:
 |SYSTEM(1032)  | Returns default frame size                                               |
 |SYSTEM(1034)  | Returns handle of the current thread                                     |
 |SYSTEM(1035)  | Returns the product ID of the license currently in use   |
-| |  by this process;     |
+|              |  by this process;     |
 |              |  1    Enterprise                                                         |
 |              |  13.  Server                                                             |
+
+***TAFJ note 1: Non-working ones: SYSTEM(14), SYSTEM(16), SYSTEM(26), SYSTEM(101), SYSTEM(1000), SYSTEM(1001), SYSTEM(1018), SYSTEM(1026), SYSTEM(1030).***
+
+***TAFJ note 2: SYSTEM(1027) shows only current process.***
+
+***TAFJ R22 note: SYSTEM(1000), SYSTEM(1001), SYSTEM(1018) and SYSTEM(1026) were fixed.***
+
+***TAFJ R22 note 2: SYSTEM(2) and SYSTEM(3) now return 0 (returned 120 and 50 respectively under TAFJ R19).***
+
+***TAFJ R23 note: SYSTEM(1000) and SYSTEM(1001) weren't probably fixed in TAFJ R22 (unable to verify it now) - in TAFJ R23 they return a string, not a dynamic array.***
 
 ### EXAMPLES
 
@@ -15343,6 +16582,15 @@ will display
 <pre>
     A]1]Vendor Name]]]]]L]30</pre>
 
+***TAFJ note: TRANS() function returns record @ID instead of field contents. Example (on Temenos Model Bank):***
+
+       CRT TRANS('F.COMPANY', 'EU0010001', 2, 'X')
+       * expected output: Model Bank - Europe
+       * output: EU0010001
+       * workaround: use XLATE
+
+***TAFJ R22 note: fixed.***
+
 ## TRANSABORT
 
 <a name="TRANSABORT"/>
@@ -15594,39 +16842,62 @@ TRIMB() function is equivalent to TRIM(expression, " ", "T")
 
 ## TRIMBS
 
-TRIMBS function is used to remove all trailing spaces and tabs
-from each element of dynamic.array.
+<a name="TRIMBS"/>
+
+TRIMBS function is used to remove all trailing spaces from each element
+of dynamic.array.
 
 ### COMMAND SYNTAX
 
     TRIMBS(dynamic.array)
 
-TRIMBS removes all trailing spaces and tabs from each element and
-reduces multiple occurrences of spaces and tabs to a single space
-or tab.
+If dynamic.array evaluates to null (i.e. an empty string), null is returned.
+If any element of dynamic.array is null, null is returned for that value.
 
-If dynamic.array evaluates to null, null is returned. If any element
-of dynamic.array is null, null is returned for that value.
+### EXAMPLE
+
+       dyn_array = ' Use    ' :@FM: ' the   ' :@VM: '' :@FM: 'source Luke   !  '
+       CRT DQUOTE( OCONV( TRIMBS(dyn_array), 'MCP') )
+
+Output:
+
+<pre>
+    " Use^ the]^source Luke   !"</pre>
+
+### NOTE
+
+Leading and redundant spaces are not removed.
 
 ## TRIMF
 
 TRIMF() function is equivalent to TRIM(expression, " ", "L")
 
-## TRIMFS##
+## TRIMFS
 
-TRIMFS function is used to remove all leading spaces and tabs
+<a name="TRIMFS"/>
+
+TRIMFS function is used to remove all leading spaces
 from each element of dynamic.array.
 
 ### COMMAND SYNTAX
 
     TRIMFS(dynamic.array)
 
-TRIMFS removes all leading spaces and tabs from each element and
-reduces multiple occurrences of spaces and tabs to a single space or
-tab.
+If dynamic.array evaluates to null (i.e. an empty string), null is returned.
+If any element of dynamic.array is null, null is returned for that value.
 
-If dynamic.array evaluates to null, it returns null. If any
-element of dynamic.array is null, it returns null for that value.
+### EXAMPLE
+
+       dyn_array = ' Use    ' :@FM: ' the   ' :@VM: '' :@FM: 'source Luke   !  '
+       CRT DQUOTE( OCONV( TRIMFS(dyn_array), 'MCP') )
+       * Compare this with TRIMBS()
+       CRT DQUOTE( OCONV( TRIMBS(dyn_array), 'MCP') )
+
+Output:
+
+<pre>
+    "Use    ^the   ]^source Luke   !  "
+    " Use^ the]^source Luke   !"</pre>
 
 # jBC Functions and Statements (U - X)
 
@@ -15661,7 +16932,7 @@ See also: [ASSIGNED](#ASSIGNED)
        END
        CRT UNASSIGNED(F.TEMP)        ;* 0
        CLOSE F.TEMP
-       CRT UNASSIGNED(F.TEMP)        ;* 1
+       CRT UNASSIGNED(F.TEMP)        ;* 1 under TAFC, 0 under TAFJ
        CRT UNASSIGNED(V.VAR)         ;* 1
        V.VAR = 5
        CRT UNASSIGNED(V.VAR)         ;* 0
@@ -15752,20 +17023,44 @@ equivalent byte sequence.
 ### SYNTAX ELEMENTS
 
 The expression is expected to be a binary/latin1 code page string,
-which converts the binary string into a UTF-8 encoded byte sequence,
-used to represent the Unicode values for each byte in the expression.
+which is converted into a UTF-8 encoded byte sequence.
 
-### NOTES
+### EXAMPLE
 
-This function is useful for converting binary or latin1 code
-page data into internal format in International Mode.
+       lat_line = CHAR(198) : CHAR(189) : CHAR(191)
+       utf_line = UTF8(lat_line)
+       FOR i = 1 TO 6 STEP 2
+          CRT DTX( SEQ(utf_line[i,1]) ), DTX( SEQ(utf_line[i+1,1]) )
+       NEXT i
+
+The output of this program is:
+
+<pre>
+    C3 86 (latin capital letter ae)
+    C2 BD (vulgar fraction one half)
+    C2 BF (inverted question mark)</pre>
+
+***TAFJ note: output is:***
+
+<pre>
+    C6 BD
+    BF 0
+    0 0</pre>
+
+### NOTE
+
+To run this example the following environment variables are to be set:
+
+<pre>
+    JBASE_I18N=1
+    JBASE_CODEPAGE=utf8</pre>
 
 ## WAKE
 
 <a name="WAKE"/>
 
 WAKE statement is used to wake a suspended process, which has
-executed a PAUSE statement.
+executed a [PAUSE](#PAUSE) statement.
 
 ### COMMAND SYNTAX
 
@@ -15833,24 +17128,63 @@ sequential access.
 
 ### NOTES
 
-WEOFSEQ forces truncation of the file at the current file pointer
-nothing is actually 'written' to the sequential file.
+WEOFSEQ forces truncation of the file at the current file pointer;
+nothing is actually written to the sequential file.
 
 ### EXAMPLE
 
-       V.DIR.OUT = '.'
-       V.FILE.OUT = 'report.txt'
-       OPENSEQ V.DIR.OUT, V.FILE.OUT TO F.FILE.OUT THEN
+       out_dir = '.'
+       out_file = 'report.txt'
+    &nbsp;
+       OPENSEQ out_dir, out_file TO f_out THEN
           CRT 'TARGET FILE EXISTS. OVERWRITE[Y/N]':
           CLEARINPUT          ;* don't take anything in advance
-          INPUT V.REPLY
-          IF UPCASE(V.REPLY) NE 'Y' THEN         ;* y or Y
-             STOP
+          INPUT reply
+          IF UPCASE(reply) NE 'Y' THEN         ;* y or Y
+    * exit - user refused to overwrite the file
+             STOP             ;* or RETURN
           END
-          WEOFSEQ F.FILE.OUT  ;* truncate the file
+          WEOFSEQ f_out  ;* truncate the file
        END
-       WRITESEQ 'TEST' TO F.FILE.OUT ELSE NULL
-       CLOSESEQ F.FILE.OUT
+    &nbsp;
+    * We don't need to explicitly create a file; as soon as the first
+    * WRITESEQ will be issued - file will be created, otherwise it won't be -
+    * "openseq_creates" isn't set to "true" for Prime emulation.
+    &nbsp;
+    * Processing loop starts
+       line_no = 0
+       LOOP
+          line_no ++
+    &nbsp;
+    * Provide a way to exit a loop
+          IF line_no GT 7 THEN BREAK
+    &nbsp;
+    * Get an output string into variable and...
+          line = 'Line ' : line_no
+    * ...either skip it...
+          IF line_no EQ 3 THEN CONTINUE
+    * ...or write it
+          WRITESEQ line TO f_out ELSE
+    * Write error - notify user and quit the program
+             CRT 'Write error'
+             STOP             ;* or RETURN
+          END
+       REPEAT
+    &nbsp;
+    * truncate the file at certain position
+       SEEK f_out, -5, 2 ELSE CRT 'Seek error'  ;  STOP
+       WEOFSEQ f_out
+       CLOSESEQ f_out
+
+Contents of file report.txt:
+
+<pre>
+    Line 1
+    Line 2
+    Line 4
+    Line 5
+    Line 6
+    Li</pre>
 
 ## WRITE
 
@@ -15942,11 +17276,11 @@ error message.
 When using the WRITEBLK statement in International Mode, care must be
 taken to ensure that the write variable is handled properly before the
 WRITEBLK statement. The WRITEBLK statement expects the output variable
-to be in “bytes”, however when manipulating variables in International
+to be in "bytes", however when manipulating variables in International
 Mode character length rather than byte lengths are usually used and
 hence possible confusion or program malfunction can occur. If
 requiring byte count data the output variable can be converted from
-the UTF-8 byte sequence to ‘binary/latin1’ via the LATIN1 function.
+the UTF-8 byte sequence to 'binary/latin1' via the LATIN1 function.
 
 It is not recommended that you use the [READBLK](#READBLK)/
 [WRITEBLK](#WRITEBLK) statements when executing in International Mode.
@@ -15956,7 +17290,7 @@ characters a line at a time from a file.
 
 ### NOTE
 
-We have to explicitly create the output file if it doesn’t exist (we didn’t have to with
+We have to explicitly create the output file if it doesnt exist (we didnt have to with
 WRITESEQ, for example, under *prime* emulation).
 
 ### EXAMPLE
@@ -16082,6 +17416,40 @@ Append data to file:
           STOP
        END
 
+If file was opened in read only mode, WRITESEQ will fail and statements defined
+after ELSE clause will be processed:
+
+       IF NOT( GETENV('TAFC_HOME', tafc_home) ) THEN
+          CRT 'TAFC_HOME not defined'
+          STOP
+       END
+       //
+       log_dir = tafc_home : '/tmp'
+       log_file = 'jbase_error_trace'
+       //
+       OPENSEQ log_dir, log_file READONLY TO f_log THEN
+       //
+          FOR i = 1 TO 3   ;* read the first message
+             READSEQ the_line FROM f_log ELSE BREAK
+             CRT the_line
+          NEXT i
+       //
+          WRITESEQ 'One more line' APPEND TO f_log ELSE
+             CRT 'Write error'
+             STOP
+          END
+       END ELSE
+          CRT 'jbase_error_trace not found'
+       END
+
+Sample output:
+
+<pre>
+    &nbsp;
+    Trace message from pid 3588 port 237 at 'Mon May 28 14:02:41 2012'
+        Port 1 (Pid 6184) has been inactive for 34317875 seconds, Port cleared
+    Write error</pre>
+
 ## WRITESEQF
 
 <a name="WRITESEQF"/>
@@ -16091,7 +17459,7 @@ sequential processing, and to ensure that data is physically written to
 disk (that is, not buffered) before the next statement in the program is
 executed.
 
-### SYNTAX
+### COMMAND SYNTAX
 
     WRITESEQF expression { ON | TO } file.variable [ ON ERROR statements ]  \
               { THEN statements [ ELSE statements ] | ELSE statements }
@@ -16310,14 +17678,21 @@ record, do so explicitly with the WRITEVU statement.
 
 ### EXAMPLE
 
-    OPEN "Customers" ELSE ABORT 201, "Customers"
-    OPEN "DICT Customers" TO DCusts ELSE
-       ABORT 201, "DICT Customers"
-    END
-    WRITEV Rec ON DCusts, 'Xref',7 Setting Err ON ERROR
-       CRT "I/O Error[" :Err: "]"
-       ABORT
-    END
+       EXECUTE 'DELETE-FILE DATA F.TEMP'
+       EXECUTE 'CREATE-FILE DATA F.TEMP 1 101 TYPE=J4'
+       OPEN 'F.TEMP' TO f_temp ELSE ABORT 201, 'F.TEMP'
+       new_rec = 'LINE 1' :@FM: 'LINE 2' :@FM: 'LINE 3'
+       WRITE new_rec TO f_temp, 'REC1'
+       WRITEV 'LINE 2v2' TO f_temp, 'REC1', 2 ON ERROR
+          CRT 'WRITEV error'
+          STOP
+       END
+       EXECUTE "I-DUMP F.TEMP 'REC1'"     ;* "REC1^LINE 1^LINE 2v2^LINE 3^"
+       WRITEV 'LINE 7' TO f_temp, 'REC1', 7 ON ERROR
+          CRT 'WRITEV error'
+          STOP
+       END
+       EXECUTE "I-DUMP F.TEMP 'REC1'"     ;* "REC1^LINE 1^LINE 2v2^LINE 3^^^^LINE 7^"
 
 ## WRITEVU
 
@@ -16649,8 +18024,21 @@ See also: [DTX](#DTX).
 
 ### EXAMPLES
 
-    A = "FF"
-    CRT XTD(A)
+       CRT XTD('FF')                                          ;* 255
+       CRT FMT( DTX(13), 'R%2' ) : FMT( DTX(10), 'R%2' )      ;* 0D0A
+       CRT XTD('BADBEEF')  ;*  195935983 (binary: 00001011101011011011111011101111)
+       CRT XTD('DEADBEEF') ;* -559038737 (binary: 11011110101011011011111011101111)
+       CRT XTD('1aGHI')    ;* 26 - stopped after processing "1a"
+       CRT XTD('GHI')      ;* 0
+
+### NOTE
+
+Negative result in line 4 is caused by the first bit of binary result
+being set.
+
+***TAFJ note: XTD('1aGHI') results in 0, not 26.***
+
+***TAFJ R23 note: XTD('DEADBEEF') returns 0.***
 
 # Embedded SQL for jBC
 
@@ -16706,6 +18094,7 @@ Oracle.
 
 PartEntry.b listing (Oracle)
 
+<pre>
     *
     *
     * Declare jBC vars to use in Embedded SQL statements ( A )
@@ -16760,7 +18149,7 @@ PartEntry.b listing (Oracle)
     * Commit updates to database ( F )
     *
     *
-    EXEC SQL COMMIT ;
+    EXEC SQL COMMIT ;</pre>
 
 ( A ) Declare jBC variables to use within Embedded SQL statements
 

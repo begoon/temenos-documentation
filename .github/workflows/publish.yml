@@ -1,0 +1,47 @@
+name: Publish site
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - jBC_Programmers_Reference_Guide.markdown
+      - build.py
+      - site/**
+      - .github/workflows/publish.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      # The published branch is also the previous build: pages whose text has
+      # not changed keep their "Last update" stamp.
+      - uses: actions/checkout@v7
+        with:
+          ref: gh-pages
+          path: _site
+
+      - name: Build
+        run: python3 build.py
+
+      - name: Publish
+        working-directory: _site
+        run: |
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Nothing changed."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Build from ${GITHUB_SHA::7}"
+          git push
